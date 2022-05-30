@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const connectDB = require('./config/db')
+const connectDB = require('./config/Public/db')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 const routes = require( './api/routes/fitsyRoutes')
@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false}))
 app.use(bodyParser.json())
 app.use(routes)
 app.use(passport.initialize())
-require('./config/passport')(passport)
+require('./config/Private/passport')(passport)
 
 const PORT  = process.env.PORT || 8888
 

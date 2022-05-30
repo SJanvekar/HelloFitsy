@@ -1,6 +1,6 @@
 var User = require('../models/user.js')
 var jwt = require('jwt-simple')
-var config = require('../../config/dbconfig')
+var config = require('../../config/Private/dbconfig')
 
 
 var functions = {
