@@ -7,6 +7,9 @@ router.get('/dashboard', (req, res) =>{
 })
 
 //POST
+router.get('/', (req, res) =>{
+  res.send('I am up and running bitches! -- Welcome to Fitsy')
+})
 
 //Add New User
 router.post('/adduser', userController.addNew)
