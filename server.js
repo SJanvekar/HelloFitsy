@@ -1,7 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const connectDB = require('./config/db')
+const connectDB = require('./db')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 const routes = require( './api/routes/fitsyRoutes')
