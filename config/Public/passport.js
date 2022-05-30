@@ -1,8 +1,8 @@
 var JwtStrat = require('passport-jwt').Strategy
 var ExtractJwt = require('passport-jwt').ExtractJwt
 
-var User = require('../api/models/user')
-var config = require('./dbconfig')
+var User = require('../../api/models/user')
+var config = require('../Private/dbconfig')
 
 module.exports = function(passport){
     var opts = {};
