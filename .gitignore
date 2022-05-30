@@ -34,7 +34,6 @@ pubspec.lock
 /reports
 
 # Secret production URL
-/config/Private
 
 # Android related
 **/android/**/gradle-wrapper.jar
