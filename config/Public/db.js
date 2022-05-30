@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const dbconfig = require('./dbconfig')
+const dbconfig = require('../Private/dbconfig')
 
 
 const connectDB = async() => {
