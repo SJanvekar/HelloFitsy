@@ -1,0 +1,45 @@
+{
+  "name": "backbone",
+  "version": "1.0.0",
+  "description": "Balance RESTful API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=production node server",
+    "dev": "cross-env NODE_ENV=development nodemon server",
+    "heroku-prebuild": "npm install -f",
+    "heroku-postbuild": "npm run prod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SJanvekar/balance.git"
+  },
+  "keywords": [
+    "Fitsy",
+    "RESTful",
+    "API",
+    "Backend"
+  ],
+  "author": "Salman Janvekar, William Xian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SJanvekar/balance/issues"
+  },
+  "homepage": "https://github.com/SJanvekar/balance#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "config": "^3.3.7",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "jwt-simple": "^0.5.6",
+    "mongoose": "^6.3.4",
+    "morgan": "^1.10.0",
+    "passport": "^0.6.0",
+    "passport-jwt": "^4.0.0",
+    "serve": "^13.0.2"
+  }
+}
