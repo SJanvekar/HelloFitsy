@@ -76,7 +76,7 @@ class Login extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: 'SFDisplay',
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 15,
                                 color: strawberry,
                               )),
                         ),

@@ -5,6 +5,7 @@ import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -67,7 +68,7 @@ class SignIn extends StatelessWidget {
 //Sign In Header
 Widget typeFace() {
   return Padding(
-    padding: const EdgeInsets.only(top: 20.0),
+    padding: EdgeInsets.zero,
     child: Hero(
       transitionOnUserGestures: true,
       tag: 'typeface',
@@ -113,7 +114,7 @@ Widget textInputUsername() {
                 overflow: TextOverflow.fade,
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,
-                fontSize: 19,
+                fontSize: 15,
                 fontWeight: FontWeight.w700),
             decoration: InputDecoration.collapsed(
               border: InputBorder.none,
@@ -121,7 +122,7 @@ Widget textInputUsername() {
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,
-                fontSize: 18,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -162,7 +163,7 @@ Widget textInputPassword() {
                 overflow: TextOverflow.fade,
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,
-                fontSize: 19,
+                fontSize: 15,
                 fontWeight: FontWeight.w700),
             decoration: InputDecoration.collapsed(
               border: InputBorder.none,
@@ -170,7 +171,7 @@ Widget textInputPassword() {
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,
-                fontSize: 18,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -191,8 +192,8 @@ Widget forgotPassword() {
         style: TextStyle(
           fontFamily: 'SFDisplay',
           color: shark,
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
         ),
       ),
       onTap: () {
@@ -205,14 +206,14 @@ Widget forgotPassword() {
 Widget orDivider() {
   return Center(
     child: Padding(
-      padding: const EdgeInsets.only(top: 30.0),
+      padding: const EdgeInsets.only(top: 25.0),
       child: Text(
-        'Or',
+        'or',
         style: TextStyle(
           fontFamily: 'SFDisplay',
           color: shark,
-          fontSize: 15,
-          fontWeight: FontWeight.w700,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
         ),
       ),
     ),
@@ -222,7 +223,7 @@ Widget orDivider() {
 //Login with sign-in partners
 Widget signInPartners() {
   return Padding(
-    padding: const EdgeInsets.only(top: 30.0),
+    padding: const EdgeInsets.only(top: 25.0),
     child: Column(
       children: [
         GestureDetector(
@@ -241,7 +242,7 @@ Widget signInPartners() {
                 style: TextStyle(
                   fontFamily: 'SFDisplay',
                   color: shark,
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -278,7 +279,7 @@ Widget signInPartners() {
                 style: TextStyle(
                   fontFamily: 'SFDisplay',
                   color: shark,
-                  fontSize: 18,
+                  fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),
               ),

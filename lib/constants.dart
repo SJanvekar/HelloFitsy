@@ -58,14 +58,14 @@ const defaultPadding = 10.0;
 const logInPageTitle = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 32,
+  fontSize: 26,
   fontWeight: FontWeight.w600,
 );
 
 const logInPageNavigationButtons = TextStyle(
   fontFamily: 'SFDisplay',
-  color: jetBlack40,
-  fontSize: 20,
+  color: shark,
+  fontSize: 18,
   fontWeight: FontWeight.w600,
 );
 

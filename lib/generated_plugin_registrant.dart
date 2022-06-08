@@ -4,6 +4,7 @@
 
 // ignore_for_file: directives_ordering
 // ignore_for_file: lines_longer_than_80_chars
+// ignore_for_file: depend_on_referenced_packages
 
 import 'package:google_sign_in_web/google_sign_in_web.dart';
 import 'package:sign_in_with_apple_web/sign_in_with_apple_web.dart';

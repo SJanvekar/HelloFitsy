@@ -18,18 +18,14 @@ class PersonalInfo extends StatefulWidget {
   State<PersonalInfo> createState() => _PersonalInfoState();
 }
 
-void displayDialog(BuildContext context, String title, String text) => 
+void displayDialog(BuildContext context, String title, String text) =>
     showDialog(
       context: context,
       builder: (context) =>
-        AlertDialog(
-          title: Text(title),
-          content: Text(text)
-        ),
+          AlertDialog(title: Text(title), content: Text(text)),
     );
-    
+
 class _PersonalInfoState extends State<PersonalInfo> {
-  
   //variables
   double range = 0;
   bool _buttonPressed = false;
@@ -100,7 +96,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               padding: const EdgeInsets.only(
                 left: 70.5,
                 right: 70.5,
-                top: 35,
+                top: 30,
               ),
               child: Row(
                 children: [
@@ -176,7 +172,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                               bottom: 11,
                             ),
                             child: SvgPicture.asset(
-                              "assets/icons/User.svg",
+                              "assets/icons/UserIconSolid.svg",
                               color: _currentIconColorTrainee,
                               height: 27.72,
                               width: 32.76,
@@ -208,7 +204,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
             //User text input fields
             Padding(
               padding: const EdgeInsets.only(
-                top: 40,
+                top: 30,
                 left: 24.5,
               ),
               child: textInputFirstLastName(),
@@ -238,23 +234,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 28.0),
+                    padding: const EdgeInsets.only(left: 30.0),
                     child: Row(
                       children: [
                         Text('Class Search Range',
                             style: TextStyle(
                               fontFamily: 'SFDisplay',
                               color: jetBlack,
-                              fontSize: 20,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                             )),
                         Padding(
                           padding: const EdgeInsets.only(left: 5.0),
                           child: SvgPicture.asset(
-                            'assets/icons/moreInfo.svg',
+                            'assets/icons/InformationIcon.svg',
                             height: 16,
                             width: 16,
-                            color: jetBlack40,
+                            color: shark,
                           ),
                         )
                       ],
@@ -328,7 +324,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 Widget pageTitle() {
   return Center(
     child: Container(
-        padding: EdgeInsets.only(top: 35),
+        padding: EdgeInsets.only(top: 25),
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Tell us about yourself',
@@ -347,8 +343,13 @@ Widget pageText() {
         style: logInPageBodyText,
         children: const [
           TextSpan(
-            text: 'Are you looking to train or learn?',
-          )
+              text: 'Are you looking to train or learn?',
+              style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: shark,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ))
         ],
       ),
     ),
@@ -360,7 +361,7 @@ Widget textInputFirstLastName() {
   return Row(
     children: [
       Container(
-        width: 158,
+        width: 156.5,
         height: 50,
         decoration: BoxDecoration(
           color: bone60,
@@ -375,7 +376,9 @@ Widget textInputFirstLastName() {
                 child: Center(
                     child: SvgPicture.asset(
                   'assets/icons/UserIcon.svg',
-                  color: jetBlack40,
+                  height: 22.5,
+                  width: 18,
+                  color: shark,
                 )),
               ),
             ),
@@ -387,7 +390,7 @@ Widget textInputFirstLastName() {
                     overflow: TextOverflow.fade,
                     fontFamily: 'SFDisplay',
                     color: jetBlack80,
-                    fontSize: 19,
+                    fontSize: 17,
                     fontWeight: FontWeight.w700),
                 decoration: InputDecoration.collapsed(
                   border: InputBorder.none,
@@ -395,7 +398,7 @@ Widget textInputFirstLastName() {
                   hintStyle: const TextStyle(
                     fontFamily: 'SFDisplay',
                     color: shark60,
-                    fontSize: 18,
+                    fontSize: 17,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -407,7 +410,7 @@ Widget textInputFirstLastName() {
       Padding(
         padding: const EdgeInsets.only(left: 10.0),
         child: Container(
-          width: 158,
+          width: 156.5,
           height: 50,
           decoration: BoxDecoration(
             color: bone60,
@@ -428,7 +431,7 @@ Widget textInputFirstLastName() {
                       overflow: TextOverflow.fade,
                       fontFamily: 'SFDisplay',
                       color: jetBlack80,
-                      fontSize: 19,
+                      fontSize: 17,
                       fontWeight: FontWeight.w700),
                   decoration: InputDecoration.collapsed(
                     border: InputBorder.none,
@@ -436,7 +439,7 @@ Widget textInputFirstLastName() {
                     hintStyle: TextStyle(
                       fontFamily: 'SFDisplay',
                       color: shark60,
-                      fontSize: 18,
+                      fontSize: 17,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -453,7 +456,7 @@ Widget textInputFirstLastName() {
 //Username
 Widget textInputUsername() {
   return Container(
-    width: 326,
+    width: 323,
     height: 50,
     decoration: BoxDecoration(
       color: bone60,
@@ -468,7 +471,9 @@ Widget textInputUsername() {
             child: Center(
                 child: SvgPicture.asset(
               'assets/icons/UserIcon.svg',
-              color: jetBlack40,
+              height: 22.5,
+              width: 18.0,
+              color: shark,
             )),
           ),
         ),
@@ -479,7 +484,7 @@ Widget textInputUsername() {
                 overflow: TextOverflow.fade,
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: FontWeight.w700),
             decoration: InputDecoration.collapsed(
               border: InputBorder.none,
@@ -487,7 +492,7 @@ Widget textInputUsername() {
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,
-                fontSize: 18,
+                fontSize: 17,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -501,7 +506,7 @@ Widget textInputUsername() {
 //Email
 Widget textInputEmail() {
   return Container(
-    width: 326,
+    width: 323,
     height: 50,
     decoration: BoxDecoration(
       color: bone60,
@@ -516,9 +521,8 @@ Widget textInputEmail() {
             child: Center(
                 child: SvgPicture.asset(
               'assets/icons/MailIcon.svg',
-              width: 24,
-              height: 16,
-              color: jetBlack40,
+              width: 18,
+              color: shark,
             )),
           ),
         ),
@@ -529,7 +533,7 @@ Widget textInputEmail() {
                 overflow: TextOverflow.fade,
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,
-                fontSize: 19,
+                fontSize: 17,
                 fontWeight: FontWeight.w700),
             decoration: InputDecoration.collapsed(
               border: InputBorder.none,
@@ -537,7 +541,7 @@ Widget textInputEmail() {
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,
-                fontSize: 18,
+                fontSize: 17,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -545,7 +549,8 @@ Widget textInputEmail() {
         ),
         Padding(
             padding: const EdgeInsets.only(right: 20, left: 10),
-            child: SvgPicture.asset('assets/icons/moreInfo.svg'))
+            child: SvgPicture.asset('assets/icons/InformationIcon.svg',
+                height: 20, width: 20))
       ],
     ),
   );
@@ -556,7 +561,7 @@ Widget textInputPasswordAndConfirm() {
   return Column(
     children: [
       Container(
-        width: 326,
+        width: 323,
         height: 50,
         decoration: BoxDecoration(
           color: bone60,
@@ -570,10 +575,10 @@ Widget textInputPasswordAndConfirm() {
                 padding: const EdgeInsets.only(left: 22, right: 10),
                 child: Center(
                     child: SvgPicture.asset(
-                  'assets/icons/lock.svg',
+                  'assets/icons/LockIcon.svg',
                   width: 21,
                   height: 25,
-                  color: jetBlack40,
+                  color: shark,
                 )),
               ),
             ),
@@ -586,7 +591,7 @@ Widget textInputPasswordAndConfirm() {
                     overflow: TextOverflow.fade,
                     fontFamily: 'SFDisplay',
                     color: jetBlack80,
-                    fontSize: 19,
+                    fontSize: 17,
                     fontWeight: FontWeight.w700),
                 decoration: InputDecoration.collapsed(
                   border: InputBorder.none,
@@ -594,7 +599,7 @@ Widget textInputPasswordAndConfirm() {
                   hintStyle: const TextStyle(
                     fontFamily: 'SFDisplay',
                     color: shark60,
-                    fontSize: 18,
+                    fontSize: 17,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -604,14 +609,14 @@ Widget textInputPasswordAndConfirm() {
                 padding: const EdgeInsets.only(right: 20, left: 10),
 
                 //Switch the eyeOff icon to the eye Icon on Tap
-                child: SvgPicture.asset('assets/icons/eyeOff.svg'))
+                child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'))
           ],
         ),
       ),
       Padding(
         padding: const EdgeInsets.only(top: 15),
         child: Container(
-          width: 326,
+          width: 323,
           height: 50,
           decoration: BoxDecoration(
             color: bone60,
@@ -625,10 +630,10 @@ Widget textInputPasswordAndConfirm() {
                   padding: const EdgeInsets.only(left: 22, right: 10),
                   child: Center(
                       child: SvgPicture.asset(
-                    'assets/icons/lock.svg',
+                    'assets/icons/LockIcon.svg',
                     width: 21,
                     height: 25,
-                    color: jetBlack40,
+                    color: shark,
                   )),
                 ),
               ),
@@ -641,7 +646,7 @@ Widget textInputPasswordAndConfirm() {
                       overflow: TextOverflow.fade,
                       fontFamily: 'SFDisplay',
                       color: jetBlack80,
-                      fontSize: 19,
+                      fontSize: 17,
                       fontWeight: FontWeight.w700),
                   decoration: InputDecoration.collapsed(
                     border: InputBorder.none,
@@ -649,7 +654,7 @@ Widget textInputPasswordAndConfirm() {
                     hintStyle: const TextStyle(
                       fontFamily: 'SFDisplay',
                       color: shark60,
-                      fontSize: 18,
+                      fontSize: 17,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -659,7 +664,7 @@ Widget textInputPasswordAndConfirm() {
                   padding: const EdgeInsets.only(right: 20, left: 10),
 
                   //Switch the eyeOff icon to the eye Icon on Tap
-                  child: SvgPicture.asset('assets/icons/eyeOff.svg'))
+                  child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'))
             ],
           ),
         ),

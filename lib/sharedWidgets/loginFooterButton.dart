@@ -22,7 +22,7 @@ class LoginFooterButton extends StatelessWidget {
       padding: const EdgeInsets.only(left: 24.5, right: 24.5),
       child: Container(
         height: 50,
-        width: 326,
+        width: 323,
         decoration: BoxDecoration(
             color: buttonColor, borderRadius: BorderRadius.circular(20)),
         child: Center(
@@ -30,7 +30,7 @@ class LoginFooterButton extends StatelessWidget {
           buttonText,
           style: TextStyle(
               color: textColor,
-              fontSize: 16,
+              fontSize: 15,
               fontFamily: 'SFDisplay',
               letterSpacing: 0.5,
               fontWeight: FontWeight.w600),

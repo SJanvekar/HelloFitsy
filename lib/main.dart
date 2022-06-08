@@ -24,7 +24,9 @@ class Balance extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: const MainPage(),
+
+      home: Login(),
+      //const MainPage(),
     );
   }
 }
