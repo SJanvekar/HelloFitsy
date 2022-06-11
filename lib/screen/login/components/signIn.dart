@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -7,61 +8,166 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-class SignIn extends StatelessWidget {
+class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
 
   @override
+  State<SignIn> createState() => _SignInState();
+}
+
+var account, password, token;
+
+class _SignInState extends State<SignIn> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: snow,
-        appBar: AppBar(
-          toolbarHeight: 80,
-          centerTitle: false,
-          elevation: 0,
+    return GestureDetector(
+      child: Scaffold(
           backgroundColor: snow,
-          automaticallyImplyLeading: false,
-          title: Padding(
-            padding: const EdgeInsets.only(
-              left: 0,
-              right: 158,
-            ),
-            child: TextButton(
-              onPressed: () {
-                print("Personal Information Pressed");
-                Navigator.of(context).pop(CupertinoPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) => PersonalInfo()));
-              },
-              child: Text("Cancel", style: logInPageNavigationButtons),
-            ),
-          ),
-        ),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              children: [
-                typeFace(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 20),
-                  child: textInputUsername(),
-                ),
-                textInputPassword(),
-                forgotPassword(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 45.0),
-                  child: LoginFooterButton(
-                      buttonColor: strawberry,
-                      textColor: snow,
-                      buttonText: 'Log in'),
-                ),
-                orDivider(),
-                signInPartners()
-              ],
+          appBar: AppBar(
+            toolbarHeight: 80,
+            centerTitle: false,
+            elevation: 0,
+            backgroundColor: snow,
+            automaticallyImplyLeading: false,
+            title: Padding(
+              padding: const EdgeInsets.only(
+                left: 0,
+                right: 158,
+              ),
+              child: TextButton(
+                onPressed: () {
+                  print("Personal Information Pressed");
+                  Navigator.of(context).pop(CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => PersonalInfo()));
+                },
+                child: Text("Cancel", style: logInPageNavigationButtons),
+              ),
             ),
           ),
-        ));
+          body: SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  typeFace(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    child: textInputUsername(),
+                  ),
+
+                  //TextInput Password
+                  Container(
+                    width: 326,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: bone60,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 21, right: 12),
+                            child: Center(
+                                child: SvgPicture.asset(
+                              'assets/icons/lock.svg',
+                              color: jetBlack40,
+                            )),
+                          ),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textInputAction: TextInputAction.done,
+                            onSubmitted: (val) {
+                              AuthService()
+                                  .signIn(account, password)
+                                  .then((val) {
+                                if (val.data['success']) {
+                                  token = val.data['token'];
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    content: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 320.0),
+                                      child: successfulSignInTemp(),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 2),
+                                    backgroundColor: Colors.transparent,
+                                    elevation: 0,
+                                  ));
+                                }
+                              });
+                            },
+                            obscureText: true,
+                            textCapitalization: TextCapitalization.sentences,
+                            style: const TextStyle(
+                                overflow: TextOverflow.fade,
+                                fontFamily: 'SFDisplay',
+                                color: jetBlack80,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700),
+                            decoration: InputDecoration.collapsed(
+                              border: InputBorder.none,
+                              hintText: 'Password',
+                              hintStyle: const TextStyle(
+                                fontFamily: 'SFDisplay',
+                                color: shark60,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            onChanged: (val) {
+                              password = val;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //forgot password
+                  forgotPassword(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 45.0),
+                    child: GestureDetector(
+                      child: LoginFooterButton(
+                          buttonColor: strawberry,
+                          textColor: snow,
+                          buttonText: 'Log in'),
+                      onTap: () {
+                        AuthService().signIn(account, password).then((val) {
+                          if (val.data['success']) {
+                            token = val.data['token'];
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Padding(
+                                padding: const EdgeInsets.only(bottom: 320.0),
+                                child: successfulSignInTemp(),
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              duration: Duration(seconds: 2),
+                              backgroundColor: Colors.transparent,
+                              elevation: 0,
+                            ));
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  orDivider(),
+                  signInPartners()
+                ],
+              ),
+            ),
+          )),
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+    );
   }
 }
 
@@ -109,24 +215,26 @@ Widget textInputUsername() {
         ),
         Expanded(
           child: TextField(
-            textCapitalization: TextCapitalization.sentences,
-            style: const TextStyle(
-                overflow: TextOverflow.fade,
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
-            decoration: InputDecoration.collapsed(
-              border: InputBorder.none,
-              hintText: 'Username / Email / Phone',
-              hintStyle: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: shark60,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+              textCapitalization: TextCapitalization.sentences,
+              style: const TextStyle(
+                  overflow: TextOverflow.fade,
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack80,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700),
+              decoration: InputDecoration.collapsed(
+                border: InputBorder.none,
+                hintText: 'Username / Email / Phone',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: shark60,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ),
+              onChanged: (val) {
+                account = val;
+              }),
         ),
       ],
     ),
@@ -157,6 +265,7 @@ Widget textInputPassword() {
         ),
         Expanded(
           child: TextField(
+            textInputAction: TextInputAction.done,
             obscureText: true,
             textCapitalization: TextCapitalization.sentences,
             style: const TextStyle(
@@ -175,6 +284,9 @@ Widget textInputPassword() {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            onChanged: (val) {
+              password = val;
+            },
           ),
         ),
       ],
@@ -288,5 +400,45 @@ Widget signInPartners() {
         ),
       ],
     ),
+  );
+}
+
+Widget successfulSignInTemp() {
+  return Container(
+    height: 50,
+    width: 323,
+    decoration: BoxDecoration(
+        color: snow,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: jetBlack.withOpacity(0.01),
+            spreadRadius: 0,
+            blurRadius: 38,
+            offset: Offset(0, 24), // changes position of shadow
+          ),
+          BoxShadow(
+            color: jetBlack.withOpacity(0.06),
+            spreadRadius: 0,
+            blurRadius: 46,
+            offset: Offset(0, 9), // changes position of shadow
+          ),
+          BoxShadow(
+            color: jetBlack.withOpacity(0.10),
+            spreadRadius: 0,
+            blurRadius: 15,
+            offset: Offset(0, 11), // changes position of shadow
+          ),
+        ]),
+    child: Center(
+        child: Text(
+      'Successful login 😁',
+      style: TextStyle(
+          color: strawberry,
+          fontSize: 15,
+          fontFamily: 'SFDisplay',
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w600),
+    )),
   );
 }

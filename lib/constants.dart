@@ -6,6 +6,9 @@ import 'package:flutter/rendering.dart';
 //Snow
 const snow = Color(0xffFDFCFC);
 
+//shadows
+const blueMusk = Color(0xff7090B0);
+
 //Strawberry
 const strawberry = Color(0xffE6373A);
 const strawberry80 = Color(0xccE6373A);
