@@ -214,7 +214,7 @@ Widget textInputUsername() {
           ),
         ),
         Expanded(
-          child: TextField(
+          child: TextFormField(
               textCapitalization: TextCapitalization.sentences,
               style: const TextStyle(
                   overflow: TextOverflow.fade,
@@ -435,6 +435,46 @@ Widget successfulSignInTemp() {
       'Successful login 😁',
       style: TextStyle(
           color: strawberry,
+          fontSize: 15,
+          fontFamily: 'SFDisplay',
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w600),
+    )),
+  );
+}
+
+Widget unsuccessfulSignInTemp() {
+  return Container(
+    height: 50,
+    width: 323,
+    decoration: BoxDecoration(
+        color: snow,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: jetBlack.withOpacity(0.01),
+            spreadRadius: 0,
+            blurRadius: 38,
+            offset: Offset(0, 24), // changes position of shadow
+          ),
+          BoxShadow(
+            color: jetBlack.withOpacity(0.06),
+            spreadRadius: 0,
+            blurRadius: 46,
+            offset: Offset(0, 9), // changes position of shadow
+          ),
+          BoxShadow(
+            color: jetBlack.withOpacity(0.10),
+            spreadRadius: 0,
+            blurRadius: 15,
+            offset: Offset(0, 11), // changes position of shadow
+          ),
+        ]),
+    child: Center(
+        child: Text(
+      'Incorrect username or password  👀 ',
+      style: TextStyle(
+          color: Color(0xff7A7D81),
           fontSize: 15,
           fontFamily: 'SFDisplay',
           letterSpacing: 0.5,

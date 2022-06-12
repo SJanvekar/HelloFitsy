@@ -39,7 +39,7 @@ var functions = {
          function(err, user){
             if (err) throw err
             if (!user){
-                res.status(403).send({success: false, msg: 'Authentication failed. User Not Found.'})
+                res.status(403).send({success: false, msg: 'The Username or Email Address you have entered are not associated with an account. Please try again.'})
             }
 
             else {
@@ -48,7 +48,7 @@ var functions = {
                         var token = jwt.encode(user, config.secret)
                         res.json({success: true, token: token})
                     }else{
-                        return res.status(403).send({success: false, msg: 'Authentication failed. Incorrect Password'})
+                        return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
                     }
                 })
             }

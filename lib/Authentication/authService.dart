@@ -17,10 +17,10 @@ class AuthService {
     } on DioError catch (e) {
       Fluttertoast.showToast(
           msg: e.response?.data['msg'],
-          gravity: ToastGravity.BOTTOM,
+          gravity: ToastGravity.CENTER,
           toastLength: Toast.LENGTH_SHORT,
-          backgroundColor: snow,
-          textColor: jetBlack60,
+          backgroundColor: strawberry,
+          textColor: snow,
           fontSize: 15.0);
     }
   }
