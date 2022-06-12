@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Balance RESTful API",
   "main": "index.js",
+  "engines": { "node": "16.13.1" },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
