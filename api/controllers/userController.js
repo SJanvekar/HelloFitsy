@@ -39,7 +39,7 @@ var functions = {
          function(err, user){
             if (err) throw err
             if (!user){
-                res.status(403).send({success: false, msg: 'The Username or Email Address you have entered are not associated with an account. Please try again.'})
+                res.status(403).send({success: false, msg: 'Incorrect username. Please try again.'})
             }
 
             else {
