@@ -42,7 +42,7 @@ dependencies:
   google_sign_in: ^5.2.4
   fluttertoast: ^8.0.9
   dio: ^4.0.6
-  # image_picker: ^0.8.4+4
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:
