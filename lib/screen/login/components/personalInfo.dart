@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
+import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/login/login.dart';
@@ -24,6 +25,17 @@ void displayDialog(BuildContext context, String title, String text) =>
       builder: (context) =>
           AlertDialog(title: Text(title), content: Text(text)),
     );
+
+var userType,
+    firstName,
+    lastName,
+    userName,
+    userEmail,
+    password,
+    passwordConfirmed;
+
+bool passwordCheck = false;
+bool emailValid = false;
 
 class _PersonalInfoState extends State<PersonalInfo> {
   //variables
@@ -147,6 +159,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           _buttonPressed = true;
                           _ButtonOnPressed();
                           HapticFeedback.mediumImpact();
+                          userType = 'Trainer';
                         })
                       },
                     ),
@@ -194,6 +207,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         _buttonPressed = false;
                         _ButtonOnPressed();
                         HapticFeedback.mediumImpact();
+                        userType = 'Trainee';
                       })
                     },
                   )
@@ -304,17 +318,47 @@ class _PersonalInfoState extends State<PersonalInfo> {
             Padding(
               padding: const EdgeInsets.only(top: 36.0, bottom: 45),
               child: GestureDetector(
-                child: LoginFooterButton(
-                  buttonColor: shark,
-                  textColor: snow,
-                  buttonText: "Continue",
-                ),
-                onTap: () => {
-                  print("Continue button pressed"),
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ProfilePictureUpload()))
-                },
-              ),
+                  child: LoginFooterButton(
+                    buttonColor: shark,
+                    textColor: snow,
+                    buttonText: "Continue",
+                  ),
+                  onTap: () => {
+                        print("Continue button pressed"),
+                        // if (password == passwordConfirmed)
+                        //   {
+                        //     //SNTG
+                        //     passwordCheck = true
+                        //   }
+                        // else
+                        //   {passwordCheck = false},
+                        // print('not the same password bitch'),
+                        // if (userEmail == null)
+                        //   {emailValid = false}
+                        // else
+                        //   {
+                        //     emailValid = RegExp(
+                        //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        //         .hasMatch(userEmail)
+                        //   },
+                        // print(emailValid),
+                        // if (passwordCheck && emailValid)
+                        //   {
+                        //     AuthService()
+                        //         .signUp(userType, firstName, lastName, userName,
+                        //             userEmail, password)
+                        //         .then((val) {
+                        //       if (val.data['success']) {
+                        //         print('Successful user add');
+                        //         Navigator.of(context).push(MaterialPageRoute(
+                        //             builder: (context) =>
+                        //                 ProfilePictureUpload()));
+                        //       }
+                        //     })
+                        //   }
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfilePictureUpload()))
+                      }),
             ),
           ],
         ),
@@ -405,6 +449,9 @@ Widget textInputFirstLastName() {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                onChanged: (val) {
+                  firstName = val;
+                },
               ),
             ),
           ],
@@ -420,7 +467,7 @@ Widget textInputFirstLastName() {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
-            children: const [
+            children: [
               Padding(
                 padding: EdgeInsets.only(
                   left: 20,
@@ -446,6 +493,9 @@ Widget textInputFirstLastName() {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  onChanged: (val) {
+                    lastName = val;
+                  },
                 ),
               ),
             ],
@@ -499,6 +549,9 @@ Widget textInputUsername() {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            onChanged: (val) {
+              userName = val;
+            },
           ),
         ),
       ],
@@ -548,6 +601,9 @@ Widget textInputEmail() {
                 fontWeight: FontWeight.w500,
               ),
             ),
+            onChanged: (val) {
+              userEmail = val;
+            },
           ),
         ),
         Padding(
@@ -606,6 +662,9 @@ Widget textInputPasswordAndConfirm() {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                onChanged: (val) {
+                  password = val;
+                },
               ),
             ),
             Padding(
@@ -661,6 +720,9 @@ Widget textInputPasswordAndConfirm() {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                  onChanged: (val) {
+                    passwordConfirmed = val;
+                  },
                 ),
               ),
               Padding(
