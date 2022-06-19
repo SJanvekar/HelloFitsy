@@ -2,7 +2,6 @@ var User = require('../models/user')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 
-
 var functions = {
 
     //Add New User fnc
