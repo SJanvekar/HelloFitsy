@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +69,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          print("Cancel");
+                          print("Back");
                           Navigator.of(context).pop(CupertinoPageRoute(
                               fullscreenDialog: true,
                               builder: (context) => PersonalInfo()));
@@ -125,7 +126,11 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                   buttonColor: strawberry,
                   textColor: snow,
                   buttonText: 'Upload Picture'),
-              onTap: () => {pickImage(ImageSource.gallery)},
+              onTap: () => {
+                pickImage(ImageSource.gallery),
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CategorySelection()))
+              },
             ),
           ),
           Padding(
