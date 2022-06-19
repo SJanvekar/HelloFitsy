@@ -227,77 +227,80 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               child: textInputPasswordAndConfirm(),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 35,
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: Row(
-                      children: [
-                        Text('Class Search Range',
-                            style: TextStyle(
-                              fontFamily: 'SFDisplay',
-                              color: jetBlack,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 5.0),
-                          child: SvgPicture.asset(
-                            'assets/icons/InformationIcon.svg',
-                            height: 16,
-                            width: 16,
-                            color: shark,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 30.0, left: 15.0, right: 15.0),
-                    child: SliderTheme(
-                      data: SliderTheme.of(context).copyWith(
-                        trackHeight: 3,
-                        trackShape: RoundedRectSliderTrackShape(),
-                        activeTrackColor: strawberry,
-                        inactiveTrackColor: shark,
-                        thumbShape: RoundSliderThumbShape(
-                          enabledThumbRadius: 12,
-                          pressedElevation: 0,
-                        ),
-                        thumbColor: strawberry,
-                        overlayColor: Color(0x00000000),
-                        tickMarkShape: RoundSliderTickMarkShape(),
-                        activeTickMarkColor: strawberry,
-                        inactiveTickMarkColor: shark,
-                        valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-                        valueIndicatorColor: strawberry,
-                        valueIndicatorTextStyle: TextStyle(
-                          fontFamily: 'SFRounded',
-                          color: snow,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20.0,
-                        ),
-                      ),
-                      child: Slider(
-                        value: range,
-                        min: 0,
-                        max: 100,
-                        divisions: 20,
-                        label: '${range.round()} km',
-                        onChanged: (newRange) {
-                          setState(() => range = newRange);
-                        },
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
+
+            //Slider Stuff
+
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //     top: 35,
+            //   ),
+            //   child: Column(
+            //     children: [
+            //       Padding(
+            //         padding: const EdgeInsets.only(left: 30.0),
+            //         child: Row(
+            //           children: [
+            //             Text('Class Search Range',
+            //                 style: TextStyle(
+            //                   fontFamily: 'SFDisplay',
+            //                   color: jetBlack,
+            //                   fontSize: 16,
+            //                   fontWeight: FontWeight.w600,
+            //                 )),
+            //             Padding(
+            //               padding: const EdgeInsets.only(left: 5.0),
+            //               child: SvgPicture.asset(
+            //                 'assets/icons/InformationIcon.svg',
+            //                 height: 16,
+            //                 width: 16,
+            //                 color: shark,
+            //               ),
+            //             )
+            //           ],
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(
+            //             top: 30.0, left: 15.0, right: 15.0),
+            //         child: SliderTheme(
+            //           data: SliderTheme.of(context).copyWith(
+            //             trackHeight: 3,
+            //             trackShape: RoundedRectSliderTrackShape(),
+            //             activeTrackColor: strawberry,
+            //             inactiveTrackColor: shark,
+            //             thumbShape: RoundSliderThumbShape(
+            //               enabledThumbRadius: 12,
+            //               pressedElevation: 0,
+            //             ),
+            //             thumbColor: strawberry,
+            //             overlayColor: Color(0x00000000),
+            //             tickMarkShape: RoundSliderTickMarkShape(),
+            //             activeTickMarkColor: strawberry,
+            //             inactiveTickMarkColor: shark,
+            //             valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+            //             valueIndicatorColor: strawberry,
+            //             valueIndicatorTextStyle: TextStyle(
+            //               fontFamily: 'SFRounded',
+            //               color: snow,
+            //               fontWeight: FontWeight.w600,
+            //               fontSize: 20.0,
+            //             ),
+            //           ),
+            //           child: Slider(
+            //             value: range,
+            //             min: 0,
+            //             max: 100,
+            //             divisions: 100,
+            //             label: '${range.round()} km',
+            //             onChanged: (newRange) {
+            //               setState(() => range = newRange);
+            //             },
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(top: 36.0, bottom: 45),
               child: GestureDetector(
