@@ -39,14 +39,20 @@ class ProfilePictureUpload extends StatelessWidget {
                 child: Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 10.0),
-                      child: SvgPicture.asset(
-                        'assets/icons/leftArrowSkinny.svg',
-                        color: jetBlack40,
+                      padding: const EdgeInsets.only(
+                        left: 0,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          print("Cancel");
+                          Navigator.of(context).pop(CupertinoPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => PersonalInfo()));
+                        },
+                        child:
+                            Text("Cancel", style: logInPageNavigationButtons),
                       ),
                     ),
-                    Text("Personal Information",
-                        style: logInPageNavigationButtons),
                   ],
                 ),
               ),
