@@ -128,15 +128,19 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                   buttonText: 'Upload Picture'),
               onTap: () => {
                 pickImage(ImageSource.gallery),
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CategorySelection()))
               },
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 45.0),
-            child: LoginFooterButton(
-                buttonColor: shark, textColor: snow, buttonText: 'Continue'),
+            child: GestureDetector(
+              child: LoginFooterButton(
+                  buttonColor: shark, textColor: snow, buttonText: 'Continue'),
+              onTap: () => {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CategorySelection()))
+              },
+            ),
           )
         ],
       ),
