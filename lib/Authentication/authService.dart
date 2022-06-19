@@ -24,7 +24,25 @@ class AuthService {
           fontSize: 15.0);
     }
   }
+
+  signUp(userType, firstName, lastName, userName, userEmail, password) async {
+    try {
+      return await dio.post('http://www.fitsy.ca/adduser',
+          data: {
+            "UserType": userType,
+            "FirstName": firstName,
+            "LastName": lastName,
+            "Username": userName,
+            "UserEmail": userEmail,
+            "Password": password,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 }
+
 
 // Widget unsuccessfulSignInTemp() {
 //   return Container(
