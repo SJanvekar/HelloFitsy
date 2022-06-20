@@ -74,8 +74,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                               fullscreenDialog: true,
                               builder: (context) => PersonalInfo()));
                         },
-                        child:
-                            Text("Cancel", style: logInPageNavigationButtons),
+                        child: Text("Back", style: logInPageNavigationButtons),
                       ),
                     ),
                   ],
