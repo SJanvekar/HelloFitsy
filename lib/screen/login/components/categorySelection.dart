@@ -27,98 +27,58 @@ class _CategorySelectionState extends State<CategorySelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: snow,
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: false,
-        elevation: 0,
         backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back to Personal Info");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => PersonalInfo()));
-                },
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 0,
+        appBar: AppBar(
+          toolbarHeight: 80,
+          centerTitle: false,
+          elevation: 0,
+          backgroundColor: snow,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 0,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    print("Back to Personal Info");
+                    Navigator.of(context).pop(CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => PersonalInfo()));
+                  },
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 0,
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            print("Back");
+                            Navigator.of(context).pop(CupertinoPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) => PersonalInfo()));
+                          },
+                          child:
+                              Text("Back", style: logInPageNavigationButtons),
+                        ),
                       ),
-                      child: TextButton(
-                        onPressed: () {
-                          print("Back");
-                          Navigator.of(context).pop(CupertinoPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => PersonalInfo()));
-                        },
-                        child: Text("Back", style: logInPageNavigationButtons),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: EdgeInsets.only(left: 26, right: 26),
-        child: SizedBox(
-          width: 323,
-          height: 50,
-          child: TextField(
-            style: const TextStyle(
-                fontFamily: 'SFDisplay',
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-                color: jetBlack80),
-            cursorColor: ocean,
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.only(top: 11, bottom: 11),
-                fillColor: bone60,
-                filled: true,
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none),
-                hintText: 'Search Interests',
-                hintStyle: const TextStyle(color: jetBlack20, fontSize: 18),
-                prefixIcon: Container(
-                  width: 18,
-                  height: 18,
-                  padding: const EdgeInsets.only(
-                      left: 20, top: 11, bottom: 11, right: 5),
-                  child: SvgPicture.asset('assets/icons/SearchIcon20.svg'),
-                )),
+            ],
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-          color: snow,
-          height: 160,
-          child: Column(
-            children: [
-              AnimSearchBar(
-                width: 323,
-                textController:
-                    TextEditingController(text: 'Search Categories'),
-                onSuffixTap: () {
-                  setState(() {
-                    TextEditingController(text: 'Search Categories').clear();
-                  });
-                },
-              )
-            ],
-          )),
-    );
+        body: CustomScrollView(
+          slivers: [
+            SliverList(
+                delegate: SliverChildListDelegate([
+              searchBar(),
+            ]))
+          ],
+        ));
   }
 }
 
@@ -161,62 +121,33 @@ Widget pageText() {
 //Username
 Widget searchBar() {
   return Padding(
-    padding: EdgeInsets.only(top: 23.0),
-    child: Container(
+    padding: EdgeInsets.only(left: 26, right: 26),
+    child: SizedBox(
       width: 323,
       height: 50,
-      decoration: BoxDecoration(
-        color: bone60,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // SvgPicture.asset(
-          //   'assets/icons/UserIcon.svg',
-          //   height: 22.5,
-          //   width: 18.0,
-          //   color: shark,
-          // ),
-          Center(
-            child: IntrinsicWidth(
-              child: TextField(
-                textAlign: TextAlign.center,
-                textAlignVertical: TextAlignVertical.center,
-                autocorrect: true,
-                style: const TextStyle(
-                    overflow: TextOverflow.fade,
-                    fontFamily: 'SFDisplay',
-                    color: jetBlack80,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700),
-                decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(11.0),
-                    child: SvgPicture.asset(
-                      'assets/icons/searchIcon.svg',
-                      height: 22.5,
-                      width: 18.0,
-                      color: shark60,
-                    ),
-                  ),
-                  border: InputBorder.none,
-                  hintText: 'Search Interests',
-                  hintStyle: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: shark60,
-                    fontSize: 17,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onChanged: (val) {
-                  userName = val;
-                },
-              ),
-            ),
-          ),
-        ],
+      child: TextField(
+        style: const TextStyle(
+            fontFamily: 'SFDisplay',
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: jetBlack80),
+        cursorColor: ocean,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(top: 11, bottom: 11),
+            fillColor: bone60,
+            filled: true,
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none),
+            hintText: 'Search Interests',
+            hintStyle: const TextStyle(color: jetBlack20, fontSize: 18),
+            prefixIcon: Container(
+              width: 18,
+              height: 18,
+              padding: const EdgeInsets.only(
+                  left: 20, top: 11, bottom: 11, right: 5),
+              child: SvgPicture.asset('assets/icons/SearchIcon20.svg'),
+            )),
       ),
     ),
   );
