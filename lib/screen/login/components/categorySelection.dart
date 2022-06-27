@@ -70,35 +70,37 @@ class _CategorySelectionState extends State<CategorySelection> {
           ],
         ),
       ),
-      body: CustomScrollView(slivers: [
-        SliverAppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: snow,
-          toolbarHeight: 200,
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              pageTitle(),
-              pageText(),
-              AnimSearchBar(
-                width: 323,
-                textController:
-                    TextEditingController(text: 'Search Categories'),
-                onSuffixTap: () {
-                  setState(() {
-                    TextEditingController(text: 'Search Categories').clear();
-                  });
-                },
-              ),
-            ],
+      body: Padding(
+        padding: EdgeInsets.only(left: 26, right: 26),
+        child: SizedBox(
+          width: 323,
+          height: 50,
+          child: TextField(
+            style: const TextStyle(
+                fontFamily: 'SFDisplay',
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: jetBlack80),
+            cursorColor: ocean,
+            decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(top: 11, bottom: 11),
+                fillColor: bone60,
+                filled: true,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none),
+                hintText: 'Search Interests',
+                hintStyle: const TextStyle(color: jetBlack20, fontSize: 18),
+                prefixIcon: Container(
+                  width: 18,
+                  height: 18,
+                  padding: const EdgeInsets.only(
+                      left: 20, top: 11, bottom: 11, right: 5),
+                  child: SvgPicture.asset('assets/icons/SearchIcon20.svg'),
+                )),
           ),
-          actions: [],
         ),
-        SliverList(
-          delegate: SliverChildListDelegate([pageText()]),
-        ),
-      ]),
+      ),
       bottomNavigationBar: Container(
           color: snow,
           height: 160,
