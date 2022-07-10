@@ -102,26 +102,29 @@ class CategoryListLarge extends StatelessWidget {
                 crossAxisCount: 2, crossAxisSpacing: 32.0, mainAxisSpacing: 20),
             itemCount: categoriesList.length,
             itemBuilder: (context, category) {
-              return GestureDetector(
-                child: Container(
-                  decoration:
-                      BoxDecoration(color: bone60, shape: BoxShape.circle),
-                  child: Center(
-                    child: ClipOval(
-                      child: Image.asset(
-                        categoriesList[category].categoryImage,
-                        height: 120,
-                        width: 120,
-                      ),
-                    ),
-                  ),
-                ),
-                onTap: () => {
-                  print(categoriesList[category].categoryName),
-                },
-              );
+              return listItem(category);
             })
       ],
+    );
+  }
+
+  Widget listItem(category) {
+    return GestureDetector(
+      child: Container(
+        decoration: BoxDecoration(color: bone60, shape: BoxShape.circle),
+        child: Center(
+          child: ClipOval(
+            child: Image.asset(
+              categoriesList[category].categoryImage,
+              height: 120,
+              width: 120,
+            ),
+          ),
+        ),
+      ),
+      onTap: () => {
+        print(categoriesList[category].categoryName),
+      },
     );
   }
 }
