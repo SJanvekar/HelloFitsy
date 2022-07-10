@@ -43,8 +43,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
   bool _buttonPressed = false;
   Color _currentBorderColorTrainee = snow;
   Color _currentIconColorTrainee = jetBlack;
-  Color _currentBorderColorTrainer = snow;
-  Color _currentIconColorTrainer = jetBlack;
+  Color _currentBorderColorTrainer = strawberry;
+  Color _currentIconColorTrainer = snow;
 
   void _ButtonOnPressed() {
     setState(() {
@@ -99,6 +99,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             pageTitle(),
             pageText(),
@@ -111,6 +112,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 top: 30,
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   //Trainer selection
                   Padding(
@@ -219,7 +221,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
             Padding(
               padding: const EdgeInsets.only(
                 top: 30,
-                left: 24.5,
               ),
               child: textInputFirstLastName(),
             ),
@@ -406,6 +407,8 @@ Widget pageText() {
 //User First + Last Name input
 Widget textInputFirstLastName() {
   return Row(
+    crossAxisAlignment: CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Container(
         width: 156.5,
@@ -437,7 +440,7 @@ Widget textInputFirstLastName() {
                     overflow: TextOverflow.fade,
                     fontFamily: 'SFDisplay',
                     color: jetBlack80,
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700),
                 decoration: InputDecoration.collapsed(
                   border: InputBorder.none,
@@ -445,7 +448,7 @@ Widget textInputFirstLastName() {
                   hintStyle: const TextStyle(
                     fontFamily: 'SFDisplay',
                     color: shark60,
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -481,7 +484,7 @@ Widget textInputFirstLastName() {
                       overflow: TextOverflow.fade,
                       fontFamily: 'SFDisplay',
                       color: jetBlack80,
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.w700),
                   decoration: InputDecoration.collapsed(
                     border: InputBorder.none,
@@ -489,7 +492,7 @@ Widget textInputFirstLastName() {
                     hintStyle: TextStyle(
                       fontFamily: 'SFDisplay',
                       color: shark60,
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -537,7 +540,7 @@ Widget textInputUsername() {
                 overflow: TextOverflow.fade,
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,
-                fontSize: 17,
+                fontSize: 15,
                 fontWeight: FontWeight.w700),
             decoration: InputDecoration.collapsed(
               border: InputBorder.none,
@@ -545,7 +548,7 @@ Widget textInputUsername() {
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,
-                fontSize: 17,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -589,7 +592,7 @@ Widget textInputEmail() {
                 overflow: TextOverflow.fade,
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,
-                fontSize: 17,
+                fontSize: 15,
                 fontWeight: FontWeight.w700),
             decoration: InputDecoration.collapsed(
               border: InputBorder.none,
@@ -597,7 +600,7 @@ Widget textInputEmail() {
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,
-                fontSize: 17,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -650,7 +653,7 @@ Widget textInputPasswordAndConfirm() {
                     overflow: TextOverflow.fade,
                     fontFamily: 'SFDisplay',
                     color: jetBlack80,
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w700),
                 decoration: InputDecoration.collapsed(
                   border: InputBorder.none,
@@ -658,7 +661,7 @@ Widget textInputPasswordAndConfirm() {
                   hintStyle: const TextStyle(
                     fontFamily: 'SFDisplay',
                     color: shark60,
-                    fontSize: 17,
+                    fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -708,7 +711,7 @@ Widget textInputPasswordAndConfirm() {
                       overflow: TextOverflow.fade,
                       fontFamily: 'SFDisplay',
                       color: jetBlack80,
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.w700),
                   decoration: InputDecoration.collapsed(
                     border: InputBorder.none,
@@ -716,7 +719,7 @@ Widget textInputPasswordAndConfirm() {
                     hintStyle: const TextStyle(
                       fontFamily: 'SFDisplay',
                       color: shark60,
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
                   ),

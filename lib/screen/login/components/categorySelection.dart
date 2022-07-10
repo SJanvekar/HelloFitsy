@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
@@ -5,10 +7,13 @@ import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
+import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
+import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
@@ -27,78 +32,104 @@ class _CategorySelectionState extends State<CategorySelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: snow,
+      appBar: AppBar(
+        toolbarHeight: 80,
+        centerTitle: false,
+        elevation: 0,
         backgroundColor: snow,
-        appBar: AppBar(
-          toolbarHeight: 80,
-          centerTitle: false,
-          elevation: 0,
-          backgroundColor: snow,
-          automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 0,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    print("Back to Personal Info");
-                    Navigator.of(context).pop(CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => PersonalInfo()));
-                  },
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 0,
-                        ),
-                        child: TextButton(
-                          onPressed: () {
-                            print("Back");
-                            Navigator.of(context).pop(CupertinoPageRoute(
-                                fullscreenDialog: true,
-                                builder: (context) => PersonalInfo()));
-                          },
-                          child:
-                              Text("Back", style: logInPageNavigationButtons),
-                        ),
+        automaticallyImplyLeading: false,
+        title: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 0,
+              ),
+              child: TextButton(
+                onPressed: () {
+                  print("Back to Personal Info");
+                  Navigator.of(context).pop(CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => PersonalInfo()));
+                },
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 0,
                       ),
-                    ],
-                  ),
+                      child: TextButton(
+                        onPressed: () {
+                          print("Back");
+                          Navigator.of(context).pop(CupertinoPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => PersonalInfo()));
+                        },
+                        child: Text("Back", style: logInPageNavigationButtons),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-        body: CustomScrollView(
-          slivers: [
-            SliverList(
-                delegate: SliverChildListDelegate([
-              searchBar(),
-            ]))
+            ),
           ],
-        ));
+        ),
+      ),
+      body: Column(
+        children: [
+          pageTitle(),
+          pageText(),
+          SearchBar(),
+          Expanded(
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: 26, right: 26, top: 20, bottom: 45),
+              child: CategoryListLarge(),
+            ),
+          ),
+        ],
+      ),
+      // body: CustomScrollView(
+      //   slivers: <Widget>[
+      //     SliverAppBar(
+      //       title: Column(children: [
+      //         pageTitle(),
+      //         pageText(),
+      //       ]),
+      //       automaticallyImplyLeading: false,
+      //       backgroundColor: snow,
+      //       toolbarHeight: 119,
+      //     ),
+      //     SliverPersistentHeader(
+      //       delegate: _SearchBarSliverDelegate(),
+      //       floating: false,
+      //     ),
+      //     SliverList(delegate: SliverChildListDelegate([])),
+      //   ],
+      // )
+    );
   }
 }
 
 //Page title
 Widget pageTitle() {
   return Center(
-    child: Container(
-        padding: EdgeInsets.only(top: 25),
-        decoration: BoxDecoration(color: snow),
-        child: Text(
-          'What are you interested in?',
-          style: logInPageTitle,
-        )),
+    child: Padding(
+      padding: const EdgeInsets.only(top: 10.0),
+      child: Container(
+          decoration: BoxDecoration(color: snow),
+          child: Text(
+            'What are your interests?',
+            style: logInPageTitle,
+          )),
+    ),
   );
 }
 
 //PageText
 Widget pageText() {
   return Padding(
-    padding: const EdgeInsets.only(top: 5),
+    padding: const EdgeInsets.only(top: 5, bottom: 30, left: 69, right: 69),
     child: RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
@@ -118,53 +149,27 @@ Widget pageText() {
   );
 }
 
-//Username
-Widget searchBar() {
-  return Padding(
-    padding: EdgeInsets.only(left: 26, right: 26),
-    child: SizedBox(
-      width: 323,
-      height: 50,
-      child: TextField(
-        style: const TextStyle(
-            fontFamily: 'SFDisplay',
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-            color: jetBlack80),
-        cursorColor: ocean,
-        decoration: InputDecoration(
-            contentPadding: EdgeInsets.only(top: 11, bottom: 11),
-            fillColor: bone60,
-            filled: true,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none),
-            hintText: 'Search Interests',
-            hintStyle: const TextStyle(color: jetBlack20, fontSize: 18),
-            prefixIcon: Container(
-              width: 18,
-              height: 18,
-              padding: const EdgeInsets.only(
-                  left: 20, top: 11, bottom: 11, right: 5),
-              child: SvgPicture.asset('assets/icons/SearchIcon20.svg'),
-            )),
-      ),
-    ),
-  );
-}
+//Persistent Header Searchbar
+//Persistent Header Private Class
+class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
+  @override
+  Widget build(
+      BuildContext context, double shrjetBlackOffset, bool overlapsContent) {
+    // TODO: implement build
+    return SearchBar();
+  }
 
-Widget searchBarTest() {
-  return Container(
-    width: 323,
-    height: 50,
-    decoration: BoxDecoration(
-      color: bone60,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Center(
-        child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [Text('Fuck your alignment')],
-    )),
-  );
+  @override
+  // TODO: implement maxExtent
+  double get maxExtent => 100;
+
+  @override
+  // TODO: implement minExtent
+  double get minExtent => 10;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    // TODO: implement shouldRebuild
+    return false;
+  }
 }

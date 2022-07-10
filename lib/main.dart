@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/screen/home/home.dart';
@@ -24,9 +27,7 @@ class Balance extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-
       home: Login(),
-      //const MainPage(),
     );
   }
 }
@@ -83,6 +84,31 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSplashScreen(
+      splash: Column(
+        children: [
+          Hero(
+              transitionOnUserGestures: true,
+              tag: 'typeface',
+              child: Image.asset(
+                'assets/images/Typeface.png',
+                height: 146,
+                width: 195,
+                color: snow,
+              )),
+        ],
+      ),
+      nextScreen: Login(),
+      backgroundColor: strawberry,
     );
   }
 }
