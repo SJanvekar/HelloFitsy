@@ -79,14 +79,11 @@ class _CategorySelectionState extends State<CategorySelection> {
         children: [
           pageTitle(),
           pageText(),
-          SearchBar(),
           Expanded(
             child: Padding(
               padding:
                   EdgeInsets.only(left: 26, right: 26, top: 20, bottom: 45),
-              child: CategoryListLarge(
-                query: 'physique',
-              ),
+              child: CategoryListLarge(),
             ),
           ),
         ],
@@ -131,7 +128,7 @@ Widget pageTitle() {
 //PageText
 Widget pageText() {
   return Padding(
-    padding: const EdgeInsets.only(top: 5, bottom: 30, left: 69, right: 69),
+    padding: const EdgeInsets.only(top: 5, bottom: 15, left: 69, right: 69),
     child: RichText(
       textAlign: TextAlign.center,
       text: TextSpan(

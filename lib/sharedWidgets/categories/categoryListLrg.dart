@@ -9,12 +9,13 @@ import '../../constants.dart';
 import 'categories.dart';
 
 class CategoryListLarge extends StatefulWidget {
-  String query;
-  CategoryListLarge({Key? key, required this.query}) : super(key: key);
+  const CategoryListLarge({Key? key}) : super(key: key);
 
   @override
   State<CategoryListLarge> createState() => _CategoryListLargeState();
 }
+
+List<Category> allCategories = categoriesList;
 
 class _CategoryListLargeState extends State<CategoryListLarge> {
   var _controller = TextEditingController();
@@ -24,7 +25,7 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
     return Column(
       children: [
         Padding(
-            padding: EdgeInsets.only(left: 26, right: 26),
+            padding: EdgeInsets.only(bottom: 30),
             child: SizedBox(
               width: 323,
               height: 40,
@@ -90,9 +91,9 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 32.0,
                       mainAxisSpacing: 20),
-                  itemCount: categoriesList.length,
+                  itemCount: allCategories.length,
                   itemBuilder: (context, index) {
-                    final categoryItem = categoriesList[index];
+                    final category = allCategories[index];
                     return GestureDetector(
                       child: Container(
                         decoration:
@@ -100,7 +101,7 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                         child: Center(
                           child: ClipOval(
                             child: Image.asset(
-                              categoriesList[index].categoryImage,
+                              category.categoryImage,
                               height: 140,
                               width: 140,
                             ),
@@ -108,7 +109,7 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                         ),
                       ),
                       onTap: () => {
-                        print(categoriesList[index].categoryName),
+                        print(category.categoryName),
                       },
                     );
                   })
@@ -120,13 +121,13 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
   }
 
   void searchCategories(String query) {
-    final categoriesSearched = categoriesList.where((categoryItem) {
-      final categoriesSearchedName = categoryItem.categoryName.toLowerCase();
+    final categoriesSearched = categoriesList.where((category) {
+      final categoriesSearchedName = category.categoryName.toLowerCase();
       final input = query.toLowerCase();
 
       return categoriesSearchedName.contains(input);
     }).toList();
 
-    setState(() => categoriesList = categoriesSearched);
+    setState(() => allCategories = categoriesSearched);
   }
 }
