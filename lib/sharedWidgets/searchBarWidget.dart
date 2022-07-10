@@ -1,6 +1,7 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -20,6 +21,7 @@ class SearchBar extends StatefulWidget {
 }
 
 var _controller = TextEditingController();
+var userInput;
 
 class _SearchBarState extends State<SearchBar> {
   @override
@@ -70,6 +72,11 @@ class _SearchBarState extends State<SearchBar> {
                   onTap: () =>
                       {HapticFeedback.mediumImpact(), _controller.clear()}),
             ),
+            onChanged: (val) {
+              userInput = val;
+              // ignore: void_checks
+              return userInput;
+            },
           ),
         ));
   }

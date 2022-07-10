@@ -84,7 +84,9 @@ class _CategorySelectionState extends State<CategorySelection> {
             child: Padding(
               padding:
                   EdgeInsets.only(left: 26, right: 26, top: 20, bottom: 45),
-              child: CategoryListLarge(),
+              child: CategoryListLarge(
+                query: 'physique',
+              ),
             ),
           ),
         ],

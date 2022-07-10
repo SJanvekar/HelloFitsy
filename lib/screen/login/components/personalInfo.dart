@@ -320,7 +320,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               padding: const EdgeInsets.only(top: 36.0, bottom: 45),
               child: GestureDetector(
                   child: LoginFooterButton(
-                    buttonColor: shark,
+                    buttonColor: strawberry,
                     textColor: snow,
                     buttonText: "Continue",
                   ),
