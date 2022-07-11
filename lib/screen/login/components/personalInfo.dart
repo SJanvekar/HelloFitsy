@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
+import 'dart:ffi';
+
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
@@ -19,13 +21,6 @@ class PersonalInfo extends StatefulWidget {
   State<PersonalInfo> createState() => _PersonalInfoState();
 }
 
-void displayDialog(BuildContext context, String title, String text) =>
-    showDialog(
-      context: context,
-      builder: (context) =>
-          AlertDialog(title: Text(title), content: Text(text)),
-    );
-
 var userType,
     firstName,
     lastName,
@@ -41,6 +36,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
   //variables
   double range = 0;
   bool _buttonPressed = false;
+  // final passwordController = TextEditingController();
+  bool _passwordVisibility = true;
+  bool _passwordConfirmVisibility = true;
   Color _currentBorderColorTrainee = snow;
   Color _currentIconColorTrainee = jetBlack;
   Color _currentBorderColorTrainer = strawberry;
@@ -48,8 +46,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   void _ButtonOnPressed() {
     setState(() {
-      // print('trainee pressed');
-      // print(_buttonPressed);
       if (_buttonPressed == true) {
         _currentBorderColorTrainer = strawberry;
         _currentIconColorTrainer = snow;
@@ -61,6 +57,35 @@ class _PersonalInfoState extends State<PersonalInfo> {
         _currentBorderColorTrainee = strawberry;
         _currentIconColorTrainee = snow;
       }
+    });
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   // Start listening to changes.
+  //   passwordController.addListener(_changePasswordVisibility);
+  //   passwordController.addListener(_changePasswordConfirmVisibility);
+  // }
+
+  // @override
+  // void dispose() {
+  //   // Clean up the controller when the widget is removed from the widget tree.
+  //   // This also removes the _printLatestValue listener.
+  //   passwordController.dispose();
+  //   super.dispose();
+  // }
+
+  void _changePasswordVisibility() {
+    setState(() {
+      _passwordVisibility = !_passwordVisibility;
+    });
+  }
+
+  void _changePasswordConfirmVisibility() {
+    setState(() {
+      _passwordConfirmVisibility = !_passwordConfirmVisibility;
     });
   }
 
@@ -234,7 +259,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               padding: const EdgeInsets.only(
                 top: 15,
               ),
-              child: textInputEmail(),
+              child: textInputEmail(context),
             ),
             Padding(
               padding: const EdgeInsets.only(
@@ -244,78 +269,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
             ),
 
             //Slider Stuff
-
-            // Padding(
-            //   padding: const EdgeInsets.only(
-            //     top: 35,
-            //   ),
-            //   child: Column(
-            //     children: [
-            //       Padding(
-            //         padding: const EdgeInsets.only(left: 30.0),
-            //         child: Row(
-            //           children: [
-            //             Text('Class Search Range',
-            //                 style: TextStyle(
-            //                   fontFamily: 'SFDisplay',
-            //                   color: jetBlack,
-            //                   fontSize: 16,
-            //                   fontWeight: FontWeight.w600,
-            //                 )),
-            //             Padding(
-            //               padding: const EdgeInsets.only(left: 5.0),
-            //               child: SvgPicture.asset(
-            //                 'assets/icons/InformationIcon.svg',
-            //                 height: 16,
-            //                 width: 16,
-            //                 color: shark,
-            //               ),
-            //             )
-            //           ],
-            //         ),
-            //       ),
-            //       Padding(
-            //         padding: const EdgeInsets.only(
-            //             top: 30.0, left: 15.0, right: 15.0),
-            //         child: SliderTheme(
-            //           data: SliderTheme.of(context).copyWith(
-            //             trackHeight: 3,
-            //             trackShape: RoundedRectSliderTrackShape(),
-            //             activeTrackColor: strawberry,
-            //             inactiveTrackColor: shark,
-            //             thumbShape: RoundSliderThumbShape(
-            //               enabledThumbRadius: 12,
-            //               pressedElevation: 0,
-            //             ),
-            //             thumbColor: strawberry,
-            //             overlayColor: Color(0x00000000),
-            //             tickMarkShape: RoundSliderTickMarkShape(),
-            //             activeTickMarkColor: strawberry,
-            //             inactiveTickMarkColor: shark,
-            //             valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-            //             valueIndicatorColor: strawberry,
-            //             valueIndicatorTextStyle: TextStyle(
-            //               fontFamily: 'SFRounded',
-            //               color: snow,
-            //               fontWeight: FontWeight.w600,
-            //               fontSize: 20.0,
-            //             ),
-            //           ),
-            //           child: Slider(
-            //             value: range,
-            //             min: 0,
-            //             max: 100,
-            //             divisions: 100,
-            //             label: '${range.round()} km',
-            //             onChanged: (newRange) {
-            //               setState(() => range = newRange);
-            //             },
-            //           ),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // ),
             Padding(
               padding: const EdgeInsets.only(top: 36.0, bottom: 45),
               child: GestureDetector(
@@ -326,37 +279,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                   onTap: () => {
                         print("Continue button pressed"),
-                        // if (password == passwordConfirmed)
-                        //   {
-                        //     //SNTG
-                        //     passwordCheck = true
-                        //   }
-                        // else
-                        //   {passwordCheck = false},
-                        // print('not the same password bitch'),
-                        // if (userEmail == null)
-                        //   {emailValid = false}
-                        // else
-                        //   {
-                        //     emailValid = RegExp(
-                        //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        //         .hasMatch(userEmail)
-                        //   },
-                        // print(emailValid),
-                        // if (passwordCheck && emailValid)
-                        //   {
-                        //     AuthService()
-                        //         .signUp(userType, firstName, lastName, userName,
-                        //             userEmail, password)
-                        //         .then((val) {
-                        //       if (val.data['success']) {
-                        //         print('Successful user add');
-                        //         Navigator.of(context).push(MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 ProfilePictureUpload()));
-                        //       }
-                        //     })
-                        //   }
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProfilePictureUpload()))
                       }),
@@ -364,6 +286,139 @@ class _PersonalInfoState extends State<PersonalInfo> {
           ],
         ),
       ),
+    );
+  }
+
+  //Password 1&2
+  Widget textInputPasswordAndConfirm() {
+    return Column(
+      children: [
+        Container(
+          width: 323,
+          height: 50,
+          decoration: BoxDecoration(
+            color: bone60,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 8),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 22, right: 10),
+                  child: Center(
+                      child: SvgPicture.asset(
+                    'assets/icons/LockIcon.svg',
+                    width: 21,
+                    height: 25,
+                    color: shark,
+                  )),
+                ),
+              ),
+              Expanded(
+                child: TextField(
+                  //Toggle this on and off with the guesture detector on the eyeOff icon
+                  obscureText: _passwordVisibility,
+                  autocorrect: true,
+                  style: const TextStyle(
+                      overflow: TextOverflow.fade,
+                      fontFamily: 'SFDisplay',
+                      color: jetBlack80,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700),
+                  decoration: InputDecoration.collapsed(
+                    border: InputBorder.none,
+                    hintText: 'Password',
+                    hintStyle: const TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: shark60,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onChanged: (val) {
+                    password = val;
+                  },
+                ),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(right: 20, left: 10),
+
+                  //Switch the eyeOff icon to the eye Icon on Tap
+                  child: GestureDetector(
+                    child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'),
+                    onTap: () {
+                      _changePasswordVisibility();
+                    },
+                  ))
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: Container(
+            width: 323,
+            height: 50,
+            decoration: BoxDecoration(
+              color: bone60,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 22, right: 10),
+                    child: Center(
+                        child: SvgPicture.asset(
+                      'assets/icons/LockIcon.svg',
+                      width: 21,
+                      height: 25,
+                      color: shark,
+                    )),
+                  ),
+                ),
+                Expanded(
+                  child: TextField(
+                    //Toggle this on and off with the guesture detector on the eyeOff icon
+                    obscureText: _passwordConfirmVisibility,
+                    autocorrect: true,
+                    style: const TextStyle(
+                        overflow: TextOverflow.fade,
+                        fontFamily: 'SFDisplay',
+                        color: jetBlack80,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700),
+                    decoration: InputDecoration.collapsed(
+                      border: InputBorder.none,
+                      hintText: 'Confirm Password',
+                      hintStyle: const TextStyle(
+                        fontFamily: 'SFDisplay',
+                        color: shark60,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onChanged: (val) {
+                      passwordConfirmed = val;
+                    },
+                  ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(right: 20, left: 10),
+
+                    //Switch the eyeOff icon to the eye Icon on Tap
+                    child: GestureDetector(
+                      child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'),
+                      onTap: () {
+                        _changePasswordConfirmVisibility();
+                      },
+                    ))
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -563,7 +618,7 @@ Widget textInputUsername() {
 }
 
 //Email
-Widget textInputEmail() {
+Widget textInputEmail(BuildContext context) {
   return Container(
     width: 323,
     height: 50,
@@ -611,132 +666,67 @@ Widget textInputEmail() {
         ),
         Padding(
             padding: const EdgeInsets.only(right: 20, left: 10),
-            child: SvgPicture.asset('assets/icons/InformationIcon.svg',
-                height: 20, width: 20))
+            child: GestureDetector(
+              child: SvgPicture.asset('assets/icons/InformationIcon.svg',
+                  height: 20, width: 20),
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) =>
+                        informationDialog(context));
+              },
+            ))
       ],
     ),
   );
 }
 
-//Password 1&2
-Widget textInputPasswordAndConfirm() {
-  return Column(
-    children: [
-      Container(
-        width: 323,
-        height: 50,
-        decoration: BoxDecoration(
-          color: bone60,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 8),
+//Email Info Box
+Widget informationDialog(BuildContext context) {
+  return Dialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+    child: Container(
+      height: 250.0,
+      width: 300.0,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
+            child: Text(
+              'Privacy Notice',
+              style: logInPageTitle,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(15.0),
+            child: Center(
               child: Padding(
-                padding: const EdgeInsets.only(left: 22, right: 10),
-                child: Center(
-                    child: SvgPicture.asset(
-                  'assets/icons/LockIcon.svg',
-                  width: 21,
-                  height: 25,
-                  color: shark,
-                )),
-              ),
-            ),
-            Expanded(
-              child: TextField(
-                //Toggle this on and off with the guesture detector on the eyeOff icon
-                obscureText: true,
-                autocorrect: true,
-                style: const TextStyle(
-                    overflow: TextOverflow.fade,
+                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                child: Text(
+                  'This email will not be shared with any person or organization, it is for authentication and verification purposes only',
+                  style: TextStyle(
                     fontFamily: 'SFDisplay',
-                    color: jetBlack80,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700),
-                decoration: InputDecoration.collapsed(
-                  border: InputBorder.none,
-                  hintText: 'Password',
-                  hintStyle: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: shark60,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+                    color: jetBlack40,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
-                onChanged: (val) {
-                  password = val;
-                },
               ),
             ),
-            Padding(
-                padding: const EdgeInsets.only(right: 20, left: 10),
-
-                //Switch the eyeOff icon to the eye Icon on Tap
-                child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'))
-          ],
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 15),
-        child: Container(
-          width: 323,
-          height: 50,
-          decoration: BoxDecoration(
-            color: bone60,
-            borderRadius: BorderRadius.circular(20),
           ),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 22, right: 10),
-                  child: Center(
-                      child: SvgPicture.asset(
-                    'assets/icons/LockIcon.svg',
-                    width: 21,
-                    height: 25,
-                    color: shark,
-                  )),
-                ),
-              ),
-              Expanded(
-                child: TextField(
-                  //Toggle this on and off with the guesture detector on the eyeOff icon
-                  obscureText: true,
-                  autocorrect: true,
-                  style: const TextStyle(
-                      overflow: TextOverflow.fade,
-                      fontFamily: 'SFDisplay',
-                      color: jetBlack80,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700),
-                  decoration: InputDecoration.collapsed(
-                    border: InputBorder.none,
-                    hintText: 'Confirm Password',
-                    hintStyle: const TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: shark60,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  onChanged: (val) {
-                    passwordConfirmed = val;
-                  },
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 10),
-
-                  //Switch the eyeOff icon to the eye Icon on Tap
-                  child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'))
-            ],
-          ),
-        ),
+          Padding(padding: EdgeInsets.only(top: 0.0)),
+          TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: LoginFooterButton(
+                buttonColor: strawberry,
+                textColor: snow,
+                buttonText: "Confirm",
+              ))
+        ],
       ),
-    ],
+    ),
   );
 }
