@@ -43,6 +43,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
   Color _currentIconColorTrainee = jetBlack;
   Color _currentBorderColorTrainer = strawberry;
   Color _currentIconColorTrainer = snow;
+  String _showHideIcon = 'assets/icons/EyeCrossIcon.svg';
+  String _showHideIconConfirm = 'assets/icons/EyeCrossIcon.svg';
+  Color _eyeIconColorPassword = strawberry;
+  Color _eyeIconColorConfirmPassword = strawberry;
 
   void _ButtonOnPressed() {
     setState(() {
@@ -80,12 +84,26 @@ class _PersonalInfoState extends State<PersonalInfo> {
   void _changePasswordVisibility() {
     setState(() {
       _passwordVisibility = !_passwordVisibility;
+      if (_passwordVisibility == true) {
+        _showHideIcon = 'assets/icons/EyeCrossIcon.svg';
+        _eyeIconColorPassword = shark60;
+      } else {
+        _showHideIcon = 'assets/icons/EyeIcon.svg';
+        _eyeIconColorPassword = strawberry;
+      }
     });
   }
 
   void _changePasswordConfirmVisibility() {
     setState(() {
       _passwordConfirmVisibility = !_passwordConfirmVisibility;
+      if (_passwordConfirmVisibility == true) {
+        _showHideIconConfirm = 'assets/icons/EyeCrossIcon.svg';
+        _eyeIconColorConfirmPassword = shark60;
+      } else {
+        _showHideIconConfirm = 'assets/icons/EyeIcon.svg';
+        _eyeIconColorConfirmPassword = strawberry;
+      }
     });
   }
 
@@ -377,7 +395,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
                   //Switch the eyeOff icon to the eye Icon on Tap
                   child: GestureDetector(
-                    child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'),
+                    child: SvgPicture.asset(
+                      _showHideIcon,
+                      color: _eyeIconColorPassword,
+                    ),
                     onTap: () {
                       _changePasswordVisibility();
                     },
@@ -440,7 +461,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
                     //Switch the eyeOff icon to the eye Icon on Tap
                     child: GestureDetector(
-                      child: SvgPicture.asset('assets/icons/EyeCrossIcon.svg'),
+                      child: SvgPicture.asset(_showHideIconConfirm,
+                          color: _eyeIconColorConfirmPassword),
                       onTap: () {
                         _changePasswordConfirmVisibility();
                       },
