@@ -279,6 +279,37 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                   onTap: () => {
                         print("Continue button pressed"),
+                        // if (password == passwordConfirmed)
+                        //   {
+                        //     //SNTG
+                        //     passwordCheck = true
+                        //   }
+                        // else
+                        //   {passwordCheck = false},
+                        // print('not the same password bitch'),
+                        // if (userEmail == null)
+                        //   {emailValid = false}
+                        // else
+                        //   {
+                        //     emailValid = RegExp(
+                        //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                        //         .hasMatch(userEmail)
+                        //   },
+                        // print(emailValid),
+                        // if (passwordCheck && emailValid)
+                        //   {
+                        //     AuthService()
+                        //         .signUp(userType, firstName, lastName, userName,
+                        //             userEmail, password)
+                        //         .then((val) {
+                        //       if (val.data['success']) {
+                        //         print('Successful user add');
+                        //         Navigator.of(context).push(MaterialPageRoute(
+                        //             builder: (context) =>
+                        //                 ProfilePictureUpload()));
+                        //       }
+                        //     })
+                        //   }
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProfilePictureUpload()))
                       }),
