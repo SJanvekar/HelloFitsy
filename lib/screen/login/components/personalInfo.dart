@@ -296,7 +296,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     buttonText: "Continue",
                   ),
                   onTap: () => {
-                        print("Continue button pressed"),
                         // if (password == passwordConfirmed)
                         //   {
                         //     //SNTG
@@ -328,6 +327,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         //       }
                         //     })
                         //   }
+                        print("Continue button pressed"),
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProfilePictureUpload()))
                       }),
