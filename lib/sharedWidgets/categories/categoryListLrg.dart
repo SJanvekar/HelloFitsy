@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:balance/sharedWidgets/categories/categoryItem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,8 +19,7 @@ class CategoryListLarge extends StatefulWidget {
 List<Category> allCategories = categoriesList;
 
 class _CategoryListLargeState extends State<CategoryListLarge> {
-  var _controller = TextEditingController();
-  var userInput;
+  var _inputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,7 +30,7 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
               width: 323,
               height: 40,
               child: TextField(
-                  controller: _controller,
+                  controller: _inputController,
                   style: const TextStyle(
                       fontFamily: 'SFDisplay',
                       fontSize: 15,
@@ -69,7 +69,8 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                             )),
                         onTap: () => {
                               HapticFeedback.mediumImpact(),
-                              _controller.clear()
+                              _inputController.clear(),
+                              searchCategories('')
                             }),
                   ),
                   onChanged: searchCategories
@@ -95,21 +96,31 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                   itemBuilder: (context, index) {
                     final category = allCategories[index];
                     return GestureDetector(
-                      child: Container(
-                        decoration:
-                            BoxDecoration(color: snow, shape: BoxShape.circle),
-                        child: Center(
-                          child: ClipOval(
-                            child: Image.asset(
-                              category.categoryImage,
-                              height: 140,
-                              width: 140,
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                color: snow, shape: BoxShape.circle),
+                            child: Center(
+                              child: ClipOval(
+                                child: Image.asset(
+                                  category.categoryImage,
+                                  height: 140,
+                                  width: 140,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          AddRemoveButton(
+                            isAdd: category.categorySelected,
+                            notifyParent: refresh,
+                          )
+                        ],
                       ),
                       onTap: () => {
                         print(category.categoryName),
+                        print(category.categorySelected),
+                        category.categorySelected = !category.categorySelected,
                       },
                     );
                   })
@@ -118,6 +129,10 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
         ),
       ],
     );
+  }
+
+  void refresh() {
+    setState(() {});
   }
 
   void searchCategories(String query) {
