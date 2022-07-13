@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: 26.0, top: 40, bottom: 8),
               child: SvgPicture.asset(
-                'assets/icons/chatIcon.svg',
+                'assets/icons/Chat.svg',
               ),
             )
           ],
