@@ -45,8 +45,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
   Color _currentIconColorTrainer = snow;
   String _showHideIcon = 'assets/icons/EyeCrossIcon.svg';
   String _showHideIconConfirm = 'assets/icons/EyeCrossIcon.svg';
-  Color _eyeIconColorPassword = strawberry;
-  Color _eyeIconColorConfirmPassword = strawberry;
+  Color _eyeIconColorPassword = shark60;
+  Color _eyeIconColorConfirmPassword = shark60;
 
   void _ButtonOnPressed() {
     setState(() {
@@ -739,8 +739,8 @@ Widget informationDialog(BuildContext context) {
   return Dialog(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     child: Container(
-      height: 250.0,
-      width: 300.0,
+      height: 225.0,
+      width: 280.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -748,22 +748,23 @@ Widget informationDialog(BuildContext context) {
             padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
             child: Text(
               'Privacy Notice',
-              style: logInPageTitle,
+              style: disclaimerTitle,
             ),
           ),
           Padding(
             padding: EdgeInsets.all(15.0),
             child: Center(
               child: Padding(
-                padding: EdgeInsets.only(left: 15.0, right: 15.0),
+                padding: EdgeInsets.only(left: 30.0, right: 30.0),
                 child: Text(
                   'This email will not be shared with any person or organization, it is for authentication and verification purposes only',
                   style: TextStyle(
                     fontFamily: 'SFDisplay',
-                    color: jetBlack40,
-                    fontSize: 16,
+                    color: jetBlack60,
+                    fontSize: 14,
                     fontWeight: FontWeight.w400,
                   ),
+                  textAlign: TextAlign.center,
                 ),
               ),
             ),
@@ -773,10 +774,26 @@ Widget informationDialog(BuildContext context) {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: LoginFooterButton(
-                buttonColor: strawberry,
-                textColor: snow,
-                buttonText: "Confirm",
+              child: Padding(
+                padding: const EdgeInsets.only(left: 70, right: 70),
+                child: Container(
+                  height: 35,
+                  width: 323,
+                  decoration: BoxDecoration(
+                      color: strawberry,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Center(
+                      child: Text(
+                    'Confirm',
+                    style: TextStyle(
+                        color: snow,
+                        fontSize: 13,
+                        fontFamily: 'SFDisplay',
+                        letterSpacing: 0.5,
+                        fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
+                  )),
+                ),
               ))
         ],
       ),

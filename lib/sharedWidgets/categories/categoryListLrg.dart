@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:balance/sharedWidgets/categories/categoryItem.dart';
+import 'package:balance/sharedWidgets/categories/addRemoveButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -73,13 +73,7 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                               searchCategories('')
                             }),
                   ),
-                  onChanged: searchCategories
-                  // (val) {
-                  //   userInput = val;
-                  //   // ignore: void_checks
-                  //   return userInput;
-                  // },
-                  ),
+                  onChanged: searchCategories),
             )),
         Expanded(
           child: ListView(
@@ -113,7 +107,6 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                           ),
                           AddRemoveButton(
                             isAdd: category.categorySelected,
-                            notifyParent: refresh,
                           )
                         ],
                       ),

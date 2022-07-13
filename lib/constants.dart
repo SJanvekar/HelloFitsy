@@ -85,3 +85,17 @@ const logInPageBodyStrawberry = TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.w400,
 );
+
+const disclaimerTitle = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+);
+
+const homeFeedTitle = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 15,
+  fontWeight: FontWeight.w400,
+);

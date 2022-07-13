@@ -64,12 +64,12 @@ Widget tabBar() {
           labelColor: jetBlack,
           labelStyle: TextStyle(
               fontFamily: 'SFDisplay',
-              fontSize: 20,
+              fontSize: 15,
               fontWeight: FontWeight.w600),
           unselectedLabelColor: shark,
           unselectedLabelStyle: TextStyle(
               fontFamily: 'SFDisplay',
-              fontSize: 20,
+              fontSize: 15,
               fontWeight: FontWeight.w500),
           tabs: [
             Tab(
@@ -93,13 +93,13 @@ Widget tabBar() {
           Center(
             child: Text(
               'No Posts To View',
-              style: logInPageTitle,
+              style: homeFeedTitle,
             ),
           ),
           Center(
             child: Text(
               'No Classes To Attend',
-              style: logInPageTitle,
+              style: homeFeedTitle,
             ),
           )
         ],

@@ -8,9 +8,10 @@ import '../../constants.dart';
 
 class AddRemoveButton extends StatefulWidget {
   bool isAdd;
-  final Function() notifyParent;
-  AddRemoveButton({Key? key, required this.isAdd, required this.notifyParent})
-      : super(key: key);
+  AddRemoveButton({
+    Key? key,
+    required this.isAdd,
+  }) : super(key: key);
 
   @override
   State<AddRemoveButton> createState() => _addRemoveButton();
@@ -75,15 +76,15 @@ class _addRemoveButton extends State<AddRemoveButton>
           ),
           onTap: () {
             setState(() {
-              if (widget.isAdd == false) {
+              if (widget.isAdd == true) {
                 _controller.forward(from: 0.0);
+                print(widget.isAdd);
 
                 startColour = strawberry;
-                widget.notifyParent;
               } else {
                 _controller.reverse(from: 1.0);
                 startColour = ocean;
-                widget.notifyParent;
+                print(widget.isAdd);
               }
             });
           },
