@@ -111,8 +111,6 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                         ],
                       ),
                       onTap: () => {
-                        print(category.categoryName),
-                        print(category.categorySelected),
                         category.categorySelected = !category.categorySelected,
                       },
                     );

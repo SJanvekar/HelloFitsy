@@ -11,18 +11,17 @@ class Home extends StatelessWidget {
     return Scaffold(
         backgroundColor: snow,
         appBar: AppBar(
-          toolbarHeight: 105,
+          toolbarHeight: 55,
           centerTitle: false,
           elevation: 0,
           backgroundColor: snow,
           automaticallyImplyLeading: false,
           titleSpacing: 0,
           title: Padding(
-              padding: const EdgeInsets.only(left: 26.0, top: 40, bottom: 10),
+              padding: const EdgeInsets.only(left: 26.0, bottom: 10),
               child: Image.asset(
                 'assets/images/Typeface.png',
-                width: 50,
-                height: 50,
+                height: 45,
               )
 
               // Text('Home',
@@ -42,7 +41,7 @@ class Home extends StatelessWidget {
               preferredSize: Size.fromHeight(1)),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 26.0, top: 40, bottom: 8),
+              padding: const EdgeInsets.only(right: 26.0, bottom: 8),
               child: SvgPicture.asset(
                 'assets/icons/Chat.svg',
               ),

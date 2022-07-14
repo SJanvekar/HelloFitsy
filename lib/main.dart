@@ -27,7 +27,7 @@ class Balance extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: Home(),
+      home: MainPage(),
     );
   }
 }
@@ -40,49 +40,68 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    Home(),
+    ClassCardOpen(),
+    Login(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Home(),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-            border: Border(
-                top: BorderSide(
-          color: shark40,
-          width: 1,
-        ))),
-        height: 100,
-        child: BottomNavigationBar(
-          elevation: 0,
-          backgroundColor: snow,
-          selectedItemColor: strawberry,
-          unselectedItemColor: shark40,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/Home.svg',
-                  width: 25,
-                  height: 26.5,
-                ),
-                label: ''),
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/Explore.svg',
-                  width: 25,
-                  height: 25,
-                ),
-                label: ''),
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/User.svg',
-                  width: 30,
-                  height: 25,
-                ),
-                label: ''),
-          ],
-        ),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
+        backgroundColor: snow,
+        // showSelectedLabels: false,
+        // showUnselectedLabels: false,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/navigationBarIcon/Home.svg',
+                height: 22,
+                color: jetBlack,
+              ),
+              activeIcon: SvgPicture.asset(
+                'assets/icons/navigationBarIcon/Home.svg',
+                height: 22,
+                color: strawberry,
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/navigationBarIcon/Search.svg',
+                height: 22,
+                color: jetBlack,
+              ),
+              activeIcon: SvgPicture.asset(
+                'assets/icons/navigationBarIcon/Search.svg',
+                height: 22,
+                color: strawberry,
+              ),
+              label: ''),
+          BottomNavigationBarItem(
+              icon: SvgPicture.asset(
+                'assets/icons/navigationBarIcon/User.svg',
+                height: 22,
+                color: jetBlack,
+              ),
+              activeIcon: SvgPicture.asset(
+                'assets/icons/navigationBarIcon/User.svg',
+                height: 22,
+                color: strawberry,
+              ),
+              label: ''),
+        ],
       ),
     );
   }
