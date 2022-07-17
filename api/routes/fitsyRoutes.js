@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/userController.js')
+const classController = require('../controllers/classController.js')
 
 router.get('/dashboard', (req, res) =>{
   res.send('Dashboard')
@@ -16,7 +17,7 @@ router.post('/adduser', userController.addNew)
 //Authenticate User
 router.post('/authenticate', userController.authenticate)
 //Add New Class
-router.post('/addclass', classController.addNew)
+router.post('/addclass', classController.test)
 
 
 //GET

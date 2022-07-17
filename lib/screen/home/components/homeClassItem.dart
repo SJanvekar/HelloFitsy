@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:balance/Requests/requests.dart';
 
 import '../../../sharedWidgets/userProfile.dart';
+import 'package:balance/sharedWidgets/classes/classModel.dart';
 
 class HomeClassItem extends StatefulWidget {
   const HomeClassItem({Key? key}) : super(key: key);
@@ -13,6 +15,8 @@ class HomeClassItem extends StatefulWidget {
   @override
   State<HomeClassItem> createState() => _HomeClassItem();
 }
+
+final allClasses = classList[0];
 
 class _HomeClassItem extends State<HomeClassItem> {
   @override
@@ -26,49 +30,61 @@ class _HomeClassItem extends State<HomeClassItem> {
           UserProfileComponent(),
           Padding(
             padding: const EdgeInsets.only(top: 15.0, bottom: 10),
-            child: Center(
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              'assets/images/exampleClass.png',
+            child: GestureDetector(
+              child: Center(
+                child: Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                'assets/images/exampleClass.png',
+                              ),
+                              fit: BoxFit.cover),
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      height: 250,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                jetBlack.withOpacity(0.0),
+                                jetBlack,
+                              ],
+                              stops: [
+                                0.0,
+                                1.0
+                              ])),
+                      height: 250,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 160.0, left: 20),
+                        child: Column(
+                          children: [
+                            classTitle(),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 2.0),
+                              child: classSubHeader(),
                             ),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    height: 250,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              jetBlack.withOpacity(0.0),
-                              jetBlack,
-                            ],
-                            stops: [
-                              0.0,
-                              1.0
-                            ])),
-                    height: 250,
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.only(top: 160.0, left: 20),
-                      child: Column(
-                        children: [
-                          classTitle(),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 2.0),
-                            child: classSubHeader(),
-                          ),
-                          classPrice()
-                        ],
-                      )),
-                ],
+                            classPrice()
+                          ],
+                        )),
+                  ],
+                ),
               ),
+              onTap: () {
+                Requests().addClass(
+                    allClasses.classType,
+                    allClasses.classLocation,
+                    allClasses.classRating,
+                    allClasses.classReview,
+                    allClasses.classPrice,
+                    allClasses.classTrainer,
+                    allClasses.classRating);
+              },
             ),
           ),
         ],
@@ -86,7 +102,7 @@ Widget classTitle() {
         Padding(
             padding: EdgeInsets.only(right: 20),
             child: AutoSizeText(
-              'Youth Tennis Fundraiser Program WILL XIAN TEST TEST TEST',
+              allClasses.className,
               minFontSize: 18,
               style: TextStyle(
                 fontSize: 18,
@@ -105,7 +121,7 @@ Widget classSubHeader() {
   return Row(
     children: [
       Text(
-        'Toronto, Ontario',
+        allClasses.classLocation,
         style: TextStyle(
             color: snow,
             fontSize: 13,
@@ -122,7 +138,7 @@ Widget classPrice() {
   return Row(
     children: [
       Text(
-        "\u0024300",
+        allClasses.classPrice.toString(),
         style: TextStyle(
             color: strawberry,
             fontSize: 20,
@@ -165,7 +181,7 @@ Widget trainerRating() {
               color: jetBlack, borderRadius: BorderRadius.circular(20.0)),
           child: Center(
             child: Text(
-              ' 4.5 ',
+              allClasses.classRating.toString(),
               style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w700,
@@ -180,7 +196,7 @@ Widget trainerRating() {
       Padding(
         padding: EdgeInsets.only(left: 5.0),
         child: Text(
-          '(479 Reviews)',
+          allClasses.classReview.toString(),
           style: TextStyle(
               color: shark,
               fontSize: 13,

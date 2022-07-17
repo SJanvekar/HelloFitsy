@@ -5,7 +5,7 @@ var config = require('../../config/Private/dbconfig')
 var functions = {
 
     //Add New Class fnc
-    addNew: function (req, res){
+    addNewClass: function (req, res){
         if  ((!req.body.ClassType) || (!req.body.ClassLocation) || (!req.body.ClassRating) || 
         (!req.body.ClassReview) || (!req.body.ClassPrice) || (!req.body.ClassTrainer) || (!req.body.ClassLiked)) {
             res.json({success: false, msg: 'Missing Information'})
@@ -21,7 +21,7 @@ var functions = {
                 ClassTrainer: req.body.ClassTrainer,
                 ClassLiked: req.body.ClassLiked
             });
-            newClass.save(function (err, newUser){
+            newClass.save(function (err, newClass){
                 if(err){
                     res.json({success: false, msg: 'Failed to save'})
                 }
@@ -34,14 +34,34 @@ var functions = {
 
     // Get Class Information
     getinfo: function (req, res){
-        if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer'){
-            var token = req.headers.authorization.split(' ')[1]
-            var decodedtoken = jwt.decode(token, config.secret)
-            return res.json({success: true, msg: 'Hello ' + decodedtoken.FirstName })
-        }else {
-            return res.json({success: false, msg: 'No Headers'})
+    },
+
+    //Add New User fnc
+    test: function (req, res){
+        if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
+            res.json({success: false, msg: 'Enter all fields'})
         }
-    }
+        else{
+            var newUser = User({
+                UserID: req.body.UserID,
+                UserType: req.body.UserType,
+                FirstName: req.body.FirstName,
+                LastName: req.body.LastName,
+                Username: req.body.Username,
+                UserEmail: req.body.UserEmail,
+                Password: req.body.Password
+
+            });
+            newUser.save(function (err, newUser){
+                if(err){
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
 }
 
 module.exports = functions
