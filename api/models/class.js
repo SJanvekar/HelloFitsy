@@ -35,21 +35,21 @@ var ClassSchema = new Schema({
 
     //Class Rating
     ClassRating: {
-        type: double,
+        type: String,
         required: true
 
     },
 
     //Class Review
     ClassReview: {
-        type: int,
+        type: String,
         required: true
 
     },
 
     //Class Price
     ClassPrice: {
-        type: int,
+        type: String,
         required: true,
     },
 
@@ -61,11 +61,11 @@ var ClassSchema = new Schema({
     },
 
     //Class Liked
-    ClassLiked: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
+    // ClassLiked: {
+    //     type: Boolean,
+    //     required: true,
+    //     default: false
+    // },
 
 })
 

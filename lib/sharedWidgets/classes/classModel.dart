@@ -5,9 +5,9 @@ class Class {
   final String classImage;
   final String classType;
   final String classLocation;
-  final double classRating;
-  final int classReview;
-  final int classPrice;
+  final String classRating; //TODO: Change to double
+  final String classReview; //TODO: Change to int
+  final String classPrice; //TODO: Change to int
   final String classTrainer;
   bool classLiked;
 
@@ -29,9 +29,9 @@ List<Class> classList = [
     classImage: "assets/categories/CategoryPhyisque.png",
     classType: "Solo",
     classLocation: "Toronto, Ontario",
-    classRating: 4.5,
-    classReview: 40,
-    classPrice: 250,
+    classRating: "4.5",
+    classReview: "40",
+    classPrice: "250",
     classTrainer: "Roger Federer",
     classLiked: true,
   ),
