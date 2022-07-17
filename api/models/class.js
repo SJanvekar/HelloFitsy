@@ -35,21 +35,21 @@ var ClassSchema = new Schema({
 
     //Class Rating
     ClassRating: {
-        type: Double,
+        type: double,
         required: true
 
     },
 
     //Class Review
     ClassReview: {
-        type: Int,
+        type: int,
         required: true
 
     },
 
     //Class Price
     ClassPrice: {
-        type: Int,
+        type: int,
         required: true,
     },
 
