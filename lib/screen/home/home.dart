@@ -20,21 +20,10 @@ class Home extends StatelessWidget {
           automaticallyImplyLeading: false,
           titleSpacing: 0,
           title: Padding(
-<<<<<<< Updated upstream
               padding: const EdgeInsets.only(left: 26.0, bottom: 10),
               child: Image.asset(
                 'assets/images/Typeface.png',
                 height: 45,
-=======
-              padding: const EdgeInsets.only(
-                left: 26.0,
-                top: 0,
-                bottom: 10,
-              ),
-              child: Image.asset(
-                'assets/images/Typeface.png',
-                height: 40,
->>>>>>> Stashed changes
               )
 
               // Text('Home',
@@ -54,11 +43,7 @@ class Home extends StatelessWidget {
               preferredSize: Size.fromHeight(1)),
           actions: [
             Padding(
-<<<<<<< Updated upstream
               padding: const EdgeInsets.only(right: 26.0, bottom: 8),
-=======
-              padding: const EdgeInsets.only(right: 26.0, top: 0, bottom: 8),
->>>>>>> Stashed changes
               child: SvgPicture.asset(
                 'assets/icons/Chat.svg',
               ),
