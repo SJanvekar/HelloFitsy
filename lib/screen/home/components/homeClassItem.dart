@@ -27,21 +27,50 @@ class _HomeClassItem extends State<HomeClassItem> {
           Padding(
             padding: const EdgeInsets.only(top: 15.0, bottom: 10),
             child: Center(
-              child: Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(
-                          'assets/images/exampleClass.png',
-                        ),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                height: 220,
+              child: Stack(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                              'assets/images/exampleClass.png',
+                            ),
+                            fit: BoxFit.cover),
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    height: 250,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              jetBlack.withOpacity(0.0),
+                              jetBlack,
+                            ],
+                            stops: [
+                              0.0,
+                              1.0
+                            ])),
+                    height: 250,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(top: 160.0, left: 20),
+                      child: Column(
+                        children: [
+                          classTitle(),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 2.0),
+                            child: classSubHeader(),
+                          ),
+                          classPrice()
+                        ],
+                      )),
+                ],
               ),
             ),
           ),
-          classTitle(),
-          classSubHeader(),
-          classPrice(),
         ],
       ),
     );
@@ -50,69 +79,71 @@ class _HomeClassItem extends State<HomeClassItem> {
 
 //Class Type and Title
 Widget classTitle() {
-  return Container(
-      decoration: BoxDecoration(
-        color: snow,
-      ),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-                padding: EdgeInsets.only(
-                  bottom: 0,
-                ),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 52,
-                    minHeight: 26,
-                    maxWidth: 323,
-                    minWidth: 323,
-                  ),
-                  child: AutoSizeText(
-                    'Youth Tennis Fundraiser Program',
-                    minFontSize: 18,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'SFDisplay',
-                      fontWeight: FontWeight.w600,
-                      color: jetBlack,
-                    ),
-                    maxLines: 2,
-                  ),
-                ))
-          ]));
+  return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: AutoSizeText(
+              'Youth Tennis Fundraiser Program WILL XIAN TEST TEST TEST',
+              minFontSize: 18,
+              style: TextStyle(
+                fontSize: 18,
+                fontFamily: 'SFDisplay',
+                fontWeight: FontWeight.w600,
+                color: snow,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ))
+      ]);
 }
 
 //Class Location
 Widget classSubHeader() {
-  return Container(
-    color: snow,
-    child: Row(
-      children: [
-        Text(
-          'Toronto, Ontario',
-          style: TextStyle(
-              color: jetBlack,
-              fontSize: 13,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'SFDisplay'),
-        ),
-        Padding(
-            padding: EdgeInsets.only(
-              left: 5,
-              right: 5,
-            ),
-            child: SvgPicture.asset(
-              'assets/icons/CircleDivider.svg',
-              height: 4,
-              width: 4,
-            )),
-        trainerRating(),
-      ],
-    ),
+  return Row(
+    children: [
+      Text(
+        'Toronto, Ontario',
+        style: TextStyle(
+            color: snow,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'SFDisplay'),
+      ),
+    ],
   );
 }
+
+//Price Widget
+
+Widget classPrice() {
+  return Row(
+    children: [
+      Text(
+        "\u0024300",
+        style: TextStyle(
+            color: strawberry,
+            fontSize: 20,
+            fontFamily: 'SFDisplay',
+            fontWeight: FontWeight.w600,
+            letterSpacing: -1),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 1.0),
+        child: Text(' /session',
+            style: TextStyle(
+                color: shark,
+                fontFamily: 'SFDisplay',
+                fontSize: 14,
+                fontWeight: FontWeight.w400)),
+      )
+    ],
+  );
+}
+
+//Unused Widgets
 
 Widget trainerRating() {
   return Row(
@@ -160,31 +191,4 @@ Widget trainerRating() {
       )
     ],
   );
-}
-
-Widget classPrice() {
-  return Container(
-      color: snow,
-      child: Row(
-        children: [
-          Text(
-            "\u0024300",
-            style: TextStyle(
-                color: strawberry,
-                fontSize: 20,
-                fontFamily: 'SFRounded',
-                fontWeight: FontWeight.w600,
-                letterSpacing: -1),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 1.0),
-            child: Text(' /session',
-                style: TextStyle(
-                    color: jetBlack40,
-                    fontFamily: 'SFDisplay',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600)),
-          )
-        ],
-      ));
 }
