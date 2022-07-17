@@ -17,7 +17,7 @@ router.post('/adduser', userController.addNew)
 //Authenticate User
 router.post('/authenticate', userController.authenticate)
 //Add New Class
-router.post('/addclass', classController.test)
+router.post('/addclass', classController.addNewClass)
 
 
 //GET
