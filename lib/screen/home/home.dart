@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -18,10 +20,21 @@ class Home extends StatelessWidget {
           automaticallyImplyLeading: false,
           titleSpacing: 0,
           title: Padding(
+<<<<<<< Updated upstream
               padding: const EdgeInsets.only(left: 26.0, bottom: 10),
               child: Image.asset(
                 'assets/images/Typeface.png',
                 height: 45,
+=======
+              padding: const EdgeInsets.only(
+                left: 26.0,
+                top: 0,
+                bottom: 10,
+              ),
+              child: Image.asset(
+                'assets/images/Typeface.png',
+                height: 40,
+>>>>>>> Stashed changes
               )
 
               // Text('Home',
@@ -41,7 +54,11 @@ class Home extends StatelessWidget {
               preferredSize: Size.fromHeight(1)),
           actions: [
             Padding(
+<<<<<<< Updated upstream
               padding: const EdgeInsets.only(right: 26.0, bottom: 8),
+=======
+              padding: const EdgeInsets.only(right: 26.0, top: 0, bottom: 8),
+>>>>>>> Stashed changes
               child: SvgPicture.asset(
                 'assets/icons/Chat.svg',
               ),
@@ -87,6 +104,7 @@ Widget tabBar() {
               //   ),
               //   child: Text('Feed'),
               // ),
+
               text: 'Feed',
             ),
             Tab(
@@ -97,12 +115,7 @@ Widget tabBar() {
       ),
       body: TabBarView(
         children: [
-          Center(
-            child: Text(
-              'No Posts To View',
-              style: homeFeedTitle,
-            ),
-          ),
+          Center(child: HomeClassItem()),
           Center(
             child: Text(
               'No Classes To Attend',

@@ -12,7 +12,7 @@ class UserProfileComponent extends StatelessWidget {
         Stack(
           children: const [
             CircleAvatar(
-              radius: 28,
+              radius: 22.5,
               backgroundImage:
                   AssetImage('assets/images/profilePictureDefault.png'),
               backgroundColor: snow,
@@ -22,20 +22,21 @@ class UserProfileComponent extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Test Trainer',
                 style: TextStyle(
                     color: jetBlack,
                     fontFamily: 'SFDisplay',
-                    fontSize: 17,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600),
               ),
-              Text('@Username',
+              Text('Username',
                   style: TextStyle(
-                      color: jetBlack40,
+                      color: shark,
                       fontFamily: 'SFDisplay',
-                      fontSize: 15,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500))
             ],
           ),
