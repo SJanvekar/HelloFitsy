@@ -6,13 +6,10 @@ var functions = {
 
     //Add New Class fnc
     addNewClass: function (req, res){
-        print("FUCK");
-        if  ((!req.body.ClassType) || (!req.body.ClassLocation) || (!req.body.ClassRating) || 
-        (!req.body.ClassReview) || (!req.body.ClassPrice) || (!req.body.ClassTrainer) || (!req.body.ClassLiked)) {
+        if  ((!req.body.ClassName) ) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else{
-            print("FUCK");
             var newClass = Class({
                 ClassID: req.body.ClassID,
                 ClassName: req.body.ClassName,
