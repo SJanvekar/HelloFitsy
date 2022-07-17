@@ -38,6 +38,32 @@ var functions = {
     // Get Class Information
     getinfo: function (req, res){
     },
+
+    testing: function (req, res){
+        if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
+            res.json({success: false, msg: 'Enter all fields'})
+        }
+        else{
+            var newUser = User({
+                UserID: req.body.UserID,
+                UserType: req.body.UserType,
+                FirstName: req.body.FirstName,
+                LastName: req.body.LastName,
+                Username: req.body.Username,
+                UserEmail: req.body.UserEmail,
+                Password: req.body.Password
+
+            });
+            newUser.save(function (err, newUser){
+                if(err){
+                    res.json({success: false, msg: 'Failed to save'})
+                }
+                else {
+                    res.json({success: true, msg: 'Successfully saved'})
+                }
+            })
+        }
+    },
 }
 
 module.exports = functions

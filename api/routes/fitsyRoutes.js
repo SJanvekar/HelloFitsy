@@ -18,7 +18,8 @@ router.post('/adduser', userController.addNew)
 router.post('/authenticate', userController.authenticate)
 //Add New Class
 router.post('/addclass', classController.addNewClass)
-
+//TESTING
+router.post('/testing', classController.testing)
 
 //GET
 
