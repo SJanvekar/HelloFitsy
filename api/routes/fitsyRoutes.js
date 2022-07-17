@@ -15,12 +15,15 @@ router.get('/', (req, res) =>{
 router.post('/adduser', userController.addNew)
 //Authenticate User
 router.post('/authenticate', userController.authenticate)
+//Add New Class
+router.post('/addclass', classController.addNew)
 
 
 //GET
 
 //Get information for a new user
 router.get('/getinfo', userController.getinfo)
-
+//Get information for a new class
+router.get('/getClassInfo', classController.getinfo)
 
 module.exports = router
