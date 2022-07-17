@@ -78,6 +78,7 @@ class _HomeClassItem extends State<HomeClassItem> {
               onTap: () {
                 print("TAPPED");
                 Requests().addClass(
+                    allClasses.className,
                     allClasses.classType,
                     allClasses.classLocation,
                     allClasses.classRating,
