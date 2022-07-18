@@ -1,4 +1,4 @@
-var Class = require('../models/user')
+var Class = require('../models/class')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 
@@ -7,7 +7,7 @@ var functions = {
     //Add New Class fnc
     addNewClass: function (req, res){
         if  ((!req.body.ClassName) ) {
-            res.json({success: false, msg: req})
+            res.json({success: false, msg: 'Missing Information'})
         }
         else{
             var newClass = Class({

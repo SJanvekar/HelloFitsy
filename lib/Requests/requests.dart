@@ -20,7 +20,6 @@ class Requests {
 
   addClass(className) async {
     try {
-      print(className);
       return await dio.post('http://www.fitsy.ca/addclass',
           data: {
             "ClassName": className,
