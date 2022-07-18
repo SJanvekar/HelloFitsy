@@ -1,5 +1,7 @@
+import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -112,3 +114,15 @@ Widget tabBar() {
     ),
   );
 }
+
+// body: TabBarView(
+//         children: [
+//           Center(child: HomeClassItem()),
+//           Center(
+//             child: Text(
+//               'No Classes To Attend',
+//               style: homeFeedTitle,
+//             ),
+//           )
+//         ],
+//       ),

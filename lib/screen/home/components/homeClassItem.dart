@@ -129,25 +129,31 @@ class _HomeClassItem extends State<HomeClassItem> {
 
 //Class Type and Title
 Widget classTitle() {
-  return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-            padding: EdgeInsets.only(right: 20),
-            child: AutoSizeText(
-              allClasses.className,
-              minFontSize: 18,
-              style: TextStyle(
-                fontSize: 18,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w600,
-                color: snow,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ))
-      ]);
+  return Row(
+    children: [
+      Expanded(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                  padding: EdgeInsets.only(right: 20),
+                  child: AutoSizeText(
+                    allClasses.className,
+                    minFontSize: 18,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontFamily: 'SFDisplay',
+                      fontWeight: FontWeight.w600,
+                      color: snow,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ))
+            ]),
+      ),
+    ],
+  );
 }
 
 //Class Location
