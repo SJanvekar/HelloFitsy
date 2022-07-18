@@ -21,58 +21,57 @@ var ClassSchema = new Schema({
 
     },
 
-    // //Class Type
-    // ClassType: {
-    //     type: [{
+    //Class Type
+    ClassType: {
+        type: [{
 
-    //     type: String,
-    //         enum: ['Solo', 'Group', 'Virtual']
-    //         }],
+        type: String,
+            enum: ['Solo', 'Group', 'Virtual']
+            }],
 
-    //     default: ['Solo'],
-    //     required: true,
-    // },
+        default: ['Solo'],
+        required: true,
+    },
 
-    // //Class Location
-    // ClassLocation: {
-    //     type: String,
-    //     required: true
+    //Class Location
+    ClassLocation: {
+        type: String,
+        required: true
 
-    // },
+    },
 
-    // //Class Rating
-    // ClassRating: {
-    //     type: String,
-    //     required: true
+    //Class Rating
+    ClassRating: {
+        type: String,
+        required: true
 
-    // },
+    },
 
-    // //Class Review
-    // ClassReview: {
-    //     type: String,
-    //     required: true
+    //Class Review
+    ClassReview: {
+        type: String,
+        required: true
 
-    // },
+    },
 
-    // //Class Price
-    // ClassPrice: {
-    //     type: String,
-    //     required: true,
-    // },
+    //Class Price
+    ClassPrice: {
+        type: String,
+        required: true,
+    },
 
-    // //Class Trainer
-    // ClassTrainer: {
-    //     type: String,
-    //     required: true,
-    //     required: true,
-    // },
+    //Class Trainer
+    ClassTrainer: {
+        type: String,
+        required: true,
+        required: true,
+    },
 
-    //Class Liked
-    // ClassLiked: {
-    //     type: Boolean,
-    //     required: true,
-    //     default: false
-    // },
+    ClassLiked: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
 
 })
 

@@ -18,18 +18,19 @@ class Requests {
     }
   }
 
-  addClass(className) async {
+  addClass(className, classType, classLocation, classRating, classReview,
+      classPrice, classTrainer, classLiked) async {
     try {
       return await dio.post('http://www.fitsy.ca/addclass',
           data: {
             "ClassName": className,
-            // "ClassType": classType,
-            // "ClassLocation": classLocation,
-            // "ClassRating": classRating,
-            // "ClassReview": classReview,
-            // "ClassPrice": classPrice,
-            // "ClassTrainer": classTrainer,
-            // "ClassLiked": classLiked,
+            "ClassType": classType,
+            "ClassLocation": classLocation,
+            "ClassRating": classRating,
+            "ClassReview": classReview,
+            "ClassPrice": classPrice,
+            "ClassTrainer": classTrainer,
+            "ClassLiked": classLiked,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

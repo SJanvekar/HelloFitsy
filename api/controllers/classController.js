@@ -13,13 +13,13 @@ var functions = {
             var newClass = Class({
                 ClassID: req.body.ClassID,
                 ClassName: req.body.ClassName,
-                // ClassType: req.body.ClassType,
-                // ClassLocation: req.body.ClassLocation,
-                // ClassRating: req.body.ClassRating,
-                // ClassReview: req.body.ClassReview,
-                // ClassPrice: req.body.ClassPrice,
-                // ClassTrainer: req.body.ClassTrainer,
-                // ClassLiked: req.body.ClassLiked
+                ClassType: req.body.ClassType,
+                ClassLocation: req.body.ClassLocation,
+                ClassRating: req.body.ClassRating,
+                ClassReview: req.body.ClassReview,
+                ClassPrice: req.body.ClassPrice,
+                ClassTrainer: req.body.ClassTrainer,
+                ClassLiked: req.body.ClassLiked
             });
             newClass.save(function (err, newClass){
                 if(err){
