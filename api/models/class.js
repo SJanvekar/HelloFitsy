@@ -26,10 +26,10 @@ var ClassSchema = new Schema({
         type: [{
 
         type: String,
-            enum: ['Solo', 'Group', 'Virtual']
+            enum: ['One-on-one training', 'Group session', 'Virtual session']
             }],
 
-        default: ['Solo'],
+        default: ['One-on-one training'],
         required: true,
     },
 
@@ -42,21 +42,21 @@ var ClassSchema = new Schema({
 
     //Class Rating
     ClassRating: {
-        type: String,
+        type: Number,
         required: true
 
     },
 
     //Class Review
     ClassReview: {
-        type: String,
+        type: Number,
         required: true
 
     },
 
     //Class Price
     ClassPrice: {
-        type: String,
+        type: Number,
         required: true,
     },
 

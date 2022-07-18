@@ -76,6 +76,7 @@ class _HomeClassItem extends State<HomeClassItem> {
                 ),
               ),
               onTap: () {
+                print("TAPPED");
                 Requests().addClass(
                     allClasses.className,
                     allClasses.classType,
@@ -84,7 +85,7 @@ class _HomeClassItem extends State<HomeClassItem> {
                     allClasses.classReview,
                     allClasses.classPrice,
                     allClasses.classTrainer,
-                    allClasses.classRating);
+                    allClasses.classLiked);
               },
             ),
           ),
