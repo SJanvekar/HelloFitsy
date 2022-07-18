@@ -8,13 +8,11 @@ class ReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 220,
-        width: 323,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(width: 1.5, color: bone)),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -23,7 +21,7 @@ class ReviewCard extends StatelessWidget {
                   style: TextStyle(
                       fontFamily: 'SFDisplay',
                       color: jetBlack,
-                      fontSize: 18,
+                      fontSize: 16.5,
                       fontWeight: FontWeight.w600)),
 
               //Review Date
@@ -31,7 +29,7 @@ class ReviewCard extends StatelessWidget {
                   style: TextStyle(
                       fontFamily: 'SFDisplay',
                       color: jetBlack40,
-                      fontSize: 17,
+                      fontSize: 15,
                       fontWeight: FontWeight.w400)),
               //Review Star rating
               Padding(
@@ -39,7 +37,7 @@ class ReviewCard extends StatelessWidget {
                 child: RatingBar.builder(
                   initialRating: 3,
                   unratedColor: shark40,
-                  itemSize: 22,
+                  itemSize: 20,
                   glow: false,
                   ignoreGestures: true,
                   minRating: 1,
@@ -61,12 +59,12 @@ class ReviewCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
-                    'This class is amazing! There could be a little more in terms of backhand technique focusm but other than that is was amazing to meet Federer and the team.',
+                    'This class is amazing! There could be a little more in terms of backhand technique focus, but other than that is was amazing to meet Federer and the RF team.',
                     style: TextStyle(
                         fontFamily: 'SFDisplay',
                         color: jetBlack,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600)),
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500)),
               ),
             ],
           ),

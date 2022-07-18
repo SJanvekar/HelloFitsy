@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -27,7 +28,38 @@ class _HomeClassItem extends State<HomeClassItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          UserProfileComponent(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              UserProfileComponent(),
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: GestureDetector(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      SvgPicture.asset('assets/icons/Ellipses.svg',
+                          color: jetBlack60),
+                      Container(
+                        height: 40,
+                        width: 60,
+                        color: Colors.transparent,
+                      ),
+                    ],
+                  ),
+                  onTap: () => {
+                    showModalBottomSheet(
+                        isDismissible: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return classMoreActions();
+                        })
+                  },
+                ),
+              )
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 15.0, bottom: 10),
             child: GestureDetector(
@@ -135,7 +167,6 @@ Widget classSubHeader() {
 }
 
 //Price Widget
-
 Widget classPrice() {
   return Row(
     children: [
@@ -162,7 +193,6 @@ Widget classPrice() {
 }
 
 //Unused Widgets
-
 Widget trainerRating() {
   return Row(
     children: [

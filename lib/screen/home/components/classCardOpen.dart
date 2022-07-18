@@ -74,7 +74,7 @@ class ClassCardOpen extends StatelessWidget {
               padding: const EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 child: SvgPicture.asset(
-                  'assets/icons/ShareButtonClassCard.svg',
+                  'assets/icons/ShareButtonIcon.svg',
                   height: 36,
                   width: 36,
                 ),
@@ -85,28 +85,38 @@ class ClassCardOpen extends StatelessWidget {
         ),
         SliverList(
             delegate: SliverChildListDelegate([
-          classTitle(),
-          classSubHeader(),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0),
+            padding: const EdgeInsets.only(top: 10, left: 26.0, right: 26.0),
+            child: classTitle(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 2, left: 26.0, right: 26.0),
+            child: classSubHeader(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
             child: classPrice(),
           ),
           Padding(
-              padding: EdgeInsets.only(left: 26.0, top: 20, bottom: 20),
+              padding:
+                  EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
               child: UserProfileComponent()),
           PageDivider(),
           Padding(
-            padding: EdgeInsets.only(top: 20, bottom: 20),
+            padding:
+                EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
             child: classDesc(),
           ),
           PageDivider(),
           Padding(
-            padding: const EdgeInsets.only(top: 20.0, bottom: 20.0),
+            padding: const EdgeInsets.only(
+                top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
             child: classCategories(),
           ),
           PageDivider(),
           Padding(
-              padding: EdgeInsets.only(top: 20.0, bottom: 20.0),
+              padding: EdgeInsets.only(
+                  top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
               child: classReviews())
         ])),
       ]),
@@ -130,6 +140,245 @@ class ClassCardOpen extends StatelessWidget {
           )),
     );
   }
+}
+
+//Price Container
+Widget classPrice() {
+  return Container(
+      color: snow,
+      child: Row(
+        children: [
+          Text(
+            "\u0024300",
+            style: TextStyle(
+                color: strawberry,
+                fontSize: 26,
+                fontFamily: 'SFDisplay',
+                fontWeight: FontWeight.w600,
+                letterSpacing: -1),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 1.0),
+            child: Text(' /session',
+                style: TextStyle(
+                    color: shark,
+                    fontFamily: 'SFDisplay',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500)),
+          )
+        ],
+      ));
+}
+
+//Class Type and Title
+Widget classTitle() {
+  return Container(
+      decoration: BoxDecoration(
+        color: snow,
+      ),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'One-on-one training',
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: jetBlack40,
+                  fontFamily: 'SFDisplay'),
+              maxLines: 1,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: AutoSizeText(
+                            'Youth Tennis Fundraiser',
+                            minFontSize: 18,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontFamily: 'SFDisplay',
+                              fontWeight: FontWeight.w600,
+                              color: jetBlack,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        )
+                      ]),
+                ),
+              ],
+            )
+          ]));
+}
+
+//Class Location
+Widget classSubHeader() {
+  return Container(
+    color: snow,
+    child: Row(
+      children: [
+        Text(
+          'Toronto, Ontario',
+          style: TextStyle(
+              color: jetBlack,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'SFDisplay'),
+        ),
+        Padding(
+            padding: EdgeInsets.only(
+              left: 5,
+              right: 5,
+            ),
+            child: SvgPicture.asset(
+              'assets/icons/CircleDivider.svg',
+              height: 4,
+              width: 4,
+            )),
+        trainerRating(),
+      ],
+    ),
+  );
+}
+
+//Class Trainer Rating
+Widget trainerRating() {
+  return Row(
+    children: [
+      //Star Icon
+      SvgPicture.asset(
+        'assets/icons/StarRating.svg',
+        height: 15,
+        width: 15,
+      ),
+
+      //Rating (Numeric)
+      Padding(
+        padding: const EdgeInsets.only(left: 5.0),
+        child: Container(
+          height: 20,
+          width: 30,
+          decoration: BoxDecoration(
+              color: jetBlack, borderRadius: BorderRadius.circular(20.0)),
+          child: Center(
+            child: Text(
+              ' 4.5 ',
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: snow,
+                  fontFamily: 'SFDisplay'),
+            ),
+          ),
+        ),
+      ),
+
+      //Trainer Ratings Count
+      Padding(
+        padding: EdgeInsets.only(left: 5.0),
+        child: Text(
+          '(479 Reviews)',
+          style: TextStyle(
+              color: shark,
+              fontSize: 14,
+              fontFamily: 'SFDisplay',
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0),
+        ),
+      )
+    ],
+  );
+}
+
+//Class Desc
+Widget classDesc() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: Text('About this class',
+            style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack,
+                fontSize: 16,
+                fontWeight: FontWeight.w600)),
+      ),
+      Text(
+        'This is an introductory course teaching the fundamental skills of tennis. Focus includes: basic strokes; strategy; rules; scoring; etiquette; practice drills; singles and doubles play. The more experienced students will receive instruction on use of spin; court positioning; footwork; and advanced strategies.',
+        style: TextStyle(
+            fontFamily: 'SFDisplay',
+            color: jetBlack60,
+            fontSize: 14,
+            fontWeight: FontWeight.w500),
+      ),
+    ],
+  );
+}
+
+//Class Categories
+Widget classCategories() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 15.0),
+        child: Text('Related Categories',
+            style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack,
+                fontSize: 16,
+                fontWeight: FontWeight.w600)),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 10.0),
+        child: CategorySmall(),
+      ),
+    ],
+  );
+}
+
+//Class Reviews
+Widget classReviews() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Reviews',
+                style: TextStyle(
+                    fontFamily: 'SFDisplay',
+                    color: jetBlack,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600)),
+            GestureDetector(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: Text('View all',
+                    style: TextStyle(
+                        fontFamily: 'SFDisplay',
+                        color: shark,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600)),
+              ),
+              onTap: () => print('View all Reviews Button Pressed'),
+            )
+          ],
+        ),
+      ),
+      ReviewCard(),
+    ],
+  );
 }
 
 //Persistent Header Private Class
@@ -209,174 +458,8 @@ class _TitleSliverDelegate extends SliverPersistentHeaderDelegate {
   }
 }
 
-//Price Container
-Widget classPrice() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 26.0),
-    child: Container(
-        color: snow,
-        child: Row(
-          children: [
-            Text(
-              "\u0024300",
-              style: TextStyle(
-                  color: strawberry,
-                  fontSize: 32,
-                  fontFamily: 'SFRounded',
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: -1),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 1.0),
-              child: Text(' /session',
-                  style: TextStyle(
-                      color: shark,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600)),
-            )
-          ],
-        )),
-  );
-}
+//Class Date
 
-//Class Type and Title
-Widget classTitle() {
-  return Container(
-      decoration: BoxDecoration(
-        color: snow,
-      ),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
-                right: 0,
-                left: 26,
-                bottom: 2,
-              ),
-              child: Text(
-                'One-on-one training',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: jetBlack40,
-                    fontFamily: 'SFDisplay'),
-                maxLines: 1,
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                  left: 26,
-                  bottom: 2,
-                ),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 52,
-                    minHeight: 26,
-                    maxWidth: 323,
-                    minWidth: 323,
-                  ),
-                  child: AutoSizeText(
-                    'Youth Tennis Fundraiser Program',
-                    minFontSize: 22,
-                    style: TextStyle(
-                      fontSize: 31,
-                      fontFamily: 'SFDisplay',
-                      fontWeight: FontWeight.w600,
-                      color: jetBlack,
-                    ),
-                    maxLines: 2,
-                  ),
-                ))
-          ]));
-}
-
-//Class Location
-Widget classSubHeader() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 26.0),
-    child: Container(
-      color: snow,
-      child: Row(
-        children: [
-          Text(
-            'Toronto, Ontario',
-            style: TextStyle(
-                color: jetBlack,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'SFDisplay'),
-          ),
-          Padding(
-              padding: EdgeInsets.only(
-                left: 5,
-                right: 5,
-              ),
-              child: SvgPicture.asset(
-                'assets/icons/CircleDivider.svg',
-                height: 4,
-                width: 4,
-              )),
-          trainerRating(),
-        ],
-      ),
-    ),
-  );
-}
-
-//Class Trainer Rating
-Widget trainerRating() {
-  return Row(
-    children: [
-      //Star Icon
-      SvgPicture.asset(
-        'assets/icons/StarRating.svg',
-        height: 15,
-        width: 15,
-      ),
-
-      //Rating (Numeric)
-      Padding(
-        padding: const EdgeInsets.only(left: 5.0),
-        child: Container(
-          height: 20,
-          width: 30,
-          decoration: BoxDecoration(
-              color: jetBlack, borderRadius: BorderRadius.circular(20.0)),
-          child: Center(
-            child: Text(
-              ' 4.5 ',
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: snow,
-                  fontFamily: 'SFRounded'),
-            ),
-          ),
-        ),
-      ),
-
-      //Trainer Ratings Count
-      Padding(
-        padding: EdgeInsets.only(left: 5.0),
-        child: Text(
-          '(479 Reviews)',
-          style: TextStyle(
-              color: shark,
-              fontSize: 15,
-              fontFamily: 'SFRounded',
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0),
-        ),
-      )
-    ],
-  );
-}
-
-// //Class Date
 // Widget classDate() {
 //   return Padding(
 //     padding: const EdgeInsets.only(left: 20.0),
@@ -420,105 +503,4 @@ Widget trainerRating() {
 //   );
 // }
 
-//Class Desc
-Widget classDesc() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 26, right: 26),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: Text('About this class',
-              style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600)),
-        ),
-        Container(
-          width: 323,
-          child: Text(
-            'This is an introductory course teaching the fundamental skills of tennis. Focus includes: basic strokes; strategy; rules; scoring; etiquette; practice drills; singles and doubles play. The more experienced students will receive instruction on use of spin; court positioning; footwork; and advanced strategies.',
-            style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack60,
-                fontSize: 16.5,
-                fontWeight: FontWeight.w500),
-          ),
-        ),
-      ],
-    ),
-  );
-}
 
-//Class Categories
-Widget classCategories() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 26, right: 26),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: Text('Related Categories',
-              style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600)),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: CategorySmall(),
-        ),
-      ],
-    ),
-  );
-}
-
-//Class Reviews
-Widget classReviews() {
-  return Padding(
-    padding: const EdgeInsets.only(left: 26, right: 26),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 202),
-                child: Text('Reviews',
-                    style: TextStyle(
-                        fontFamily: 'SFDisplay',
-                        color: jetBlack,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600)),
-              ),
-              GestureDetector(
-                child: Row(
-                  children: [
-                    Text('View all',
-                        style: TextStyle(
-                            fontFamily: 'SFDisplay',
-                            color: shark,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600)),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(left: 6.0),
-                    //   child: SvgPicture.asset('assets/icons/rightChevron.svg'),
-                    // )
-                  ],
-                ),
-                onTap: () => print('View all Reviews Button Pressed)'),
-              )
-            ],
-          ),
-        ),
-        ReviewCard(),
-      ],
-    ),
-  );
-}

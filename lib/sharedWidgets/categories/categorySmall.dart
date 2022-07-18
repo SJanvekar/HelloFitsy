@@ -24,7 +24,7 @@ class CategorySmall extends StatelessWidget {
             style: TextStyle(
                 color: jetBlack,
                 fontFamily: 'SFDisplay',
-                fontSize: 17,
+                fontSize: 14,
                 fontWeight: FontWeight.w600),
           ))
     ]);
