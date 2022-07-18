@@ -7,7 +7,7 @@ var functions = {
     //Add New Class fnc
     addNewClass: function (req, res){
         if  ((!req.body.ClassName) ) {
-            res.json({success: false, msg: req.body.ClassName})
+            res.json({success: false, msg: req})
         }
         else{
             var newClass = Class({

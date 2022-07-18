@@ -77,15 +77,15 @@ class _HomeClassItem extends State<HomeClassItem> {
               ),
               onTap: () {
                 print("TAPPED");
-                Requests().addClass(
-                    allClasses.className,
-                    allClasses.classType,
-                    allClasses.classLocation,
-                    allClasses.classRating,
-                    allClasses.classReview,
-                    allClasses.classPrice,
-                    allClasses.classTrainer,
-                    allClasses.classRating);
+                Requests().addClass(allClasses.className
+                    // allClasses.classType,
+                    // allClasses.classLocation,
+                    // allClasses.classRating,
+                    // allClasses.classReview,
+                    // allClasses.classPrice,
+                    // allClasses.classTrainer,
+                    // allClasses.classRating
+                    );
               },
             ),
           ),
