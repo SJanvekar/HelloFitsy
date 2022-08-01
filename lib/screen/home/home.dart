@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:balance/screen/createClass/createClassType.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -52,13 +53,21 @@ class Home extends StatelessWidget {
               padding: const EdgeInsets.only(right: 26.0, bottom: 8),
               child: Row(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: SvgPicture.asset(
-                      'assets/icons/CreateClass.svg',
-                      height: 20,
-                      width: 20,
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20.0),
+                      child: SvgPicture.asset(
+                        'assets/icons/CreateClass.svg',
+                        height: 20,
+                        width: 20,
+                      ),
                     ),
+                    onTap: () {
+                      print("Create Class Button Pressed");
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => CreateClassType()));
+                    },
                   ),
                   SvgPicture.asset(
                     'assets/icons/Chat.svg',
