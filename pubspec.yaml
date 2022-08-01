@@ -76,12 +76,26 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-  # fonts:
-  #   - family: SFRounded
-  #     fonts:
-  #       - asset: assets/fonts/SF-Pro-Rounded-Regular.otf
-  #       - asset: assets/fonts/SF-Pro-Rounded-Semibold.otf
-  #         weight: 600
+  fonts:
+    - family: SFRounded
+      fonts:
+        - asset: assets/fonts/SFRoundedRegular.otf
+          weight: 400
+        - asset: assets/fonts/SFRoundedSemiBold.otf
+          weight: 600
+    - family: SFDisplay
+      fonts:
+        - asset: assets/fonts/SFDisplayLight.otf
+          weight: 300
+        - asset: assets/fonts/SFDisplayRegular.otf
+          weight: 400
+        - asset: assets/fonts/SFDisplayMedium.otf
+          weight: 500
+        - asset: assets/fonts/SFDisplaySemiBold.otf
+          weight: 600
+        - asset: assets/fonts/SFDisplayBold.otf
+          weight: 700
+
   
   # To add assets to your application, add an assets section, like this:
   assets:
@@ -103,19 +117,7 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  fonts:
-    - family: SFRounded
-      fonts:
-        - asset: assets/fonts/SFRoundedRegular.otf
-        - asset: assets/fonts/SFRoundedSemiBold.otf
-          weight: 600
-    - family: SFDisplay
-      fonts:
-        - asset: assets/fonts/SFDisplayRegular.otf
-        - asset: assets/fonts/SFDisplayBold.otf
-          weight: 700
-        - asset: assets/fonts/SFDisplaySemiBold.otf
-          weight: 600
+        
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

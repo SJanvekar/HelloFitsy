@@ -9,15 +9,11 @@ class UserProfileComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Stack(
-          children: const [
-            CircleAvatar(
-              radius: 22.5,
-              backgroundImage:
-                  AssetImage('assets/images/profilePictureDefault.png'),
-              backgroundColor: snow,
-            )
-          ],
+        CircleAvatar(
+          radius: 22.5,
+          backgroundImage:
+              AssetImage('assets/images/profilePictureDefault.png'),
+          backgroundColor: snow,
         ),
         Padding(
           padding: const EdgeInsets.only(left: 10.0),

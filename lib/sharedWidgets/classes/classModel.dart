@@ -25,7 +25,7 @@ class Class {
 
 List<Class> classList = [
   Class(
-    className: "Yute Tennis Fundraiser Program",
+    className: "Yute Tennis Summer Fundraiser Program",
     classImage: "assets/categories/CategoryPhyisque.png",
     classType: "Solo",
     classLocation: "Toronto, Ontario",

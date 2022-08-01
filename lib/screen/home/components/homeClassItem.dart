@@ -2,10 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:balance/Requests/requests.dart';
 
 import '../../../sharedWidgets/userProfile.dart';
 import 'package:balance/sharedWidgets/classes/classModel.dart';
@@ -65,6 +62,7 @@ class _HomeClassItem extends State<HomeClassItem> {
             child: GestureDetector(
               child: Center(
                 child: Stack(
+                  alignment: Alignment.bottomCenter,
                   children: [
                     Container(
                       decoration: BoxDecoration(
@@ -93,7 +91,8 @@ class _HomeClassItem extends State<HomeClassItem> {
                       height: 250,
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(top: 160.0, left: 20),
+                        padding: const EdgeInsets.only(
+                            top: 160.0, left: 20, bottom: 10),
                         child: Column(
                           children: [
                             classTitle(),
@@ -104,21 +103,42 @@ class _HomeClassItem extends State<HomeClassItem> {
                             classPrice()
                           ],
                         )),
+                    Padding(
+                      padding:
+                          EdgeInsets.only(left: 230, right: 10.0, bottom: 200),
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10.0),
+                            child: SvgPicture.asset(
+                              'assets/icons/classTypeIcons/OneOnOneIcon.svg',
+                              height: 32,
+                              width: 32,
+                            ),
+                          ),
+                          SvgPicture.asset(
+                            'assets/icons/SaveButtonClassCard.svg',
+                            height: 32,
+                            width: 32,
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-              onTap: () {
-                print("TAPPED");
-                Requests().addClass(
-                    allClasses.className,
-                    allClasses.classType,
-                    allClasses.classLocation,
-                    allClasses.classRating,
-                    allClasses.classReview,
-                    allClasses.classPrice,
-                    allClasses.classTrainer,
-                    allClasses.classLiked);
-              },
+              // onTap: () {
+              //   print("TAPPED");
+              //   Requests().addClass(
+              //       allClasses.className,
+              //       allClasses.classType,
+              //       allClasses.classLocation,
+              //       allClasses.classRating,
+              //       allClasses.classReview,
+              //       allClasses.classPrice,
+              //       allClasses.classTrainer,
+              //       allClasses.classLiked);
+              // },
             ),
           ),
         ],

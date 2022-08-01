@@ -19,7 +19,7 @@ class classMoreActions extends StatelessWidget {
           children: [
             Padding(
               padding:
-                  const EdgeInsets.only(bottom: 10.0, right: 26.0, left: 26.0),
+                  const EdgeInsets.only(bottom: 8.0, right: 26.0, left: 26.0),
               child: Container(
                   decoration: const BoxDecoration(
                       color: snow,

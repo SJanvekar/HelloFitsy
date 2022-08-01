@@ -3,8 +3,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
+import 'package:balance/screen/home/components/upcomingClasses.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Home extends StatelessWidget {
@@ -12,6 +14,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     return Scaffold(
         backgroundColor: snow,
         appBar: AppBar(
@@ -46,8 +50,22 @@ class Home extends StatelessWidget {
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 26.0, bottom: 8),
-              child: SvgPicture.asset(
-                'assets/icons/Chat.svg',
+              child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: SvgPicture.asset(
+                      'assets/icons/CreateClass.svg',
+                      height: 20,
+                      width: 20,
+                    ),
+                  ),
+                  SvgPicture.asset(
+                    'assets/icons/Chat.svg',
+                    height: 20,
+                    width: 20,
+                  ),
+                ],
               ),
             )
           ],
@@ -103,12 +121,66 @@ Widget tabBar() {
       body: TabBarView(
         children: [
           Center(child: HomeClassItem()),
-          Center(
-            child: Text(
-              'No Classes To Attend',
-              style: homeFeedTitle,
-            ),
-          )
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 26.0, right: 26.0, bottom: 30, top: 30),
+                child: Text(
+                  'Today',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: jetBlack,
+                      fontFamily: 'SFDisplay'),
+                ),
+              ),
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    'Nothing scheduled for today',
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        color: jetBlack40,
+                        fontFamily: 'SFDisplay'),
+                  ),
+                ),
+              ),
+              Center(
+                  child: Container(
+                width: 110,
+                height: 30,
+                decoration: BoxDecoration(
+                    color: strawberry, borderRadius: BorderRadius.circular(20)),
+                child: Center(
+                  child: Text(
+                    'Find classes',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: snow,
+                        fontFamily: 'SFDisplay'),
+                  ),
+                ),
+              )),
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 26.0, right: 26.0, bottom: 20, top: 30),
+                child: Text(
+                  'July 28th',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: jetBlack,
+                      fontFamily: 'SFDisplay'),
+                ),
+              ),
+              UpcomingClasses(),
+            ],
+          ),
         ],
       ),
     ),

@@ -11,241 +11,248 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
-class ClassCardOpen extends StatelessWidget {
-  const ClassCardOpen({Key? key}) : super(key: key);
+class UserProfile extends StatefulWidget {
+  const UserProfile({Key? key}) : super(key: key);
+
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  Color titleColor = Colors.transparent;
+
+//Title Colour Function
+  _changeTitleColor() {
+    setState(() {
+      Color titleColor = jetBlack;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     //Hides the top status bar for iOS & Android
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
     //Shows the top status bar for iOS & Android
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-    //     overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
 
     return Scaffold(
       backgroundColor: snow,
       extendBodyBehindAppBar: true,
-      body: CustomScrollView(slivers: [
+      body: CustomScrollView(shrinkWrap: false, slivers: [
+        // SliverPersistentHeader(
+        //   delegate: MySliverAppBar(expandedHeight: 375),
+        //   pinned: true,
+        // ),
         //App Bar
         SliverAppBar(
+          // title: Text('Salman Janvekar',
+          //     style: TextStyle(
+          //         color: jetBlack,
+          //         fontFamily: 'SFDisplay',
+          //         fontWeight: FontWeight.w600,
+          //         fontSize: 22.0)),
+
           toolbarHeight: 65,
+
           flexibleSpace: FlexibleSpaceBar(
             background: Image.asset(
-              'assets/images/exampleClass.png',
+              'assets/images/theBOY.JPG',
               fit: BoxFit.cover,
             ),
-            stretchModes: const [StretchMode.zoomBackground],
+            title: userTitleCard(),
+            centerTitle: true,
           ),
           elevation: 0,
-          stretch: true,
+          onStretchTrigger: _changeTitleColor(),
+          stretch: false,
           floating: false,
           pinned: true,
-          expandedHeight: MediaQuery.of(context).size.height * 0.4,
+          expandedHeight: MediaQuery.of(context).size.height * 0.45,
           backgroundColor: snow,
-          shape: Border(
-              bottom: BorderSide(color: bone, width: 2)), //Color(0x00000000),
-          leading: Padding(
-            padding: const EdgeInsets.only(
-              left: 28,
-            ),
-            child: GestureDetector(
-              //Check this
-              child: SvgPicture.asset(
-                'assets/icons/ExitButtonClassCard.svg',
-                height: 30,
-                width: 30,
-              ),
-              onTap: () => print('Close page prompt'),
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                child: SvgPicture.asset(
-                  'assets/icons/SaveButtonClassCard.svg',
-                  height: 30,
-                  width: 30,
-                ),
-                onTap: () => print('Save Button Pressed'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                child: SvgPicture.asset(
-                  'assets/icons/ShareButtonIcon.svg',
-                  height: 30,
-                  width: 30,
-                ),
-                onTap: () => print('Share Button Pressed'),
-              ),
-            ),
-          ],
+
+          // bottom: PreferredSize(
+          //   preferredSize: Size.fromHeight(0),
+          //   child: Container(
+          //     height: 40,
+          //     decoration: BoxDecoration(
+          //         color: snow,
+          //         borderRadius: BorderRadius.only(
+          //           topLeft: Radius.circular(20),
+          //           topRight: Radius.circular(20),
+          //         )),
+          //   ),
+          // ),
         ),
-        SliverList(
-            delegate: SliverChildListDelegate([
-          Padding(
-            padding: const EdgeInsets.only(top: 10, left: 26.0, right: 26.0),
-            child: classTitle(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 2, left: 26.0, right: 26.0),
-            child: classSubHeader(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-            child: classPrice(),
-          ),
-          Padding(
-              padding:
-                  EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
-              child: UserProfileComponent()),
-          PageDivider(),
-          Padding(
-            padding:
-                EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
-            child: classDesc(),
-          ),
-          PageDivider(),
-          Padding(
-            padding: const EdgeInsets.only(
-                top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
-            child: classCategories(),
-          ),
-          PageDivider(),
-          Padding(
-              padding: EdgeInsets.only(
-                  top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
-              child: classReviews())
-        ])),
+
+        ListDataTest()
       ]),
-      //Bottom Navigation Bar
-      bottomNavigationBar: Container(
-          height: 110,
-          decoration: BoxDecoration(
-              border: Border(
-            top: BorderSide(color: bone, width: 1),
-          )),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 14,
-              bottom: 46,
-            ),
-            child: LoginFooterButton(
-              buttonColor: strawberry,
-              buttonText: 'Inquire',
-              textColor: snow,
-            ),
-          )),
     );
   }
 }
 
-//Price Container
-Widget classPrice() {
-  return Container(
-      color: snow,
-      child: Row(
-        children: [
-          Text(
-            "\u0024300",
-            style: TextStyle(
-                color: strawberry,
-                fontSize: 26,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w600,
-                letterSpacing: -1),
+class MySliverAppBar extends SliverPersistentHeaderDelegate {
+  final double expandedHeight;
+
+  MySliverAppBar({required this.expandedHeight});
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Stack(
+      clipBehavior: Clip.none,
+      fit: StackFit.expand,
+      children: [
+        Opacity(
+          opacity: (1 - shrinkOffset / expandedHeight),
+          child: Image.asset(
+            'assets/images/theBOY.JPG',
+            fit: BoxFit.cover,
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 1.0),
-            child: Text(' /session',
-                style: TextStyle(
-                    color: shark,
-                    fontFamily: 'SFDisplay',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500)),
-          )
-        ],
-      ));
+        ),
+        Opacity(
+          opacity: shrinkOffset / expandedHeight,
+          child: Container(
+            decoration: BoxDecoration(color: snow),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 50, left: 26),
+          child: Opacity(
+            opacity: shrinkOffset / expandedHeight,
+            child: Text(
+              "Salman Janvekar",
+              style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack,
+                fontWeight: FontWeight.w600,
+                fontSize: 23,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          child: Opacity(
+              opacity: (1 - shrinkOffset / expandedHeight),
+              child: userTitleCard()),
+        ),
+      ],
+    );
+  }
+
+  @override
+  double get maxExtent => expandedHeight;
+
+  @override
+  double get minExtent => 100;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
+}
+
+//Sliver List test
+Widget ListDataTest() {
+  return SliverList(
+      delegate: SliverChildListDelegate([
+    Padding(
+        padding: EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
+        child: UserProfileComponent()),
+    PageDivider(),
+    Padding(
+      padding: EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
+      child: classDesc(),
+    ),
+    PageDivider(),
+    Padding(
+      padding: const EdgeInsets.only(
+          top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
+      child: classCategories(),
+    ),
+    PageDivider(),
+    Padding(
+        padding:
+            EdgeInsets.only(top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
+        child: classReviews())
+  ]));
 }
 
 //Class Type and Title
-Widget classTitle() {
-  return Container(
-      decoration: BoxDecoration(
-        color: snow,
-      ),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'One-on-one training',
+Widget userTitleCard() {
+  return Padding(
+    padding: const EdgeInsets.only(
+      left: 26.0,
+    ),
+    child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 2.0,
+              right: 20.0,
+            ),
+            child: Text(
+              'Salman Janvekar',
               style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: jetBlack40,
-                  fontFamily: 'SFDisplay'),
+                fontSize: 20,
+                fontFamily: 'SFDisplay',
+                fontWeight: FontWeight.w600,
+                color: jetBlack,
+              ),
               maxLines: 1,
             ),
-            Row(
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: Row(
               children: [
-                Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: AutoSizeText(
-                            'Youth Tennis Fundraiser',
-                            minFontSize: 18,
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontFamily: 'SFDisplay',
-                              fontWeight: FontWeight.w600,
-                              color: jetBlack,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        )
-                      ]),
+                Padding(
+                  padding: const EdgeInsets.only(right: 2.0),
+                  child: SvgPicture.asset(
+                    'assets/icons/navigationBarIcon/User.svg',
+                    color: jetBlack,
+                    height: 10,
+                  ),
+                ),
+                Text(
+                  'salman',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: jetBlack,
+                      fontFamily: 'SFDisplay'),
+                  maxLines: 1,
                 ),
               ],
-            )
-          ]));
+            ),
+          ),
+          // trainerSubHeader(),
+        ]),
+  );
 }
 
 //Class Location
-Widget classSubHeader() {
-  return Container(
-    color: snow,
-    child: Row(
-      children: [
-        Text(
-          'Toronto, Ontario',
-          style: TextStyle(
-              color: jetBlack,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'SFDisplay'),
-        ),
-        Padding(
-            padding: EdgeInsets.only(
-              left: 5,
-              right: 5,
-            ),
-            child: SvgPicture.asset(
-              'assets/icons/CircleDivider.svg',
-              height: 4,
-              width: 4,
-            )),
-        trainerRating(),
-      ],
-    ),
+Widget trainerSubHeader() {
+  return Row(
+    children: [
+      Text(
+        'Toronto, Ontario',
+        style: TextStyle(
+            color: snow,
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'SFDisplay'),
+      ),
+      Padding(
+          padding: EdgeInsets.only(
+            left: 5,
+            right: 5,
+          ),
+          child: SvgPicture.asset('assets/icons/CircleDivider.svg',
+              height: 4, width: 4, color: bone)),
+      trainerRating(),
+    ],
   );
 }
 

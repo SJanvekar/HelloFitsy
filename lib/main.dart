@@ -5,15 +5,19 @@ import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
+import 'package:balance/screen/profile/components/profile.dart';
+import 'package:balance/screen/profile/components/test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 void main() {
-  runApp(const Balance());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const FITSY());
 }
 
-class Balance extends StatelessWidget {
-  const Balance({Key? key}) : super(key: key);
+class FITSY extends StatelessWidget {
+  const FITSY({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
 
@@ -45,13 +49,21 @@ class _MainPageState extends State<MainPage> {
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     ClassCardOpen(),
-    Login(),
+    UserProfile(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+      SystemUiOverlay.top,
+    ]);
   }
 
   @override
