@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../sharedWidgets/userProfile.dart';
 import 'package:balance/sharedWidgets/classes/classModel.dart';
+import 'package:balance/Requests/requests.dart';
 
 class HomeClassItem extends StatefulWidget {
   const HomeClassItem({Key? key}) : super(key: key);
@@ -127,18 +128,18 @@ class _HomeClassItem extends State<HomeClassItem> {
                   ],
                 ),
               ),
-              // onTap: () {
-              //   print("TAPPED");
-              //   Requests().addClass(
-              //       allClasses.className,
-              //       allClasses.classType,
-              //       allClasses.classLocation,
-              //       allClasses.classRating,
-              //       allClasses.classReview,
-              //       allClasses.classPrice,
-              //       allClasses.classTrainer,
-              //       allClasses.classLiked);
-              // },
+              onTap: () {
+                print("TAPPED");
+                Requests().addClass(
+                    allClasses.className,
+                    allClasses.classType,
+                    allClasses.classLocation,
+                    allClasses.classRating,
+                    allClasses.classReview,
+                    allClasses.classPrice,
+                    allClasses.classTrainer,
+                    allClasses.classLiked);
+              },
             ),
           ),
         ],
