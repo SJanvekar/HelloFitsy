@@ -293,7 +293,7 @@ class _CreateClassType extends State<CreateClassType> {
                               ),
                             ),
                           ),
-                          Text('Virtual program ',
+                          Text('Virtual program',
                               style: TextStyle(
                                 color: _currentTextColorVirtual,
                                 fontFamily: 'SFDisplay',
