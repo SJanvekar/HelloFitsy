@@ -26,10 +26,10 @@ var ClassSchema = new Schema({
         type: [{
 
         type: String,
-            enum: ['One-on-one training', 'Group session', 'Virtual session']
+            enum: ['Solo', 'Group', 'Virtual']
             }],
 
-        default: ['One-on-one training'],
+        default: ['Solo'],
         required: true,
     },
 

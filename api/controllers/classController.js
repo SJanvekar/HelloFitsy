@@ -6,7 +6,7 @@ var functions = {
 
     //Add New Class fnc
     addNewClass: function (req, res){
-        if  ((!req.body.ClassName) ) {
+        if ((!req.body.ClassName)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else{
@@ -23,7 +23,7 @@ var functions = {
             });
             newClass.save(function (err, newClass){
                 if(err){
-                    res.json({success: false, msg: 'Failed to save'})
+                    res.json({success: false, msg: err})
                 }
                 else {
                     res.json({success: true, msg: 'Successfully saved'})
