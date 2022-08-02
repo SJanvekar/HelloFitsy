@@ -4,8 +4,9 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
-import 'package:balance/screen/login/components/profilePictureUpload.dart';
+import 'package:balance/screen/createClass/createClassDetails.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
@@ -27,9 +28,6 @@ enum ClassType { solo, group, virtual }
 
 class _CreateClassType extends State<CreateClassType> {
   //variables
-  bool _buttonPressed = false;
-  // final passwordController = TextEditingController();
-
   Color _currentBorderColorSolo = snow;
   Color _currentIconBackgroundColorSolo = bone60;
   Color _currentIconColorSolo = strawberry;
@@ -80,23 +78,6 @@ class _CreateClassType extends State<CreateClassType> {
     });
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   // Start listening to changes.
-  //   passwordController.addListener(_changePasswordVisibility);
-  //   passwordController.addListener(_changePasswordConfirmVisibility);
-  // }
-
-  // @override
-  // void dispose() {
-  //   // Clean up the controller when the widget is removed from the widget tree.
-  //   // This also removes the _printLatestValue listener.
-  //   passwordController.dispose();
-  //   super.dispose();
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +100,7 @@ class _CreateClassType extends State<CreateClassType> {
                 onPressed: () {
                   print("Cancel");
                   Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true, builder: (context) => Login()));
+                      fullscreenDialog: true, builder: (context) => Home()));
                 },
                 child: Text("Cancel", style: logInPageNavigationButtons),
               ),
@@ -193,7 +174,6 @@ class _CreateClassType extends State<CreateClassType> {
                     ),
                     onTap: () => {
                       setState(() {
-                        _buttonPressed = true;
                         _ButtonOnPressed(ClassType.solo);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.solo.toString().split('.').last);
@@ -249,7 +229,6 @@ class _CreateClassType extends State<CreateClassType> {
                     ),
                     onTap: () => {
                       setState(() {
-                        _buttonPressed = true;
                         _ButtonOnPressed(ClassType.group);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.group.toString().split('.').last);
@@ -305,7 +284,6 @@ class _CreateClassType extends State<CreateClassType> {
                     ),
                     onTap: () => {
                       setState(() {
-                        _buttonPressed = true;
                         _ButtonOnPressed(ClassType.virtual);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.virtual.toString().split('.').last);
@@ -329,8 +307,9 @@ class _CreateClassType extends State<CreateClassType> {
                   ),
                   onTap: () => {
                         print("Continue button pressed"),
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfilePictureUpload()))
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => CreateClassDetails()))
                       }),
             ),
           ],
