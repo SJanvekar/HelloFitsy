@@ -1,5 +1,7 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
@@ -20,6 +22,28 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   Color titleColor = Colors.transparent;
+  Color _textColor = Colors.transparent;
+  late ScrollController _scrollController;
+//----------
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _scrollController = ScrollController()
+      ..addListener(() {
+        setState(() {
+          _textColor = _isSliverAppBarExpanded ? jetBlack : Colors.transparent;
+        });
+      });
+  }
+
+//----------
+  bool get _isSliverAppBarExpanded {
+    return _scrollController.hasClients &&
+        _scrollController.offset >
+            (MediaQuery.of(context).size.height * 0.4 - kToolbarHeight);
+  }
 
 //Title Colour Function
   _changeTitleColor() {
@@ -40,54 +64,73 @@ class _UserProfileState extends State<UserProfile> {
     return Scaffold(
       backgroundColor: snow,
       extendBodyBehindAppBar: true,
-      body: CustomScrollView(shrinkWrap: false, slivers: [
-        // SliverPersistentHeader(
-        //   delegate: MySliverAppBar(expandedHeight: 375),
-        //   pinned: true,
-        // ),
-        //App Bar
-        SliverAppBar(
-          // title: Text('Salman Janvekar',
-          //     style: TextStyle(
-          //         color: jetBlack,
-          //         fontFamily: 'SFDisplay',
-          //         fontWeight: FontWeight.w600,
-          //         fontSize: 22.0)),
-
-          toolbarHeight: 65,
-
-          flexibleSpace: FlexibleSpaceBar(
-            background: Image.asset(
-              'assets/images/theBOY.JPG',
-              fit: BoxFit.cover,
+      body: CustomScrollView(
+          shrinkWrap: false,
+          controller: _scrollController,
+          slivers: [
+            SliverAppBar(
+              toolbarHeight: 65,
+              flexibleSpace: FlexibleSpaceBar(
+                background:
+                    Image.asset('assets/images/theBOY.JPG', fit: BoxFit.cover),
+                centerTitle: true,
+                title: Text('Salman Janvekar',
+                    style: TextStyle(
+                        color: _textColor,
+                        fontFamily: 'SFDisplay',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 22.0)),
+              ),
+              elevation: 0,
+              onStretchTrigger: _changeTitleColor(),
+              stretch: true,
+              floating: false,
+              pinned: true,
+              expandedHeight: MediaQuery.of(context).size.height * 0.45,
+              backgroundColor: snow,
             ),
-            title: userTitleCard(),
-            centerTitle: true,
-          ),
-          elevation: 0,
-          onStretchTrigger: _changeTitleColor(),
-          stretch: false,
-          floating: false,
-          pinned: true,
-          expandedHeight: MediaQuery.of(context).size.height * 0.45,
-          backgroundColor: snow,
-
-          // bottom: PreferredSize(
-          //   preferredSize: Size.fromHeight(0),
-          //   child: Container(
-          //     height: 40,
-          //     decoration: BoxDecoration(
-          //         color: snow,
-          //         borderRadius: BorderRadius.only(
-          //           topLeft: Radius.circular(20),
-          //           topRight: Radius.circular(20),
-          //         )),
-          //   ),
-          // ),
-        ),
-
-        ListDataTest()
-      ]),
+            SliverList(
+                delegate: SliverChildListDelegate([
+              Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10, left: 26.0, right: 26.0),
+                  child: Container(
+                    color: jetBlack,
+                    height: 200,
+                  )),
+              Padding(
+                padding: const EdgeInsets.only(top: 2, left: 26.0, right: 26.0),
+                child: Container(
+                  color: jetBlack80,
+                  height: 200,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
+                child: Container(
+                  color: jetBlack60,
+                  height: 200,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
+                child: Container(
+                  color: jetBlack40,
+                  height: 200,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
+                child: Container(
+                  color: jetBlack20,
+                  height: 200,
+                ),
+              ),
+            ])),
+          ]),
     );
   }
 }
@@ -149,32 +192,6 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
-}
-
-//Sliver List test
-Widget ListDataTest() {
-  return SliverList(
-      delegate: SliverChildListDelegate([
-    Padding(
-        padding: EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
-        child: UserProfileComponent()),
-    PageDivider(),
-    Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
-      child: classDesc(),
-    ),
-    PageDivider(),
-    Padding(
-      padding: const EdgeInsets.only(
-          top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
-      child: classCategories(),
-    ),
-    PageDivider(),
-    Padding(
-        padding:
-            EdgeInsets.only(top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
-        child: classReviews())
-  ]));
 }
 
 //Class Type and Title
@@ -304,211 +321,3 @@ Widget trainerRating() {
     ],
   );
 }
-
-//Class Desc
-Widget classDesc() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 10.0),
-        child: Text('About this class',
-            style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack,
-                fontSize: 16,
-                fontWeight: FontWeight.w600)),
-      ),
-      Text(
-        'This is an introductory course teaching the fundamental skills of tennis. Focus includes: basic strokes; strategy; rules; scoring; etiquette; practice drills; singles and doubles play. The more experienced students will receive instruction on use of spin; court positioning; footwork; and advanced strategies.',
-        style: TextStyle(
-            fontFamily: 'SFDisplay',
-            color: jetBlack60,
-            fontSize: 14,
-            fontWeight: FontWeight.w500),
-      ),
-    ],
-  );
-}
-
-//Class Categories
-Widget classCategories() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 15.0),
-        child: Text('Related Categories',
-            style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack,
-                fontSize: 16,
-                fontWeight: FontWeight.w600)),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: CategorySmall(),
-      ),
-    ],
-  );
-}
-
-//Class Reviews
-Widget classReviews() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Reviews',
-                style: TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: jetBlack,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600)),
-            GestureDetector(
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: Text('View all',
-                    style: TextStyle(
-                        fontFamily: 'SFDisplay',
-                        color: shark,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600)),
-              ),
-              onTap: () => print('View all Reviews Button Pressed'),
-            )
-          ],
-        ),
-      ),
-      ReviewCard(),
-    ],
-  );
-}
-
-//Persistent Header Private Class
-class _TitleSliverDelegate extends SliverPersistentHeaderDelegate {
-  final String _classType;
-  final String _classTitle;
-
-  _TitleSliverDelegate(this._classType, this._classTitle);
-
-  @override
-  Widget build(
-      BuildContext context, double shrjetBlackOffset, bool overlapsContent) {
-    // TODO: implement build
-    return Container(
-        decoration: BoxDecoration(
-          color: snow,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
-                right: 0,
-                left: 20,
-                bottom: 2,
-              ),
-              child: Text(
-                _classType,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: jetBlack40,
-                    letterSpacing: -0.75),
-                maxLines: 1,
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                ),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 52,
-                    minHeight: 26,
-                    maxWidth: 335,
-                    minWidth: 335,
-                  ),
-                  child: AutoSizeText(
-                    _classTitle,
-                    minFontSize: 18,
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w700,
-                        color: jetBlack,
-                        letterSpacing: -0.75),
-                    maxLines: 2,
-                  ),
-                )),
-          ],
-        ));
-  }
-
-  @override
-  // TODO: implement maxExtent
-  double get maxExtent => 100;
-
-  @override
-  // TODO: implement minExtent
-  double get minExtent => 74;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    // TODO: implement shouldRebuild
-    return false;
-  }
-}
-
-//Class Date
-
-// Widget classDate() {
-//   return Padding(
-//     padding: const EdgeInsets.only(left: 20.0),
-//     child: Column(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         RichText(
-//           text: TextSpan(children: [
-//             //Month
-//             TextSpan(
-//                 text: 'May ',
-//                 style: TextStyle(
-//                   fontFamily: 'SFDisplay',
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.w700,
-//                   color: jetBlack,
-//                 )),
-//             //Date
-//             TextSpan(
-//                 text: '22nd',
-//                 style: TextStyle(
-//                   fontFamily: 'SFDisplay',
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.w600,
-//                   color: jetBlack,
-//                 ))
-//           ]),
-//         ),
-//         Text(
-//           '2022',
-//           style: TextStyle(
-//             fontFamily: 'SFDisplay',
-//             fontSize: 24,
-//             fontWeight: FontWeight.w200,
-//             color: jetBlack,
-//           ),
-//         )
-//       ],
-//     ),
-//   );
-// }
-
-
