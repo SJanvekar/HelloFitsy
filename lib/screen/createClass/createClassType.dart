@@ -8,6 +8,7 @@ import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/createClass/createClassDetails.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
+import 'package:balance/sharedWidgets/classes/classModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,9 +23,19 @@ class CreateClassType extends StatefulWidget {
   State<CreateClassType> createState() => _CreateClassType();
 }
 
-var classType;
+Class classTemplate = Class(
+    className: "",
+    classDescription: "",
+    classImage: "",
+    classType: ClassType.solo,
+    classLocation: "",
+    classRating: 0,
+    classReview: 0,
+    classPrice: 0,
+    classTrainer: "",
+    classLiked: false);
 
-enum ClassType { solo, group, virtual }
+// enum ClassType { solo, group, virtual }
 
 class _CreateClassType extends State<CreateClassType> {
   //variables
@@ -177,7 +188,7 @@ class _CreateClassType extends State<CreateClassType> {
                         _ButtonOnPressed(ClassType.solo);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.solo.toString().split('.').last);
-                        classType = ClassType.solo.toString().split('.').last;
+                        classTemplate.classType = ClassType.solo;
                       })
                     },
                   ),
@@ -232,7 +243,7 @@ class _CreateClassType extends State<CreateClassType> {
                         _ButtonOnPressed(ClassType.group);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.group.toString().split('.').last);
-                        classType = ClassType.group.toString().split('.').last;
+                        classTemplate.classType = ClassType.group;
                       })
                     },
                   ),
@@ -287,8 +298,7 @@ class _CreateClassType extends State<CreateClassType> {
                         _ButtonOnPressed(ClassType.virtual);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.virtual.toString().split('.').last);
-                        classType =
-                            ClassType.virtual.toString().split('.').last;
+                        classTemplate.classType = ClassType.virtual;
                       })
                     },
                   ),
@@ -309,7 +319,8 @@ class _CreateClassType extends State<CreateClassType> {
                         print("Continue button pressed"),
                         Navigator.of(context).push(CupertinoPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => CreateClassDetails()))
+                            builder: (context) => CreateClassDetails(
+                                classTemplate: classTemplate)))
                       }),
             ),
           ],

@@ -1,18 +1,22 @@
 import 'dart:ffi';
 
+enum ClassType { solo, group, virtual }
+
 class Class {
   String className;
+  String classDescription;
   String classImage;
-  String classType;
+  ClassType classType;
   String classLocation;
   double classRating;
-  int classReview;
-  int classPrice;
+  double classReview;
+  double classPrice;
   String classTrainer;
   bool classLiked;
 
   Class(
       {required this.className,
+      required this.classDescription,
       required this.classImage,
       required this.classType,
       required this.classLocation,
@@ -25,9 +29,10 @@ class Class {
 
 List<Class> classList = [
   Class(
-    className: "Yute Tennis Summer Program",
-    classImage: "assets/images/egTennisClass.jpg",
-    classType: "Solo",
+    className: "Yute Tennis Summer Fundraiser Program",
+    classDescription: "Bullshit sudden description",
+    classImage: "assets/categories/CategoryPhyisque.png",
+    classType: ClassType.solo,
     classLocation: "Toronto, Ontario",
     classRating: 4.5,
     classReview: 40,
@@ -37,8 +42,9 @@ List<Class> classList = [
   ),
   Class(
     className: "For people who think crossfit is valid",
+    classDescription: "Bullshit sudden description",
     classImage: "assets/images/egCFClass.jpg",
-    classType: "Group",
+    classType: ClassType.group,
     classLocation: "Oakville, Ontario",
     classRating: 3,
     classReview: 10,
@@ -48,8 +54,9 @@ List<Class> classList = [
   ),
   Class(
     className: "Assholes who take Martial Arts",
+    classDescription: "Bullshit sudden description",
     classImage: "assets/images/egMMAClass.jpg",
-    classType: "Group",
+    classType: ClassType.group,
     classLocation: "Toronto, Ontario",
     classRating: 4.5,
     classReview: 40,
@@ -59,8 +66,9 @@ List<Class> classList = [
   ),
   Class(
     className: "Is table tennis even a real sport?",
+    classDescription: "Bullshit sudden description",
     classImage: "assets/images/egTableTennisClass.jpg",
-    classType: "Solo",
+    classType: ClassType.solo,
     classLocation: "Milton, Ontario",
     classRating: 4.5,
     classReview: 40,
@@ -70,8 +78,9 @@ List<Class> classList = [
   ),
   Class(
     className: "How many calories do you think Yoga really burns?",
+    classDescription: "Bullshit sudden description",
     classImage: "assets/images/egYogaClass.jpg",
-    classType: "Virtual",
+    classType: ClassType.virtual,
     classLocation: "Toronto, Ontario",
     classRating: 4.5,
     classReview: 40,
@@ -81,8 +90,9 @@ List<Class> classList = [
   ),
   Class(
     className: "Imagine running?",
+    classDescription: "Bullshit sudden description",
     classImage: "assets/images/egRunningClass.jpg",
-    classType: "Solo",
+    classType: ClassType.solo,
     classLocation: "Toronto, Ontario",
     classRating: 4.5,
     classReview: 40,
@@ -92,8 +102,9 @@ List<Class> classList = [
   ),
   Class(
     className: "For Juice Heads that can't get over their Ex",
+    classDescription: "Bullshit sudden description",
     classImage: "assets/images/egPhysiqueClass.jpg",
-    classType: "Solo",
+    classType: ClassType.solo,
     classLocation: "Toronto, Ontario",
     classRating: 4.5,
     classReview: 40,

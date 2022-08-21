@@ -7,7 +7,6 @@ import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/upcomingClasses.dart';
 import 'package:balance/sharedWidgets/classes/classListHome.dart';
-import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -91,11 +90,6 @@ class Home extends StatelessWidget {
                   TabBar(
                     indicatorColor: jetBlack80,
                     indicatorWeight: 2,
-                    indicator: BubbleTabIndicator(
-                        indicatorHeight: 20,
-                        indicatorColor: bone,
-                        indicatorRadius: 50,
-                        padding: EdgeInsets.all(5)),
                     labelPadding: EdgeInsets.zero,
                     padding: EdgeInsets.only(right: 180, left: 20),
                     indicatorPadding: EdgeInsets.symmetric(horizontal: 5),

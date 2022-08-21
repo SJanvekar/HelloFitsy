@@ -5,10 +5,12 @@ import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassPicture.dart';
+import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassType.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
+import 'package:balance/sharedWidgets/classes/classModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,17 +19,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
 class CreateClassDetails extends StatefulWidget {
-  const CreateClassDetails({Key? key}) : super(key: key);
+  const CreateClassDetails({Key? key, required this.classTemplate})
+      : super(key: key);
+
+  final Class classTemplate;
 
   @override
   State<CreateClassDetails> createState() => _CreateClassDetails();
 }
-
-var className;
-var classPrice;
-var classDescription;
-
-enum ClassType { solo, group, virtual }
 
 class _CreateClassDetails extends State<CreateClassDetails> {
   //variables
@@ -72,9 +71,9 @@ class _CreateClassDetails extends State<CreateClassDetails> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               pageTitle(),
-              editClassTitle(),
-              editClassPrice(),
-              editClassDescription(),
+              editClassTitle(widget.classTemplate),
+              editClassPrice(widget.classTemplate),
+              editClassDescription(widget.classTemplate),
 
               //Slider Stuff
               Padding(
@@ -85,11 +84,29 @@ class _CreateClassDetails extends State<CreateClassDetails> {
                       textColor: snow,
                       buttonText: "Continue",
                     ),
-                    onTap: () => {
-                          print("Continue button pressed"),
+                    onTap: () {
+                      print(widget.classTemplate.classType
+                          .toString()
+                          .split('.')
+                          .last);
+                      switch (widget.classTemplate.classType) {
+                        case ClassType.solo:
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CreateClassPicture()))
-                        }),
+                              builder: (context) => CreateClassPicture(
+                                  classTemplate: widget.classTemplate)));
+                          break;
+                        case ClassType.group:
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CreateClassSchedule(
+                                  classTemplate: widget.classTemplate)));
+                          break;
+                        case ClassType.virtual:
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CreateClassPicture(
+                                  classTemplate: widget.classTemplate)));
+                          break;
+                      }
+                    }),
               ),
             ],
           ),
@@ -122,7 +139,7 @@ Widget pageTitle() {
   );
 }
 
-Widget editClassTitle() {
+Widget editClassTitle(Class template) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.only(
@@ -158,15 +175,14 @@ Widget editClassTitle() {
               ),
             ),
             onChanged: (val) {
-              className = val;
+              template.className = val;
             },
           )),
     ),
   );
 }
 
-Widget editClassPrice() {
-  //TODO: This input is limited to numbers
+Widget editClassPrice(Class template) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.only(
@@ -201,14 +217,14 @@ Widget editClassPrice() {
               ),
             ),
             onChanged: (val) {
-              className = val;
+              template.classPrice = double.parse(val);
             },
           )),
     ),
   );
 }
 
-Widget editClassDescription() {
+Widget editClassDescription(Class template) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.only(
@@ -240,7 +256,7 @@ Widget editClassDescription() {
               ),
             ),
             onChanged: (val) {
-              className = val;
+              template.classDescription = val;
             },
           )),
     ),

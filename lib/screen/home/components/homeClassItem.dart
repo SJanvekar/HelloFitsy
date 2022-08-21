@@ -26,9 +26,9 @@ class HomeClassItem extends StatefulWidget {
   String classTrainer;
   String userName;
   String className;
-  String classType;
+  ClassType classType;
   String classLocation;
-  int classPrice;
+  double classPrice;
   bool classLiked;
   String classImage;
 

@@ -18,12 +18,13 @@ class Requests {
     }
   }
 
-  addClass(className, classType, classLocation, classRating, classReview,
-      classPrice, classTrainer, classLiked) async {
+  addClass(className, classDescription, classType, classLocation, classRating,
+      classReview, classPrice, classTrainer, classLiked) async {
     try {
       return await dio.post('http://www.fitsy.ca/addclass',
           data: {
             "ClassName": className,
+            "ClassDescription": classDescription,
             "ClassType": classType,
             "ClassLocation": classLocation,
             "ClassRating": classRating,

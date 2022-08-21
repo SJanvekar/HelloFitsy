@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/createClass/createClassCategory.dart';
 import 'package:balance/screen/createClass/createClassDetails.dart';
-import 'package:balance/screen/createClass/createClassDocument.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
@@ -15,16 +14,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
-class CreateClassPicture extends StatefulWidget {
-  CreateClassPicture({Key? key, required this.classTemplate}) : super(key: key);
+class CreateClassDocument extends StatefulWidget {
+  CreateClassDocument({Key? key, required this.classTemplate})
+      : super(key: key);
 
   final Class classTemplate;
 
   @override
-  State<CreateClassPicture> createState() => _CreateClassPicture();
+  State<CreateClassDocument> createState() => _CreateClassDocument();
 }
 
-class _CreateClassPicture extends State<CreateClassPicture> {
+class _CreateClassDocument extends State<CreateClassDocument> {
   File? image;
 
   Future pickImage(ImageSource source) async {
@@ -106,7 +106,7 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                 child: LoginFooterButton(
                     buttonColor: ocean,
                     textColor: snow,
-                    buttonText: 'Upload Picture'),
+                    buttonText: 'Upload Document'),
                 onTap: () => {
                   pickImage(ImageSource.gallery),
                 },
@@ -119,28 +119,11 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                     buttonColor: strawberry,
                     textColor: snow,
                     buttonText: 'Continue'),
-                onTap: () {
-                  print(widget.classTemplate.classType
-                      .toString()
-                      .split('.')
-                      .last);
-                  switch (widget.classTemplate.classType) {
-                    case ClassType.solo:
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassCategory(
-                              classTemplate: widget.classTemplate)));
-                      break;
-                    case ClassType.group:
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassCategory(
-                              classTemplate: widget.classTemplate)));
-                      break;
-                    case ClassType.virtual:
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassDocument(
-                              classTemplate: widget.classTemplate)));
-                      break;
-                  }
+                onTap: () => {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => CreateClassCategory(
+                            classTemplate: widget.classTemplate,
+                          )))
                 },
               ),
             ),
@@ -163,7 +146,7 @@ Widget pageTitle() {
           padding: EdgeInsets.only(top: 25),
           decoration: BoxDecoration(color: snow),
           child: Text(
-            'Upload a picture for your class',
+            'Attach documents to the virtual class',
             style: logInPageTitle,
             textAlign: TextAlign.center,
           )),

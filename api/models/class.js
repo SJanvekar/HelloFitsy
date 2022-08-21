@@ -18,7 +18,12 @@ var ClassSchema = new Schema({
     ClassName: {
         type: String,
         required: true
+    },
 
+    //Class Name
+    ClassDescription: {
+        type: String,
+        required: true
     },
 
     //Class Type
