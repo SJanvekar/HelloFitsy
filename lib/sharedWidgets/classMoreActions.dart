@@ -6,7 +6,9 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class classMoreActions extends StatelessWidget {
-  const classMoreActions({Key? key}) : super(key: key);
+  classMoreActions({Key? key, required this.userFullName}) : super(key: key);
+
+  String userFullName;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class classMoreActions extends StatelessWidget {
                   child: Column(
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: Text('Report',
                             style: TextStyle(
@@ -41,7 +43,7 @@ class classMoreActions extends StatelessWidget {
                         padding: EdgeInsets.only(left: 10.0, right: 10),
                         child: PageDivider(),
                       ),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
                         child: Text('Block',
                             style: TextStyle(

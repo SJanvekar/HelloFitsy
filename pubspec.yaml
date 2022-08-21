@@ -48,6 +48,8 @@ dependencies:
   animated_splash_screen: ^1.2.0
   path_provider: ^2.0.11
   animations: ^2.0.3
+  bubble_tab_indicator: ^0.1.6
+  intl: ^0.17.0
 
 
 dev_dependencies:
@@ -106,6 +108,8 @@ flutter:
     - assets/icons/navigationBarIcon/
     - assets/icons/classTypeIcons/
     - assets/images/createClass/
+    - assets/icons/searchIcons/
+    - assets/icons/externalCompanyIcons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

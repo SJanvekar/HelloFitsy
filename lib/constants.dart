@@ -99,3 +99,11 @@ const homeFeedTitle = TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.w400,
 );
+
+const pageTitles = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 26,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);

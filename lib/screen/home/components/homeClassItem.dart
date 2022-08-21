@@ -1,155 +1,183 @@
+import 'dart:ffi';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../../sharedWidgets/userProfile.dart';
 import 'package:balance/sharedWidgets/classes/classModel.dart';
 import 'package:balance/Requests/requests.dart';
 
 class HomeClassItem extends StatefulWidget {
-  const HomeClassItem({Key? key}) : super(key: key);
+  HomeClassItem({
+    Key? key,
+    required this.classTrainer,
+    required this.userName,
+    required this.className,
+    required this.classType,
+    required this.classLocation,
+    required this.classPrice,
+    required this.classLiked,
+    required this.classImage,
+  }) : super(key: key);
+
+  String classTrainer;
+  String userName;
+  String className;
+  String classType;
+  String classLocation;
+  int classPrice;
+  bool classLiked;
+  String classImage;
 
   @override
   State<HomeClassItem> createState() => _HomeClassItem();
 }
 
-final allClasses = classList[0];
-
 class _HomeClassItem extends State<HomeClassItem> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:
-          const EdgeInsets.only(top: 30, bottom: 20, left: 26.0, right: 26.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              UserProfileComponent(),
-              Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: GestureDetector(
+    return GestureDetector(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 26.0,
+          right: 26.0,
+          top: 25,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                UserProfileComponent(
+                  userFullName: widget.classTrainer,
+                  userName: widget.userName,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: GestureDetector(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SvgPicture.asset('assets/icons/Ellipses.svg',
+                            color: jetBlack60),
+                        Container(
+                          height: 40,
+                          width: 60,
+                          color: Colors.transparent,
+                        ),
+                      ],
+                    ),
+                    onTap: () => {
+                      showModalBottomSheet(
+                          isDismissible: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return classMoreActions(
+                              userFullName: widget.classTrainer,
+                            );
+                          })
+                    },
+                  ),
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0, bottom: 10),
+              child: GestureDetector(
+                child: Center(
                   child: Stack(
-                    alignment: Alignment.center,
+                    alignment: Alignment.bottomCenter,
                     children: [
-                      SvgPicture.asset('assets/icons/Ellipses.svg',
-                          color: jetBlack60),
                       Container(
-                        height: 40,
-                        width: 60,
-                        color: Colors.transparent,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                  widget.classImage,
+                                ),
+                                fit: BoxFit.cover),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        height: 220,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                            gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  jetBlack.withOpacity(0.0),
+                                  jetBlack,
+                                ],
+                                stops: [
+                                  0.0,
+                                  1.0
+                                ])),
+                        height: 220,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 20, bottom: 10),
+                          child: Column(
+                            children: [
+                              classTitle(widget.className),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 2.0),
+                                child: classSubHeader(widget.classLocation),
+                              ),
+                              classPrice(widget.classPrice)
+                            ],
+                          )),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: 230, right: 10.0, bottom: 170),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 10.0),
+                              child: SvgPicture.asset(
+                                'assets/icons/classTypeIcons/OneOnOneIcon.svg',
+                                height: 32,
+                                width: 32,
+                              ),
+                            ),
+                            GestureDetector(
+                              child: SvgPicture.asset(
+                                widget.classLiked
+                                    ? 'assets/icons/SaveButtonClassCardLiked.svg'
+                                    : 'assets/icons/SaveButtonClassCard.svg',
+                                height: 32,
+                                width: 32,
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  widget.classLiked = !widget.classLiked;
+                                  HapticFeedback.mediumImpact();
+                                });
+                              },
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                  onTap: () => {
-                    showModalBottomSheet(
-                        isDismissible: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return classMoreActions();
-                        })
-                  },
-                ),
-              )
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 10),
-            child: GestureDetector(
-              child: Center(
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                'assets/images/exampleClass.png',
-                              ),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      height: 250,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                jetBlack.withOpacity(0.0),
-                                jetBlack,
-                              ],
-                              stops: [
-                                0.0,
-                                1.0
-                              ])),
-                      height: 250,
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            top: 160.0, left: 20, bottom: 10),
-                        child: Column(
-                          children: [
-                            classTitle(),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 2.0),
-                              child: classSubHeader(),
-                            ),
-                            classPrice()
-                          ],
-                        )),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: 230, right: 10.0, bottom: 200),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 10.0),
-                            child: SvgPicture.asset(
-                              'assets/icons/classTypeIcons/OneOnOneIcon.svg',
-                              height: 32,
-                              width: 32,
-                            ),
-                          ),
-                          SvgPicture.asset(
-                            'assets/icons/SaveButtonClassCard.svg',
-                            height: 32,
-                            width: 32,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
                 ),
               ),
-              onTap: () {
-                print("TAPPED");
-                Requests().addClass(
-                    allClasses.className,
-                    allClasses.classType,
-                    allClasses.classLocation,
-                    allClasses.classRating,
-                    allClasses.classReview,
-                    allClasses.classPrice,
-                    allClasses.classTrainer,
-                    allClasses.classLiked);
-              },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+      onTap: () => {print(widget.className)},
     );
   }
 }
 
 //Class Type and Title
-Widget classTitle() {
+Widget classTitle(classTitle) {
   return Row(
     children: [
       Expanded(
@@ -160,7 +188,7 @@ Widget classTitle() {
               Padding(
                   padding: EdgeInsets.only(right: 20),
                   child: AutoSizeText(
-                    allClasses.className,
+                    classTitle,
                     minFontSize: 18,
                     style: TextStyle(
                       fontSize: 18,
@@ -178,11 +206,11 @@ Widget classTitle() {
 }
 
 //Class Location
-Widget classSubHeader() {
+Widget classSubHeader(classLocation) {
   return Row(
     children: [
       Text(
-        allClasses.classLocation,
+        classLocation,
         style: TextStyle(
             color: snow,
             fontSize: 13,
@@ -194,11 +222,11 @@ Widget classSubHeader() {
 }
 
 //Price Widget
-Widget classPrice() {
+Widget classPrice(classPrice) {
   return Row(
     children: [
       Text(
-        allClasses.classPrice.toString(),
+        classPrice.toString(),
         style: TextStyle(
             color: strawberry,
             fontSize: 20,
@@ -220,50 +248,50 @@ Widget classPrice() {
 }
 
 //Unused Widgets
-Widget trainerRating() {
-  return Row(
-    children: [
-      //Star Icon
-      SvgPicture.asset(
-        'assets/icons/StarRating.svg',
-        height: 15,
-        width: 15,
-      ),
+// Widget trainerRating(classRating, classReview) {
+//   return Row(
+//     children: [
+//       //Star Icon
+//       SvgPicture.asset(
+//         'assets/icons/StarRating.svg',
+//         height: 15,
+//         width: 15,
+//       ),
 
-      //Rating (Numeric)
-      Padding(
-        padding: const EdgeInsets.only(left: 5.0),
-        child: Container(
-          height: 20,
-          width: 30,
-          decoration: BoxDecoration(
-              color: jetBlack, borderRadius: BorderRadius.circular(20.0)),
-          child: Center(
-            child: Text(
-              allClasses.classRating.toString(),
-              style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  color: snow,
-                  fontFamily: 'SFRounded'),
-            ),
-          ),
-        ),
-      ),
+//       //Rating (Numeric)
+//       Padding(
+//         padding: const EdgeInsets.only(left: 5.0),
+//         child: Container(
+//           height: 20,
+//           width: 30,
+//           decoration: BoxDecoration(
+//               color: jetBlack, borderRadius: BorderRadius.circular(20.0)),
+//           child: Center(
+//             child: Text(
+//               classRating.toString(),
+//               style: TextStyle(
+//                   fontSize: 11,
+//                   fontWeight: FontWeight.w700,
+//                   color: snow,
+//                   fontFamily: 'SFRounded'),
+//             ),
+//           ),
+//         ),
+//       ),
 
-      //Trainer Ratings Count
-      Padding(
-        padding: EdgeInsets.only(left: 5.0),
-        child: Text(
-          allClasses.classReview.toString(),
-          style: TextStyle(
-              color: shark,
-              fontSize: 13,
-              fontFamily: 'SFRounded',
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0),
-        ),
-      )
-    ],
-  );
-}
+//       //Trainer Ratings Count
+//       Padding(
+//         padding: EdgeInsets.only(left: 5.0),
+//         child: Text(
+//          classReview.toString(),
+//           style: TextStyle(
+//               color: shark,
+//               fontSize: 13,
+//               fontFamily: 'SFRounded',
+//               fontWeight: FontWeight.w500,
+//               letterSpacing: 0),
+//         ),
+//       )
+//     ],
+//   );
+// }

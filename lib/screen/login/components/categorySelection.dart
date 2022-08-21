@@ -155,7 +155,9 @@ class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrjetBlackOffset, bool overlapsContent) {
     // TODO: implement build
-    return SearchBar();
+    return SearchBar(
+      isAutoFocusTrue: false,
+    );
   }
 
   @override

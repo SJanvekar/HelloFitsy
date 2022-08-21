@@ -1,9 +1,16 @@
+import 'dart:math';
+
 import 'package:balance/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileComponent extends StatelessWidget {
-  const UserProfileComponent({Key? key}) : super(key: key);
+  UserProfileComponent(
+      {Key? key, required this.userFullName, required this.userName})
+      : super(key: key);
+
+  String userFullName;
+  String userName;
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +18,18 @@ class UserProfileComponent extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 22.5,
-          backgroundImage:
-              AssetImage('assets/images/profilePictureDefault.png'),
-          backgroundColor: snow,
+          // backgroundImage:
+          //     AssetImage('assets/images/profilePictureDefault.png'),
+          backgroundColor:
+              Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          child: Text(
+            userFullName[0],
+            style: TextStyle(
+                color: snow,
+                fontFamily: 'SFRounded',
+                fontSize: 20,
+                fontWeight: FontWeight.w600),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 10.0),
@@ -21,18 +37,18 @@ class UserProfileComponent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Test Trainer',
+                userFullName,
                 style: TextStyle(
                     color: jetBlack,
                     fontFamily: 'SFDisplay',
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600),
               ),
-              Text('Username',
+              Text(userName,
                   style: TextStyle(
                       color: shark,
                       fontFamily: 'SFDisplay',
-                      fontSize: 14,
+                      fontSize: 13,
                       fontWeight: FontWeight.w500))
             ],
           ),

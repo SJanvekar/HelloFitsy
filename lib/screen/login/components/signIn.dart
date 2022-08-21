@@ -345,7 +345,7 @@ Widget signInPartners() {
               Padding(
                 padding: const EdgeInsets.only(right: 11),
                 child: SvgPicture.asset(
-                  'assets/icons/Apple.svg',
+                  'assets/icons/externalCompanyIcons/Apple.svg',
                   color: jetBlack,
                 ),
               ),
@@ -384,7 +384,8 @@ Widget signInPartners() {
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 11),
-                child: SvgPicture.asset('assets/icons/Google.svg'),
+                child: SvgPicture.asset(
+                    'assets/icons/externalCompanyIcons/Google.svg'),
               ),
               Text(
                 'Continue with Google',

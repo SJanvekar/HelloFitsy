@@ -1,3 +1,4 @@
+import 'package:balance/sharedWidgets/classes/classListHome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,8 +7,6 @@ class FollowingFeed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        // body: ListView.builder(itemBuilder: )
-        );
+    return Scaffold(body: ClassListHome());
   }
 }

@@ -101,7 +101,10 @@ class ClassCardOpen extends StatelessWidget {
           Padding(
               padding:
                   EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
-              child: UserProfileComponent()),
+              child: UserProfileComponent(
+                userFullName: 'Some User',
+                userName: 'username',
+              )),
           PageDivider(),
           Padding(
             padding:

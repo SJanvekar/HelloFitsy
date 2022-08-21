@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/explore/components/exploreHome.dart';
 import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
@@ -48,7 +49,7 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
-    ClassCardOpen(),
+    Explore(),
     UserProfile(),
   ];
 
@@ -70,51 +71,56 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        elevation: 0,
-        backgroundColor: snow,
-        // showSelectedLabels: false,
-        // showUnselectedLabels: false,
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/navigationBarIcon/Home.svg',
-                height: 22,
-                color: jetBlack,
-              ),
-              activeIcon: SvgPicture.asset(
-                'assets/icons/navigationBarIcon/Home.svg',
-                height: 22,
-                color: strawberry,
-              ),
-              label: ''),
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/navigationBarIcon/Search.svg',
-                height: 22,
-                color: jetBlack,
-              ),
-              activeIcon: SvgPicture.asset(
-                'assets/icons/navigationBarIcon/Search.svg',
-                height: 22,
-                color: strawberry,
-              ),
-              label: ''),
-          BottomNavigationBarItem(
-              icon: SvgPicture.asset(
-                'assets/icons/navigationBarIcon/User.svg',
-                height: 22,
-                color: jetBlack,
-              ),
-              activeIcon: SvgPicture.asset(
-                'assets/icons/navigationBarIcon/User.svg',
-                height: 22,
-                color: strawberry,
-              ),
-              label: ''),
-        ],
+      bottomNavigationBar: Container(
+        decoration: const BoxDecoration(
+            color: snow,
+            border: Border(top: BorderSide(color: shark40, width: 1.0))),
+        child: BottomNavigationBar(
+          elevation: 0,
+          backgroundColor: snow,
+          // showSelectedLabels: false,
+          // showUnselectedLabels: false,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/navigationBarIcon/Home.svg',
+                  height: 22,
+                  color: jetBlack,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/navigationBarIcon/Home.svg',
+                  height: 22,
+                  color: strawberry,
+                ),
+                label: ''),
+            BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/navigationBarIcon/Search.svg',
+                  height: 22,
+                  color: jetBlack,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/navigationBarIcon/Search.svg',
+                  height: 22,
+                  color: strawberry,
+                ),
+                label: ''),
+            BottomNavigationBarItem(
+                icon: SvgPicture.asset(
+                  'assets/icons/navigationBarIcon/User.svg',
+                  height: 22,
+                  color: jetBlack,
+                ),
+                activeIcon: SvgPicture.asset(
+                  'assets/icons/navigationBarIcon/User.svg',
+                  height: 22,
+                  color: strawberry,
+                ),
+                label: ''),
+          ],
+        ),
       ),
     );
   }
