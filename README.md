@@ -1,4 +1,4 @@
-# balance
+# Fitsy
 
 A new Flutter project.
 
