@@ -20,7 +20,8 @@ var functions = {
                 ClassReview: req.body.ClassReview,
                 ClassPrice: req.body.ClassPrice,
                 ClassTrainer: req.body.ClassTrainer,
-                ClassLiked: req.body.ClassLiked
+                ClassLiked: req.body.ClassLiked,
+                ClassTimes: req.body.ClassTimes,
             });
             newClass.save(function (err, newClass){
                 if(err){

@@ -2,6 +2,18 @@ import 'dart:ffi';
 
 enum ClassType { solo, group, virtual }
 
+class Schedule {
+  Set<DateTime> dates;
+  DateTime startTime;
+  DateTime endTime;
+
+  Schedule({
+    required this.dates,
+    required this.startTime,
+    required this.endTime,
+  });
+}
+
 class Class {
   String className;
   String classDescription;
@@ -13,6 +25,7 @@ class Class {
   double classPrice;
   String classTrainer;
   bool classLiked;
+  List<Schedule> classTimes;
 
   Class(
       {required this.className,
@@ -24,7 +37,8 @@ class Class {
       required this.classReview,
       required this.classPrice,
       required this.classTrainer,
-      required this.classLiked});
+      required this.classLiked,
+      required this.classTimes});
 }
 
 List<Class> classList = [
@@ -39,6 +53,7 @@ List<Class> classList = [
     classPrice: 250,
     classTrainer: "Roger Federer",
     classLiked: true,
+    classTimes: [],
   ),
   Class(
     className: "For people who think crossfit is valid",
@@ -51,6 +66,7 @@ List<Class> classList = [
     classPrice: 50,
     classTrainer: "David Goggins",
     classLiked: false,
+    classTimes: [],
   ),
   Class(
     className: "Assholes who take Martial Arts",
@@ -63,6 +79,7 @@ List<Class> classList = [
     classPrice: 250,
     classTrainer: "Conor McGregor",
     classLiked: false,
+    classTimes: [],
   ),
   Class(
     className: "Is table tennis even a real sport?",
@@ -75,6 +92,7 @@ List<Class> classList = [
     classPrice: 250,
     classTrainer: "Chinese Legend",
     classLiked: false,
+    classTimes: [],
   ),
   Class(
     className: "How many calories do you think Yoga really burns?",
@@ -87,6 +105,7 @@ List<Class> classList = [
     classPrice: 250,
     classTrainer: "Roger Federer",
     classLiked: true,
+    classTimes: [],
   ),
   Class(
     className: "Imagine running?",
@@ -99,6 +118,7 @@ List<Class> classList = [
     classPrice: 250,
     classTrainer: "Roger Federer",
     classLiked: false,
+    classTimes: [],
   ),
   Class(
     className: "For Juice Heads that can't get over their Ex",
@@ -111,5 +131,6 @@ List<Class> classList = [
     classPrice: 250,
     classTrainer: "Roger Federer",
     classLiked: false,
+    classTimes: [],
   ),
 ];

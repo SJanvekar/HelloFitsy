@@ -19,7 +19,7 @@ class Requests {
   }
 
   addClass(className, classDescription, classType, classLocation, classRating,
-      classReview, classPrice, classTrainer, classLiked) async {
+      classReview, classPrice, classTrainer, classLiked, classTimes) async {
     try {
       return await dio.post('http://www.fitsy.ca/addclass',
           data: {
@@ -32,6 +32,7 @@ class Requests {
             "ClassPrice": classPrice,
             "ClassTrainer": classTrainer,
             "ClassLiked": classLiked,
+            "ClassTimes": classTimes,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

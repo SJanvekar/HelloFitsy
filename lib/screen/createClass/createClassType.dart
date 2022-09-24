@@ -33,7 +33,8 @@ Class classTemplate = Class(
     classReview: 0,
     classPrice: 0,
     classTrainer: "",
-    classLiked: false);
+    classLiked: false,
+    classTimes: []);
 
 // enum ClassType { solo, group, virtual }
 
@@ -223,7 +224,7 @@ class _CreateClassType extends State<CreateClassType> {
                               height: 75,
                               width: 75,
                               child: SvgPicture.asset(
-                                "assets/icons/Dumbell.svg",
+                                "assets/icons/Group.svg",
                                 color: _currentIconColorGroup,
                               ),
                             ),
@@ -278,7 +279,7 @@ class _CreateClassType extends State<CreateClassType> {
                               height: 75,
                               width: 75,
                               child: SvgPicture.asset(
-                                "assets/icons/Dumbell.svg",
+                                "assets/icons/Virtual.svg",
                                 color: _currentIconColorVirtual,
                               ),
                             ),

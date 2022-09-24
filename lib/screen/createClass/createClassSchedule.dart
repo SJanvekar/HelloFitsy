@@ -7,6 +7,7 @@ import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassPicture.dart';
 import 'package:balance/screen/createClass/createClassTimeList.dart';
 import 'package:balance/screen/createClass/createClassType.dart';
+import 'package:balance/screen/createClass/scheduleCalendar.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -30,6 +31,13 @@ class CreateClassSchedule extends StatefulWidget {
 
 class _CreateClassSchedule extends State<CreateClassSchedule> {
   //variables
+
+  Widget timeList() {
+    return Expanded(
+      flex: 1,
+      child: CreateClassTimeList(classTimes: widget.classTemplate.classTimes),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +79,7 @@ class _CreateClassSchedule extends State<CreateClassSchedule> {
           children: [
             pageTitle(),
             pageSubtitle(),
-            addTimeButton(),
+            addTimeButton(context, widget.classTemplate),
             timeList(),
 
             //Slider Stuff
@@ -144,31 +152,31 @@ Widget pageSubtitle() {
 }
 
 //Add Time Button
-Widget addTimeButton() {
+Widget addTimeButton(BuildContext context, Class classTemplate) {
   return Padding(
-    padding: const EdgeInsets.only(top: 20, right: 26),
-    child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-      Padding(
-        padding: const EdgeInsets.only(right: 10),
-        child: SvgPicture.asset("assets/icons/addTime.svg"),
-      ),
-      Text(
-        'Add time',
-        style: TextStyle(
-          fontFamily: 'SFDisplay',
-          color: strawberry,
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-        ),
-        textAlign: TextAlign.center,
-      )
-    ]),
-  );
-}
-
-Widget timeList() {
-  return Expanded(
-    flex: 1,
-    child: CreateClassTimeList(),
+    padding: const EdgeInsets.only(top: 20, right: 26, bottom: 20),
+    child: GestureDetector(
+        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: SvgPicture.asset("assets/icons/addTime.svg"),
+          ),
+          Text(
+            'Add time',
+            style: TextStyle(
+              fontFamily: 'SFDisplay',
+              color: strawberry,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+            ),
+            textAlign: TextAlign.center,
+          )
+        ]),
+        onTap: () {
+          print(classTemplate.className);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  ScheduleCalendar(classTemplate: classTemplate)));
+        }),
   );
 }
