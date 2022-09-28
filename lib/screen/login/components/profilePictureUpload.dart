@@ -6,8 +6,6 @@ import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 // var image = AssetImage('assets/images/profilePictureDefault.png');

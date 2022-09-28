@@ -1,15 +1,9 @@
-// ignore_for_file: unnecessary_new, prefer_const_constructors, prefer_const_literals_to_create_immutables
-
-import 'package:animations/animations.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/components/classCardOpen.dart';
-import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/upcomingClasses.dart';
+import 'package:balance/screen/profileSidebar/sidebar.dart';
 import 'package:balance/sharedWidgets/classes/classListHome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:balance/screen/createClass/createClassType.dart';
 
@@ -20,6 +14,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     return Scaffold(
+      drawer: SideBar(),
+      drawerEdgeDragWidth: MediaQuery.of(context).size.width,
       appBar: AppBar(
         toolbarHeight: 5,
         elevation: 0,
@@ -35,18 +31,32 @@ class Home extends StatelessWidget {
                 floating: true,
                 pinned: false,
                 toolbarHeight: 55,
-                centerTitle: false,
+                centerTitle: true,
                 elevation: 0,
                 backgroundColor: snow,
                 automaticallyImplyLeading: false,
+                leadingWidth: 60,
+                leading: Padding(
+                  padding: EdgeInsets.only(
+                    left: 26.0,
+                  ),
+                  child: CircleAvatar(
+                    foregroundImage: NetworkImage(
+                        'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1'),
+                    backgroundColor: Colors.transparent,
+
+                    // child: Image.asset(
+                    //   'assets/images/profilePictureSalman.jpeg',
+                    //   height: 30,
+                    //   width: 30,
+                    // ),
+                  ),
+                ),
                 stretch: true,
-                titleSpacing: 0,
-                title: Padding(
-                    padding: const EdgeInsets.only(left: 26.0, bottom: 10),
-                    child: Image.asset(
-                      'assets/images/Typeface.png',
-                      height: 45,
-                    )),
+                title: Image.asset(
+                  'assets/images/Typeface.png',
+                  height: 45,
+                ),
                 bottom: PreferredSize(
                     child: Container(
                       color: shark40,
@@ -55,27 +65,31 @@ class Home extends StatelessWidget {
                     preferredSize: Size.fromHeight(1)),
                 actions: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 26.0, bottom: 8),
+                    padding: const EdgeInsets.only(
+                      right: 26.0,
+                    ),
                     child: Row(
                       children: [
                         GestureDetector(
                           child: Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
+                            padding: const EdgeInsets.only(
+                              right: 30.0,
+                            ),
                             child: SvgPicture.asset(
-                              'assets/icons/CreateClass.svg',
+                              'assets/icons/generalIcons/notifications.svg',
                               height: 20,
                               width: 20,
                             ),
                           ),
                           onTap: () {
                             print("Create Class Button Pressed");
-                            Navigator.of(context).push(CupertinoPageRoute(
-                                fullscreenDialog: true,
-                                builder: (context) => CreateClassType()));
+                            // Navigator.of(context).push(CupertinoPageRoute(
+                            //     fullscreenDialog: true,
+                            //     builder: (context) => CreateClassType()));
                           },
                         ),
                         SvgPicture.asset(
-                          'assets/icons/Chat.svg',
+                          'assets/icons/generalIcons/chat.svg',
                           height: 20,
                           width: 20,
                         ),
@@ -84,110 +98,110 @@ class Home extends StatelessWidget {
                   )
                 ],
               ),
-              SliverPersistentHeader(
-                floating: true,
-                delegate: _SliverAppBarDelegate(
-                  TabBar(
-                    indicatorColor: jetBlack80,
-                    indicatorWeight: 2,
-                    labelPadding: EdgeInsets.zero,
-                    padding: EdgeInsets.only(right: 180, left: 20),
-                    indicatorPadding: EdgeInsets.symmetric(horizontal: 5),
-                    labelColor: jetBlack80,
-                    labelStyle: TextStyle(
-                        fontFamily: 'SFDisplay',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
-                    unselectedLabelColor: jetBlack40,
-                    unselectedLabelStyle: TextStyle(
-                        fontFamily: 'SFDisplay',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500),
-                    tabs: [
-                      Tab(
-                        text: 'Home',
-                      ),
-                      Tab(
-                        text: 'Upcoming',
-                      ),
-                    ],
-                  ),
-                ),
-                pinned: false,
-              ),
+              // SliverPersistentHeader(
+              //   floating: true,
+              //   delegate: _SliverAppBarDelegate(
+              //     TabBar(
+              //       indicatorColor: jetBlack80,
+              //       indicatorWeight: 2,
+              //       labelPadding: EdgeInsets.zero,
+              //       padding: EdgeInsets.only(right: 180, left: 20),
+              //       indicatorPadding: EdgeInsets.symmetric(horizontal: 5),
+              //       labelColor: jetBlack80,
+              //       labelStyle: TextStyle(
+              //           fontFamily: 'SFDisplay',
+              //           fontSize: 14,
+              //           fontWeight: FontWeight.w600),
+              //       unselectedLabelColor: jetBlack40,
+              //       unselectedLabelStyle: TextStyle(
+              //           fontFamily: 'SFDisplay',
+              //           fontSize: 14,
+              //           fontWeight: FontWeight.w500),
+              //       tabs: [
+              //         Tab(
+              //           text: 'Home',
+              //         ),
+              //         Tab(
+              //           text: 'Upcoming',
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              //   pinned: false,
+              // ),
             ];
           },
           body: Container(
             color: snow,
-            child: TabBarView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 0.0),
-                  child: ClassListHome(),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 26.0, right: 26.0, bottom: 30, top: 30),
-                      child: Text(
-                        '$now',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: jetBlack,
-                            fontFamily: 'SFDisplay'),
-                      ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Text(
-                          'Nothing scheduled for today',
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
-                              color: jetBlack40,
-                              fontFamily: 'SFDisplay'),
-                        ),
-                      ),
-                    ),
-                    Center(
-                        child: Container(
-                      width: 110,
-                      height: 30,
-                      decoration: BoxDecoration(
-                          color: strawberry,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Center(
-                        child: Text(
-                          'Find classes',
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: snow,
-                              fontFamily: 'SFDisplay'),
-                        ),
-                      ),
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 26.0, right: 26.0, bottom: 20, top: 30),
-                      child: Text(
-                        'July 28th',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                            color: jetBlack,
-                            fontFamily: 'SFDisplay'),
-                      ),
-                    ),
-                    UpcomingClasses(),
-                  ],
-                ),
-              ],
-            ),
+            // child: TabBarView(
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(top: 0.0),
+            //       child: ClassListHome(),
+            //     ),
+            //     Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //               left: 26.0, right: 26.0, bottom: 30, top: 30),
+            //           child: Text(
+            //             '$now',
+            //             style: TextStyle(
+            //                 fontSize: 16,
+            //                 fontWeight: FontWeight.w600,
+            //                 color: jetBlack,
+            //                 fontFamily: 'SFDisplay'),
+            //           ),
+            //         ),
+            //         Center(
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(bottom: 10),
+            //             child: Text(
+            //               'Nothing scheduled for today',
+            //               style: TextStyle(
+            //                   fontSize: 14,
+            //                   fontWeight: FontWeight.w300,
+            //                   color: jetBlack40,
+            //                   fontFamily: 'SFDisplay'),
+            //             ),
+            //           ),
+            //         ),
+            //         Center(
+            //             child: Container(
+            //           width: 110,
+            //           height: 30,
+            //           decoration: BoxDecoration(
+            //               color: strawberry,
+            //               borderRadius: BorderRadius.circular(20)),
+            //           child: Center(
+            //             child: Text(
+            //               'Find classes',
+            //               style: TextStyle(
+            //                   fontSize: 13,
+            //                   fontWeight: FontWeight.w600,
+            //                   color: snow,
+            //                   fontFamily: 'SFDisplay'),
+            //             ),
+            //           ),
+            //         )),
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //               left: 26.0, right: 26.0, bottom: 20, top: 30),
+            //           child: Text(
+            //             'July 28th',
+            //             style: TextStyle(
+            //                 fontSize: 16,
+            //                 fontWeight: FontWeight.w600,
+            //                 color: jetBlack,
+            //                 fontFamily: 'SFDisplay'),
+            //           ),
+            //         ),
+            //         // UpcomingClasses(),
+            //       ],
+            //     ),
+            //   ],
+            // ),
           ),
         ),
       ),
