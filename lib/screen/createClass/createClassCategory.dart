@@ -133,6 +133,8 @@ class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
     // TODO: implement build
     return SearchBar(
       isAutoFocusTrue: true,
+      searchBarWidth: 323,
+      searchHintText: 'Search',
     );
   }
 

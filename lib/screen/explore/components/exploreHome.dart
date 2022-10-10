@@ -2,7 +2,7 @@
 
 import 'package:balance/constants.dart';
 import 'package:balance/screen/explore/components/classListHome.dart';
-import 'package:balance/screen/explore/components/exploreSearch.dart';
+import 'package:balance/testScreens/searchTestVersion1.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,23 +39,17 @@ class Explore extends StatelessWidget {
                   GestureDetector(
                     child: Stack(
                       children: [
-                        Hero(
-                            tag: 'SearchBar',
-                            child: SearchBar(
-                              isAutoFocusTrue: false,
-                            )),
+                        // Hero(
+                        //     tag: 'SearchBar',
+                        //     child: SearchBar(
+                        //       isAutoFocusTrue: false,
+                        //     )
+                        //     ),
                         Container(
                             height: 50, width: 323, color: Colors.transparent)
                       ],
                     ),
-                    onTap: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) {
-                          return ExploreSearch();
-                        },
-                      ));
-                    },
+                    onTap: () {},
                   ),
                 ),
                 pinned: true,

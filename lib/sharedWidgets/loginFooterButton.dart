@@ -32,7 +32,6 @@ class LoginFooterButton extends StatelessWidget {
               color: textColor,
               fontSize: 15,
               fontFamily: 'SFDisplay',
-              letterSpacing: 0.5,
               fontWeight: FontWeight.w600),
         )),
       ),

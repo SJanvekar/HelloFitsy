@@ -34,7 +34,9 @@ Class classTemplate = Class(
     classPrice: 0,
     classTrainer: "",
     classLiked: false,
-    classTimes: []);
+    classTimes: [],
+    trainerImageUrl:
+        'https://www.ahigherbranch.com/wp-content/uploads/2019/06/David-Goggins.jpg');
 
 // enum ClassType { solo, group, virtual }
 

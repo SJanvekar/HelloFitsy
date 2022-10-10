@@ -8,7 +8,7 @@ import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCard.dart';
-import 'package:balance/sharedWidgets/userProfile.dart';
+import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';

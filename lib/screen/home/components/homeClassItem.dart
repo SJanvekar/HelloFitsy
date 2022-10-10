@@ -1,36 +1,75 @@
 import 'dart:ffi';
+import 'dart:io';
 
+import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../sharedWidgets/userProfile.dart';
+import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
+import '../../../sharedWidgets/userProfileComponentLight.dart';
 import 'package:balance/sharedWidgets/classes/classModel.dart';
 import 'package:balance/Requests/requests.dart';
+
+final oCcy = new NumberFormat("#,##0", "en_US");
 
 class HomeClassItem extends StatefulWidget {
   HomeClassItem({
     Key? key,
     required this.classTrainer,
     required this.userName,
-    required this.className,
     required this.classType,
+    required this.className,
+    required this.classDescription,
     required this.classLocation,
     required this.classPrice,
     required this.classLiked,
     required this.classImage,
+    required this.trainerImageUrl,
+    required this.classRating,
+    required this.classReviews,
   }) : super(key: key);
 
   String classTrainer;
   String userName;
-  String className;
   ClassType classType;
+  String className;
+  String classDescription;
   String classLocation;
   double classPrice;
   bool classLiked;
   String classImage;
+  String trainerImageUrl;
+  double classRating;
+  int classReviews;
+
+  var classTypeIconPath = 'assets/icons/generalIcons/classOneOnOne.svg';
+
+  void classTypeIcon(classType) {
+    switch (classType) {
+      case ClassType.solo:
+        {
+          var classTypeIconPath = 'assets/icons/generalIcons/classOneOnOne.svg';
+          break;
+        }
+      case ClassType.group:
+        {
+          var classTypeIconPath = 'assets/icons/generalIcons/classGroup.svg';
+          break;
+        }
+      case ClassType.virtual:
+        {
+          var classTypeIconPath = 'assets/icons/generalIcons/classVirtual.svg';
+          break;
+        }
+
+      default:
+    }
+  }
 
   @override
   State<HomeClassItem> createState() => _HomeClassItem();
@@ -39,6 +78,8 @@ class HomeClassItem extends StatefulWidget {
 class _HomeClassItem extends State<HomeClassItem> {
   @override
   Widget build(BuildContext context) {
+    var iconDistance = MediaQuery.of(context).size.width - (26 * 2) - 45;
+
     return GestureDetector(
       child: Padding(
         padding: const EdgeInsets.only(
@@ -52,9 +93,13 @@ class _HomeClassItem extends State<HomeClassItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                UserProfileComponent(
+                UserProfileComponentLight(
                   userFullName: widget.classTrainer,
                   userName: widget.userName,
+                  imageURL: widget.trainerImageUrl,
+                  profileImageRadius: 22.5,
+                  userFullNameFontSize: 15,
+                  userNameFontSize: 14,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -62,7 +107,8 @@ class _HomeClassItem extends State<HomeClassItem> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        SvgPicture.asset('assets/icons/Ellipses.svg',
+                        SvgPicture.asset(
+                            'assets/icons/generalIcons/ellipses.svg',
                             color: jetBlack60),
                         Container(
                           height: 40,
@@ -86,42 +132,65 @@ class _HomeClassItem extends State<HomeClassItem> {
                 )
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 10),
-              child: GestureDetector(
-                child: Center(
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                  widget.classImage,
-                                ),
-                                fit: BoxFit.cover),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        height: 220,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                            gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  jetBlack.withOpacity(0.0),
-                                  jetBlack,
-                                ],
-                                stops: [
-                                  0.0,
-                                  1.0
-                                ])),
-                        height: 220,
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 20, bottom: 10),
+            OpenContainer(
+              transitionDuration: Duration(milliseconds: 300),
+              transitionType: ContainerTransitionType.fade,
+              openElevation: 0,
+              closedElevation: 0,
+              openBuilder: (BuildContext context, _) => ClassCardOpen(
+                classImage: widget.classImage,
+                classLiked: widget.classLiked,
+                classLocation: widget.classLocation,
+                className: widget.className,
+                classPrice: widget.classPrice,
+                classTrainer: widget.classTrainer,
+                classType: 'One-on-one training',
+                trainerImageUrl: widget.trainerImageUrl,
+                userName: widget.userName,
+                classRating: widget.classRating,
+                classReviews: widget.classReviews,
+                classDescription: widget.classDescription,
+              ),
+              closedBuilder: (BuildContext context, VoidCallback openClass) =>
+                  Padding(
+                padding: const EdgeInsets.only(top: 15.0, bottom: 10),
+                child: GestureDetector(
+                  onTap: openClass,
+                  child: Center(
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                    widget.classImage,
+                                  ),
+                                  fit: BoxFit.cover),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          height: 350,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                              gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    jetBlack.withOpacity(0.0),
+                                    jetBlack,
+                                  ],
+                                  stops: [
+                                    0.0,
+                                    1.0
+                                  ])),
+                          height: 250,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 20.0, bottom: 15.0),
                           child: Column(
                             children: [
                               classTitle(widget.className),
@@ -131,39 +200,34 @@ class _HomeClassItem extends State<HomeClassItem> {
                               ),
                               classPrice(widget.classPrice)
                             ],
-                          )),
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: 230, right: 10.0, bottom: 170),
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: SvgPicture.asset(
-                                'assets/icons/classTypeIcons/OneOnOneIcon.svg',
-                                height: 32,
-                                width: 32,
-                              ),
-                            ),
-                            GestureDetector(
-                              child: SvgPicture.asset(
-                                widget.classLiked
-                                    ? 'assets/icons/SaveButtonClassCardLiked.svg'
-                                    : 'assets/icons/SaveButtonClassCard.svg',
-                                height: 32,
-                                width: 32,
-                              ),
-                              onTap: () {
-                                setState(() {
-                                  widget.classLiked = !widget.classLiked;
-                                  HapticFeedback.mediumImpact();
-                                });
-                              },
-                            )
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                        Positioned(
+                          top: 25,
+                          right: 25,
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                child: SvgPicture.asset(
+                                  widget.classLiked
+                                      ? 'assets/icons/generalIcons/favouriteFill.svg'
+                                      : 'assets/icons/generalIcons/favouriteEmpty.svg',
+                                  color: widget.classLiked ? strawberry : snow,
+                                  height: 20,
+                                  width: 20,
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    widget.classLiked = !widget.classLiked;
+                                    HapticFeedback.mediumImpact();
+                                  });
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -171,7 +235,6 @@ class _HomeClassItem extends State<HomeClassItem> {
           ],
         ),
       ),
-      onTap: () => {print(widget.className)},
     );
   }
 }
@@ -212,8 +275,8 @@ Widget classSubHeader(classLocation) {
       Text(
         classLocation,
         style: TextStyle(
-            color: snow,
-            fontSize: 13,
+            color: bone80,
+            fontSize: 13.5,
             fontWeight: FontWeight.w500,
             fontFamily: 'SFDisplay'),
       ),
@@ -226,19 +289,19 @@ Widget classPrice(classPrice) {
   return Row(
     children: [
       Text(
-        classPrice.toString(),
+        '\$${oCcy.format(classPrice.round())}',
         style: TextStyle(
-            color: strawberry,
-            fontSize: 20,
-            fontFamily: 'SFDisplay',
-            fontWeight: FontWeight.w600,
-            letterSpacing: -1),
+          color: strawberry,
+          fontSize: 20,
+          fontFamily: 'SFDisplay',
+          fontWeight: FontWeight.w600,
+        ),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 1.0),
         child: Text(' /session',
             style: TextStyle(
-                color: shark,
+                color: snow,
                 fontFamily: 'SFDisplay',
                 fontSize: 14,
                 fontWeight: FontWeight.w400)),

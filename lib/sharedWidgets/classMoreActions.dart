@@ -13,7 +13,9 @@ class classMoreActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 315,
+      height: MediaQuery.of(context).size.height * 0.485,
+      decoration:
+          BoxDecoration(color: snow, borderRadius: BorderRadius.circular(20)),
       child: Padding(
         padding: const EdgeInsets.only(top: 10.0, bottom: 40.0),
         child: Column(
@@ -22,72 +24,122 @@ class classMoreActions extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.only(bottom: 8.0, right: 26.0, left: 26.0),
-              child: Container(
-                  decoration: const BoxDecoration(
-                      color: snow,
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  child: Column(
-                    // ignore: prefer_const_literals_to_create_immutables
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 6,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      color: bone,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 16.0,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: bone60,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 17, bottom: 17),
                         child: Text('Report',
                             style: TextStyle(
                               color: strawberry,
                               fontFamily: 'SFDisplay',
-                              fontSize: 15,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                             )),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10.0, right: 10),
-                        child: PageDivider(),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: bone60,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 17, bottom: 17),
                         child: Text('Block',
                             style: TextStyle(
                               color: strawberry,
                               fontFamily: 'SFDisplay',
-                              fontSize: 15,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                             )),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10.0, right: 10),
-                        child: PageDivider(),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: bone60,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                        child: Text('Share this profile',
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 17, bottom: 17),
+                        child: Text('Share class',
                             style: TextStyle(
-                              color: jetBlack,
+                              color: jetBlack60,
                               fontFamily: 'SFDisplay',
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             )),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10.0, right: 10),
-                        child: PageDivider(),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                    ),
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: bone60,
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
-                        child: Text('Copy profile url',
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 17, bottom: 17),
+                        child: Text('Share trainer',
                             style: TextStyle(
-                              color: jetBlack,
+                              color: jetBlack60,
                               fontFamily: 'SFDisplay',
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
                             )),
                       ),
-                    ],
-                  )),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            GestureDetector(
-              child: LoginFooterButton(
-                  buttonColor: snow, textColor: jetBlack, buttonText: 'Cancel'),
-              onTap: () => {Navigator.pop(context)},
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0, bottom: 20),
+              child: GestureDetector(
+                child: LoginFooterButton(
+                    buttonColor: snow,
+                    textColor: jetBlack,
+                    buttonText: 'Cancel'),
+                onTap: () => {Navigator.pop(context)},
+              ),
             )
           ],
         ),
