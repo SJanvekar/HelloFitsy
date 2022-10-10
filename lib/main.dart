@@ -33,7 +33,7 @@ class FITSY extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: MainPage(),
+      home: Home(),
     );
   }
 }
