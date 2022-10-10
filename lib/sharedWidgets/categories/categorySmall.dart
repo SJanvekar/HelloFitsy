@@ -12,7 +12,7 @@ class CategorySmall extends StatelessWidget {
         children: const [
           CircleAvatar(
             radius: 28,
-            backgroundImage: AssetImage('assets/images/Tennis.png'),
+            backgroundImage: AssetImage('assets/categories/tennis.png'),
             backgroundColor: snow,
           )
         ],

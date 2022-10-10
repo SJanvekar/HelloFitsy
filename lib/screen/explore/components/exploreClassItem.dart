@@ -6,7 +6,7 @@ import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../sharedWidgets/userProfile.dart';
+import '../../../sharedWidgets/userProfileComponentLight.dart';
 import 'package:balance/sharedWidgets/classes/classModel.dart';
 import 'package:balance/Requests/requests.dart';
 

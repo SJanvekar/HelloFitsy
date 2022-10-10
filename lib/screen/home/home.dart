@@ -1,32 +1,44 @@
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/components/upcomingClasses.dart';
+import 'package:balance/screen/home/components/followingFeed.dart';
+import 'package:balance/screen/home/components/upcomingClassesItem.dart';
+import 'package:balance/screen/home/components/upcomingClassesFeed.dart';
 import 'package:balance/screen/profileSidebar/sidebar.dart';
 import 'package:balance/sharedWidgets/classes/classListHome.dart';
+import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:balance/screen/createClass/createClassType.dart';
+import 'package:page_transition/page_transition.dart';
+
+import '../../testScreens/searchTestVersion1.dart';
+import 'components/search.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    return Scaffold(
-      drawer: SideBar(),
-      drawerEdgeDragWidth: MediaQuery.of(context).size.width,
-      appBar: AppBar(
-        toolbarHeight: 5,
-        elevation: 0,
+    var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2);
+    return GestureDetector(
+      child: Scaffold(
         backgroundColor: snow,
-      ),
-      body: DefaultTabController(
-        length: 2,
-        child: NestedScrollView(
+
+        //Profile SideBar
+        drawer: SideBar(),
+        drawerEdgeDragWidth: MediaQuery.of(context).size.width,
+
+        //Appbar (White top, this should be consitent on every page.)
+        appBar: AppBar(
+          toolbarHeight: 5,
+          elevation: 0,
+          backgroundColor: snow,
+        ),
+        body: NestedScrollView(
           floatHeaderSlivers: true,
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
+              //AppBar Sliver
               SliverAppBar(
                 floating: true,
                 pinned: false,
@@ -40,19 +52,20 @@ class Home extends StatelessWidget {
                   padding: EdgeInsets.only(
                     left: 26.0,
                   ),
-                  child: CircleAvatar(
-                    foregroundImage: NetworkImage(
-                        'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1'),
-                    backgroundColor: Colors.transparent,
 
-                    // child: Image.asset(
-                    //   'assets/images/profilePictureSalman.jpeg',
-                    //   height: 30,
-                    //   width: 30,
-                    // ),
+                  //Profile Picture
+                  child: GestureDetector(
+                    child: CircleAvatar(
+                      foregroundImage: NetworkImage(
+                          'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1'),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    onTap: () => {Scaffold.of(context).openDrawer()},
                   ),
                 ),
                 stretch: true,
+
+                //Typeface
                 title: Image.asset(
                   'assets/images/Typeface.png',
                   height: 45,
@@ -63,6 +76,8 @@ class Home extends StatelessWidget {
                       height: 1,
                     ),
                     preferredSize: Size.fromHeight(1)),
+
+                //Notifications & Chat
                 actions: [
                   Padding(
                     padding: const EdgeInsets.only(
@@ -82,7 +97,7 @@ class Home extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
-                            print("Create Class Button Pressed");
+                            print("Notifications Button Pressed");
                             // Navigator.of(context).push(CupertinoPageRoute(
                             //     fullscreenDialog: true,
                             //     builder: (context) => CreateClassType()));
@@ -98,309 +113,85 @@ class Home extends StatelessWidget {
                   )
                 ],
               ),
-              // SliverPersistentHeader(
-              //   floating: true,
-              //   delegate: _SliverAppBarDelegate(
-              //     TabBar(
-              //       indicatorColor: jetBlack80,
-              //       indicatorWeight: 2,
-              //       labelPadding: EdgeInsets.zero,
-              //       padding: EdgeInsets.only(right: 180, left: 20),
-              //       indicatorPadding: EdgeInsets.symmetric(horizontal: 5),
-              //       labelColor: jetBlack80,
-              //       labelStyle: TextStyle(
-              //           fontFamily: 'SFDisplay',
-              //           fontSize: 14,
-              //           fontWeight: FontWeight.w600),
-              //       unselectedLabelColor: jetBlack40,
-              //       unselectedLabelStyle: TextStyle(
-              //           fontFamily: 'SFDisplay',
-              //           fontSize: 14,
-              //           fontWeight: FontWeight.w500),
-              //       tabs: [
-              //         Tab(
-              //           text: 'Home',
-              //         ),
-              //         Tab(
-              //           text: 'Upcoming',
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              //   pinned: false,
-              // ),
+
+              //Search Bar Sliver
+              SliverPersistentHeader(
+                floating: true,
+                delegate: _SliverAppBarDelegate(Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20.8,
+                  ),
+                  child: GestureDetector(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Hero(
+                            tag: 'SearchBar',
+                            child: SearchBar(
+                              isAutoFocusTrue: false,
+                              searchBarWidth: searchBarWidth,
+                              searchHintText: 'Search',
+                            )),
+                        Container(
+                            height: 45,
+                            width: searchBarWidth,
+                            color: Colors.transparent)
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: Search(),
+                              type: PageTransitionType.fade,
+                              isIos: true,
+                              duration: Duration(milliseconds: 300)));
+                    },
+                  ),
+                )),
+                pinned: false,
+              ),
             ];
           },
           body: Container(
             color: snow,
-            // child: TabBarView(
-            //   children: [
-            //     Padding(
-            //       padding: const EdgeInsets.only(top: 0.0),
-            //       child: ClassListHome(),
-            //     ),
-            //     Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Padding(
-            //           padding: const EdgeInsets.only(
-            //               left: 26.0, right: 26.0, bottom: 30, top: 30),
-            //           child: Text(
-            //             '$now',
-            //             style: TextStyle(
-            //                 fontSize: 16,
-            //                 fontWeight: FontWeight.w600,
-            //                 color: jetBlack,
-            //                 fontFamily: 'SFDisplay'),
-            //           ),
-            //         ),
-            //         Center(
-            //           child: Padding(
-            //             padding: const EdgeInsets.only(bottom: 10),
-            //             child: Text(
-            //               'Nothing scheduled for today',
-            //               style: TextStyle(
-            //                   fontSize: 14,
-            //                   fontWeight: FontWeight.w300,
-            //                   color: jetBlack40,
-            //                   fontFamily: 'SFDisplay'),
-            //             ),
-            //           ),
-            //         ),
-            //         Center(
-            //             child: Container(
-            //           width: 110,
-            //           height: 30,
-            //           decoration: BoxDecoration(
-            //               color: strawberry,
-            //               borderRadius: BorderRadius.circular(20)),
-            //           child: Center(
-            //             child: Text(
-            //               'Find classes',
-            //               style: TextStyle(
-            //                   fontSize: 13,
-            //                   fontWeight: FontWeight.w600,
-            //                   color: snow,
-            //                   fontFamily: 'SFDisplay'),
-            //             ),
-            //           ),
-            //         )),
-            //         Padding(
-            //           padding: const EdgeInsets.only(
-            //               left: 26.0, right: 26.0, bottom: 20, top: 30),
-            //           child: Text(
-            //             'July 28th',
-            //             style: TextStyle(
-            //                 fontSize: 16,
-            //                 fontWeight: FontWeight.w600,
-            //                 color: jetBlack,
-            //                 fontFamily: 'SFDisplay'),
-            //           ),
-            //         ),
-            //         // UpcomingClasses(),
-            //       ],
-            //     ),
-            //   ],
-            // ),
+            height: 300,
+            child: Column(
+              children: [
+                Expanded(child: UpcomingClassesFeed()),
+              ],
+            ),
           ),
         ),
       ),
+      onTap: () => {FocusScope.of(context).requestFocus(new FocusNode())},
     );
   }
 }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-//         overlays: SystemUiOverlay.values);
-//     return Scaffold(
-//         backgroundColor: snow,
-//         appBar: AppBar(
-//           toolbarHeight: 55,
-//           centerTitle: false,
-//           elevation: 0,
-//           backgroundColor: snow,
-//           automaticallyImplyLeading: false,
-//           titleSpacing: 0,
-//           title: Padding(
-//               padding: const EdgeInsets.only(left: 26.0, bottom: 10),
-//               child: Image.asset(
-//                 'assets/images/Typeface.png',
-//                 height: 45,
-//               )),
-//           bottom: PreferredSize(
-//               child: Container(
-//                 color: shark40,
-//                 height: 1,
-//               ),
-//               preferredSize: Size.fromHeight(1)),
-//           actions: [
-//             Padding(
-//               padding: const EdgeInsets.only(right: 26.0, bottom: 8),
-//               child: Row(
-//                 children: [
-//                   GestureDetector(
-//                     child: Padding(
-//                       padding: const EdgeInsets.only(right: 20.0),
-//                       child: SvgPicture.asset(
-//                         'assets/icons/CreateClass.svg',
-//                         height: 20,
-//                         width: 20,
-//                       ),
-//                     ),
-//                     onTap: () {
-//                       print("Create Class Button Pressed");
-//                       Navigator.of(context).push(CupertinoPageRoute(
-//                           fullscreenDialog: true,
-//                           builder: (context) => CreateClassType()));
-//                     },
-//                   ),
-//                   SvgPicture.asset(
-//                     'assets/icons/Chat.svg',
-//                     height: 20,
-//                     width: 20,
-//                   ),
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//         body: tabBar());
-//   }
-// }
-
-//TabBar
-Widget tabBar() {
-  return DefaultTabController(
-    length: 2,
-    child: Scaffold(
-      backgroundColor: snow,
-      appBar: AppBar(
-        elevation: 0,
-        toolbarHeight: 10,
-        backgroundColor: snow,
-        bottom: const TabBar(
-          indicatorColor: jetBlack80,
-          indicatorWeight: 2,
-          labelPadding: EdgeInsets.zero,
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          indicatorPadding: EdgeInsets.only(left: 20, right: 20),
-          labelColor: jetBlack,
-          labelStyle: TextStyle(
-              fontFamily: 'SFDisplay',
-              fontSize: 15,
-              fontWeight: FontWeight.w600),
-          unselectedLabelColor: shark,
-          unselectedLabelStyle: TextStyle(
-              fontFamily: 'SFDisplay',
-              fontSize: 15,
-              fontWeight: FontWeight.w500),
-          tabs: [
-            Tab(
-              text: 'Feed',
-            ),
-            Tab(
-              text: 'Upcoming Classes',
-            ),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 5.0),
-            child: ClassListHome(),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 26.0, right: 26.0, bottom: 30, top: 30),
-                child: Text(
-                  'Today',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: jetBlack,
-                      fontFamily: 'SFDisplay'),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Text(
-                    'Nothing scheduled for today',
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                        color: jetBlack40,
-                        fontFamily: 'SFDisplay'),
-                  ),
-                ),
-              ),
-              Center(
-                  child: Container(
-                width: 110,
-                height: 30,
-                decoration: BoxDecoration(
-                    color: strawberry, borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                  child: Text(
-                    'Find classes',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                        color: snow,
-                        fontFamily: 'SFDisplay'),
-                  ),
-                ),
-              )),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 26.0, right: 26.0, bottom: 20, top: 30),
-                child: Text(
-                  'July 28th',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      color: jetBlack,
-                      fontFamily: 'SFDisplay'),
-                ),
-              ),
-              UpcomingClasses(),
-            ],
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
+//Search Bar Sliver Delegate
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._tabBar);
+  _SliverAppBarDelegate(this._SearchBar);
 
-  final TabBar _tabBar;
+  final Widget _SearchBar;
 
   @override
-  double get minExtent => _tabBar.preferredSize.height;
+  double get minExtent => 100;
   @override
-  double get maxExtent => _tabBar.preferredSize.height;
+  double get maxExtent => 100;
 
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
-        child: _tabBar,
+        child: _SearchBar,
         decoration: BoxDecoration(
-            color: snow,
-            border: Border(
-              bottom: BorderSide(width: 1, color: shark20),
-            )));
+          color: snow,
+        ));
   }
 
   @override
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }

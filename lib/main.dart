@@ -1,13 +1,10 @@
-import 'dart:ui';
-
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/explore/components/exploreHome.dart';
-import 'package:balance/screen/home/components/classCardOpen.dart';
+import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/profile.dart';
-import 'package:balance/screen/profile/components/test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -25,6 +22,7 @@ class FITSY extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      color: snow,
       debugShowCheckedModeBanner: false,
       title: 'Fitsy',
       theme: ThemeData(
@@ -33,7 +31,7 @@ class FITSY extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: Home(),
+      home: HomeTest(),
     );
   }
 }
