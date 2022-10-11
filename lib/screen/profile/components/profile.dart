@@ -1,20 +1,15 @@
-// ignore_for_file: file_names, prefer_const_constructors
-
-import 'dart:math';
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/sharedWidgets/categories/categorySmall.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
-import 'package:balance/sharedWidgets/pageDivider.dart';
-import 'package:balance/sharedWidgets/reviewCard.dart';
-import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  UserProfile({
+    Key? key,
+    required this.profileImageUrl,
+  }) : super(key: key);
+
+  String profileImageUrl;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -71,8 +66,14 @@ class _UserProfileState extends State<UserProfile> {
             SliverAppBar(
               toolbarHeight: 65,
               flexibleSpace: FlexibleSpaceBar(
-                background:
-                    Image.asset('assets/images/theBOY.JPG', fit: BoxFit.cover),
+                background: Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(
+                            widget.profileImageUrl,
+                          ),
+                          fit: BoxFit.cover)),
+                ),
                 centerTitle: true,
                 title: Text('Salman Janvekar',
                     style: TextStyle(
@@ -150,7 +151,7 @@ class MySliverAppBar extends SliverPersistentHeaderDelegate {
         Opacity(
           opacity: (1 - shrinkOffset / expandedHeight),
           child: Image.asset(
-            'assets/images/theBOY.JPG',
+            '',
             fit: BoxFit.cover,
           ),
         ),

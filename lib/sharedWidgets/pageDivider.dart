@@ -8,10 +8,10 @@ class PageDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 1,
+        height: 0.66,
         width: 335,
-        decoration:
-            BoxDecoration(color: bone, borderRadius: BorderRadius.circular(20)),
+        decoration: BoxDecoration(
+            color: shark60, borderRadius: BorderRadius.circular(100)),
       ),
     );
   }

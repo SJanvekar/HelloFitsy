@@ -50,6 +50,7 @@ dependencies:
   sliver_tools: ^0.2.8
   animations: ^2.0.7
   firebase_core: ^1.24.0
+  dismissible_page: ^0.7.3
 
 dev_dependencies:
   dependency_validator: ^3.0.0

@@ -6,11 +6,15 @@ import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCard.dart';
+import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
+import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+
+import '../../../sharedWidgets/classMoreActions.dart';
 
 final oCcy = new NumberFormat("#,##0", "en_US");
 
@@ -54,13 +58,20 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     //Hides the top status bar for iOS & Android
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
 
-    //Shows the top status bar for iOS & Android
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    // //Shows the top status bar for iOS & Android
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: SystemUiOverlay.values);
 
     return Scaffold(
       backgroundColor: snow,
       extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        toolbarHeight: 0,
+        elevation: 0,
+        systemOverlayStyle:
+            SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+      ),
       body: CustomScrollView(slivers: [
         //App Bar
         SliverAppBar(
@@ -78,7 +89,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                           ),
                           fit: BoxFit.cover),
                     ),
-                    height: 500,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -87,20 +97,63 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                             end: Alignment.bottomCenter,
                             colors: [
                           jetBlack.withOpacity(0.0),
-                          jetBlack,
+                          jetBlack80,
                         ],
                             stops: [
                           0.0,
                           1.0
                         ])),
                   ),
+                  Positioned(
+                      bottom: 25,
+                      left: 26.0,
+                      child: UserProfileComponentDark(
+                        imageURL: widget.trainerImageUrl,
+                        profileImageRadius: 25,
+                        userFullName: widget.classTrainer,
+                        userFullNameFontSize: 15,
+                        userName: widget.userName,
+                        userNameFontSize: 13,
+                      )),
+                  Positioned(
+                      bottom: 30,
+                      right: 10,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: GestureDetector(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SvgPicture.asset(
+                                  'assets/icons/generalIcons/ellipses.svg',
+                                  color: bone),
+                              Container(
+                                height: 40,
+                                width: 60,
+                                color: Colors.transparent,
+                              ),
+                            ],
+                          ),
+                          onTap: () => {
+                            showModalBottomSheet(
+                                isDismissible: true,
+                                backgroundColor: Colors.transparent,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return classMoreActions(
+                                    userFullName: widget.classTrainer,
+                                  );
+                                })
+                          },
+                        ),
+                      ))
                 ],
               ),
             ),
             stretchModes: const [StretchMode.zoomBackground],
           ),
           elevation: 0,
-          stretch: false,
+          stretch: true,
           floating: false,
           pinned: true,
           automaticallyImplyLeading: false,
@@ -128,8 +181,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   widget.classLiked
                       ? 'assets/icons/generalIcons/favouriteClassLiked.svg'
                       : 'assets/icons/generalIcons/favouriteClassOutline.svg',
-                  height: 33,
-                  width: 33,
+                  height: 32,
+                  width: 32,
                 ),
                 onTap: () {
                   setState(() {
@@ -144,8 +197,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               child: GestureDetector(
                 child: SvgPicture.asset(
                   'assets/icons/generalIcons/classShare.svg',
-                  height: 33,
-                  width: 33,
+                  height: 32,
+                  width: 32,
                 ),
                 onTap: () => print('Share Button Pressed'),
               ),
@@ -155,7 +208,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         SliverList(
             delegate: SliverChildListDelegate([
           Padding(
-            padding: const EdgeInsets.only(top: 10, left: 26.0, right: 26.0),
+            padding: const EdgeInsets.only(top: 15.0, left: 26.0, right: 26.0),
             child: classTitle(),
           ),
           Padding(
@@ -239,50 +292,46 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
 
 //Class Type and Title
   Widget classTitle() {
-    return Container(
-        decoration: BoxDecoration(
-          color: snow,
-        ),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.classType,
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: jetBlack40,
+                fontFamily: 'SFDisplay'),
+            maxLines: 1,
+          ),
+          Row(
             children: [
-              Text(
-                widget.classType,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: jetBlack40,
-                    fontFamily: 'SFDisplay'),
-                maxLines: 1,
+              Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: AutoSizeText(
+                          widget.className,
+                          minFontSize: 20,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'SFDisplay',
+                            fontWeight: FontWeight.w600,
+                            color: jetBlack,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      )
+                    ]),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: AutoSizeText(
-                              widget.className,
-                              minFontSize: 18,
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontFamily: 'SFDisplay',
-                                fontWeight: FontWeight.w600,
-                                color: jetBlack,
-                              ),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          )
-                        ]),
-                  ),
-                ],
-              )
-            ]));
+            ],
+          )
+        ]);
   }
 
 //Class Location
@@ -324,8 +373,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         //Star Icon
         SvgPicture.asset(
           'assets/icons/generalIcons/star.svg',
-          height: 15,
-          width: 15,
+          height: 12,
+          width: 12,
+          color: sunflower,
         ),
 
         //Rating (Numeric)
@@ -335,13 +385,15 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             height: 20,
             width: 30,
             decoration: BoxDecoration(
-                color: jetBlack, borderRadius: BorderRadius.circular(20.0)),
+              color: jetBlack80,
+              borderRadius: BorderRadius.circular(20.0),
+            ),
             child: Center(
               child: Text(
                 '${widget.classRating}',
                 style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
                     color: snow,
                     fontFamily: 'SFDisplay'),
               ),
@@ -355,10 +407,10 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           child: Text(
             '(${widget.classReviews} Reviews)',
             style: TextStyle(
-                color: shark,
+                color: jetBlack,
                 fontSize: 14,
                 fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
                 letterSpacing: 0),
           ),
         )
@@ -371,20 +423,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: Text('About this class',
-              style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600)),
-        ),
         Text(
           widget.classDescription,
           style: TextStyle(
               fontFamily: 'SFDisplay',
-              color: jetBlack60,
+              color: jetBlack80,
               fontSize: 14,
               fontWeight: FontWeight.w500),
         ),

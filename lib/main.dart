@@ -48,7 +48,6 @@ class _MainPageState extends State<MainPage> {
   static const List<Widget> _widgetOptions = <Widget>[
     Home(),
     Explore(),
-    UserProfile(),
   ];
 
   void _onItemTapped(int index) {

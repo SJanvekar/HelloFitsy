@@ -4,6 +4,8 @@ import 'package:balance/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../screen/profile/components/profile.dart';
+
 class UserProfileComponentLight extends StatelessWidget {
   UserProfileComponentLight({
     Key? key,
@@ -24,36 +26,45 @@ class UserProfileComponentLight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          foregroundImage: NetworkImage(imageURL),
-          backgroundColor: Colors.transparent,
-          radius: profileImageRadius,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userFullName,
-                style: TextStyle(
-                    color: jetBlack,
-                    fontFamily: 'SFDisplay',
-                    fontSize: userFullNameFontSize,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text('@' + userName,
-                  style: TextStyle(
-                      color: jetBlack40,
-                      fontFamily: 'SFDisplay',
-                      fontSize: userNameFontSize,
-                      fontWeight: FontWeight.w500))
-            ],
+    return GestureDetector(
+      child: Row(
+        children: [
+          CircleAvatar(
+            foregroundImage: NetworkImage(imageURL),
+            backgroundColor: Colors.transparent,
+            radius: profileImageRadius,
           ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userFullName,
+                  style: TextStyle(
+                      color: jetBlack,
+                      fontFamily: 'SFDisplay',
+                      fontSize: userFullNameFontSize,
+                      fontWeight: FontWeight.w600),
+                ),
+                Text('@' + userName,
+                    style: TextStyle(
+                        color: jetBlack40,
+                        fontFamily: 'SFDisplay',
+                        fontSize: userNameFontSize,
+                        fontWeight: FontWeight.w500))
+              ],
+            ),
+          )
+        ],
+      ),
+      onTap: () {
+        Navigator.of(context).push(CupertinoPageRoute(
+            maintainState: true,
+            builder: (context) => UserProfile(
+                  profileImageUrl: imageURL,
+                )));
+      },
     );
   }
 }

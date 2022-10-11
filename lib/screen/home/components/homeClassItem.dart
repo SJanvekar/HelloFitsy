@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,6 +15,8 @@ import 'package:page_transition/page_transition.dart';
 import '../../../sharedWidgets/userProfileComponentLight.dart';
 import 'package:balance/sharedWidgets/classes/classModel.dart';
 import 'package:balance/Requests/requests.dart';
+
+import '../../profile/components/profile.dart';
 
 final oCcy = new NumberFormat("#,##0", "en_US");
 
@@ -79,6 +82,7 @@ class _HomeClassItem extends State<HomeClassItem> {
   @override
   Widget build(BuildContext context) {
     var iconDistance = MediaQuery.of(context).size.width - (26 * 2) - 45;
+    final titleBoxWidth = MediaQuery.of(context).size.width - (26 * 2) - 40;
 
     return GestureDetector(
       child: Padding(
@@ -93,13 +97,22 @@ class _HomeClassItem extends State<HomeClassItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                UserProfileComponentLight(
-                  userFullName: widget.classTrainer,
-                  userName: widget.userName,
-                  imageURL: widget.trainerImageUrl,
-                  profileImageRadius: 22.5,
-                  userFullNameFontSize: 15,
-                  userNameFontSize: 14,
+                GestureDetector(
+                  child: UserProfileComponentLight(
+                    userFullName: widget.classTrainer,
+                    userName: widget.userName,
+                    imageURL: widget.trainerImageUrl,
+                    profileImageRadius: 22.5,
+                    userFullNameFontSize: 15,
+                    userNameFontSize: 14,
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        maintainState: true,
+                        builder: (context) => UserProfile(
+                              profileImageUrl: widget.trainerImageUrl,
+                            )));
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
@@ -132,101 +145,138 @@ class _HomeClassItem extends State<HomeClassItem> {
                 )
               ],
             ),
-            OpenContainer(
-              transitionDuration: Duration(milliseconds: 300),
-              transitionType: ContainerTransitionType.fade,
-              openElevation: 0,
-              closedElevation: 0,
-              openBuilder: (BuildContext context, _) => ClassCardOpen(
-                classImage: widget.classImage,
-                classLiked: widget.classLiked,
-                classLocation: widget.classLocation,
-                className: widget.className,
-                classPrice: widget.classPrice,
-                classTrainer: widget.classTrainer,
-                classType: 'One-on-one training',
-                trainerImageUrl: widget.trainerImageUrl,
-                userName: widget.userName,
-                classRating: widget.classRating,
-                classReviews: widget.classReviews,
-                classDescription: widget.classDescription,
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 15.0,
+                bottom: 10,
               ),
-              closedBuilder: (BuildContext context, VoidCallback openClass) =>
-                  Padding(
-                padding: const EdgeInsets.only(top: 15.0, bottom: 10),
-                child: GestureDetector(
+              child: OpenContainer(
+                transitionDuration: Duration(milliseconds: 350),
+                openShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                closedShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                openElevation: 0,
+                closedElevation: 0,
+                openColor: Colors.transparent,
+                closedColor: Colors.transparent,
+                openBuilder: (BuildContext context, _) => ClassCardOpen(
+                  classImage: widget.classImage,
+                  classLiked: widget.classLiked,
+                  classLocation: widget.classLocation,
+                  className: widget.className,
+                  classPrice: widget.classPrice,
+                  classTrainer: widget.classTrainer,
+                  classType: 'One-on-one training',
+                  trainerImageUrl: widget.trainerImageUrl,
+                  userName: widget.userName,
+                  classRating: widget.classRating,
+                  classReviews: widget.classReviews,
+                  classDescription: widget.classDescription,
+                ),
+                closedBuilder: (BuildContext context, VoidCallback openClass) =>
+                    GestureDetector(
                   onTap: openClass,
                   child: Center(
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                    widget.classImage,
-                                  ),
-                                  fit: BoxFit.cover),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          height: 350,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    jetBlack.withOpacity(0.0),
-                                    jetBlack,
-                                  ],
-                                  stops: [
-                                    0.0,
-                                    1.0
-                                  ])),
-                          height: 250,
-                        ),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 20.0, bottom: 15.0),
-                          child: Column(
-                            children: [
-                              classTitle(widget.className),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 2.0),
-                                child: classSubHeader(widget.classLocation),
-                              ),
-                              classPrice(widget.classPrice)
-                            ],
+                    child: Card(
+                      color: snow,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Stack(
+                        // alignment: Alignment.bottomCenter,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      jetBlack.withOpacity(0.0),
+                                      jetBlack,
+                                    ],
+                                    stops: [
+                                      0.0,
+                                      1.0
+                                    ]),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                      widget.classImage,
+                                    ),
+                                    fit: BoxFit.cover),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            height: 350,
                           ),
-                        ),
-                        Positioned(
-                          top: 25,
-                          right: 25,
-                          child: Row(
-                            children: [
-                              GestureDetector(
-                                child: SvgPicture.asset(
-                                  widget.classLiked
-                                      ? 'assets/icons/generalIcons/favouriteFill.svg'
-                                      : 'assets/icons/generalIcons/favouriteEmpty.svg',
-                                  color: widget.classLiked ? strawberry : snow,
-                                  height: 20,
-                                  width: 20,
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      jetBlack20,
+                                      jetBlack.withOpacity(0.0),
+                                      jetBlack.withOpacity(0.2),
+                                      jetBlack,
+                                    ],
+                                    stops: [
+                                      0,
+                                      0.25,
+                                      0.5,
+                                      1
+                                    ])),
+                            height: 350,
+                          ),
+                          // Positioned(
+                          //     bottom: 20,
+                          //     left: 20,
+                          //     child:
+                          //         classTitle(widget.className, titleBoxWidth)),
+                          Positioned(
+                            bottom: 20,
+                            left: 20,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                classTitle(widget.className, titleBoxWidth),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 2.0),
+                                  child: classSubHeader(widget.classLocation),
                                 ),
-                                onTap: () {
-                                  setState(() {
-                                    widget.classLiked = !widget.classLiked;
-                                    HapticFeedback.mediumImpact();
-                                  });
-                                },
-                              )
-                            ],
+                                classPrice(widget.classPrice)
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          Positioned(
+                            top: 25,
+                            right: 25,
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  child: SvgPicture.asset(
+                                    widget.classLiked
+                                        ? 'assets/icons/generalIcons/favouriteFill.svg'
+                                        : 'assets/icons/generalIcons/favouriteEmpty.svg',
+                                    color:
+                                        widget.classLiked ? strawberry : snow,
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      widget.classLiked = !widget.classLiked;
+                                      HapticFeedback.mediumImpact();
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -240,47 +290,33 @@ class _HomeClassItem extends State<HomeClassItem> {
 }
 
 //Class Type and Title
-Widget classTitle(classTitle) {
-  return Row(
-    children: [
-      Expanded(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                  padding: EdgeInsets.only(right: 20),
-                  child: AutoSizeText(
-                    classTitle,
-                    minFontSize: 18,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: 'SFDisplay',
-                      fontWeight: FontWeight.w600,
-                      color: snow,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ))
-            ]),
+Widget classTitle(classTitle, fixedWidth) {
+  return SizedBox(
+    width: fixedWidth,
+    child: AutoSizeText(
+      classTitle,
+      minFontSize: 18,
+      style: TextStyle(
+        fontSize: 18,
+        fontFamily: 'SFDisplay',
+        fontWeight: FontWeight.w600,
+        color: snow,
       ),
-    ],
+      maxLines: 2,
+      overflow: TextOverflow.ellipsis,
+    ),
   );
 }
 
 //Class Location
 Widget classSubHeader(classLocation) {
-  return Row(
-    children: [
-      Text(
-        classLocation,
-        style: TextStyle(
-            color: bone80,
-            fontSize: 13.5,
-            fontWeight: FontWeight.w500,
-            fontFamily: 'SFDisplay'),
-      ),
-    ],
+  return Text(
+    classLocation,
+    style: TextStyle(
+        color: bone80,
+        fontSize: 13.5,
+        fontWeight: FontWeight.w500,
+        fontFamily: 'SFDisplay'),
   );
 }
 

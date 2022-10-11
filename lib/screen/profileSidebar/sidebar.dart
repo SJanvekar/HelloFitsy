@@ -2,8 +2,10 @@ import 'package:balance/constants.dart';
 import 'package:balance/screen/profile/components/profile.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SideBar extends StatelessWidget {
   @override
@@ -80,7 +82,16 @@ class SideBar extends StatelessWidget {
                     children: [
                       ListTile(
                         minLeadingWidth: 22,
-                        onTap: () => {},
+                        onTap: () {
+                          Navigator.of(context).push(PageTransition(
+                            fullscreenDialog: true,
+                            type: PageTransitionType.rightToLeft,
+                            child: UserProfile(
+                              profileImageUrl:
+                                  'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1',
+                            ),
+                          ));
+                        },
                         leading: Container(
                           height: double.infinity,
                           child: SvgPicture.asset(
