@@ -97,22 +97,13 @@ class _HomeClassItem extends State<HomeClassItem> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector(
-                  child: UserProfileComponentLight(
-                    userFullName: widget.classTrainer,
-                    userName: widget.userName,
-                    imageURL: widget.trainerImageUrl,
-                    profileImageRadius: 22.5,
-                    userFullNameFontSize: 15,
-                    userNameFontSize: 14,
-                  ),
-                  onTap: () {
-                    Navigator.of(context).push(CupertinoPageRoute(
-                        maintainState: true,
-                        builder: (context) => UserProfile(
-                              profileImageUrl: widget.trainerImageUrl,
-                            )));
-                  },
+                UserProfileComponentLight(
+                  userFullName: widget.classTrainer,
+                  userName: widget.userName,
+                  imageURL: widget.trainerImageUrl,
+                  profileImageRadius: 22.5,
+                  userFullNameFontSize: 15,
+                  userNameFontSize: 14,
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
