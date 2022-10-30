@@ -63,7 +63,7 @@ class HomeTest extends StatelessWidget {
               child: GestureDetector(
                 child: CircleAvatar(
                   foregroundImage: NetworkImage(
-                      'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1'),
+                      'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f'),
                   backgroundColor: Colors.transparent,
                 ),
                 onTap: () => _key.currentState!.openDrawer(),
@@ -71,16 +71,16 @@ class HomeTest extends StatelessWidget {
             ),
 
             //Typeface
-            title: Image.asset(
-              'assets/images/Typeface.png',
-              height: 45,
-            ),
-            bottom: PreferredSize(
-                child: Container(
-                  color: shark40,
-                  height: 1,
-                ),
-                preferredSize: Size.fromHeight(1)),
+            // title: Image.asset(
+            //   'assets/images/Typeface.png',
+            //   height: 45,
+            // ),
+            // bottom: PreferredSize(
+            //     child: Container(
+            //       color: shark40,
+            //       height: 1,
+            //     ),
+            //     preferredSize: Size.fromHeight(1)),
 
             //Notifications & Chat
             actions: [
@@ -145,8 +145,9 @@ class HomeTest extends StatelessWidget {
                     PageTransition(
                         child: Search(),
                         type: PageTransitionType.fade,
-                        isIos: true,
-                        duration: Duration(milliseconds: 300)));
+                        isIos: false,
+                        duration: Duration(milliseconds: 0),
+                        reverseDuration: Duration(milliseconds: 0)));
               },
             )),
             pinned: false,
@@ -154,17 +155,29 @@ class HomeTest extends StatelessWidget {
           MultiSliver(children: [
             Padding(
               padding:
-                  const EdgeInsets.only(left: 26.0, right: 26.0, top: 10.0),
+                  const EdgeInsets.only(left: 26.0, right: 26.0, top: 15.0),
+              child: Text(
+                'Hi, Salman',
+                style: TextStyle(
+                  color: jetBlack,
+                  fontFamily: 'SFDisplay',
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 26.0, right: 26.0, top: 2.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Upcoming Classes',
+                    'Check out your upcoming classes',
                     style: TextStyle(
                       color: jetBlack,
                       fontFamily: 'SFDisplay',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   Text(
@@ -172,8 +185,8 @@ class HomeTest extends StatelessWidget {
                     style: TextStyle(
                       color: ocean,
                       fontFamily: 'SFDisplay',
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
                     ),
                   )
                 ],
@@ -192,7 +205,7 @@ class HomeTest extends StatelessWidget {
             )),
             Padding(
               padding:
-                  const EdgeInsets.only(left: 26.0, right: 26.0, top: 25.0),
+                  const EdgeInsets.only(left: 26.0, right: 26.0, top: 35.0),
               child: Text(
                 'For you',
                 style: TextStyle(
@@ -209,7 +222,7 @@ class HomeTest extends StatelessWidget {
                 final classItem = classList[index];
                 return HomeClassItem(
                   classTrainer: classItem.classTrainer,
-                  userName: 'username',
+                  userName: classItem.classTrainerUsername,
                   className: classItem.className,
                   classType: classItem.classType,
                   classLocation: classItem.classLocation,
@@ -220,6 +233,9 @@ class HomeTest extends StatelessWidget {
                   classDescription: classItem.classDescription,
                   classRating: classItem.classRating,
                   classReviews: classItem.classReview,
+                  trainerFirstName: classItem.classTrainerFirstName,
+                  classWhatToExpect: classItem.classWhatToExpect,
+                  classWhatYouWillNeed: classItem.classUserRequirements,
                 );
               },
               childCount: classList.length,

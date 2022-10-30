@@ -17,6 +17,8 @@ class Schedule {
 class Class {
   String className;
   String classDescription;
+  String classWhatToExpect;
+  String classUserRequirements;
   String classImage;
   ClassType classType;
   String classLocation;
@@ -24,6 +26,8 @@ class Class {
   int classReview;
   double classPrice;
   String classTrainer;
+  String classTrainerFirstName;
+  String classTrainerUsername;
   bool classLiked;
   List<Schedule> classTimes;
   String trainerImageUrl;
@@ -31,6 +35,8 @@ class Class {
   Class({
     required this.className,
     required this.classDescription,
+    required this.classWhatToExpect,
+    required this.classUserRequirements,
     required this.classImage,
     required this.classType,
     required this.classLocation,
@@ -38,6 +44,8 @@ class Class {
     required this.classReview,
     required this.classPrice,
     required this.classTrainer,
+    required this.classTrainerFirstName,
+    required this.classTrainerUsername,
     required this.classLiked,
     required this.classTimes,
     required this.trainerImageUrl,
@@ -46,24 +54,36 @@ class Class {
 
 List<Class> classList = [
   Class(
-    className: "Yute Tennis Summer Fundraiser Program",
-    classDescription: "Bullshit sudden description",
+    className:
+        "Youth Tennis Fundraiser Program held by the Sick Kids Cancer Society",
+    classDescription:
+        "Students (ages 7-10) should be shaping their skills in becoming more fundamentally sound in movement and technique to handle more advanced play on utilizing a larger court space. Students at this level can rally, and will begin to experiment adding different dimensions to their game: consistency, directional control, spin, and depth. Prior to graduating from Level 1, Orange players should be able to play the game demonstrating technical and tactical fundamentals. ",
+    classWhatToExpect:
+        'Sessions will be running from 9:00am to 12:00pm every Sunday for the next 5 weeks.\n\n' +
+            'One to one training sessions with Roger Federer himself includes: Rallying with the Tennis legend, warming up, participating in an actual class, and cooling down with Roger and his world class coaches.\n\n' +
+            'The last week of this program will be a snake style tournament featuring all class participants. \n\n' +
+            'All proceeds will be going to the Sick Kids Canada Cancer Society.',
+    classUserRequirements: 'A tennis racket and appropriate tennis attire!',
     classImage:
-        "https://tennisdirectory.tenxpro.com/wp-content/uploads/2017/10/Inspire-Tennis-Sydney-Junior-Tennis-Hot-Shots-1-1080x600.jpg",
+        "https://photo-assets.usopen.org/images/pics/large/f_USTA1030667_20180828_Day2_GE1_4416.jpg",
     classType: ClassType.solo,
     classLocation: "Toronto, Ontario",
     classRating: 4.5,
     classReview: 40,
     classPrice: 250,
     classTrainer: "Roger Federer",
+    classTrainerFirstName: 'Roger',
+    classTrainerUsername: 'realrogerfreder',
     classLiked: true,
     classTimes: [],
     trainerImageUrl:
-        'https://sportshub.cbsistatic.com/i/r/2022/09/15/406ba7f5-4022-474c-8e8d-cf180d2c1a16/thumbnail/1200x675/4f6c21a290afee7000572827cb85486d/roger-federer-getty.png',
+        'https://cdn.britannica.com/57/183257-050-0BA11B4B/Roger-Federer-2012.jpg',
   ),
   Class(
     className: "For people who think crossfit is valid",
     classDescription: "Bullshit sudden description",
+    classWhatToExpect: '',
+    classUserRequirements: '',
     classImage:
         "https://crossfitoxygen.com.au/wp-content/uploads/2020/08/rsz_warm_up_photo_-1.jpg",
     classType: ClassType.group,
@@ -72,14 +92,18 @@ List<Class> classList = [
     classReview: 10,
     classPrice: 50,
     classTrainer: "David Goggins",
+    classTrainerFirstName: 'David',
+    classTrainerUsername: 'davidgoggins',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
-        'https://www.ahigherbranch.com/wp-content/uploads/2019/06/David-Goggins.jpg',
+        'https://image.cnbcfm.com/api/v1/image/105830788-1554303699103headshot.jpg?v=1554929480&w=1600&h=900',
   ),
   Class(
     className: "Assholes who take Martial Arts",
     classDescription: "Bullshit sudden description",
+    classWhatToExpect: '',
+    classUserRequirements: '',
     classImage:
         "https://us.venumtrainingcamp.com/wp-content/uploads/2019/03/VENUM_PAGE_DISCIPLINES_MOBILE_1500px_08.jpg",
     classType: ClassType.group,
@@ -88,29 +112,37 @@ List<Class> classList = [
     classReview: 40,
     classPrice: 600,
     classTrainer: "Conor McGregor",
+    classTrainerFirstName: 'Conor',
+    classTrainerUsername: 'thenotoriousmma',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
-        'https://cdn.vox-cdn.com/thumbor/ejpN_BZhy3DbFitLKLPkPNB5tc0=/1400x1050/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/24070976/1399272630.jpg',
+        'https://media.gq.com/photos/569fe8b3e70a31b77be3e518/16:9/w_2560%2Cc_limit/how-I-got-my-body-gq-0216-3.jpg',
   ),
   Class(
     className: "Is table tennis even a real sport?",
     classDescription: "Bullshit sudden description",
+    classWhatToExpect: '',
+    classUserRequirements: '',
     classImage: "https://img1.wsimg.com/isteam/stock/V99bd7",
     classType: ClassType.solo,
     classLocation: "Milton, Ontario",
     classRating: 4.2,
     classReview: 12,
     classPrice: 55,
-    classTrainer: "Chinese Legend",
+    classTrainer: "King TTennis",
+    classTrainerFirstName: 'King',
+    classTrainerUsername: 'kttennis',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
-        'https://media.istockphoto.com/photos/portrait-of-chinese-personal-trainer-in-gym-picture-id1018043738?k=20&m=1018043738&s=170667a&w=0&h=D73Bdou7PZFE_ASJ1LOyOij4KHk1zRwOGCqAZnS5cqg=',
+        'https://cdn.vox-cdn.com/thumbor/lo08IC017KpKNNeTiO4Jq8cHhI4=/0x0:3932x2768/1400x1400/filters:focal(851x188:1479x816):format(jpeg)/cdn.vox-cdn.com/uploads/chorus_image/image/50322455/586904530.0.jpg',
   ),
   Class(
     className: "Yoga with PUPPIES",
     classDescription: "Bullshit sudden description",
+    classWhatToExpect: '',
+    classUserRequirements: '',
     classImage:
         "https://www.familyfuncanada.com/toronto/files/2022/03/puppy-yoga-yoga-kawa.jpg",
     classType: ClassType.virtual,
@@ -118,15 +150,19 @@ List<Class> classList = [
     classRating: 4.7,
     classReview: 23,
     classPrice: 60,
-    classTrainer: "Kimberly Franques",
+    classTrainer: "Kimberly Wang",
+    classTrainerFirstName: 'Kimberly',
+    classTrainerUsername: 'kimwang',
     classLiked: true,
     classTimes: [],
     trainerImageUrl:
-        'https://www.wellnessliving.com/blog/wp-content/uploads/2019/06/Hiring-Yoga-Instructors.jpg',
+        'https://media.herworld.com/public/2022/02/yoga-poses-practise-self-love.jpg?compress=true&quality=80&w=1080&dpr=2.0',
   ),
   Class(
-    className: "Imagine running?",
+    className: "Imagine running as fast as me?",
     classDescription: "Bullshit sudden description",
+    classWhatToExpect: '',
+    classUserRequirements: '',
     classImage:
         "https://dashsprintclub.com/wp-content/uploads/2018/12/running-class-1.jpg",
     classType: ClassType.solo,
@@ -134,15 +170,18 @@ List<Class> classList = [
     classRating: 4,
     classReview: 40,
     classPrice: 140,
-    classTrainer: "Mo Farah",
+    classTrainer: "Usain Bolt",
+    classTrainerFirstName: 'Usain',
+    classTrainerUsername: 'bolt',
     classLiked: false,
     classTimes: [],
-    trainerImageUrl:
-        'https://metro.co.uk/wp-content/uploads/2022/07/SEC_114286993.jpg?quality=90&strip=all',
+    trainerImageUrl: 'https://wallpapercave.com/wp/mpBaKqa.jpg',
   ),
   Class(
     className: "Get over your Ex!",
     classDescription: "Bullshit sudden description",
+    classWhatToExpect: '',
+    classUserRequirements: '',
     classImage:
         "https://cdn.lifehack.org/wp-content/uploads/2013/06/bodybuilding-tips.jpg",
     classType: ClassType.solo,
@@ -151,9 +190,11 @@ List<Class> classList = [
     classReview: 20,
     classPrice: 40,
     classTrainer: "Jason Smith",
+    classTrainerFirstName: 'Jason',
+    classTrainerUsername: 'jaysmith33',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
-        'https://images.ctfassets.net/psi7gc0m4mjv/6vL20yPWnuuJNvPtnG5KkO/788d1e4e39fccdb3abfed21fd465f2e4/master_personal_trainer_mobile_hero_image_2x.jpg',
+        'https://c0.wallpaperflare.com/preview/126/815/585/weight-person-watch-gym.jpg',
   ),
 ];

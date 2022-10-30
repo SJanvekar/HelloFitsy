@@ -47,6 +47,9 @@ class _ClassListHomeState extends State<ClassListHome> {
                   classDescription: classItem.classDescription,
                   classRating: classItem.classRating,
                   classReviews: classItem.classReview,
+                  trainerFirstName: classItem.classTrainerFirstName,
+                  classWhatToExpect: classItem.classWhatToExpect,
+                  classWhatYouWillNeed: classItem.classUserRequirements,
                 );
               })
         ],

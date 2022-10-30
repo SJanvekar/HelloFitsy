@@ -23,8 +23,9 @@ class SideBar extends StatelessWidget {
                 userName: 'salman',
                 userNameFontSize: 15.5,
                 imageURL:
-                    'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1',
+                    'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f',
                 profileImageRadius: 35,
+                userFirstName: 'Salman',
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 40, top: 35),
@@ -88,7 +89,10 @@ class SideBar extends StatelessWidget {
                             type: PageTransitionType.rightToLeft,
                             child: UserProfile(
                               profileImageUrl:
-                                  'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1',
+                                  'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f',
+                              userFullName: 'Salman Janvekar',
+                              userName: '@salman',
+                              userFirstName: 'Salman',
                             ),
                           ));
                         },

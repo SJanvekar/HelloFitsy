@@ -98,9 +98,8 @@ class Search extends StatelessWidget {
                                     child: Home(),
                                     type: PageTransitionType.fade,
                                     isIos: true,
-                                    reverseDuration:
-                                        Duration(milliseconds: 300),
-                                    duration: Duration(milliseconds: 300)),
+                                    reverseDuration: Duration(milliseconds: 0),
+                                    duration: Duration(milliseconds: 0)),
                               );
                             },
                           ),

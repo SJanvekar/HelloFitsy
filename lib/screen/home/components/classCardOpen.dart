@@ -1,9 +1,12 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
+import 'dart:ui';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/moreClassInfoModal.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCard.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
@@ -22,7 +25,8 @@ class ClassCardOpen extends StatefulWidget {
   ClassCardOpen({
     Key? key,
     required this.classTrainer,
-    required this.userName,
+    required this.classTrainerFirstName,
+    required this.classTrainerUserName,
     required this.className,
     required this.classType,
     required this.classLocation,
@@ -33,10 +37,13 @@ class ClassCardOpen extends StatefulWidget {
     required this.classRating,
     required this.classReviews,
     required this.classDescription,
+    required this.classWhatToExpect,
+    required this.classWhatYouWillNeed,
   }) : super(key: key);
 
   String classTrainer;
-  String userName;
+  String classTrainerFirstName;
+  String classTrainerUserName;
   String className;
   String classType;
   String classLocation;
@@ -47,20 +54,96 @@ class ClassCardOpen extends StatefulWidget {
   double classRating;
   int classReviews;
   String classDescription;
+  String classWhatToExpect;
+  String classWhatYouWillNeed;
 
   @override
   State<ClassCardOpen> createState() => _ClassCardOpenState();
 }
 
 class _ClassCardOpenState extends State<ClassCardOpen> {
+  Color iconCircleColor = shark60;
+  Color iconColor = snow;
+  late ScrollController _scrollController;
+  Brightness statusBarTheme = Brightness.dark;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _scrollController = ScrollController()
+      ..addListener(() {
+        setState(() {
+          iconCircleColor = _isSliverAppBarExpanded ? snow : shark60;
+          iconColor = _isSliverAppBarExpanded ? jetBlack : snow;
+          statusBarTheme =
+              _isSliverAppBarExpanded ? Brightness.light : Brightness.dark;
+        });
+      });
+  }
+
+  //----------
+  bool get _isSliverAppBarExpanded {
+    return _scrollController.hasClients &&
+        _scrollController.offset >
+            (MediaQuery.of(context).size.height * 0.38 - kToolbarHeight);
+  }
+
+  Widget classTrainer() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          UserProfileComponentDark(
+            imageURL: widget.trainerImageUrl,
+            profileImageRadius: 25,
+            userFullName: widget.classTrainer,
+            userFullNameFontSize: 15,
+            userName: widget.classTrainerUserName,
+            userNameFontSize: 13,
+            userFirstName: widget.classTrainerFirstName,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 26),
+            child: GestureDetector(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  SvgPicture.asset('assets/icons/generalIcons/ellipses.svg',
+                      color: bone),
+                  Container(
+                    height: 40,
+                    width: 60,
+                    color: Colors.transparent,
+                  ),
+                ],
+              ),
+              onTap: () => {
+                showModalBottomSheet(
+                    isDismissible: true,
+                    backgroundColor: Colors.transparent,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return classMoreActions(
+                        userFullName: widget.classTrainer,
+                      );
+                    })
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    //Hides the top status bar for iOS & Android
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-
-    // //Shows the top status bar for iOS & Android
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-    //     overlays: SystemUiOverlay.values);
+    var top = 0.0;
+    var max = 0.0;
+    var mobilePadding = MediaQuery.of(context).padding;
+    var mobilePaddingPlusToolBar = mobilePadding.top + 55;
 
     return Scaffold(
       backgroundColor: snow,
@@ -70,13 +153,53 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         toolbarHeight: 0,
         elevation: 0,
         systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarBrightness: Brightness.light),
+            SystemUiOverlayStyle(statusBarBrightness: statusBarTheme),
       ),
-      body: CustomScrollView(slivers: [
+      body: CustomScrollView(controller: _scrollController, slivers: [
         //App Bar
         SliverAppBar(
-          toolbarHeight: 45,
+          leading: GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 26.0,
+                top: 11.5,
+                bottom: 11.5,
+              ),
+              child: ClipOval(
+                  child: BackdropFilter(
+                filter: new ImageFilter.blur(
+                  sigmaX: 1,
+                  sigmaY: 1,
+                ),
+                child: Container(
+                  height: 32,
+                  width: 32,
+                  decoration: BoxDecoration(color: iconCircleColor),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
+                    child: SvgPicture.asset(
+                      'assets/icons/generalIcons/arrowLeft.svg',
+                      color: iconColor,
+                      height: 13,
+                      width: 6,
+                    ),
+                  ),
+                ),
+              )),
+            ),
+            onTap: () => {Navigator.of(context).pop()},
+          ),
+          leadingWidth: 58,
+          automaticallyImplyLeading: false,
+          backgroundColor: snow,
+          elevation: 0,
+          toolbarHeight: 55,
+          stretch: true,
+          floating: false,
+          pinned: true,
+          expandedHeight: MediaQuery.of(context).size.height * 0.38,
           flexibleSpace: FlexibleSpaceBar(
+            stretchModes: const [StretchMode.zoomBackground],
             background: Hero(
               tag: widget.className,
               child: Stack(
@@ -96,112 +219,115 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
                             colors: [
-                          jetBlack.withOpacity(0.0),
-                          jetBlack80,
+                          snow.withOpacity(0.0),
+                          jetBlack.withOpacity(0.15),
+                          jetBlack.withOpacity(0.35),
                         ],
                             stops: [
                           0.0,
+                          0.6,
                           1.0
                         ])),
                   ),
-                  Positioned(
-                      bottom: 25,
-                      left: 26.0,
-                      child: UserProfileComponentDark(
-                        imageURL: widget.trainerImageUrl,
-                        profileImageRadius: 25,
-                        userFullName: widget.classTrainer,
-                        userFullNameFontSize: 15,
-                        userName: widget.userName,
-                        userNameFontSize: 13,
-                      )),
-                  Positioned(
-                      bottom: 30,
-                      right: 10,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: GestureDetector(
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                  'assets/icons/generalIcons/ellipses.svg',
-                                  color: bone),
-                              Container(
-                                height: 40,
-                                width: 60,
-                                color: Colors.transparent,
-                              ),
-                            ],
-                          ),
-                          onTap: () => {
-                            showModalBottomSheet(
-                                isDismissible: true,
-                                backgroundColor: Colors.transparent,
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return classMoreActions(
-                                    userFullName: widget.classTrainer,
-                                  );
-                                })
-                          },
-                        ),
-                      ))
                 ],
               ),
             ),
-            stretchModes: const [StretchMode.zoomBackground],
-          ),
-          elevation: 0,
-          stretch: true,
-          floating: false,
-          pinned: true,
-          automaticallyImplyLeading: false,
-          expandedHeight: MediaQuery.of(context).size.height * 0.4,
-          backgroundColor: snow,
-          leading: Padding(
-            padding: const EdgeInsets.only(
-              left: 26,
-            ),
-            child: GestureDetector(
-              //Check this
-              child: SvgPicture.asset(
-                'assets/icons/generalIcons/classExit.svg',
-                width: 30,
-                height: 30,
+            titlePadding: EdgeInsets.zero,
+            title: Padding(
+              padding: const EdgeInsets.only(
+                left: 26.0,
               ),
-              onTap: () => {Navigator.of(context).pop()},
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  max = 382.76 - mobilePaddingPlusToolBar;
+                  top = constraints.biggest.height - mobilePaddingPlusToolBar;
+
+                  if (top > max) {
+                    max = top;
+                  }
+                  if (top == mobilePaddingPlusToolBar) {
+                    top = 0.0;
+                  }
+
+                  top = top / max;
+
+                  return Opacity(
+                    opacity: top,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [classTrainer()],
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
+            expandedTitleScale: 1,
+            centerTitle: false,
           ),
           actions: [
             Padding(
-              padding: const EdgeInsets.only(right: 20.0),
+              padding:
+                  const EdgeInsets.only(right: 20.0, top: 11.5, bottom: 11.5),
               child: GestureDetector(
-                child: SvgPicture.asset(
-                  widget.classLiked
-                      ? 'assets/icons/generalIcons/favouriteClassLiked.svg'
-                      : 'assets/icons/generalIcons/favouriteClassOutline.svg',
-                  height: 32,
-                  width: 32,
-                ),
-                onTap: () {
+                child: ClipOval(
+                    child: BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 1,
+                    sigmaY: 1,
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 32,
+                    width: 32,
+                    decoration: BoxDecoration(color: iconCircleColor),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2, bottom: 2),
+                      child: SvgPicture.asset(
+                        widget.classLiked
+                            ? 'assets/icons/generalIcons/favouriteFill.svg'
+                            : 'assets/icons/generalIcons/favouriteEmpty.svg',
+                        color: widget.classLiked ? strawberry : iconColor,
+                        height: 16,
+                      ),
+                    ),
+                  ),
+                )),
+                onTap: () => {
                   setState(() {
                     widget.classLiked = !widget.classLiked;
                     HapticFeedback.mediumImpact();
-                  });
+                  })
                 },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 26.0),
-              child: GestureDetector(
-                child: SvgPicture.asset(
-                  'assets/icons/generalIcons/classShare.svg',
+              padding:
+                  const EdgeInsets.only(right: 26.0, top: 11.5, bottom: 11.5),
+              child: ClipOval(
+                  child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 1,
+                  sigmaY: 1,
+                ),
+                child: Container(
                   height: 32,
                   width: 32,
+                  decoration: BoxDecoration(color: iconCircleColor),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 14, bottom: 14),
+                    child: SvgPicture.asset(
+                      'assets/icons/generalIcons/ellipses.svg',
+                      color: iconColor,
+                      height: 13,
+                      width: 6,
+                    ),
+                  ),
                 ),
-                onTap: () => print('Share Button Pressed'),
-              ),
+              )),
             ),
           ],
         ),
@@ -212,29 +338,139 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classTitle(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 2, left: 26.0, right: 26.0),
+            padding: const EdgeInsets.only(top: 5, left: 26.0, right: 26.0),
             child: classSubHeader(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-            child: classPriceWidget(),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: PageDivider(),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 20, left: 26.0, right: 26.0),
+            padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "About this class",
+                  style: profileSectionTitles,
+                ),
+                GestureDetector(
+                  child: Text(
+                    'See all',
+                    style: TextStyle(
+                      color: ocean,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () => {
+                    showModalBottomSheet(
+                        isScrollControlled: true,
+                        isDismissible: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return moreClassInfo(
+                              inputText: widget.classDescription);
+                        })
+                  },
+                )
+              ],
+            ),
           ),
-          PageDivider(),
           Padding(
-            padding:
-                EdgeInsets.only(top: 20, bottom: 20, left: 26.0, right: 26.0),
+            padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
             child: classDesc(),
           ),
-          PageDivider(),
           Padding(
-            padding: const EdgeInsets.only(
-                top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
-            child: classCategories(),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: PageDivider(),
           ),
-          PageDivider(),
+          Padding(
+            padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "What to expect",
+                  style: profileSectionTitles,
+                ),
+                GestureDetector(
+                  child: Text(
+                    'See all',
+                    style: TextStyle(
+                      color: ocean,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () => {
+                    showModalBottomSheet(
+                        isScrollControlled: true,
+                        isDismissible: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return moreClassInfo(
+                              inputText: widget.classWhatToExpect);
+                        })
+                  },
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
+            child: classWhatToExpect(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: PageDivider(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "What you'll need",
+                  style: profileSectionTitles,
+                ),
+                GestureDetector(
+                  child: Text(
+                    'See all',
+                    style: TextStyle(
+                      color: ocean,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () => {
+                    showModalBottomSheet(
+                        isScrollControlled: true,
+                        isDismissible: true,
+                        backgroundColor: Colors.transparent,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return moreClassInfo(
+                              inputText: widget.classWhatYouWillNeed);
+                        })
+                  },
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
+            child: classWhatYouwillNeed(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: PageDivider(),
+          ),
           Padding(
               padding: EdgeInsets.only(
                   top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
@@ -296,15 +532,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.classType,
-            style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: jetBlack40,
-                fontFamily: 'SFDisplay'),
-            maxLines: 1,
-          ),
           Row(
             children: [
               Expanded(
@@ -316,15 +543,13 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         padding: const EdgeInsets.only(right: 20.0),
                         child: AutoSizeText(
                           widget.className,
-                          minFontSize: 20,
+                          minFontSize: 22,
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 22,
                             fontFamily: 'SFDisplay',
                             fontWeight: FontWeight.w600,
                             color: jetBlack,
                           ),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       )
                     ]),
@@ -340,14 +565,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       color: snow,
       child: Row(
         children: [
-          Text(
-            widget.classLocation,
-            style: TextStyle(
-                color: jetBlack,
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                fontFamily: 'SFDisplay'),
-          ),
+          trainerRating(),
           Padding(
               padding: EdgeInsets.only(
                 left: 5,
@@ -356,11 +574,18 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               child: ClipOval(
                 child: Container(
                   color: jetBlack,
-                  height: 4,
-                  width: 4,
+                  height: 3,
+                  width: 3,
                 ),
               )),
-          trainerRating(),
+          Text(
+            widget.classLocation,
+            style: TextStyle(
+                color: jetBlack,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'SFDisplay'),
+          ),
         ],
       ),
     );
@@ -373,47 +598,25 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         //Star Icon
         SvgPicture.asset(
           'assets/icons/generalIcons/star.svg',
-          height: 12,
-          width: 12,
+          height: 14,
+          width: 14,
           color: sunflower,
         ),
 
         //Rating (Numeric)
         Padding(
           padding: const EdgeInsets.only(left: 5.0),
-          child: Container(
-            height: 20,
-            width: 30,
-            decoration: BoxDecoration(
-              color: jetBlack80,
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            child: Center(
-              child: Text(
-                '${widget.classRating}',
-                style: TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: snow,
-                    fontFamily: 'SFDisplay'),
-              ),
+          child: Center(
+            child: Text(
+              '${widget.classRating}',
+              style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: jetBlack,
+                  fontFamily: 'SFRounded'),
             ),
           ),
         ),
-
-        //Trainer Ratings Count
-        Padding(
-          padding: EdgeInsets.only(left: 5.0),
-          child: Text(
-            '(${widget.classReviews} Reviews)',
-            style: TextStyle(
-                color: jetBlack,
-                fontSize: 14,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w500,
-                letterSpacing: 0),
-          ),
-        )
       ],
     );
   }
@@ -425,6 +628,47 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       children: [
         Text(
           widget.classDescription,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 9,
+          style: TextStyle(
+            fontFamily: 'SFDisplay',
+            color: jetBlack80,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  //Class What To Expect
+  Widget classWhatToExpect() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.classWhatToExpect,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 9,
+          style: TextStyle(
+              fontFamily: 'SFDisplay',
+              color: jetBlack80,
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+
+  //Class What You'll Need
+  Widget classWhatYouwillNeed() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.classWhatYouWillNeed,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 6,
           style: TextStyle(
               fontFamily: 'SFDisplay',
               color: jetBlack80,
@@ -570,49 +814,3 @@ class _TitleSliverDelegate extends SliverPersistentHeaderDelegate {
     return false;
   }
 }
-//Class Date
-
-// Widget classDate() {
-//   return Padding(
-//     padding: const EdgeInsets.only(left: 20.0),
-//     child: Column(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         RichText(
-//           text: TextSpan(children: [
-//             //Month
-//             TextSpan(
-//                 text: 'May ',
-//                 style: TextStyle(
-//                   fontFamily: 'SFDisplay',
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.w700,
-//                   color: jetBlack,
-//                 )),
-//             //Date
-//             TextSpan(
-//                 text: '22nd',
-//                 style: TextStyle(
-//                   fontFamily: 'SFDisplay',
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.w600,
-//                   color: jetBlack,
-//                 ))
-//           ]),
-//         ),
-//         Text(
-//           '2022',
-//           style: TextStyle(
-//             fontFamily: 'SFDisplay',
-//             fontSize: 24,
-//             fontWeight: FontWeight.w200,
-//             color: jetBlack,
-//           ),
-//         )
-//       ],
-//     ),
-//   );
-// }
-
-

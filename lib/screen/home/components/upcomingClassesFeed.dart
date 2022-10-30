@@ -23,7 +23,7 @@ class UpcomingClassesFeed extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           scrollDirection: Axis.vertical,
-          itemCount: 3,
+          itemCount: 1,
           itemBuilder: ((context, index) {
             final classItem = classList[index];
             return UpcomingClassesItem();

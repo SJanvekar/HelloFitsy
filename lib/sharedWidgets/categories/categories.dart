@@ -12,98 +12,98 @@ class Category {
 List<Category> categoriesList = [
   Category(
       categoryName: "Physique",
-      categoryImage: "assets/categories/CategoryPhyisque.png",
+      categoryImage: "assets/categories/weightTraining.png",
       categorySelected: false),
   Category(
       categoryName: "Conditioning",
-      categoryImage: "assets/categories/CategoryPerformance.png",
+      categoryImage: "assets/categories/conditioning.png",
       categorySelected: false),
   Category(
       categoryName: "Flexibility",
-      categoryImage: "assets/categories/CategoryFlexibility.png",
+      categoryImage: "assets/categories/flexiblity.png",
       categorySelected: false),
   Category(
       categoryName: "Lifestyle",
-      categoryImage: "assets/categories/CategoryLifestyle.png",
+      categoryImage: "assets/categories/lifestyle.png",
       categorySelected: false),
   Category(
       categoryName: "Badminton",
-      categoryImage: "assets/categories/CategoryBadminton.png",
+      categoryImage: "assets/categories/badminton.png",
       categorySelected: false),
   Category(
       categoryName: "Baseball",
-      categoryImage: "assets/categories/CategoryBaseball.png",
+      categoryImage: "assets/categories/baseball.png",
       categorySelected: false),
   Category(
       categoryName: "Basketball",
-      categoryImage: "assets/categories/CategoryBasketball.png",
+      categoryImage: "assets/categories/basketball.png",
       categorySelected: false),
   Category(
       categoryName: "Boxing",
-      categoryImage: "assets/categories/CategoryBoxing.png",
+      categoryImage: "assets/categories/boxing.png",
       categorySelected: false),
   Category(
       categoryName: "Cricket",
-      categoryImage: "assets/categories/CategoryCricket.png",
+      categoryImage: "assets/categories/cricket.png",
       categorySelected: false),
   Category(
       categoryName: "Crossfit",
-      categoryImage: "assets/categories/CategoryCrossfit.png",
+      categoryImage: "assets/categories/crossfit.png",
       categorySelected: false),
   Category(
       categoryName: "Cycling",
-      categoryImage: "assets/categories/CategoryCycling.png",
+      categoryImage: "assets/categories/cycling.png",
       categorySelected: false),
   Category(
       categoryName: "Football",
-      categoryImage: "assets/categories/CategoryFootball.png",
+      categoryImage: "assets/categories/football.png",
       categorySelected: false),
   Category(
       categoryName: "Golf",
-      categoryImage: "assets/categories/CategoryGolf.png",
+      categoryImage: "assets/categories/golf.png",
       categorySelected: false),
   Category(
       categoryName: "Gymnastics",
-      categoryImage: "assets/categories/CategoryGymnastics.png",
+      categoryImage: "assets/categories/gymnastics.png",
       categorySelected: false),
   Category(
       categoryName: "Hockey",
-      categoryImage: "assets/categories/CategoryHockey.png",
+      categoryImage: "assets/categories/hockey.png",
       categorySelected: false),
   Category(
       categoryName: "Mixed Martial Arts",
-      categoryImage: "assets/categories/CategoryMMA.png",
+      categoryImage: "assets/categories/mma.png",
       categorySelected: false),
   Category(
       categoryName: "Rugby",
-      categoryImage: "assets/categories/CategoryRugby.png",
+      categoryImage: "assets/categories/rugby.png",
       categorySelected: false),
   Category(
       categoryName: "Running",
-      categoryImage: "assets/categories/CategoryRunning.png",
+      categoryImage: "assets/categories/running.png",
       categorySelected: false),
   Category(
       categoryName: "Soccer",
-      categoryImage: "assets/categories/CategorySoccer.png",
+      categoryImage: "assets/categories/soccer.png",
       categorySelected: false),
   Category(
       categoryName: "Table Tennis",
-      categoryImage: "assets/categories/CategoryTableTennis.png",
+      categoryImage: "assets/categories/tabletennis.png",
       categorySelected: false),
   Category(
       categoryName: "Tennis",
-      categoryImage: "assets/categories/CategoryTennis.png",
+      categoryImage: "assets/categories/tennis.png",
       categorySelected: false),
   Category(
       categoryName: "Track & Field",
-      categoryImage: "assets/categories/CategoryTNF.png",
+      categoryImage: "assets/categories/trackandfield.png",
       categorySelected: false),
   Category(
       categoryName: "Volleyball",
-      categoryImage: "assets/categories/CategoryVolleyball.png",
+      categoryImage: "assets/categories/volleyball.png",
       categorySelected: false),
   Category(
       categoryName: "Weight Lifting",
-      categoryImage: "assets/categories/CategoryCWL.png",
+      categoryImage: "assets/categories/competitiveweightlifting.png",
       categorySelected: false),
 ];

@@ -17,11 +17,13 @@ class UpcomingClassesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width - (26 * 2);
     return Column(
       children: [
         //Upcoming Class Card
         Container(
           height: 100,
+          width: width,
           decoration: BoxDecoration(
             color: bone60,
             borderRadius: BorderRadius.circular(20),

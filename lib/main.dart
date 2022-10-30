@@ -31,7 +31,7 @@ class FITSY extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: HomeTest(),
+      home: MainPage(),
     );
   }
 }
@@ -45,9 +45,16 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    Home(),
-    Explore(),
+  static List<Widget> _widgetOptions = <Widget>[
+    HomeTest(),
+    HomeTest(),
+    UserProfile(
+      profileImageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f',
+      userFullName: 'Salman Janvekar',
+      userName: '@salman',
+      userFirstName: 'Salman',
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -69,9 +76,10 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: Container(
+        height: 90,
         decoration: const BoxDecoration(
             color: snow,
-            border: Border(top: BorderSide(color: shark40, width: 1.0))),
+            border: Border(top: BorderSide(color: shark40, width: 0.33))),
         child: BottomNavigationBar(
           elevation: 0,
           backgroundColor: snow,
@@ -82,36 +90,36 @@ class _MainPageState extends State<MainPage> {
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/navigationBarIcon/Home.svg',
+                  'assets/icons/generalIcons/home.svg',
                   height: 22,
                   color: jetBlack,
                 ),
                 activeIcon: SvgPicture.asset(
-                  'assets/icons/navigationBarIcon/Home.svg',
+                  'assets/icons/generalIcons/home.svg',
                   height: 22,
                   color: strawberry,
                 ),
                 label: ''),
             BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/navigationBarIcon/Search.svg',
+                  'assets/icons/generalIcons/chat.svg',
                   height: 22,
                   color: jetBlack,
                 ),
                 activeIcon: SvgPicture.asset(
-                  'assets/icons/navigationBarIcon/Search.svg',
+                  'assets/icons/generalIcons/chat.svg',
                   height: 22,
                   color: strawberry,
                 ),
                 label: ''),
             BottomNavigationBarItem(
                 icon: SvgPicture.asset(
-                  'assets/icons/navigationBarIcon/User.svg',
+                  'assets/icons/generalIcons/user.svg',
                   height: 22,
                   color: jetBlack,
                 ),
                 activeIcon: SvgPicture.asset(
-                  'assets/icons/navigationBarIcon/User.svg',
+                  'assets/icons/generalIcons/user.svg',
                   height: 22,
                   color: strawberry,
                 ),

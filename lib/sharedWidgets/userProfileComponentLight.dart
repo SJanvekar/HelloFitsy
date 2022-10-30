@@ -10,6 +10,7 @@ class UserProfileComponentLight extends StatelessWidget {
   UserProfileComponentLight({
     Key? key,
     required this.userFullName,
+    required this.userFirstName,
     required this.userFullNameFontSize,
     required this.userName,
     required this.userNameFontSize,
@@ -18,6 +19,7 @@ class UserProfileComponentLight extends StatelessWidget {
   }) : super(key: key);
 
   String userFullName;
+  String userFirstName;
   double userFullNameFontSize;
   String userName;
   double userNameFontSize;
@@ -63,6 +65,9 @@ class UserProfileComponentLight extends StatelessWidget {
             maintainState: true,
             builder: (context) => UserProfile(
                   profileImageUrl: imageURL,
+                  userFullName: userFullName,
+                  userName: userName,
+                  userFirstName: userFirstName,
                 )));
       },
     );

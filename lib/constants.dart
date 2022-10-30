@@ -45,11 +45,11 @@ const ocean40 = Color(0x664A83E2);
 const ocean20 = Color(0x334A83E2);
 
 //Sunflower
-const sunflower = Color(0xffFED201);
-const sunflower80 = Color(0xccFED201);
-const sunflower60 = Color(0x99fED201);
-const sunflower40 = Color(0x66FED201);
-const sunflower20 = Color(0x33FED201);
+const sunflower = Color(0xffFFC851);
+const sunflower80 = Color(0xccFFC851);
+const sunflower60 = Color(0x99FFC851);
+const sunflower40 = Color(0x66FFC851);
+const sunflower20 = Color(0x33FFC851);
 
 //Old Palette
 
@@ -104,6 +104,14 @@ const pageTitles = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 26,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const profileSectionTitles = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 17,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );

@@ -36,7 +36,11 @@ Class classTemplate = Class(
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
-        'https://www.ahigherbranch.com/wp-content/uploads/2019/06/David-Goggins.jpg');
+        'https://www.ahigherbranch.com/wp-content/uploads/2019/06/David-Goggins.jpg',
+    classTrainerUsername: '',
+    classTrainerFirstName: '',
+    classUserRequirements: '',
+    classWhatToExpect: '');
 
 // enum ClassType { solo, group, virtual }
 
