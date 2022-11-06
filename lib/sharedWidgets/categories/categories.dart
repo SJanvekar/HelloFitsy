@@ -20,7 +20,7 @@ List<Category> categoriesList = [
       categorySelected: false),
   Category(
       categoryName: "Flexibility",
-      categoryImage: "assets/categories/flexiblity.png",
+      categoryImage: "assets/categories/flexibility.png",
       categorySelected: false),
   Category(
       categoryName: "Lifestyle",
@@ -104,6 +104,6 @@ List<Category> categoriesList = [
       categorySelected: false),
   Category(
       categoryName: "Weight Lifting",
-      categoryImage: "assets/categories/competitiveweightlifting.png",
+      categoryImage: "assets/categories/competitveweightlifting.png",
       categorySelected: false),
 ];

@@ -1,9 +1,18 @@
+import 'dart:ui';
+
 import 'package:balance/constants.dart';
+import 'package:balance/screen/login/components/categorySelect_bloc.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+
+import '../../../sharedWidgets/categories/categories.dart';
+import '../../../sharedWidgets/loginFooterButton.dart';
 
 class CategorySelection extends StatefulWidget {
   const CategorySelection({Key? key}) : super(key: key);
@@ -12,17 +21,21 @@ class CategorySelection extends StatefulWidget {
   State<CategorySelection> createState() => _CategorySelectionState();
 }
 
+List<Category> allCategories = categoriesList;
+
 class _CategorySelectionState extends State<CategorySelection> {
   //variables
-
+  var selectedCategories = [];
+  int i = allCategories.length;
+  final categorySelectBloc = CategorySelectBloc();
   void _ButtonOnPressed() {}
-
+  var _inputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: snow,
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 50,
         centerTitle: false,
         elevation: 0,
         backgroundColor: snow,
@@ -63,38 +76,174 @@ class _CategorySelectionState extends State<CategorySelection> {
           ],
         ),
       ),
-      body: Column(
-        children: [
+      body: CustomScrollView(slivers: [
+        MultiSliver(children: [
           pageTitle(),
           pageText(),
-          Expanded(
-            child: Padding(
-              padding:
-                  EdgeInsets.only(left: 26, right: 26, top: 20, bottom: 45),
-              child: CategoryListLarge(),
+          // Padding(
+          //     padding: EdgeInsets.only(
+          //         top: 10.0, bottom: 10.0, left: 26.0, right: 26.0),
+          //     child: SizedBox(
+          //       width: 323,
+          //       height: 40,
+          //       child: TextField(
+          //         onChanged: searchCategories,
+          //         controller: _inputController,
+          //         autofocus: false,
+          //         textInputAction: TextInputAction.search,
+          //         style: const TextStyle(
+          //             fontFamily: 'SFDisplay',
+          //             fontSize: 15.5,
+          //             fontWeight: FontWeight.w500,
+          //             color: jetBlack),
+          //         cursorColor: ocean,
+          //         decoration: InputDecoration(
+          //           contentPadding: EdgeInsets.only(top: 11, bottom: 11),
+          //           fillColor: bone60,
+          //           filled: true,
+          //           border: OutlineInputBorder(
+          //             borderRadius: BorderRadius.circular(20),
+          //             borderSide: BorderSide.none,
+          //           ),
+          //           hintText: 'Search Interests',
+          //           hintStyle: const TextStyle(
+          //               color: jetBlack40,
+          //               fontSize: 15.5,
+          //               fontFamily: 'SFRounded',
+          //               fontWeight: FontWeight.w400),
+          //           prefixIcon: Container(
+          //             alignment: Alignment.center,
+          //             width: 10,
+          //             height: 18,
+          //             padding: const EdgeInsets.only(
+          //                 left: 20, top: 10, bottom: 10, right: 0),
+          //             child: SvgPicture.asset(
+          //               'assets/icons/generalIcons/search.svg',
+          //               height: 14,
+          //               width: 114,
+          //               color: jetBlack60,
+          //             ),
+          //           ),
+          //           suffixIcon: _inputController.text.length > 0
+          //               ? GestureDetector(
+          //                   child: Container(
+          //                       width: 50,
+          //                       height: 30,
+          //                       alignment: Alignment.center,
+          //                       child: SvgPicture.asset(
+          //                         'assets/icons/generalIcons/exit.svg',
+          //                         color: shark,
+          //                         height: 12,
+          //                       )),
+          //                   onTap: () {
+          //                     HapticFeedback.mediumImpact();
+          //                     _inputController.clear();
+          //                     setState(() {});
+          //                     searchCategories('');
+          //                   })
+          //               : null,
+          //         ),
+          //       ),
+          //     )),
+          SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
             ),
-          ),
-        ],
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final category = allCategories[index];
+                return Padding(
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: GestureDetector(
+                    child: Stack(
+                      children: [
+                        ClipOval(
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: snow,
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image: AssetImage(category.categoryImage))),
+                            child: Center(
+                              child: Text(
+                                category.categoryName,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: snow,
+                                    fontFamily: 'SFDisplay',
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ),
+                        category.categorySelected
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  color: jetBlack80,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Center(
+                                    child: SvgPicture.asset(
+                                  'assets/icons/generalIcons/circleClassSelected.svg',
+                                  height: 50,
+                                  width: 50,
+                                )),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    onTap: () {
+                      category.categorySelected = !(category.categorySelected);
+                      HapticFeedback.selectionClick();
+                      setState(() {});
+                      // categorySelectBloc.categorySelectedSink
+                      //     .add(category.categorySelected);
+                    },
+                  ),
+                );
+              },
+              childCount: allCategories.length,
+            ),
+          )
+        ])
+      ]),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 55.0, top: 10.0),
+        child: GestureDetector(
+          child: LoginFooterButton(
+              buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
+          onTap: () => {
+            for (i = 0; i < allCategories.length; i++)
+              {
+                if (allCategories[i].categorySelected == true)
+                  {selectedCategories.add(allCategories[i].categoryName)}
+                else
+                  {selectedCategories.remove(allCategories[i].categoryName)}
+              },
+            print(selectedCategories)
+          },
+        ),
       ),
-      // body: CustomScrollView(
-      //   slivers: <Widget>[
-      //     SliverAppBar(
-      //       title: Column(children: [
-      //         pageTitle(),
-      //         pageText(),
-      //       ]),
-      //       automaticallyImplyLeading: false,
-      //       backgroundColor: snow,
-      //       toolbarHeight: 119,
-      //     ),
-      //     SliverPersistentHeader(
-      //       delegate: _SearchBarSliverDelegate(),
-      //       floating: false,
-      //     ),
-      //     SliverList(delegate: SliverChildListDelegate([])),
-      //   ],
-      // )
     );
+  }
+
+  //Search
+  void refresh() {
+    setState(() {});
+  }
+
+  void searchCategories(String query) {
+    final categoriesSearched = categoriesList.where((category) {
+      final categoriesSearchedName = category.categoryName.toLowerCase();
+      final input = query.toLowerCase();
+
+      return categoriesSearchedName.contains(input);
+    }).toList();
+
+    setState(() => allCategories = categoriesSearched);
   }
 }
 
@@ -137,6 +286,7 @@ Widget pageText() {
 }
 
 //Persistent Header Searchbar
+
 //Persistent Header Private Class
 class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
   @override

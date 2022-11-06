@@ -31,7 +31,7 @@ class FITSY extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: MainPage(),
+      home: Login(),
     );
   }
 }
@@ -52,7 +52,7 @@ class _MainPageState extends State<MainPage> {
       profileImageUrl:
           'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f',
       userFullName: 'Salman Janvekar',
-      userName: '@salman',
+      userName: 'salman',
       userFirstName: 'Salman',
     ),
   ];

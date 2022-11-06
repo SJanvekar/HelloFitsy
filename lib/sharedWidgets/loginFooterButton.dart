@@ -19,7 +19,7 @@ class LoginFooterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24.5, right: 24.5),
+      padding: const EdgeInsets.only(left: 26, right: 26),
       child: Container(
         height: 50,
         width: 323,

@@ -47,46 +47,44 @@ class HomeTest extends StatelessWidget {
           //AppBar Sliver
           SliverAppBar(
             stretch: false,
-            pinned: true,
+            pinned: false,
+            floating: true,
             toolbarHeight: 50,
-            centerTitle: true,
+            centerTitle: false,
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            leadingWidth: 60,
-            leading: Padding(
-              padding: EdgeInsets.only(
-                left: 26.0,
-              ),
+            // leadingWidth: 60,
+            // leading: Padding(
+            //   padding: EdgeInsets.only(
+            //     left: 26.0,
+            //   ),
 
-              //Profile Picture
-              child: GestureDetector(
-                child: CircleAvatar(
-                  foregroundImage: NetworkImage(
-                      'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f'),
-                  backgroundColor: Colors.transparent,
-                ),
-                onTap: () => _key.currentState!.openDrawer(),
+            //   //Profile Picture
+            //   child: GestureDetector(
+            //     child: CircleAvatar(
+            //       foregroundImage: NetworkImage(
+            //           'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f'),
+            //       backgroundColor: Colors.transparent,
+            //     ),
+            //     onTap: () => _key.currentState!.openDrawer(),
+            //   ),
+            // ),
+
+            // Typeface
+            title: Padding(
+              padding: const EdgeInsets.only(left: 9.0),
+              child: Image.asset(
+                'assets/images/Typeface.png',
+                height: 44,
               ),
             ),
-
-            //Typeface
-            // title: Image.asset(
-            //   'assets/images/Typeface.png',
-            //   height: 45,
-            // ),
-            // bottom: PreferredSize(
-            //     child: Container(
-            //       color: shark40,
-            //       height: 1,
-            //     ),
-            //     preferredSize: Size.fromHeight(1)),
 
             //Notifications & Chat
             actions: [
               Padding(
                 padding: const EdgeInsets.only(
-                  right: 26.0,
+                  right: 30.0,
                 ),
                 child: Row(
                   children: [
@@ -108,10 +106,22 @@ class HomeTest extends StatelessWidget {
                         //     builder: (context) => CreateClassType()));
                       },
                     ),
-                    SvgPicture.asset(
-                      'assets/icons/generalIcons/chat.svg',
-                      height: 20,
-                      width: 20,
+                    GestureDetector(
+                      child: SvgPicture.asset(
+                        'assets/icons/generalIcons/search.svg',
+                        height: 20,
+                        width: 20,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: Search(),
+                                type: PageTransitionType.fade,
+                                isIos: false,
+                                duration: Duration(milliseconds: 0),
+                                reverseDuration: Duration(milliseconds: 0)));
+                      },
                     ),
                   ],
                 ),
@@ -120,38 +130,38 @@ class HomeTest extends StatelessWidget {
           ),
 
           //Search Bar Sliver
-          SliverPersistentHeader(
-            floating: true,
-            delegate: _SliverSearchBarDelegate(GestureDetector(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Hero(
-                      tag: 'SearchBar',
-                      child: SearchBar(
-                        isAutoFocusTrue: false,
-                        searchBarWidth: searchBarWidth,
-                        searchHintText: 'Search',
-                      )),
-                  Container(
-                      height: 45,
-                      width: searchBarWidth,
-                      color: Colors.transparent)
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: Search(),
-                        type: PageTransitionType.fade,
-                        isIos: false,
-                        duration: Duration(milliseconds: 0),
-                        reverseDuration: Duration(milliseconds: 0)));
-              },
-            )),
-            pinned: false,
-          ),
+          // SliverPersistentHeader(
+          //   floating: true,
+          //   delegate: _SliverSearchBarDelegate(GestureDetector(
+          //     child: Stack(
+          //       alignment: Alignment.center,
+          //       children: [
+          //         Hero(
+          //             tag: 'SearchBar',
+          //             child: SearchBar(
+          //               isAutoFocusTrue: false,
+          //               searchBarWidth: searchBarWidth,
+          //               searchHintText: 'Search',
+          //             )),
+          //         Container(
+          //             height: 45,
+          //             width: searchBarWidth,
+          //             color: Colors.transparent)
+          //       ],
+          //     ),
+          //     onTap: () {
+          //       Navigator.push(
+          //           context,
+          //           PageTransition(
+          //               child: Search(),
+          //               type: PageTransitionType.fade,
+          //               isIos: false,
+          //               duration: Duration(milliseconds: 0),
+          //               reverseDuration: Duration(milliseconds: 0)));
+          //     },
+          //   )),
+          //   pinned: false,
+          // ),
           MultiSliver(children: [
             Padding(
               padding:

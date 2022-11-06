@@ -44,6 +44,7 @@ class _SearchBarState extends State<SearchBar> {
           },
           controller: _controller,
           autofocus: widget.isAutoFocusTrue,
+          textInputAction: TextInputAction.search,
           style: const TextStyle(
               fontFamily: 'SFDisplay',
               fontSize: 15.5,

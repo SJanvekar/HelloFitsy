@@ -38,10 +38,11 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
 
   @override
   Widget build(BuildContext context) {
+    double bottomPadding = ((MediaQuery.of(context).size.width) / 2) - 20;
     return Scaffold(
       backgroundColor: snow,
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 50,
         centerTitle: false,
         elevation: 0,
         backgroundColor: snow,
@@ -83,41 +84,41 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         ),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 135.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Container(
-                    height: 155,
-                    width: 155,
-                    child: Column(
-                      children: [
-                        ClipOval(
-                          child: image != null
-                              ? Image.file(
-                                  image!,
-                                  width: 155,
-                                  height: 155,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  'assets/images/profilePictureDefault.png',
-                                  height: 155,
-                                  width: 155,
-                                ),
-                        ),
-                      ],
-                    ))
-              ],
-            )),
-          ),
+          Center(
+              child: Stack(
+            children: [
+              Container(
+                  height: 155,
+                  width: 155,
+                  child: Column(
+                    children: [
+                      ClipOval(
+                        child: image != null
+                            ? Image.file(
+                                image!,
+                                width: 155,
+                                height: 155,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.asset(
+                                'assets/images/profilePictureDefault.png',
+                                height: 155,
+                                width: 155,
+                              ),
+                      ),
+                    ],
+                  ))
+            ],
+          )),
           pageTitle(),
-          pageText(),
           Padding(
-            padding: const EdgeInsets.only(top: 162, bottom: 15),
+            padding: EdgeInsets.only(bottom: bottomPadding),
+            child: pageText(),
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 15.0),
             child: GestureDetector(
               child: LoginFooterButton(
                   buttonColor: ocean,
@@ -128,20 +129,18 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 45.0),
-            child: GestureDetector(
-              child: LoginFooterButton(
-                  buttonColor: strawberry,
-                  textColor: snow,
-                  buttonText: 'Continue'),
-              onTap: () => {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CategorySelection()))
-              },
-            ),
-          )
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(bottom: 55.0),
+        child: GestureDetector(
+          child: LoginFooterButton(
+              buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
+          onTap: () => {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => CategorySelection()))
+          },
+        ),
       ),
     );
   }
@@ -178,7 +177,7 @@ Widget pageText() {
       textAlign: TextAlign.center,
       text: TextSpan(
         style: logInPageBodyText,
-        children: const [
+        children: [
           TextSpan(
             text: 'Connect with trainers on a more personal level ',
           )

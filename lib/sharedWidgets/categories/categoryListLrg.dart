@@ -54,7 +54,8 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                       height: 18,
                       padding: const EdgeInsets.only(
                           left: 18, top: 11, bottom: 11, right: 8),
-                      child: SvgPicture.asset('assets/icons/SearchIcon20.svg'),
+                      child: SvgPicture.asset(
+                          'assets/icons/generalIcons/search.svg'),
                     ),
                     suffixIcon: GestureDetector(
                         child: Container(
@@ -63,7 +64,7 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                             padding: const EdgeInsets.only(
                                 left: 10, top: 11, bottom: 11, right: 10),
                             child: SvgPicture.asset(
-                              'assets/icons/removeIcon20.svg',
+                              'assets/icons/generalIcons/exit.svg',
                               height: 18,
                               width: 18,
                             )),

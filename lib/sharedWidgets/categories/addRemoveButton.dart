@@ -68,7 +68,7 @@ class _addRemoveButton extends State<AddRemoveButton>
                     child: RotationTransition(
                       turns: Tween(begin: 0.00, end: 1.0).animate(_animation),
                       child: SvgPicture.asset(
-                        'assets/icons/addIcon.svg',
+                        'assets/icons/generalIcons/exit.svg',
                       ),
                     ),
                   )),

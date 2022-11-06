@@ -15,7 +15,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
 class PersonalInfo extends StatefulWidget {
-  const PersonalInfo({Key? key}) : super(key: key);
+  PersonalInfo({Key? key}) : super(key: key);
 
   @override
   State<PersonalInfo> createState() => _PersonalInfoState();
@@ -40,13 +40,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
   bool _passwordVisibility = true;
   bool _passwordConfirmVisibility = true;
   Color _currentBorderColorTrainee = snow;
-  Color _currentIconColorTrainee = jetBlack;
+  Color _currentIconColorTrainee = jetBlack40;
   Color _currentBorderColorTrainer = strawberry;
   Color _currentIconColorTrainer = snow;
-  String _showHideIcon = 'assets/icons/EyeCrossIcon.svg';
-  String _showHideIconConfirm = 'assets/icons/EyeCrossIcon.svg';
-  Color _eyeIconColorPassword = shark60;
-  Color _eyeIconColorConfirmPassword = shark60;
+  String _showHideIcon = 'assets/icons/generalIcons/hidePassword.svg';
+  String _showHideIconConfirm = 'assets/icons/generalIcons/hidePassword.svg';
+  double _showHideIconHeight = 18.0;
+  double _showHideIconHeightConfirm = 18.0;
+  Color _eyeIconColorPassword = jetBlack40;
+  Color _eyeIconColorConfirmPassword = jetBlack40;
 
   void _ButtonOnPressed() {
     setState(() {
@@ -54,42 +56,27 @@ class _PersonalInfoState extends State<PersonalInfo> {
         _currentBorderColorTrainer = strawberry;
         _currentIconColorTrainer = snow;
         _currentBorderColorTrainee = snow;
-        _currentIconColorTrainee = jetBlack;
+        _currentIconColorTrainee = jetBlack40;
       } else {
         _currentBorderColorTrainer = snow;
-        _currentIconColorTrainer = jetBlack;
+        _currentIconColorTrainer = jetBlack40;
         _currentBorderColorTrainee = strawberry;
         _currentIconColorTrainee = snow;
       }
     });
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   // Start listening to changes.
-  //   passwordController.addListener(_changePasswordVisibility);
-  //   passwordController.addListener(_changePasswordConfirmVisibility);
-  // }
-
-  // @override
-  // void dispose() {
-  //   // Clean up the controller when the widget is removed from the widget tree.
-  //   // This also removes the _printLatestValue listener.
-  //   passwordController.dispose();
-  //   super.dispose();
-  // }
-
   void _changePasswordVisibility() {
     setState(() {
       _passwordVisibility = !_passwordVisibility;
       if (_passwordVisibility == true) {
-        _showHideIcon = 'assets/icons/EyeCrossIcon.svg';
-        _eyeIconColorPassword = shark60;
+        _showHideIcon = 'assets/icons/generalIcons/hidePassword.svg';
+        _eyeIconColorPassword = jetBlack40;
+        _showHideIconHeight = 18.0;
       } else {
-        _showHideIcon = 'assets/icons/EyeIcon.svg';
+        _showHideIcon = 'assets/icons/generalIcons/showPassword.svg';
         _eyeIconColorPassword = strawberry;
+        _showHideIconHeight = 14.0;
       }
     });
   }
@@ -98,83 +85,134 @@ class _PersonalInfoState extends State<PersonalInfo> {
     setState(() {
       _passwordConfirmVisibility = !_passwordConfirmVisibility;
       if (_passwordConfirmVisibility == true) {
-        _showHideIconConfirm = 'assets/icons/EyeCrossIcon.svg';
-        _eyeIconColorConfirmPassword = shark60;
+        _showHideIconConfirm = 'assets/icons/generalIcons/hidePassword.svg';
+        _eyeIconColorConfirmPassword = jetBlack40;
+        _showHideIconHeightConfirm = 18.0;
       } else {
-        _showHideIconConfirm = 'assets/icons/EyeIcon.svg';
+        _showHideIconConfirm = 'assets/icons/generalIcons/showPassword.svg';
         _eyeIconColorConfirmPassword = strawberry;
+        _showHideIconHeightConfirm = 14.0;
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: snow,
-
-      //AppBar
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: false,
-        elevation: 0,
+    double boxWidth = ((MediaQuery.of(context).size.width) - 10 - (26 * 2)) / 2;
+    return GestureDetector(
+      child: Scaffold(
         backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
+
+        //AppBar
+        appBar: AppBar(
+          toolbarHeight: 50,
+          centerTitle: false,
+          elevation: 0,
+          backgroundColor: snow,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 0,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    print("Cancel");
+                    Navigator.of(context).pop(CupertinoPageRoute(
+                        fullscreenDialog: true, builder: (context) => Login()));
+                  },
+                  child: Text("Cancel", style: logInPageNavigationButtons),
+                ),
               ),
-              child: TextButton(
-                onPressed: () {
-                  print("Cancel");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true, builder: (context) => Login()));
-                },
-                child: Text("Cancel", style: logInPageNavigationButtons),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
 
-      //Body
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            pageTitle(),
-            pageText(),
+        //Body
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              pageTitle(),
+              pageText(),
 
-            //Trainer or Trainee selection
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 70.5,
-                right: 70.5,
-                top: 30,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  //Trainer selection
-                  Padding(
-                    padding: EdgeInsets.only(
-                      right: 34,
+              //Trainer or Trainee selection
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 70.5,
+                  right: 70.5,
+                  top: 30,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    //Trainer selection
+                    Padding(
+                      padding: EdgeInsets.only(
+                        right: 34,
+                      ),
+                      child: GestureDetector(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 50),
+                          curve: Curves.linear,
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: _currentBorderColorTrainer,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: _currentBorderColorTrainer,
+                                width: 3,
+                              )),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: 18,
+                                  bottom: 11,
+                                ),
+                                child: SvgPicture.asset(
+                                  "assets/icons/generalIcons/trainer.svg",
+                                  color: _currentIconColorTrainer,
+                                  height: 28.52,
+                                  width: 53.86,
+                                ),
+                              ),
+                              Text('Trainer',
+                                  style: TextStyle(
+                                    color: _currentIconColorTrainer,
+                                    fontFamily: 'SFDisplay',
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        onTap: () => {
+                          setState(() {
+                            _buttonPressed = true;
+                            _ButtonOnPressed();
+                            HapticFeedback.mediumImpact();
+                            userType = 'Trainer';
+                          })
+                        },
+                      ),
                     ),
-                    child: GestureDetector(
+
+                    //Trainee selection
+                    GestureDetector(
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 100),
+                        duration: Duration(milliseconds: 50),
                         curve: Curves.linear,
                         height: 100,
                         width: 100,
                         decoration: BoxDecoration(
-                            color: _currentBorderColorTrainer,
+                            color: _currentBorderColorTrainee,
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: _currentBorderColorTrainer,
-                              width: 3,
-                            )),
+                                color: _currentBorderColorTrainee, width: 3)),
                         child: Column(
                           children: [
                             Padding(
@@ -183,158 +221,119 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                 bottom: 11,
                               ),
                               child: SvgPicture.asset(
-                                "assets/icons/Dumbell.svg",
-                                color: _currentIconColorTrainer,
-                                height: 28.52,
-                                width: 53.86,
+                                "assets/icons/generalIcons/user.svg",
+                                color: _currentIconColorTrainee,
+                                height: 27.72,
+                                width: 32.76,
                               ),
                             ),
-                            Text('Trainer',
-                                style: TextStyle(
-                                  color: _currentIconColorTrainer,
+                            Text(
+                              'Trainee',
+                              style: TextStyle(
+                                  color: _currentIconColorTrainee,
                                   fontFamily: 'SFDisplay',
                                   fontSize: 17,
-                                  fontWeight: FontWeight.w600,
-                                ))
+                                  fontWeight: FontWeight.w600),
+                            )
                           ],
                         ),
                       ),
                       onTap: () => {
                         setState(() {
-                          _buttonPressed = true;
+                          _buttonPressed = false;
                           _ButtonOnPressed();
                           HapticFeedback.mediumImpact();
-                          userType = 'Trainer';
+                          userType = 'Trainee';
                         })
                       },
-                    ),
-                  ),
+                    )
+                  ],
+                ),
+              ),
 
-                  //Trainee selection
-                  GestureDetector(
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                      height: 100,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          color: _currentBorderColorTrainee,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                              color: _currentBorderColorTrainee, width: 3)),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              top: 18,
-                              bottom: 11,
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/icons/UserIconSolid.svg",
-                              color: _currentIconColorTrainee,
-                              height: 27.72,
-                              width: 32.76,
-                            ),
-                          ),
-                          Text(
-                            'Trainee',
-                            style: TextStyle(
-                                color: _currentIconColorTrainee,
-                                fontFamily: 'SFDisplay',
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600),
-                          )
-                        ],
-                      ),
-                    ),
-                    onTap: () => {
-                      setState(() {
-                        _buttonPressed = false;
-                        _ButtonOnPressed();
-                        HapticFeedback.mediumImpact();
-                        userType = 'Trainee';
-                      })
-                    },
-                  )
-                ],
+              //User text input fields
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 30,
+                  left: 26.0,
+                  right: 26.0,
+                ),
+                child: textInputFirstLastName(boxWidth),
               ),
-            ),
-
-            //User text input fields
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 30,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  left: 26.0,
+                  right: 26.0,
+                ),
+                child: textInputUsername(),
               ),
-              child: textInputFirstLastName(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  left: 26.0,
+                  right: 26.0,
+                ),
+                child: textInputEmail(context),
               ),
-              child: textInputUsername(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  left: 26.0,
+                  right: 26.0,
+                ),
+                child: textInputPasswordAndConfirm(),
               ),
-              child: textInputEmail(context),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
+            ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(bottom: 55),
+          child: GestureDetector(
+              child: LoginFooterButton(
+                buttonColor: strawberry,
+                textColor: snow,
+                buttonText: "Continue",
               ),
-              child: textInputPasswordAndConfirm(),
-            ),
-
-            //Slider Stuff
-            Padding(
-              padding: const EdgeInsets.only(top: 36.0, bottom: 45),
-              child: GestureDetector(
-                  child: LoginFooterButton(
-                    buttonColor: strawberry,
-                    textColor: snow,
-                    buttonText: "Continue",
-                  ),
-                  onTap: () => {
-                        // if (password == passwordConfirmed)
-                        //   {
-                        //     //SNTG
-                        //     passwordCheck = true
-                        //   }
-                        // else
-                        //   {passwordCheck = false},
-                        // print('not the same password bitch'),
-                        // if (userEmail == null)
-                        //   {emailValid = false}
-                        // else
-                        //   {
-                        //     emailValid = RegExp(
-                        //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                        //         .hasMatch(userEmail)
-                        //   },
-                        // print(emailValid),
-                        // if (passwordCheck && emailValid)
-                        //   {
-                        //     AuthService()
-                        //         .signUp(userType, firstName, lastName, userName,
-                        //             userEmail, password)
-                        //         .then((val) {
-                        //       if (val.data['success']) {
-                        //         print('Successful user add');
-                        //         Navigator.of(context).push(MaterialPageRoute(
-                        //             builder: (context) =>
-                        //                 ProfilePictureUpload()));
-                        //       }
-                        //     })
-                        //   }
-                        print("Continue button pressed"),
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfilePictureUpload()))
-                      }),
-            ),
-          ],
+              onTap: () => {
+                    // if (password == passwordConfirmed)
+                    //   {
+                    //     //SNTG
+                    //     passwordCheck = true
+                    //   }
+                    // else
+                    //   {passwordCheck = false},
+                    // print('not the same password bitch'),
+                    // if (userEmail == null)
+                    //   {emailValid = false}
+                    // else
+                    //   {
+                    //     emailValid = RegExp(
+                    //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    //         .hasMatch(userEmail)
+                    //   },
+                    // print(emailValid),
+                    // if (passwordCheck && emailValid)
+                    //   {
+                    //     AuthService()
+                    //         .signUp(userType, firstName, lastName, userName,
+                    //             userEmail, password)
+                    //         .then((val) {
+                    //       if (val.data['success']) {
+                    //         print('Successful user add');
+                    //         Navigator.of(context).push(MaterialPageRoute(
+                    //             builder: (context) =>
+                    //                 ProfilePictureUpload()));
+                    //       }
+                    //     })
+                    //   }
+                    print("Continue button pressed"),
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => ProfilePictureUpload()))
+                  }),
         ),
       ),
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
     );
   }
 
@@ -343,7 +342,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
     return Column(
       children: [
         Container(
-          width: 323,
           height: 50,
           decoration: BoxDecoration(
             color: bone60,
@@ -357,10 +355,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   padding: const EdgeInsets.only(left: 22, right: 10),
                   child: Center(
                       child: SvgPicture.asset(
-                    'assets/icons/LockIcon.svg',
-                    width: 21,
+                    'assets/icons/generalIcons/lock.svg',
+                    width: 20,
                     height: 25,
-                    color: shark,
+                    color: jetBlack40,
                   )),
                 ),
               ),
@@ -380,7 +378,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     hintText: 'Password',
                     hintStyle: const TextStyle(
                       fontFamily: 'SFDisplay',
-                      color: shark60,
+                      color: shark,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -388,6 +386,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   onChanged: (val) {
                     password = val;
                   },
+                  textInputAction: TextInputAction.next,
                 ),
               ),
               Padding(
@@ -398,6 +397,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     child: SvgPicture.asset(
                       _showHideIcon,
                       color: _eyeIconColorPassword,
+                      height: _showHideIconHeight,
                     ),
                     onTap: () {
                       _changePasswordVisibility();
@@ -409,7 +409,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
         Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Container(
-            width: 323,
             height: 50,
             decoration: BoxDecoration(
               color: bone60,
@@ -423,10 +422,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     padding: const EdgeInsets.only(left: 22, right: 10),
                     child: Center(
                         child: SvgPicture.asset(
-                      'assets/icons/LockIcon.svg',
+                      'assets/icons/generalIcons/lock.svg',
                       width: 21,
                       height: 25,
-                      color: shark,
+                      color: jetBlack40,
                     )),
                   ),
                 ),
@@ -446,7 +445,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       hintText: 'Confirm Password',
                       hintStyle: const TextStyle(
                         fontFamily: 'SFDisplay',
-                        color: shark60,
+                        color: shark,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
@@ -454,6 +453,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     onChanged: (val) {
                       passwordConfirmed = val;
                     },
+                    textInputAction: TextInputAction.done,
                   ),
                 ),
                 Padding(
@@ -461,8 +461,11 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
                     //Switch the eyeOff icon to the eye Icon on Tap
                     child: GestureDetector(
-                      child: SvgPicture.asset(_showHideIconConfirm,
-                          color: _eyeIconColorConfirmPassword),
+                      child: SvgPicture.asset(
+                        _showHideIconConfirm,
+                        color: _eyeIconColorConfirmPassword,
+                        height: _showHideIconHeightConfirm,
+                      ),
                       onTap: () {
                         _changePasswordConfirmVisibility();
                       },
@@ -480,7 +483,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 Widget pageTitle() {
   return Center(
     child: Container(
-        padding: EdgeInsets.only(top: 25),
+        padding: EdgeInsets.only(top: 20),
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Tell us about yourself',
@@ -492,34 +495,18 @@ Widget pageTitle() {
 //PageText
 Widget pageText() {
   return Padding(
-    padding: const EdgeInsets.only(top: 5),
-    child: RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: logInPageBodyText,
-        children: const [
-          TextSpan(
-              text: 'Are you looking to train or learn?',
-              style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: shark,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ))
-        ],
-      ),
-    ),
-  );
+      padding: const EdgeInsets.only(top: 5),
+      child:
+          Text('Are you looking to train or learn?', style: logInPageBodyText));
 }
 
 //User First + Last Name input
-Widget textInputFirstLastName() {
+Widget textInputFirstLastName(boxWidth) {
   return Row(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
       Container(
-        width: 156.5,
+        width: boxWidth,
         height: 50,
         decoration: BoxDecoration(
           color: bone60,
@@ -533,45 +520,21 @@ Widget textInputFirstLastName() {
                 padding: const EdgeInsets.only(left: 20, right: 10),
                 child: Center(
                     child: SvgPicture.asset(
-                  'assets/icons/UserIcon.svg',
+                  'assets/icons/generalIcons/user.svg',
                   height: 22.5,
                   width: 18,
-                  color: shark,
+                  color: jetBlack40,
                 )),
               ),
             ),
-            Expanded(
-              child: TextField(
-                autocorrect: true,
-                textCapitalization: TextCapitalization.sentences,
-                style: const TextStyle(
-                    overflow: TextOverflow.fade,
-                    fontFamily: 'SFDisplay',
-                    color: jetBlack80,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700),
-                decoration: InputDecoration.collapsed(
-                  border: InputBorder.none,
-                  hintText: 'First Name',
-                  hintStyle: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: shark60,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onChanged: (val) {
-                  firstName = val;
-                },
-              ),
-            ),
+            Expanded(child: textInputFirstName()),
           ],
         ),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 10.0),
         child: Container(
-          width: 156.5,
+          width: boxWidth,
           height: 50,
           decoration: BoxDecoration(
             color: bone60,
@@ -584,31 +547,7 @@ Widget textInputFirstLastName() {
                   left: 20,
                 ),
               ),
-              Expanded(
-                child: TextField(
-                  autocorrect: true,
-                  textCapitalization: TextCapitalization.sentences,
-                  style: TextStyle(
-                      overflow: TextOverflow.fade,
-                      fontFamily: 'SFDisplay',
-                      color: jetBlack80,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700),
-                  decoration: InputDecoration.collapsed(
-                    border: InputBorder.none,
-                    hintText: 'Last Name',
-                    hintStyle: TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: shark60,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  onChanged: (val) {
-                    lastName = val;
-                  },
-                ),
-              ),
+              Expanded(child: textInputLastName()),
             ],
           ),
         ),
@@ -617,10 +556,66 @@ Widget textInputFirstLastName() {
   );
 }
 
+//FastName
+Widget textInputFirstName() {
+  return TextField(
+    autocorrect: true,
+    autofocus: true,
+    textCapitalization: TextCapitalization.sentences,
+    style: const TextStyle(
+        overflow: TextOverflow.fade,
+        fontFamily: 'SFDisplay',
+        color: jetBlack80,
+        fontSize: 15,
+        fontWeight: FontWeight.w700),
+    decoration: InputDecoration.collapsed(
+      border: InputBorder.none,
+      hintText: 'First Name',
+      hintStyle: const TextStyle(
+        fontFamily: 'SFDisplay',
+        color: shark,
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    onChanged: (val) {
+      firstName = val;
+    },
+    textInputAction: TextInputAction.next,
+  );
+}
+
+//LastName
+Widget textInputLastName() {
+  return TextField(
+    autocorrect: true,
+    textCapitalization: TextCapitalization.sentences,
+    style: TextStyle(
+        overflow: TextOverflow.fade,
+        fontFamily: 'SFDisplay',
+        color: jetBlack80,
+        fontSize: 15,
+        fontWeight: FontWeight.w700),
+    decoration: InputDecoration.collapsed(
+      border: InputBorder.none,
+      hintText: 'Last Name',
+      hintStyle: TextStyle(
+        fontFamily: 'SFDisplay',
+        color: shark,
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+      ),
+    ),
+    onChanged: (val) {
+      lastName = val;
+    },
+    textInputAction: TextInputAction.next,
+  );
+}
+
 //Username
 Widget textInputUsername() {
   return Container(
-    width: 323,
     height: 50,
     decoration: BoxDecoration(
       color: bone60,
@@ -634,10 +629,10 @@ Widget textInputUsername() {
             padding: const EdgeInsets.only(left: 20, right: 10),
             child: Center(
                 child: SvgPicture.asset(
-              'assets/icons/UserIcon.svg',
+              'assets/icons/generalIcons/user.svg',
               height: 22.5,
               width: 18.0,
-              color: shark,
+              color: jetBlack40,
             )),
           ),
         ),
@@ -655,7 +650,7 @@ Widget textInputUsername() {
               hintText: 'Username',
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
-                color: shark60,
+                color: shark,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
@@ -663,6 +658,7 @@ Widget textInputUsername() {
             onChanged: (val) {
               userName = val;
             },
+            textInputAction: TextInputAction.next,
           ),
         ),
       ],
@@ -673,7 +669,6 @@ Widget textInputUsername() {
 //Email
 Widget textInputEmail(BuildContext context) {
   return Container(
-    width: 323,
     height: 50,
     decoration: BoxDecoration(
       color: bone60,
@@ -687,9 +682,9 @@ Widget textInputEmail(BuildContext context) {
             padding: const EdgeInsets.only(left: 20, right: 10),
             child: Center(
                 child: SvgPicture.asset(
-              'assets/icons/MailIcon.svg',
+              'assets/icons/generalIcons/mail.svg',
               width: 18,
-              color: shark,
+              color: jetBlack40,
             )),
           ),
         ),
@@ -707,7 +702,7 @@ Widget textInputEmail(BuildContext context) {
               hintText: 'Email',
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
-                color: shark60,
+                color: shark,
                 fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
@@ -715,13 +710,17 @@ Widget textInputEmail(BuildContext context) {
             onChanged: (val) {
               userEmail = val;
             },
+            textInputAction: TextInputAction.next,
           ),
         ),
         Padding(
             padding: const EdgeInsets.only(right: 20, left: 10),
             child: GestureDetector(
-              child: SvgPicture.asset('assets/icons/InformationIcon.svg',
-                  height: 20, width: 20),
+              child: SvgPicture.asset(
+                  'assets/icons/generalIcons/information.svg',
+                  color: jetBlack40,
+                  height: 20,
+                  width: 20),
               onTap: () {
                 showDialog(
                     context: context,

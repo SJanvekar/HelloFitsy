@@ -22,7 +22,7 @@ class _SignInState extends State<SignIn> {
       child: Scaffold(
           backgroundColor: snow,
           appBar: AppBar(
-            toolbarHeight: 80,
+            toolbarHeight: 50,
             centerTitle: false,
             elevation: 0,
             backgroundColor: snow,
@@ -69,7 +69,7 @@ class _SignInState extends State<SignIn> {
                             padding: const EdgeInsets.only(left: 21, right: 12),
                             child: Center(
                                 child: SvgPicture.asset(
-                              'assets/icons/lock.svg',
+                              'assets/icons/generalIcons/lock.svg',
                               color: jetBlack40,
                             )),
                           ),
@@ -111,7 +111,7 @@ class _SignInState extends State<SignIn> {
                               hintText: 'Password',
                               hintStyle: const TextStyle(
                                 fontFamily: 'SFDisplay',
-                                color: shark60,
+                                color: shark,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -138,6 +138,7 @@ class _SignInState extends State<SignIn> {
                         AuthService().signIn(account, password).then((val) {
                           if (val.data['success']) {
                             token = val.data['token'];
+                            print('${account}, ${password}');
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Padding(
                                 padding: const EdgeInsets.only(bottom: 320.0),
@@ -203,7 +204,7 @@ Widget textInputUsername() {
             padding: const EdgeInsets.only(left: 20, right: 10),
             child: Center(
                 child: SvgPicture.asset(
-              'assets/icons/UserIcon.svg',
+              'assets/icons/generalIcons/user.svg',
               color: jetBlack40,
             )),
           ),
@@ -222,13 +223,14 @@ Widget textInputUsername() {
                 hintText: 'Username / Email / Phone',
                 hintStyle: const TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark60,
+                  color: shark,
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               onChanged: (val) {
                 account = val;
+                print('I am not null');
               }),
         ),
       ],
@@ -253,7 +255,7 @@ Widget textInputPassword() {
             padding: const EdgeInsets.only(left: 21, right: 12),
             child: Center(
                 child: SvgPicture.asset(
-              'assets/icons/lock.svg',
+              'assets/icons/generalIcons/lock.svg',
               color: jetBlack40,
             )),
           ),
@@ -298,9 +300,9 @@ Widget forgotPassword() {
         'Forgot password?',
         style: TextStyle(
           fontFamily: 'SFDisplay',
-          color: shark,
+          color: jetBlack40,
           fontSize: 14,
-          fontWeight: FontWeight.w600,
+          fontWeight: FontWeight.w500,
         ),
       ),
       onTap: () {
@@ -318,7 +320,7 @@ Widget orDivider() {
         'or',
         style: TextStyle(
           fontFamily: 'SFDisplay',
-          color: shark,
+          color: jetBlack40,
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -348,9 +350,9 @@ Widget signInPartners() {
                 'Continue with Apple',
                 style: TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark,
+                  color: jetBlack40,
                   fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
@@ -386,9 +388,9 @@ Widget signInPartners() {
                 'Continue with Google',
                 style: TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark,
+                  color: jetBlack40,
                   fontSize: 15,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
