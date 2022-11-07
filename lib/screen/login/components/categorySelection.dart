@@ -216,6 +216,7 @@ class _CategorySelectionState extends State<CategorySelection> {
           child: LoginFooterButton(
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
           onTap: () => {
+            selectedCategories.clear(),
             for (i = 0; i < allCategories.length; i++)
               {
                 if (allCategories[i].categorySelected == true)
@@ -230,21 +231,21 @@ class _CategorySelectionState extends State<CategorySelection> {
     );
   }
 
-  //Search
-  void refresh() {
-    setState(() {});
-  }
+  // //Search - Unused
+  // void refresh() {
+  //   setState(() {});
+  // }
 
-  void searchCategories(String query) {
-    final categoriesSearched = categoriesList.where((category) {
-      final categoriesSearchedName = category.categoryName.toLowerCase();
-      final input = query.toLowerCase();
+  // void searchCategories(String query) {
+  //   final categoriesSearched = categoriesList.where((category) {
+  //     final categoriesSearchedName = category.categoryName.toLowerCase();
+  //     final input = query.toLowerCase();
 
-      return categoriesSearchedName.contains(input);
-    }).toList();
+  //     return categoriesSearchedName.contains(input);
+  //   }).toList();
 
-    setState(() => allCategories = categoriesSearched);
-  }
+  //   setState(() => allCategories = categoriesSearched);
+  // }
 }
 
 //Page title

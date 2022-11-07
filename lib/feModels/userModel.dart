@@ -12,6 +12,7 @@ class User {
   String password;
   late List<String> likedCategories;
   late List<String> likedClasses;
+  late List<String> classHistory;
   late List<String> following;
   late List<String> followers;
 
