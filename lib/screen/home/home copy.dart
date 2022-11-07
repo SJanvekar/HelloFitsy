@@ -11,7 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-import '../../sharedWidgets/classes/classModel.dart';
+import '../../feModels/classModel.dart';
 import 'components/search.dart';
 
 class HomeTest extends StatelessWidget {

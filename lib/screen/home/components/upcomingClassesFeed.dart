@@ -1,6 +1,6 @@
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/upcomingClassesItem.dart';
-import 'package:balance/sharedWidgets/classes/classModel.dart';
+import 'package:balance/feModels/classModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

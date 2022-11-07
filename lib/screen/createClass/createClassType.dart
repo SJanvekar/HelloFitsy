@@ -8,7 +8,7 @@ import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/createClass/createClassDetails.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
-import 'package:balance/sharedWidgets/classes/classModel.dart';
+import 'package:balance/feModels/classModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';

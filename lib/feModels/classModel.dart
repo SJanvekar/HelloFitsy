@@ -43,12 +43,14 @@ class Class {
     required this.classRating,
     required this.classReview,
     required this.classPrice,
-    required this.classTrainer,
-    required this.classTrainerFirstName,
-    required this.classTrainerUsername,
     required this.classLiked,
     required this.classTimes,
+
+    //Trainer Info
+    required this.classTrainer,
     required this.trainerImageUrl,
+    required this.classTrainerFirstName,
+    required this.classTrainerUsername,
   });
 }
 

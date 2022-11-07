@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:balance/sharedWidgets/categories/addRemoveButton.dart';
-import 'package:balance/sharedWidgets/classes/classModel.dart';
+import 'package:balance/feModels/classModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

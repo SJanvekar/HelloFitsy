@@ -8,7 +8,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constants.dart';
 import '../categories/categories.dart';
-import 'classModel.dart';
+import '../../feModels/classModel.dart';
 
 class ClassListHorizontal extends StatefulWidget {
   const ClassListHorizontal({Key? key}) : super(key: key);

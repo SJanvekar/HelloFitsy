@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../constants.dart';
-import 'classModel.dart';
+import '../../feModels/classModel.dart';
 
 class ClassListHome extends StatefulWidget {
   const ClassListHome({Key? key}) : super(key: key);

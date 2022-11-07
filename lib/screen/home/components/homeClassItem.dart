@@ -13,7 +13,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../sharedWidgets/userProfileComponentLight.dart';
-import 'package:balance/sharedWidgets/classes/classModel.dart';
+import 'package:balance/feModels/classModel.dart';
 import 'package:balance/Requests/requests.dart';
 
 import '../../profile/components/profile.dart';

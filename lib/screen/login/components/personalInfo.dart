@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
+import '../../../feModels/userModel.dart';
 
 class PersonalInfo extends StatefulWidget {
   PersonalInfo({Key? key}) : super(key: key);
@@ -21,13 +22,17 @@ class PersonalInfo extends StatefulWidget {
   State<PersonalInfo> createState() => _PersonalInfoState();
 }
 
-var userType,
-    firstName,
-    lastName,
-    userName,
-    userEmail,
-    password,
-    passwordConfirmed;
+User userTemplate = User(
+  isActive: true,
+  userType: "",
+  firstName: "",
+  lastName: "",
+  userName: "",
+  userEmail: "",
+  password: "",
+);
+
+var passwordConfirmed;
 
 bool passwordCheck = false;
 bool emailValid = false;
@@ -195,7 +200,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             _buttonPressed = true;
                             _ButtonOnPressed();
                             HapticFeedback.mediumImpact();
-                            userType = 'Trainer';
+                            userTemplate.userType = 'Trainer';
                           })
                         },
                       ),
@@ -243,7 +248,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           _buttonPressed = false;
                           _ButtonOnPressed();
                           HapticFeedback.mediumImpact();
-                          userType = 'Trainee';
+                          userTemplate.userType = 'Trainee';
                         })
                       },
                     )
@@ -329,7 +334,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     //   }
                     print("Continue button pressed"),
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ProfilePictureUpload()))
+                        builder: (context) =>
+                            ProfilePictureUpload(userTemplate: userTemplate)))
                   }),
         ),
       ),
@@ -384,7 +390,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     ),
                   ),
                   onChanged: (val) {
-                    password = val;
+                    userTemplate.password = val;
                   },
                   textInputAction: TextInputAction.next,
                 ),
@@ -579,7 +585,7 @@ Widget textInputFirstName() {
       ),
     ),
     onChanged: (val) {
-      firstName = val;
+      userTemplate.firstName = val;
     },
     textInputAction: TextInputAction.next,
   );
@@ -607,7 +613,7 @@ Widget textInputLastName() {
       ),
     ),
     onChanged: (val) {
-      lastName = val;
+      userTemplate.lastName = val;
     },
     textInputAction: TextInputAction.next,
   );
@@ -656,7 +662,7 @@ Widget textInputUsername() {
               ),
             ),
             onChanged: (val) {
-              userName = val;
+              userTemplate.userName = val;
             },
             textInputAction: TextInputAction.next,
           ),
@@ -708,7 +714,7 @@ Widget textInputEmail(BuildContext context) {
               ),
             ),
             onChanged: (val) {
-              userEmail = val;
+              userTemplate.userEmail = val;
             },
             textInputAction: TextInputAction.next,
           ),

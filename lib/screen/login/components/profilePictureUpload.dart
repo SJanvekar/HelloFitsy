@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
@@ -7,32 +8,63 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
+import '../../../feModels/userModel.dart';
 
 // var image = AssetImage('assets/images/profilePictureDefault.png');
 var image;
 
 class ProfilePictureUpload extends StatefulWidget {
-  ProfilePictureUpload({Key? key}) : super(key: key);
+  ProfilePictureUpload({Key? key, required this.userTemplate})
+      : super(key: key);
+
+  final User userTemplate;
 
   @override
   State<ProfilePictureUpload> createState() => _ProfilePictureUploadState();
 }
 
 class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
-  File? image;
+  File? profilePictureImage;
 
   Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      print("FUCK");
+      print(image?.path);
       if (image == null) {
-        final image = AssetImage('assets/images/profilePictureDefault.png');
+        image = XFile('assets/images/profilePictureDefault.png');
         return;
       }
 
-      final imageTemporary = File(image.path);
-      setState(() => this.image = imageTemporary);
+      setState(() {
+        if (image != null) {
+          profilePictureImage = File(image.path);
+        }
+      });
     } on PlatformException catch (e) {
       print('Failed to pick image $e');
+    }
+  }
+
+  Future uploadImage() async {
+    if (profilePictureImage == null) return;
+
+    try {
+      //Storage Reference
+      final firebaseStorage = FirebaseStorage.instance.ref();
+
+      //Create a reference to image
+      print(profilePictureImage!.path);
+      final profilePictureRef =
+          firebaseStorage.child(profilePictureImage!.path);
+
+      //Upload file. FILE MUST EXIST
+      print(profilePictureImage);
+      await profilePictureRef.putFile(profilePictureImage!);
+    } catch (e) {
+      print("Error: $e");
     }
   }
 
@@ -95,9 +127,9 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                   child: Column(
                     children: [
                       ClipOval(
-                        child: image != null
+                        child: profilePictureImage != null
                             ? Image.file(
-                                image!,
+                                profilePictureImage!,
                                 width: 155,
                                 height: 155,
                                 fit: BoxFit.cover,
@@ -109,7 +141,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                               ),
                       ),
                     ],
-                  ))
+                  )),
             ],
           )),
           pageTitle(),
@@ -137,6 +169,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           child: LoginFooterButton(
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
           onTap: () => {
+            uploadImage(),
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => CategorySelection()))
           },

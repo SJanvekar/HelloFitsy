@@ -1,7 +1,6 @@
 import 'package:balance/constants.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Requests {
   Dio dio = new Dio();
