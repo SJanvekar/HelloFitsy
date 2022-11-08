@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/login/components/categorySelect_bloc.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
@@ -11,11 +12,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
+import '../../../main.dart';
 import '../../../sharedWidgets/categories/categories.dart';
 import '../../../sharedWidgets/loginFooterButton.dart';
+import '../../../feModels/userModel.dart';
 
 class CategorySelection extends StatefulWidget {
-  const CategorySelection({Key? key}) : super(key: key);
+  const CategorySelection({Key? key, required this.userTemplate})
+      : super(key: key);
+
+  final User userTemplate;
 
   @override
   State<CategorySelection> createState() => _CategorySelectionState();
@@ -25,7 +31,7 @@ List<Category> allCategories = categoriesList;
 
 class _CategorySelectionState extends State<CategorySelection> {
   //variables
-  var selectedCategories = [];
+  List<String> selectedCategories = [];
   int i = allCategories.length;
   final categorySelectBloc = CategorySelectBloc();
   void _ButtonOnPressed() {}
@@ -224,7 +230,9 @@ class _CategorySelectionState extends State<CategorySelection> {
                 else
                   {selectedCategories.remove(allCategories[i].categoryName)}
               },
-            print(selectedCategories)
+            print(selectedCategories),
+            userTemplate.categories = selectedCategories,
+            sendUserModel()
           },
         ),
       ),
@@ -246,6 +254,16 @@ class _CategorySelectionState extends State<CategorySelection> {
 
   //   setState(() => allCategories = categoriesSearched);
   // }
+
+  void sendUserModel() {
+    AuthService().signUp(userTemplate).then((val) {
+      if (val.data['success']) {
+        print('Successful user add');
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => MainPage()));
+      }
+    });
+  }
 }
 
 //Page title

@@ -3,6 +3,8 @@ import 'package:balance/screen/login/login.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../../feModels/userModel.dart';
+
 class AuthService {
   Dio dio = new Dio();
 
@@ -25,16 +27,23 @@ class AuthService {
     }
   }
 
-  signUp(userType, firstName, lastName, userName, userEmail, password) async {
+  signUp(User userModel) async {
     try {
       return await dio.post('http://www.fitsy.ca/adduser',
           data: {
-            "UserType": userType,
-            "FirstName": firstName,
-            "LastName": lastName,
-            "Username": userName,
-            "UserEmail": userEmail,
-            "Password": password,
+            "IsActive": userModel.isActive,
+            "ProfileImageURL": userModel.profileImageUrl,
+            "UserType": userModel.userType,
+            "FirstName": userModel.firstName,
+            "LastName": userModel.lastName,
+            "Username": userModel.userName,
+            "UserEmail": userModel.userEmail,
+            "Password": userModel.password,
+            "Categores": userModel.categories,
+            "LikedClasses": userModel.likedClasses,
+            "ClassHistory": userModel.classHistory,
+            "Following": userModel.following,
+            "Followers": userModel.followers
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

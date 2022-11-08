@@ -24,7 +24,7 @@ class PersonalInfo extends StatefulWidget {
 
 User userTemplate = User(
   isActive: true,
-  userType: "",
+  userType: UserType.trainee,
   firstName: "",
   lastName: "",
   userName: "",
@@ -200,7 +200,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             _buttonPressed = true;
                             _ButtonOnPressed();
                             HapticFeedback.mediumImpact();
-                            userTemplate.userType = 'Trainer';
+                            userTemplate.userType = UserType.trainer;
                           })
                         },
                       ),
@@ -248,7 +248,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           _buttonPressed = false;
                           _ButtonOnPressed();
                           HapticFeedback.mediumImpact();
-                          userTemplate.userType = 'Trainee';
+                          userTemplate.userType = UserType.trainee;
                         })
                       },
                     )
@@ -301,41 +301,29 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 buttonText: "Continue",
               ),
               onTap: () => {
-                    // if (password == passwordConfirmed)
-                    //   {
-                    //     //SNTG
-                    //     passwordCheck = true
-                    //   }
-                    // else
-                    //   {passwordCheck = false},
-                    // print('not the same password bitch'),
-                    // if (userEmail == null)
-                    //   {emailValid = false}
-                    // else
-                    //   {
-                    //     emailValid = RegExp(
-                    //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    //         .hasMatch(userEmail)
-                    //   },
-                    // print(emailValid),
-                    // if (passwordCheck && emailValid)
-                    //   {
-                    //     AuthService()
-                    //         .signUp(userType, firstName, lastName, userName,
-                    //             userEmail, password)
-                    //         .then((val) {
-                    //       if (val.data['success']) {
-                    //         print('Successful user add');
-                    //         Navigator.of(context).push(MaterialPageRoute(
-                    //             builder: (context) =>
-                    //                 ProfilePictureUpload()));
-                    //       }
-                    //     })
-                    //   }
-                    print("Continue button pressed"),
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            ProfilePictureUpload(userTemplate: userTemplate)))
+                    if (userTemplate.password == passwordConfirmed)
+                      {
+                        //SNTG
+                        passwordCheck = true
+                      }
+                    else
+                      {passwordCheck = false},
+                    print('not the same password bitch'),
+                    if (userTemplate.userEmail == null)
+                      {emailValid = false}
+                    else
+                      {
+                        emailValid = RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(userTemplate.userEmail)
+                      },
+                    print(emailValid),
+                    if (passwordCheck && emailValid)
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfilePictureUpload(
+                                userTemplate: userTemplate))),
+                      }
                   }),
         ),
       ),

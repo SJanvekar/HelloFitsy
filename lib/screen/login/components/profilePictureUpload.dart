@@ -63,6 +63,10 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
       //Upload file. FILE MUST EXIST
       print(profilePictureImage);
       await profilePictureRef.putFile(profilePictureImage!);
+
+      final imageURL = await profilePictureRef.getDownloadURL();
+
+      userTemplate.profileImageUrl = imageURL;
     } catch (e) {
       print("Error: $e");
     }
@@ -170,8 +174,9 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
           onTap: () => {
             uploadImage(),
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => CategorySelection()))
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    CategorySelection(userTemplate: userTemplate)))
           },
         ),
       ),

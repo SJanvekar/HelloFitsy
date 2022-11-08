@@ -15,14 +15,16 @@ var UserSchema = new Schema({
     UserID: {
         type: String,
         default: id,
-        unique: true
+        unique: true,
+        required: false,
 
     },
 
     //isActive User
-    isActive: {
+    IsActive: {
         type: Boolean,
         default: true,
+        required: false,
     },
 
     //isTrainer or isTrainee
@@ -30,13 +32,21 @@ var UserSchema = new Schema({
         type: [{
 
         type: String,
-            enum: ['Trainer', 'Trainee']
+            enum: ['Trainee', 'Trainer']
             }],
 
         default: ['Trainee'],
         required: true,
 
     },
+
+    //Profile Image URL
+    ProfileImageURL: {
+        type: String,
+        required: false
+
+    },
+    
     //First Name
     FirstName: {
         type: String,
@@ -74,6 +84,36 @@ var UserSchema = new Schema({
         required: true
 
     },
+
+    //Categories (Liked)
+    Categories: [{
+        type: String,
+        required: false,
+    }],
+
+    //Liked Classes
+    LikedClasses: [{
+        type: String,
+        required: false,
+    }],
+
+    //Class History
+    ClassHistory: [{
+        type: String,
+        required: false,
+    }],
+
+    //Following 
+    Following: [{
+        type: String,
+        required: false,
+    }],
+
+    //Followers 
+    Followers: [{
+        type: String,
+        required: false,
+    }],
 
 })
 

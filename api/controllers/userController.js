@@ -12,13 +12,18 @@ var functions = {
         else{
             var newUser = User({
                 UserID: req.body.UserID,
+                IsActive: req.body.IsActive,
                 UserType: req.body.UserType,
+                ProfileImageURL: req.body.ProfileImageURL,
                 FirstName: req.body.FirstName,
                 LastName: req.body.LastName,
                 Username: req.body.Username,
                 UserEmail: req.body.UserEmail,
-                Password: req.body.Password
-
+                Password: req.body.Password,
+                Categories: req.body.Categories,
+                LikedClasses: req.body.LikedClasses,
+                Following: req.body.Following,
+                Followers: req.body.Followers,
             });
             newUser.save(function (err, newUser){
                 if(err){
