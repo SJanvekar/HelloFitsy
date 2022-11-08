@@ -6,6 +6,8 @@ var functions = {
 
     //Add New User fnc
     addNew: function (req, res){
+        print(req.headers)
+        print(req.body)
         if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
             res.json({success: false, msg: 'Enter all fields'})
         }

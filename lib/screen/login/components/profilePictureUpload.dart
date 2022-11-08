@@ -65,7 +65,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
 
       final imageURL = await profilePictureRef.getDownloadURL();
 
-      userTemplate.profileImageUrl = imageURL;
+      userTemplate.profileImageURL = imageURL;
     } catch (e) {
       print("Error: $e");
     }

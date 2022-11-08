@@ -25,6 +25,7 @@ class PersonalInfo extends StatefulWidget {
 User userTemplate = User(
   isActive: true,
   userType: UserType.trainee,
+  profileImageURL: "",
   firstName: "",
   lastName: "",
   userName: "",

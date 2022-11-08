@@ -6,7 +6,7 @@ class User {
   late String userID;
   bool isActive;
   UserType userType;
-  late String profileImageUrl;
+  String profileImageURL;
   String firstName;
   String lastName;
   String userName;
@@ -21,6 +21,7 @@ class User {
   User({
     required this.isActive,
     required this.userType,
+    required this.profileImageURL,
     required this.firstName,
     required this.lastName,
     required this.userName,
