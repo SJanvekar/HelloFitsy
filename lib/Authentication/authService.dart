@@ -47,7 +47,7 @@ class AuthService {
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
-      print(e);
+      print("SignIp Error: ${e}");
     }
   }
 }

@@ -256,11 +256,17 @@ class _CategorySelectionState extends State<CategorySelection> {
   // }
 
   void sendUserModel() {
+    userTemplate.likedClasses = [];
+    userTemplate.classHistory = [];
+    userTemplate.followers = [];
+    userTemplate.following = [];
     AuthService().signUp(userTemplate).then((val) {
       if (val.data['success']) {
         print('Successful user add');
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MainPage()));
+      } else {
+        print("MEGASS ERROR KEK");
       }
     });
   }

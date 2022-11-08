@@ -31,7 +31,6 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
   Future pickImage(ImageSource source) async {
     try {
       var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      print("FUCK");
       print(image?.path);
       if (image == null) {
         image = XFile('assets/images/profilePictureDefault.png');

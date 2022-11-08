@@ -27,9 +27,11 @@ var functions = {
             });
             newUser.save(function (err, newUser){
                 if(err){
+                    print('failure');
                     res.json({success: false, msg: 'Failed to save'})
                 }
                 else {
+                    print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
             })
