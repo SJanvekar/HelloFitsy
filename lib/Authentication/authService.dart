@@ -29,11 +29,9 @@ class AuthService {
 
   signUp(User userModel) async {
     try {
-      print("ImageURL: $userModel.profileImageURL");
       return await dio.post('http://www.fitsy.ca/adduser',
           data: {
-            "IsActive": userModel.isActive,
-            "ProfileImageURL": userModel.profileImageURL,
+            "ProfileImageURL": userModel.profileImageUrl,
             "UserType": userModel.userType,
             "FirstName": userModel.firstName,
             "LastName": userModel.lastName,

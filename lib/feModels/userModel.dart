@@ -1,12 +1,12 @@
 import 'dart:ffi';
 
-enum UserType { trainee, trainer }
+enum UserType { Trainee, Trainer }
 
 class User {
   late String userID;
   bool isActive;
   UserType userType;
-  String profileImageURL;
+  late String profileImageUrl;
   String firstName;
   String lastName;
   String userName;
@@ -21,7 +21,6 @@ class User {
   User({
     required this.isActive,
     required this.userType,
-    required this.profileImageURL,
     required this.firstName,
     required this.lastName,
     required this.userName,
