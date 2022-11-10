@@ -17,7 +17,6 @@ var UserSchema = new Schema({
         default: id,
         unique: true,
         required: false,
-
     },
 
     //isActive User
@@ -119,23 +118,24 @@ var UserSchema = new Schema({
 
 UserSchema.pre('save', function (next) {
     var user = this;
-    if (this.isModified('Password') || this.isNew){
-        bcrypt.genSalt(10, function (err, salt){
-            if (err) {
-                return next(err)
-            }
-            bcrypt.hash(user.Password, salt, function (err, hash){
-                if (err){
-                    return next(err)
-                }
-                user.Password = hash;
-                next()
-            })
-        })
-    }
-    else{
-        return next()
-    }
+    return next()
+    // if (this.isModified('Password') || this.isNew){
+    //     bcrypt.genSalt(10, function (err, salt){
+    //         if (err) {
+    //             return next(err)
+    //         }
+    //         bcrypt.hash(user.Password, salt, function (err, hash){
+    //             if (err) {
+    //                 return next(err)
+    //             }
+    //             user.Password = hash;
+    //             next()
+    //         })
+    //     })
+    // }
+    // else {
+    //     return next()
+    // }
 
 })
 
