@@ -22,11 +22,11 @@ var functions = {
                 Username: req.body.Username,
                 UserEmail: req.body.UserEmail,
                 Password: req.body.Password,
-                // Categories: req.body.Categories,
-                // LikedClasses: req.body.LikedClasses,
-                // ClassHistory: req.body.ClassHistory,
-                // Following: req.body.Following,
-                // Followers: req.body.Followers,
+                Categories: req.body.Categories,
+                LikedClasses: req.body.LikedClasses,
+                ClassHistory: req.body.ClassHistory,
+                Following: req.body.Following,
+                Followers: req.body.Followers,
             });
             newUser.save(function (err, newUser){
                 if(err){
