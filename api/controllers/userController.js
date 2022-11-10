@@ -29,6 +29,7 @@ var functions = {
                 if(err){
                     // print('failure');
                     res.json(err)
+                    res.send('Try again bithc')
                 }
                 else {
                     // print('I have posted');
