@@ -21,6 +21,7 @@ class User {
   User({
     required this.isActive,
     required this.userType,
+    required this.profileImageUrl,
     required this.firstName,
     required this.lastName,
     required this.userName,
