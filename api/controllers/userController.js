@@ -25,7 +25,7 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            await newUser.save(function (err, newUser){
+            const err = await newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
                     res.send({success: false, msg: "Didnt work bithc"})
