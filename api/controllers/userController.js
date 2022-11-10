@@ -28,7 +28,8 @@ var functions = {
             newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
-                    res.json({success: false, msg: '%s' % console.error(err)})
+                    return console.error(err)
+                    // res.json({success: false, msg: '%s' % console.error(err)})
                 }
                 else {
                     // print('I have posted');
