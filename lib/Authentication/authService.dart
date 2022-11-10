@@ -33,7 +33,7 @@ class AuthService {
           data: {
             "ProfileImageURL": userModel.profileImageURL,
             "UserType": userModel.userType,
-            // "IsActive": userModel.isActive,
+            "IsActive": userModel.isActive,
             "FirstName": userModel.firstName,
             "LastName": userModel.lastName,
             "Username": userModel.userName,

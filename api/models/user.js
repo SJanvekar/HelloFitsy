@@ -20,11 +20,11 @@ var UserSchema = new Schema({
     },
 
     //isActive User
-    // IsActive: {
-    //     type: Boolean,
-    //     default: true,
-    //     required: true,
-    // },
+    IsActive: {
+        type: Boolean,
+        default: true,
+        required: true,
+    },
 
     //isTrainer or isTrainee
     UserType: {
