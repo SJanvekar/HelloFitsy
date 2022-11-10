@@ -24,8 +24,7 @@ class PersonalInfo extends StatefulWidget {
 
 User userTemplate = User(
   isActive: true,
-  userType: UserType.trainee,
-  profileImageURL: "",
+  userType: 'Trainee',
   firstName: "",
   lastName: "",
   userName: "",
@@ -201,7 +200,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             _buttonPressed = true;
                             _ButtonOnPressed();
                             HapticFeedback.mediumImpact();
-                            userTemplate.userType = UserType.trainer;
+                            userTemplate.userType = 'Trainer';
                           })
                         },
                       ),
@@ -249,7 +248,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           _buttonPressed = false;
                           _ButtonOnPressed();
                           HapticFeedback.mediumImpact();
-                          userTemplate.userType = UserType.trainee;
+
+                          userTemplate.userType = 'Trainee';
                         })
                       },
                     )
@@ -302,29 +302,31 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 buttonText: "Continue",
               ),
               onTap: () => {
-                    if (userTemplate.password == passwordConfirmed)
-                      {
-                        //SNTG
-                        passwordCheck = true
-                      }
-                    else
-                      {passwordCheck = false},
-                    print('not the same password bitch'),
-                    if (userTemplate.userEmail == null)
-                      {emailValid = false}
-                    else
-                      {
-                        emailValid = RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(userTemplate.userEmail)
-                      },
-                    print(emailValid),
-                    if (passwordCheck && emailValid)
-                      {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfilePictureUpload(
-                                userTemplate: userTemplate))),
-                      }
+                    print(userTemplate.password),
+                    // if (userTemplate.password == passwordConfirmed)
+                    //   {
+                    //     //SNTG
+                    //     passwordCheck = true
+                    //   }
+                    // else
+                    //   {passwordCheck = false},
+                    // print('not the same password bitch'),
+                    // if (userTemplate.userEmail == null)
+                    //   {emailValid = false}
+                    // else
+                    //   {
+                    //     emailValid = RegExp(
+                    //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    //         .hasMatch(userTemplate.userEmail)
+                    //   },
+                    // print(emailValid),
+                    // if (passwordCheck && emailValid)
+                    //   {
+
+                    //   }
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            ProfilePictureUpload(userTemplate: userTemplate))),
                   }),
         ),
       ),

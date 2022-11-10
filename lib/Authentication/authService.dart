@@ -33,7 +33,7 @@ class AuthService {
       return await dio.post('http://www.fitsy.ca/adduser',
           data: {
             "IsActive": userModel.isActive,
-            "ProfileImageURL": userModel.profileImageURL,
+            "ProfileImageURL": userModel.profileImageUrl,
             "UserType": userModel.userType,
             "FirstName": userModel.firstName,
             "LastName": userModel.lastName,
@@ -48,7 +48,7 @@ class AuthService {
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
-      print("SignIp Error: ${e}");
+      print("Signup Error: ${e}");
     }
   }
 }

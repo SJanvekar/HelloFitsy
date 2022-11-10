@@ -5,8 +5,8 @@ enum UserType { trainee, trainer }
 class User {
   late String userID;
   bool isActive;
-  UserType userType;
-  String profileImageURL;
+  String userType;
+  late String profileImageUrl;
   String firstName;
   String lastName;
   String userName;
@@ -21,7 +21,6 @@ class User {
   User({
     required this.isActive,
     required this.userType,
-    required this.profileImageURL,
     required this.firstName,
     required this.lastName,
     required this.userName,
