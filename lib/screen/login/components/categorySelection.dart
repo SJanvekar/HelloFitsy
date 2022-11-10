@@ -261,6 +261,7 @@ class _CategorySelectionState extends State<CategorySelection> {
     userTemplate.following = [];
 
     AuthService().signUp(userTemplate).then((val) {
+      print("WOW: ${val.data['success']}");
       if (val.data['success']) {
         print('Successful user add');
         // Navigator.of(context)
