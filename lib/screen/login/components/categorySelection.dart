@@ -266,7 +266,7 @@ class _CategorySelectionState extends State<CategorySelection> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MainPage()));
       } else {
-        print("MEGASS ERROR KEK");
+        print("MEGASS ERROR KEK: ${val.data}");
       }
     });
   }

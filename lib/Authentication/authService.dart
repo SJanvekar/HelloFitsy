@@ -29,7 +29,7 @@ class AuthService {
 
   signUp(User userModel) async {
     try {
-      print("ImageURL: {$userModel.profileImageURL}");
+      print("ImageURL: $userModel.profileImageURL");
       return await dio.post('http://www.fitsy.ca/adduser',
           data: {
             "IsActive": userModel.isActive,
@@ -40,15 +40,20 @@ class AuthService {
             "Username": userModel.userName,
             "UserEmail": userModel.userEmail,
             "Password": userModel.password,
-            "Categores": userModel.categories,
+            "Categories": userModel.categories,
             "LikedClasses": userModel.likedClasses,
             "ClassHistory": userModel.classHistory,
             "Following": userModel.following,
             "Followers": userModel.followers
           },
-          options: Options(contentType: Headers.formUrlEncodedContentType));
+          options: Options(
+            contentType: Headers.formUrlEncodedContentType,
+            responseType: ResponseType.json,
+            followRedirects: false,
+            validateStatus: (status) => true,
+          ));
     } on DioError catch (e) {
-      print("SignIp Error: ${e}");
+      print("SignUp Error: ${e}");
     }
   }
 }
