@@ -23,7 +23,7 @@ var UserSchema = new Schema({
     IsActive: {
         type: Boolean,
         default: true,
-        required: false,
+        required: true,
     },
 
     //isTrainer or isTrainee
