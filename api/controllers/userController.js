@@ -6,8 +6,8 @@ var functions = {
 
     //Add New User fnc
     addNew: function (req, res){
-        print(req.headers)
-        print(req.body)
+        // print(req.headers)
+        // print(req.body)
         if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
             res.json({success: false, msg: 'Enter all fields'})
         }
@@ -30,11 +30,11 @@ var functions = {
             });
             newUser.save(function (err, newUser){
                 if(err){
-                    print('failure');
-                    res.json({success: false, msg: 'Failed to save'})
+                    // print('failure');
+                    res.json({success: false, msg: '%s' % (err)})
                 }
                 else {
-                    print('I have posted');
+                    // print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
             })

@@ -43,7 +43,7 @@ var UserSchema = new Schema({
     //Profile Image URL
     ProfileImageURL: {
         type: String,
-        required: false
+        required: true
 
     },
     
