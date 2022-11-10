@@ -24,7 +24,7 @@ class PersonalInfo extends StatefulWidget {
 
 User userTemplate = User(
   isActive: true,
-  userType: UserType.trainee,
+  userType: UserType.Trainee,
   firstName: "",
   lastName: "",
   userName: "",
@@ -200,7 +200,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             _buttonPressed = true;
                             _ButtonOnPressed();
                             HapticFeedback.mediumImpact();
-                            userTemplate.userType = UserType.trainer;
+                            userTemplate.userType = UserType.Trainer;
                           })
                         },
                       ),
@@ -249,7 +249,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                           _ButtonOnPressed();
                           HapticFeedback.mediumImpact();
 
-                          userTemplate.userType = UserType.trainee;
+                          userTemplate.userType = UserType.Trainee;
                         })
                       },
                     )

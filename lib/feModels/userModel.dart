@@ -1,6 +1,6 @@
 import 'dart:ffi';
 
-enum UserType { trainee, trainer }
+enum UserType { Trainee, Trainer }
 
 class User {
   late String userID;

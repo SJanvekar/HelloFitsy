@@ -29,7 +29,7 @@ class AuthService {
 
   signUp(User userModel) async {
     try {
-      print("ImageURL: ${userModel.profileImageUrl}");
+      // print("ImageURL: ${userModel.profileImageUrl}");
       return await dio.post('http://www.fitsy.ca/adduser',
           data: {
             "ProfileImageURL": userModel.profileImageUrl,
@@ -40,10 +40,6 @@ class AuthService {
             "UserEmail": userModel.userEmail,
             "Password": userModel.password,
             "Categories": userModel.categories,
-            "LikedClasses": userModel.likedClasses,
-            "ClassHistory": userModel.classHistory,
-            "Following": userModel.following,
-            "Followers": userModel.followers
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
