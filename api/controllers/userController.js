@@ -4,11 +4,11 @@ var config = require('../../config/Private/dbconfig')
 
 var functions = {
     //Add New User fnc
-    addNew: function (req, res){
+    addNew: async function (req, res){
         if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
             res.json({success: false, msg: 'Enter all fields'})
         }
-        else{
+        else {
             var newUser = User({
                 UserID: req.body.UserID,
                 IsActive: req.body.IsActive,
@@ -25,7 +25,7 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            newUser.save(function (err, newUser){
+            await newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
                     res.send({success: false, msg: "Didnt work bithc"})
@@ -34,7 +34,7 @@ var functions = {
                     // print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
-            })
+            }).catch(err => err)
         }
     },
 
