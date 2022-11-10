@@ -25,7 +25,7 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            const err = await newUser.save(function (err, newUser){
+            await newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
                     res.send({success: false, msg: "Didnt work bithc"})
@@ -34,8 +34,7 @@ var functions = {
                     // print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
-            }).catch(err => err)
-            err;
+            }).catch(err => console.error(err))
         }
     },
 
