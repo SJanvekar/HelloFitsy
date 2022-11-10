@@ -35,7 +35,7 @@ var functions = {
                     res.json({success: true, msg: 'Successfully saved'})
                 }
             }).catch(err => err)
-            console.log(err)
+            err;
         }
     },
 
