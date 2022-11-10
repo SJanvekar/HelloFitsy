@@ -28,8 +28,7 @@ var functions = {
             newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
-                    res.json(err)
-                    res.send('Try again bithc')
+                    res.send(err)
                 }
                 else {
                     // print('I have posted');
