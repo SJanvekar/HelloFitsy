@@ -65,7 +65,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
 
       final imageURL = await profilePictureRef.getDownloadURL();
 
-      userTemplate.profileImageUrl = imageURL;
+      userTemplate.profileImageURL = imageURL;
     } catch (e) {
       print("Error: $e");
     }
@@ -173,7 +173,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
           onTap: () => {
             uploadImage(),
-            print(userTemplate.profileImageUrl),
+            print(userTemplate.profileImageURL),
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     CategorySelection(userTemplate: userTemplate)))

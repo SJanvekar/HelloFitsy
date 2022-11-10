@@ -11,7 +11,7 @@ var functions = {
         else{
             var newUser = User({
                 UserID: req.body.UserID,
-                IsActive: req.body.IsActive,
+                // IsActive: req.body.IsActive,
                 UserType: req.body.UserType,
                 ProfileImageURL: req.body.ProfileImageURL,
                 FirstName: req.body.FirstName,
