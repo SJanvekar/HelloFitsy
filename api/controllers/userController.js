@@ -25,6 +25,7 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
+            process.stdout.write(newUser);
             await newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
