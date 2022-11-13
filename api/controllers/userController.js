@@ -15,7 +15,7 @@ var functions = {
                 UserType: req.body.UserType,
                 ProfileImageURL: req.body.ProfileImageURL,
                 FirstName: req.body.FirstName,
-                // LastName: req.body.LastName,
+                LastName: req.body.LastName,
                 Username: req.body.Username,
                 UserEmail: req.body.UserEmail,
                 Password: req.body.Password,
@@ -25,8 +25,8 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            // console.log(newUser);
-            // print(req.body.LastName);
+            console.log(newUser);
+            console.log(req.body.LastName);
             await newUser.save(function (err, newUser) {
                 if(err) {
                     // print('failure');
@@ -36,7 +36,7 @@ var functions = {
                     // print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
-            }).catch(err => console.error(err))
+            }).catch(err => err)
         }
     },
 
