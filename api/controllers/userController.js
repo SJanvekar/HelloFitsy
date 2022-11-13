@@ -25,7 +25,7 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            console.log(newUser);
+            // console.log(newUser);
             print(req.body.LastName);
             await newUser.save(function (err, newUser) {
                 if(err) {
