@@ -259,9 +259,11 @@ class _CategorySelectionState extends State<CategorySelection> {
     userTemplate.classHistory = <String>[];
     userTemplate.followers = <String>[];
     userTemplate.following = <String>[];
+    print(userTemplate.profileImageURL);
 
     AuthService().signUp(userTemplate).then((val) {
       print("Whatever");
+      print("MEGASS ERROR KEK: ${val.error}");
       // if (val.data['success']) {
       //   print('Successful user add');
       //   // Navigator.of(context)
