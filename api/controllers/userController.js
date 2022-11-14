@@ -9,6 +9,7 @@ var functions = {
             res.json({success: false, msg: 'Enter all fields'})
         }
         else {
+            console.log(req.body.UserType)
             var newUser = User({
                 UserID: req.body.UserID,
                 IsActive: req.body.IsActive,
@@ -25,18 +26,18 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            console.log(newUser);
-            console.log(req.body.LastName);
             await newUser.save(function (err, newUser) {
                 if(err) {
                     // print('failure');
+                    console.log("FUCKKKKKKKKKKKK")
+                    console.error(err)
                     res.send({success: false, msg: "Didnt work bithc"})
                 }
                 else {
                     // print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
-            }).catch(err => err)
+            })
         }
     },
 
