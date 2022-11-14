@@ -10,6 +10,7 @@ var functions = {
             
         }
         else {
+            console.log(req.body.UserType)
             var newUser = User({
                 UserID: req.body.UserID,
                 IsActive: req.body.IsActive,
@@ -26,10 +27,11 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            // process.stdout.write(newUser);
             await newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
+                    console.log("FUCKKKKKKKKKKKK")
+                    console.error(err)
                     res.send({success: false, msg: "Didnt work bithc"})
                 }
                 else {

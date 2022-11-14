@@ -34,10 +34,14 @@ var UserSchema = new Schema({
             enum: ['Trainee', 'Trainer']
             }],
 
-        default: ['Trainee'],
+        default: 'Trainee',
         required: true,
-
     },
+    // UserType: {
+    //     type: String,
+    //     enum: ['Trainee', 'Trainer'],
+    //     default: 'Trainee',
+    // },
 
     //Profile Image URL
     ProfileImageURL: {

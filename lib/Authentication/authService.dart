@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:balance/constants.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:dio/dio.dart';
@@ -32,7 +34,7 @@ class AuthService {
       return await dio.post('http://www.fitsy.ca/adduser',
           data: {
             "ProfileImageURL": userModel.profileImageURL,
-            "UserType": userModel.userType,
+            "UserType": userModel.userType.name,
             "IsActive": userModel.isActive,
             "FirstName": userModel.firstName,
             "LastName": userModel.lastName,
