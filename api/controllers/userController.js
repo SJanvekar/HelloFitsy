@@ -7,6 +7,7 @@ var functions = {
     addNew: async function (req, res){
         if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
             res.json({success: false, msg: 'Enter all fields'})
+            
         }
         else {
             var newUser = User({
@@ -25,10 +26,9 @@ var functions = {
                 Following: req.body.Following,
                 Followers: req.body.Followers,
             });
-            console.log(newUser);
-            console.log(req.body.LastName);
-            await newUser.save(function (err, newUser) {
-                if(err) {
+            // process.stdout.write(newUser);
+            await newUser.save(function (err, newUser){
+                if(err){
                     // print('failure');
                     res.send({success: false, msg: "Didnt work bithc"})
                 }
@@ -36,7 +36,7 @@ var functions = {
                     // print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
-            }).catch(err => err)
+            })
         }
     },
 
