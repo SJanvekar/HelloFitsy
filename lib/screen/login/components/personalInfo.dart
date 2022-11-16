@@ -9,6 +9,7 @@ import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,10 +46,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
   // final passwordController = TextEditingController();
   bool _passwordVisibility = true;
   bool _passwordConfirmVisibility = true;
-  Color _currentBorderColorTrainee = snow;
-  Color _currentIconColorTrainee = jetBlack40;
-  Color _currentBorderColorTrainer = strawberry;
-  Color _currentIconColorTrainer = snow;
+  Color _currentBorderColorTrainee = strawberry;
+  Color _currentIconColorTrainee = snow;
+  Color _currentBorderColorTrainer = snow;
+  Color _currentIconColorTrainer = jetBlack40;
   String _showHideIcon = 'assets/icons/generalIcons/hidePassword.svg';
   String _showHideIconConfirm = 'assets/icons/generalIcons/hidePassword.svg';
   double _showHideIconHeight = 18.0;
@@ -146,19 +147,63 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
               //Trainer or Trainee selection
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 70.5,
-                  right: 70.5,
-                  top: 30,
-                ),
+                padding: const EdgeInsets.only(top: 30, bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    //Trainee selection
+                    Padding(
+                      padding: const EdgeInsets.only(right: 35.0),
+                      child: GestureDetector(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 50),
+                          curve: Curves.linear,
+                          height: 100,
+                          width: 100,
+                          decoration: BoxDecoration(
+                              color: _currentBorderColorTrainee,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                  color: _currentBorderColorTrainee, width: 3)),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  top: 18,
+                                  bottom: 11,
+                                ),
+                                child: SvgPicture.asset(
+                                  "assets/icons/generalIcons/user.svg",
+                                  color: _currentIconColorTrainee,
+                                  height: 27.72,
+                                  width: 32.76,
+                                ),
+                              ),
+                              Text(
+                                'Trainee',
+                                style: TextStyle(
+                                    color: _currentIconColorTrainee,
+                                    fontFamily: 'SFDisplay',
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
+                        ),
+                        onTap: () => {
+                          setState(() {
+                            _buttonPressed = false;
+                            _ButtonOnPressed();
+                            HapticFeedback.mediumImpact();
+
+                            userTemplate.userType = UserType.Trainee;
+                          })
+                        },
+                      ),
+                    ),
                     //Trainer selection
                     Padding(
-                      padding: EdgeInsets.only(
-                        right: 34,
-                      ),
+                      padding: EdgeInsets.only(),
                       child: GestureDetector(
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 50),
@@ -206,54 +251,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         },
                       ),
                     ),
-
-                    //Trainee selection
-                    GestureDetector(
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 50),
-                        curve: Curves.linear,
-                        height: 100,
-                        width: 100,
-                        decoration: BoxDecoration(
-                            color: _currentBorderColorTrainee,
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                                color: _currentBorderColorTrainee, width: 3)),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 18,
-                                bottom: 11,
-                              ),
-                              child: SvgPicture.asset(
-                                "assets/icons/generalIcons/user.svg",
-                                color: _currentIconColorTrainee,
-                                height: 27.72,
-                                width: 32.76,
-                              ),
-                            ),
-                            Text(
-                              'Trainee',
-                              style: TextStyle(
-                                  color: _currentIconColorTrainee,
-                                  fontFamily: 'SFDisplay',
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
-                        ),
-                      ),
-                      onTap: () => {
-                        setState(() {
-                          _buttonPressed = false;
-                          _ButtonOnPressed();
-                          HapticFeedback.mediumImpact();
-
-                          userTemplate.userType = UserType.Trainee;
-                        })
-                      },
-                    )
                   ],
                 ),
               ),
@@ -304,30 +301,54 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               onTap: () => {
                     print(userTemplate.password),
-                    // if (userTemplate.password == passwordConfirmed)
-                    //   {
-                    //     //SNTG
-                    //     passwordCheck = true
-                    //   }
-                    // else
-                    //   {passwordCheck = false},
-                    // print('not the same password bitch'),
-                    // if (userTemplate.userEmail == null)
-                    //   {emailValid = false}
-                    // else
-                    //   {
-                    //     emailValid = RegExp(
-                    //             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    //         .hasMatch(userTemplate.userEmail)
-                    //   },
-                    // print(emailValid),
-                    // if (passwordCheck && emailValid)
-                    //   {
-
-                    //   }
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            ProfilePictureUpload(userTemplate: userTemplate))),
+                    if (userTemplate.password == passwordConfirmed)
+                      {
+                        //SNTG
+                        passwordCheck = true
+                      }
+                    else
+                      {passwordCheck = false},
+                    print('not the same password bitch'),
+                    if (userTemplate.userEmail == null)
+                      {emailValid = false}
+                    else
+                      {
+                        emailValid =
+                            EmailValidator.validate(userTemplate.userEmail)
+                      },
+                    print(emailValid),
+                    if (passwordCheck && emailValid)
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfilePictureUpload(
+                                userTemplate: userTemplate))),
+                      }
+                    else if (!emailValid)
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Padding(
+                            padding: const EdgeInsets.only(bottom: 320.0),
+                            child: emailCheckSnackbar(),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                        ))
+                      }
+                    else if (!passwordCheck)
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Padding(
+                            padding: const EdgeInsets.only(bottom: 320.0),
+                            child: passwordCheckSnackbar(),
+                          ),
+                          behavior: SnackBarBehavior.floating,
+                          duration: Duration(seconds: 2),
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                        ))
+                      }
                   }),
         ),
       ),
@@ -795,5 +816,47 @@ Widget informationDialog(BuildContext context) {
         ],
       ),
     ),
+  );
+}
+
+Widget passwordCheckSnackbar() {
+  return Container(
+    height: 50,
+    width: 323,
+    decoration: BoxDecoration(
+      color: strawberry,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Center(
+        child: Text(
+      'Your passwords do not match, please try again.',
+      style: TextStyle(
+          color: snow,
+          fontSize: 15,
+          fontFamily: 'SFDisplay',
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w500),
+    )),
+  );
+}
+
+Widget emailCheckSnackbar() {
+  return Container(
+    height: 50,
+    width: 323,
+    decoration: BoxDecoration(
+      color: strawberry,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Center(
+        child: Text(
+      'You have entered an invalid email, please try again.',
+      style: TextStyle(
+          color: snow,
+          fontSize: 15,
+          fontFamily: 'SFDisplay',
+          letterSpacing: 0.5,
+          fontWeight: FontWeight.w500),
+    )),
   );
 }
