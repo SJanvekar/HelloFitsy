@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:balance/constants.dart';
+import 'package:balance/screen/login/components/signIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,13 +20,27 @@ class AuthService {
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
-      Fluttertoast.showToast(
-          msg: e.response?.data['msg'],
-          gravity: ToastGravity.CENTER,
-          toastLength: Toast.LENGTH_SHORT,
-          backgroundColor: strawberry,
-          textColor: snow,
-          fontSize: 15.0);
+      print(e);
+    }
+
+    //   Fluttertoast.showToast(
+    //       msg: e.response?.data['msg'],
+    //       gravity: ToastGravity.CENTER,
+    //       toastLength: Toast.LENGTH_SHORT,
+    //       backgroundColor: strawberry,
+    //       textColor: snow,
+    //       fontSize: 15.0);
+    // }
+  }
+
+  getUserInfo(token) async {
+    dio.options.headers['Authorization'] = 'Bearer $token';
+    try {
+      return await dio.get(
+        'http://www.fitsy.ca/getinfo',
+      );
+    } on DioError catch (e) {
+      print(e);
     }
   }
 
@@ -58,55 +73,3 @@ class AuthService {
     }
   }
 }
-
-
-// Widget unsuccessfulSignInTemp() {
-//   return Container(
-//     height: 50,
-//     width: 323,
-//     decoration: BoxDecoration(
-//         color: snow,
-//         borderRadius: BorderRadius.circular(20),
-//         boxShadow: [
-//           BoxShadow(
-//             color: jetBlack.withOpacity(0.01),
-//             spreadRadius: 0,
-//             blurRadius: 38,
-//             offset: Offset(0, 24), // changes position of shadow
-//           ),
-//           BoxShadow(
-//             color: jetBlack.withOpacity(0.06),
-//             spreadRadius: 0,
-//             blurRadius: 46,
-//             offset: Offset(0, 9), // changes position of shadow
-//           ),
-//           BoxShadow(
-//             color: jetBlack.withOpacity(0.10),
-//             spreadRadius: 0,
-//             blurRadius: 15,
-//             offset: Offset(0, 11), // changes position of shadow
-//           ),
-//         ]),
-//     child: Center(
-//         child: Text(
-//       'Incorrect username or password  👀 ',
-//       style: TextStyle(
-//           color: Color(0xff7A7D81),
-//           fontSize: 15,
-//           fontFamily: 'SFDisplay',
-//           letterSpacing: 0.5,
-//           fontWeight: FontWeight.w600),
-//     )),
-//   );
-// }
-
-//   SnackBar(
-//         content: Padding(
-//           padding: const EdgeInsets.only(bottom: 320.0),
-//           child: unsuccessfulSignInTemp(),
-//         ),
-//         behavior: SnackBarBehavior.floating,
-//         duration: Duration(seconds: 2),
-//         backgroundColor: Colors.transparent,
-//         elevation: 0,
-//       );

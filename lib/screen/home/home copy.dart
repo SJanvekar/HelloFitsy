@@ -34,8 +34,8 @@ class HomeTest extends StatelessWidget {
         backgroundColor: snow,
 
         //Profile SideBar
-        drawer: SideBar(),
-        drawerEdgeDragWidth: MediaQuery.of(context).size.width,
+        // drawer: SideBar(),
+        // drawerEdgeDragWidth: MediaQuery.of(context).size.width,
 
         //Appbar (White section, this should be consitent on every page.)
         appBar: AppBar(

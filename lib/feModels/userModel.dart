@@ -3,7 +3,6 @@ import 'dart:ffi';
 enum UserType { Trainee, Trainer }
 
 class User {
-  // late String userID;
   bool isActive;
   UserType userType;
   late String profileImageURL;

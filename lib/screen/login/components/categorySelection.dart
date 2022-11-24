@@ -259,15 +259,17 @@ class _CategorySelectionState extends State<CategorySelection> {
     userTemplate.classHistory = <String>[];
     userTemplate.followers = <String>[];
     userTemplate.following = <String>[];
+
+    //Auth Service Call
     AuthService().signUp(userTemplate).then((val) {
-      print("Whatever");
-      // if (val.data['success']) {
-      //   print('Successful user add');
-      //   // Navigator.of(context)
-      //   //     .push(MaterialPageRoute(builder: (context) => MainPage()));
-      // } else {
-      //   print("MEGASS ERROR KEK: ${val.data}");
-      // }
+      // print("Whatever");
+      if (val.data['success']) {
+        print('Successful user add');
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => MainPage()));
+      } else {
+        print("MEGASS ERROR KEK: ${val.data}");
+      }
     });
   }
 }

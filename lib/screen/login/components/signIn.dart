@@ -1,10 +1,13 @@
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/userModel.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import '../../../main.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -14,6 +17,17 @@ class SignIn extends StatefulWidget {
 }
 
 var account, password, token;
+
+User userTemplate = User(
+  isActive: true,
+  userType: UserType.Trainee,
+  profileImageURL: "",
+  firstName: "",
+  lastName: "",
+  userName: "",
+  userEmail: "",
+  password: "",
+);
 
 class _SignInState extends State<SignIn> {
   @override
@@ -138,17 +152,28 @@ class _SignInState extends State<SignIn> {
                         AuthService().signIn(account, password).then((val) {
                           if (val.data['success']) {
                             token = val.data['token'];
-                            print('${account}, ${password}');
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Padding(
-                                padding: const EdgeInsets.only(bottom: 320.0),
-                                child: successfulSignInTemp(),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              duration: Duration(seconds: 2),
-                              backgroundColor: Colors.transparent,
-                              elevation: 0,
-                            ));
+                            AuthService().getUserInfo(token).then((val) {
+                              if (val.data['success']) {
+                                userTemplate.userType =
+                                    val.data['user.UserType'];
+                                print(userTemplate.userType);
+                              }
+                            });
+                            //Temporary Sign In validation test
+                            // print('${account}, ${password}');
+                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            //   content: Padding(
+                            //     padding: const EdgeInsets.only(bottom: 320.0),
+                            //     child: successfulSignInTemp(),
+                            //   ),
+                            //   behavior: SnackBarBehavior.floating,
+                            //   duration: Duration(seconds: 2),
+                            //   backgroundColor: Colors.transparent,
+                            //   elevation: 0,
+                            // ));
+
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MainPage()));
                           }
                         });
                       },

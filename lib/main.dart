@@ -78,58 +78,61 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: Container(
-        height: 90,
-        decoration: const BoxDecoration(
-            color: snow,
-            border: Border(top: BorderSide(color: shark40, width: 0.33))),
-        child: BottomNavigationBar(
-          elevation: 0,
-          backgroundColor: snow,
-          // showSelectedLabels: false,
-          // showUnselectedLabels: false,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/generalIcons/home.svg',
-                  height: 22,
-                  color: jetBlack,
-                ),
-                activeIcon: SvgPicture.asset(
-                  'assets/icons/generalIcons/home.svg',
-                  height: 22,
-                  color: strawberry,
-                ),
-                label: ''),
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/generalIcons/chat.svg',
-                  height: 22,
-                  color: jetBlack,
-                ),
-                activeIcon: SvgPicture.asset(
-                  'assets/icons/generalIcons/chat.svg',
-                  height: 22,
-                  color: strawberry,
-                ),
-                label: ''),
-            BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icons/generalIcons/user.svg',
-                  height: 22,
-                  color: jetBlack,
-                ),
-                activeIcon: SvgPicture.asset(
-                  'assets/icons/generalIcons/user.svg',
-                  height: 22,
-                  color: strawberry,
-                ),
-                label: ''),
-          ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: Container(
+          height: 90,
+          decoration: const BoxDecoration(
+              color: snow,
+              border: Border(top: BorderSide(color: shark40, width: 0.33))),
+          child: BottomNavigationBar(
+            elevation: 0,
+            backgroundColor: snow,
+            // showSelectedLabels: false,
+            // showUnselectedLabels: false,
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/generalIcons/home.svg',
+                    height: 22,
+                    color: jetBlack,
+                  ),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/generalIcons/home.svg',
+                    height: 22,
+                    color: strawberry,
+                  ),
+                  label: ''),
+              BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/generalIcons/chat.svg',
+                    height: 22,
+                    color: jetBlack,
+                  ),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/generalIcons/chat.svg',
+                    height: 22,
+                    color: strawberry,
+                  ),
+                  label: ''),
+              BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    'assets/icons/generalIcons/user.svg',
+                    height: 22,
+                    color: jetBlack,
+                  ),
+                  activeIcon: SvgPicture.asset(
+                    'assets/icons/generalIcons/user.svg',
+                    height: 22,
+                    color: strawberry,
+                  ),
+                  label: ''),
+            ],
+          ),
         ),
       ),
     );

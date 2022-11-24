@@ -1,6 +1,8 @@
 var User = require('../models/user')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
+const { json } = require('body-parser')
+const { findOne } = require('../models/user')
 
 var functions = {
     //Add New User fnc
@@ -57,6 +59,7 @@ var functions = {
                     if(isMatch && !err){
                         var token = jwt.encode(user, config.secret)
                         res.json({success: true, token: token})
+                        
                     }else{
                         return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
                     }
@@ -70,7 +73,12 @@ var functions = {
         if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer'){
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = jwt.decode(token, config.secret)
-            return res.json({success: true, msg: 'Hello ' + decodedtoken.FirstName })
+            User.findOne({UserID: decodedtoken.UserID})
+            .then(data => res.json(data))
+            .catch(error => res.json(error))
+            return res.json({success: true, })
+            // return res.json(decodedtoken.UserID);
+            // return res.json({success: true, msg: 'Found ' + decodedtoken.UserType + ' ' + decodedtoken.FirstName })
         }else {
             return res.json({success: false, msg: 'No Headers'})
         }
