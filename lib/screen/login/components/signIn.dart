@@ -6,6 +6,7 @@ import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'dart:io';
 
 import '../../../main.dart';
 
@@ -152,9 +153,11 @@ class _SignInState extends State<SignIn> {
                         AuthService().signIn(account, password).then((val) {
                           if (val.data['success']) {
                             token = val.data['token'];
+                            print(token);
                             AuthService().getUserInfo(token).then((val) {
                               if (val.data['success']) {
                                 print('successful get info');
+                                print(val.data['body']);
                               }
                             });
                             //Temporary Sign In validation test

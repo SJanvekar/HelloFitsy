@@ -73,10 +73,15 @@ var functions = {
         if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer'){
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = jwt.decode(token, config.secret)
-            User.findOne({UserID: decodedtoken.UserID})
-            .then(data => res.json(data))
-            .catch(error => res.json(error))
-            return res.json({success: true, })
+            User.findOne({UserID: decodedtoken.UserID}, function (err, user) {
+                if (err) {
+                    console.log(err)
+                    return res.json({success: true, body: err})
+                } else {
+                    console.log("Result : " + user)
+                    return res.json({success: true, body: user})
+                }
+            })
             // return res.json(decodedtoken.UserID);
             // return res.json({success: true, msg: 'Found ' + decodedtoken.UserType + ' ' + decodedtoken.FirstName })
         }else {
