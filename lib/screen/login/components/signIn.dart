@@ -91,27 +91,27 @@ class _SignInState extends State<SignIn> {
                         Expanded(
                           child: TextField(
                             textInputAction: TextInputAction.done,
-                            onSubmitted: (val) {
-                              AuthService()
-                                  .signIn(account, password)
-                                  .then((val) {
-                                if (val.data['success']) {
-                                  token = val.data['token'];
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    content: Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 320.0),
-                                      child: successfulSignInTemp(),
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: Duration(seconds: 2),
-                                    backgroundColor: Colors.transparent,
-                                    elevation: 0,
-                                  ));
-                                }
-                              });
-                            },
+                            // onSubmitted: (val) {
+                            //   AuthService()
+                            //       .signIn(account, password)
+                            //       .then((val) {
+                            //     if (val.data['success']) {
+                            //       token = val.data['token'];
+                            //       ScaffoldMessenger.of(context)
+                            //           .showSnackBar(SnackBar(
+                            //         content: Padding(
+                            //           padding:
+                            //               const EdgeInsets.only(bottom: 320.0),
+                            //           child: successfulSignInTemp(),
+                            //         ),
+                            //         behavior: SnackBarBehavior.floating,
+                            //         duration: Duration(seconds: 2),
+                            //         backgroundColor: Colors.transparent,
+                            //         elevation: 0,
+                            //       ));
+                            //     }
+                            //   });
+                            // },
                             obscureText: true,
                             textCapitalization: TextCapitalization.sentences,
                             style: const TextStyle(
@@ -154,9 +154,7 @@ class _SignInState extends State<SignIn> {
                             token = val.data['token'];
                             AuthService().getUserInfo(token).then((val) {
                               if (val.data['success']) {
-                                userTemplate.userType =
-                                    val.data['user.UserType'];
-                                print(userTemplate.userType);
+                                print('successful get info');
                               }
                             });
                             //Temporary Sign In validation test
@@ -172,8 +170,8 @@ class _SignInState extends State<SignIn> {
                             //   elevation: 0,
                             // ));
 
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MainPage()));
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => MainPage()));
                           }
                         });
                       },
@@ -236,6 +234,7 @@ Widget textInputUsername() {
         ),
         Expanded(
           child: TextFormField(
+              textInputAction: TextInputAction.next,
               textCapitalization: TextCapitalization.sentences,
               style: const TextStyle(
                   overflow: TextOverflow.fade,
