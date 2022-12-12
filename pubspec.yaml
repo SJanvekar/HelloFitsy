@@ -54,6 +54,7 @@ dependencies:
   cloud_firestore: ^4.0.4
   dismissible_page: ^0.7.3
   email_validator: ^2.1.17
+  shared_preferences: ^2.0.15
 
 dev_dependencies:
   dependency_validator: ^3.0.0

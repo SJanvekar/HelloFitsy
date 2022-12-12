@@ -6,7 +6,7 @@ import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../main.dart';
 
@@ -154,10 +154,24 @@ class _SignInState extends State<SignIn> {
                           if (val.data['success']) {
                             token = val.data['token'];
                             print(token);
-                            AuthService().getUserInfo(token).then((val) {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => MainPage()));
+                            AuthService().getUserInfo(token).then((val) async {
+                              final sharedPrefs =
+                                  await SharedPreferences.getInstance();
                               if (val.data['success']) {
                                 print('successful get info');
-                                print(val.data['body']);
+                                sharedPrefs.setString(
+                                    'userType', val.data['userType']);
+                                sharedPrefs.setString('profileImageURL',
+                                    val.data['profileImageURL']);
+                                sharedPrefs.setString(
+                                    'firstName', val.data['firstName']);
+                                sharedPrefs.setString(
+                                    'lastName', val.data['lastName']);
+                                sharedPrefs.setString(
+                                    'userEmail', val.data['userEmail']);
+                                print(sharedPrefs.getString('userType'));
                               }
                             });
                             //Temporary Sign In validation test

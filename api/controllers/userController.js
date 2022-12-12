@@ -45,7 +45,7 @@ var functions = {
     },
 
     // Authenticate User fnc
-    authenticate: function(req, res){
+    authenticate: function(req, res) {
         User.findOne({ $or:
            [{ Username: req.body.Username}, {UserEmail: req.body.UserEmail}]},
          function(err, user){
@@ -69,22 +69,46 @@ var functions = {
     },
 
     // Get Information
-    getinfo: function (req, res){
-        if(req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer'){
+    getinfo: function (req, res) {
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                //TODO: Look into deleting user
+                var user = User()
+                user = JSON.parse(responseString)
+                //TODO: Confirm this is actually checking for null
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('getInfo returned null'))
+                }
+            })
+        }
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = jwt.decode(token, config.secret)
             User.findOne({UserID: decodedtoken.UserID}, function (err, user) {
                 if (err) {
                     console.log(err)
-                    return res.json({success: true, body: err})
+                    return res.json({success: false, body: err})
                 } else {
-                    console.log("Result : " + user)
-                    return res.json({success: true, body: user})
+                    return userPromiseAsync(user).then(parsedResponse => 
+                        res.json({success: true, 
+                            userType: String(parsedResponse.UserType), 
+                            profileImageURL: parsedResponse.ProfileImageURL,
+                            firstName: parsedResponse.FirstName,
+                            lastName: parsedResponse.LastName,
+                            userEmail: parsedResponse.UserEmail,
+                            categories: parsedResponse.Categories,
+                            likedClasses: parsedResponse.LikedClasses,
+                            classHistory: parsedResponse.ClassHistory,
+                            following: parsedResponse.Following,
+                            followers: parsedResponse.Followers}))
                 }
             })
             // return res.json(decodedtoken.UserID);
             // return res.json({success: true, msg: 'Found ' + decodedtoken.UserType + ' ' + decodedtoken.FirstName })
-        }else {
+        } else {
             return res.json({success: false, msg: 'No Headers'})
         }
     }
