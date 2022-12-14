@@ -6,26 +6,25 @@ import 'package:balance/sharedWidgets/unfollowDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile({
     Key? key,
-    required this.profileImageUrl,
-    required this.userFullName,
-    required this.userName,
-    required this.userFirstName,
   }) : super(key: key);
-
-  String profileImageUrl;
-  String userFullName;
-  String userName;
-  String userFirstName;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
+  //User details:
+  String profileImageUrl = "";
+  String userName = "";
+  String userFullName = "";
+  String userFirstName = "";
+  String userLastName = "";
+
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
   Color iconCircleColor = shark60;
@@ -39,7 +38,8 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    getSet1UserDetails();
+    getSet2UserDetails();
     _scrollController = ScrollController()
       ..addListener(() {
         setState(() {
@@ -50,6 +50,31 @@ class _UserProfileState extends State<UserProfile> {
               _isSliverAppBarExpanded ? Brightness.light : Brightness.dark;
         });
       });
+  }
+
+//----------
+  void getSet1UserDetails() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    var userNameNullCheck = sharedPrefs.getString('userName');
+    var userFirstNameNullCheck = sharedPrefs.getString('firstName');
+    var userLastNameNullCheck = sharedPrefs.getString('lastName');
+    if (userNameNullCheck != null) {
+      userName = sharedPrefs.getString('userName')!;
+    }
+    if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
+      userFirstName = sharedPrefs.getString('firstName')!;
+      userLastName = sharedPrefs.getString('lastName')!;
+      userFullName = sharedPrefs.getString('firstName')! +
+          sharedPrefs.getString('lastName')!;
+    }
+  }
+
+  void getSet2UserDetails() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
+    if (profilePictureNullCheck != null) {
+      profileImageUrl = sharedPrefs.getString('profileImageURL')!;
+    }
   }
 
 //----------
@@ -74,7 +99,7 @@ class _UserProfileState extends State<UserProfile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.userFullName,
+            userFullName,
             style: TextStyle(
                 fontSize: 26,
                 fontFamily: 'SFDisplay',
@@ -90,7 +115,7 @@ class _UserProfileState extends State<UserProfile> {
             maxLines: 1,
           ),
           Text(
-            '@' + widget.userName,
+            '@' + userName,
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
@@ -176,7 +201,7 @@ class _UserProfileState extends State<UserProfile> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Text(
-              'Chat with ' + widget.userFirstName,
+              'Chat with ' + userFirstName,
               style: TextStyle(
                   color: snow,
                   fontFamily: 'SFDisplay',
@@ -266,7 +291,7 @@ class _UserProfileState extends State<UserProfile> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              widget.profileImageUrl,
+                              profileImageUrl,
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -337,10 +362,10 @@ class _UserProfileState extends State<UserProfile> {
                                                       builder: (BuildContext
                                                           context) {
                                                         return CustomDialogBox(
-                                                            trainerName: widget
-                                                                .userFullName,
-                                                            trainerImg: widget
-                                                                .profileImageUrl);
+                                                            trainerName:
+                                                                userFullName,
+                                                            trainerImg:
+                                                                profileImageUrl);
                                                       })
                                                 }
                                               else if (isFollowing == false)
@@ -363,7 +388,7 @@ class _UserProfileState extends State<UserProfile> {
                 expandedTitleScale: 1,
                 centerTitle: false,
               ),
-              title: Text(widget.userFullName,
+              title: Text(userFullName,
                   style: TextStyle(
                       color: _textColor,
                       fontFamily: 'SFDisplay',
@@ -407,7 +432,7 @@ class _UserProfileState extends State<UserProfile> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'About ${widget.userFirstName}',
+                        'About ${userFirstName}',
                         style: profileSectionTitles,
                       ),
                       Padding(
@@ -469,7 +494,7 @@ class _UserProfileState extends State<UserProfile> {
                       Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Text(
-                          "${widget.userFirstName}'s specialties",
+                          "${userFirstName}'s specialties",
                           style: profileSectionTitles,
                         ),
                       ),

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -50,16 +51,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
+
   static List<Widget> _widgetOptions = <Widget>[
     HomeTest(),
     HomeTest(),
-    UserProfile(
-      profileImageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f',
-      userFullName: 'Salman Janvekar',
-      userName: 'salman',
-      userFirstName: 'Salman',
-    ),
+    UserProfile(),
   ];
 
   void _onItemTapped(int index) {
@@ -74,7 +70,31 @@ class _MainPageState extends State<MainPage> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.top,
     ]);
+    // getSet1UserDetails();
+    // getSet2UserDetails();
   }
+
+  // void getSet1UserDetails() async {
+  //   final sharedPrefs = await SharedPreferences.getInstance();
+  //   var userNameNullCheck = sharedPrefs.getString('userName');
+  //   var userFirstNameNullCheck = sharedPrefs.getString('firstName');
+  //   var userLastNameNullCheck = sharedPrefs.getString('lastName');
+  //   if (userNameNullCheck != null) {
+  //     userName = sharedPrefs.getString('userName')!;
+  //   }
+  //   if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
+  //     userFirstName = sharedPrefs.getString('firstName')! +
+  //         sharedPrefs.getString('lastName')!;
+  //   }
+  // }
+
+  // void getSet2UserDetails() async {
+  //   final sharedPrefs = await SharedPreferences.getInstance();
+  //   var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
+  //   if (profilePictureNullCheck != null) {
+  //     profileImageUrl = sharedPrefs.getString('profileImageURL')!;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

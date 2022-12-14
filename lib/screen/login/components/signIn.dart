@@ -166,6 +166,8 @@ class _SignInState extends State<SignIn> {
                                 sharedPrefs.setString('profileImageURL',
                                     val.data['profileImageURL']);
                                 sharedPrefs.setString(
+                                    'userName', val.data['userName']);
+                                sharedPrefs.setString(
                                     'firstName', val.data['firstName']);
                                 sharedPrefs.setString(
                                     'lastName', val.data['lastName']);
