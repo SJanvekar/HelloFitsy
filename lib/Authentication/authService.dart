@@ -13,7 +13,7 @@ class AuthService {
 
   signIn(account, password) async {
     try {
-      return await dio.post('http://localhost:8888/authenticate',
+      return await dio.post('http://www.fitsy.ca/authenticate',
           data: {
             "Username": account,
             "Password": password,
@@ -37,7 +37,7 @@ class AuthService {
     dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       return await dio.get(
-        'http://localhost:8888/getinfo',
+        'http://www.fitsy.ca/getinfo',
       );
     } on DioError catch (e) {
       print(e);
