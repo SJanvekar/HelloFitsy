@@ -96,7 +96,7 @@ var functions = {
                         res.json({success: true, 
                             userType: String(parsedResponse.UserType), 
                             profileImageURL: parsedResponse.ProfileImageURL,
-                            userName: parsedResponse.userName,
+                            userName: parsedResponse.Username,
                             firstName: parsedResponse.FirstName,
                             lastName: parsedResponse.LastName,
                             userEmail: parsedResponse.UserEmail,
