@@ -8,16 +8,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserProfile extends StatefulWidget {
-  UserProfile({
+class PersonalProfile extends StatefulWidget {
+  PersonalProfile({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<PersonalProfile> createState() => _PersonalProfileState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _PersonalProfileState extends State<PersonalProfile> {
   //User details:
   String profileImageUrl = "";
   String userName = "";
@@ -246,38 +246,6 @@ class _UserProfileState extends State<UserProfile> {
           controller: _scrollController,
           slivers: [
             SliverAppBar(
-              leading: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 26.0,
-                    top: 11.5,
-                    bottom: 11.5,
-                  ),
-                  child: ClipOval(
-                      child: BackdropFilter(
-                    filter: new ImageFilter.blur(
-                      sigmaX: 1,
-                      sigmaY: 1,
-                    ),
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(color: iconCircleColor),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
-                        child: SvgPicture.asset(
-                          'assets/icons/generalIcons/arrowLeft.svg',
-                          color: iconColor,
-                          height: 13,
-                          width: 6,
-                        ),
-                      ),
-                    ),
-                  )),
-                ),
-                onTap: () => {Navigator.of(context).pop()},
-              ),
-              leadingWidth: 58,
               automaticallyImplyLeading: false,
               backgroundColor: snow,
               elevation: 0,
@@ -347,40 +315,6 @@ class _UserProfileState extends State<UserProfile> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               userTitleCard(),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 7.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    GestureDetector(
-                                        child: isFollowing
-                                            ? followingButton()
-                                            : followButton(),
-                                        onTap: () => {
-                                              if (isFollowing == true)
-                                                {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return CustomDialogBox(
-                                                            trainerName:
-                                                                userFullName,
-                                                            trainerImg:
-                                                                profileImageUrl);
-                                                      })
-                                                }
-                                              else if (isFollowing == false)
-                                                {_followOnTap()}
-                                            }),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 8),
-                                      child: contactTrainerButton(),
-                                    )
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -434,55 +368,6 @@ class _UserProfileState extends State<UserProfile> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'About ${userFirstName}',
-                        style: profileSectionTitles,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/generalIcons/star.svg',
-                              color: sunflower,
-                              height: 17.5,
-                              width: 17.5,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 5.0,
-                              ),
-                              child: Text(
-                                '4.5',
-                                style: TextStyle(
-                                    color: jetBlack,
-                                    fontFamily: 'SFRounded',
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 4.0, right: 4.0),
-                              child: ClipOval(
-                                child: Container(
-                                  height: 2,
-                                  width: 2,
-                                  color: jetBlack,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'Toronto, Ontario, Canada',
-                              style: TextStyle(
-                                  color: jetBlack,
-                                  fontFamily: 'SFDisplay',
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Text(
@@ -497,47 +382,58 @@ class _UserProfileState extends State<UserProfile> {
                       Padding(
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Text(
-                          "${userFirstName}'s specialties",
+                          "Your Interests",
                           style: profileSectionTitles,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: CategorySmall(),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: Text(
+                          "Saved Classes",
+                          style: profileSectionTitles,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Container(
+                          color: jetBlack80,
+                          height: 200,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: Text(
+                          "Class History",
+                          style: profileSectionTitles,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Container(
+                          color: jetBlack60,
+                          height: 200,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 25.0),
+                        child: Text(
+                          "Reviews",
+                          style: profileSectionTitles,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15),
+                        child: Container(
+                          color: jetBlack40,
+                          height: 200,
+                        ),
+                      ),
                     ],
                   )),
-              Padding(
-                padding: const EdgeInsets.only(top: 2, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack80,
-                  height: 200,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack60,
-                  height: 200,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack40,
-                  height: 200,
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack20,
-                  height: 200,
-                ),
-              ),
             ])),
           ]),
     );

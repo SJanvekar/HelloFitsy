@@ -4,6 +4,8 @@ import 'package:balance/screen/explore/components/exploreHome.dart';
 import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
+import 'package:balance/screen/profile/components/myProfile.dart';
+import 'package:balance/screen/profile/components/profile.dart';
 import 'package:balance/screen/profile/components/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -55,7 +57,7 @@ class _MainPageState extends State<MainPage> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeTest(),
     HomeTest(),
-    UserProfile(),
+    PersonalProfile(),
   ];
 
   void _onItemTapped(int index) {
@@ -103,10 +105,10 @@ class _MainPageState extends State<MainPage> {
       child: Scaffold(
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: Container(
-          height: 90,
+          height: 88,
           decoration: const BoxDecoration(
               color: snow,
-              border: Border(top: BorderSide(color: shark40, width: 0.33))),
+              border: Border(top: BorderSide(color: shark, width: 0.33))),
           child: BottomNavigationBar(
             elevation: 0,
             backgroundColor: snow,
