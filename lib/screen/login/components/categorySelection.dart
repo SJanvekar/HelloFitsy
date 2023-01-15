@@ -13,7 +13,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../main.dart';
-import '../../../sharedWidgets/categories/categories.dart';
+import '../../../feModels/categories.dart';
 import '../../../sharedWidgets/loginFooterButton.dart';
 import '../../../feModels/userModel.dart';
 
@@ -185,7 +185,7 @@ class _CategorySelectionState extends State<CategorySelection> {
                             ),
                           ),
                         ),
-                        category.categorySelected
+                        category.categoryLiked
                             ? Container(
                                 decoration: BoxDecoration(
                                   color: jetBlack80,
@@ -202,11 +202,11 @@ class _CategorySelectionState extends State<CategorySelection> {
                       ],
                     ),
                     onTap: () {
-                      category.categorySelected = !(category.categorySelected);
+                      category.categoryLiked = !(category.categoryLiked);
                       HapticFeedback.selectionClick();
                       setState(() {});
-                      // categorySelectBloc.categorySelectedSink
-                      //     .add(category.categorySelected);
+                      // categorySelectBloc.categoryLikedSink
+                      //     .add(category.categoryLiked);
                     },
                   ),
                 );
@@ -225,7 +225,7 @@ class _CategorySelectionState extends State<CategorySelection> {
             selectedCategories.clear(),
             for (i = 0; i < allCategories.length; i++)
               {
-                if (allCategories[i].categorySelected == true)
+                if (allCategories[i].categoryLiked == true)
                   {selectedCategories.add(allCategories[i].categoryName)}
                 else
                   {selectedCategories.remove(allCategories[i].categoryName)}

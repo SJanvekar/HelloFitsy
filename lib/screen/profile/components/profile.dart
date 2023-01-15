@@ -37,7 +37,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
-    getUserDetails();
+    // getUserDetails();
 
     _scrollController = ScrollController()
       ..addListener(() {
@@ -52,33 +52,33 @@ class _UserProfileState extends State<UserProfile> {
   }
 
 //----------
-  void getUserDetails() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    var userNameNullCheck = sharedPrefs.getString('userName');
-    var userFirstNameNullCheck = sharedPrefs.getString('firstName');
-    var userLastNameNullCheck = sharedPrefs.getString('lastName');
-    if (userNameNullCheck != null) {
-      userName = sharedPrefs.getString('userName')!;
-    }
-    if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
-      userFirstName = sharedPrefs.getString('firstName')!;
-      userLastName = sharedPrefs.getString('lastName')!;
-      userFullName = '${sharedPrefs.getString('firstName')!}' +
-          ' '
-              '${sharedPrefs.getString('lastName')!}';
-    }
-    getSet2UserDetails();
-    setState(() {});
-  }
+  // void getUserDetails() async {
+  //   final sharedPrefs = await SharedPreferences.getInstance();
+  //   var userNameNullCheck = sharedPrefs.getString('userName');
+  //   var userFirstNameNullCheck = sharedPrefs.getString('firstName');
+  //   var userLastNameNullCheck = sharedPrefs.getString('lastName');
+  //   if (userNameNullCheck != null) {
+  //     userName = sharedPrefs.getString('userName')!;
+  //   }
+  //   if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
+  //     userFirstName = sharedPrefs.getString('firstName')!;
+  //     userLastName = sharedPrefs.getString('lastName')!;
+  //     userFullName = '${sharedPrefs.getString('firstName')!}' +
+  //         ' '
+  //             '${sharedPrefs.getString('lastName')!}';
+  //   }
+  //   getSet2UserDetails();
+  //   setState(() {});
+  // }
 
-  void getSet2UserDetails() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
-    if (profilePictureNullCheck != null) {
-      profileImageUrl = sharedPrefs.getString('profileImageURL')!;
-    }
-    print(profileImageUrl);
-  }
+  // void getSet2UserDetails() async {
+  //   final sharedPrefs = await SharedPreferences.getInstance();
+  //   var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
+  //   if (profilePictureNullCheck != null) {
+  //     profileImageUrl = sharedPrefs.getString('profileImageURL')!;
+  //   }
+  //   print(profileImageUrl);
+  // }
 
 //----------
   bool get _isSliverAppBarExpanded {
@@ -436,7 +436,7 @@ class _UserProfileState extends State<UserProfile> {
                     children: [
                       Text(
                         'About ${userFirstName}',
-                        style: profileSectionTitles,
+                        style: sectionTitles,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
@@ -498,12 +498,11 @@ class _UserProfileState extends State<UserProfile> {
                         padding: const EdgeInsets.only(top: 25.0),
                         child: Text(
                           "${userFirstName}'s specialties",
-                          style: profileSectionTitles,
+                          style: sectionTitles,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
-                        child: CategorySmall(),
                       )
                     ],
                   )),

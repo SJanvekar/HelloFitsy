@@ -108,10 +108,10 @@ const pageTitles = TextStyle(
   decoration: TextDecoration.none,
 );
 
-const profileSectionTitles = TextStyle(
+const sectionTitles = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 17,
+  fontSize: 18.5,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );

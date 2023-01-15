@@ -7,7 +7,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../constants.dart';
-import 'categories.dart';
+import '../../feModels/categories.dart';
 
 class CategoryListLarge extends StatefulWidget {
   const CategoryListLarge({Key? key}) : super(key: key);
@@ -107,13 +107,12 @@ class _CategoryListLargeState extends State<CategoryListLarge> {
                             ),
                           ),
                           AddRemoveButton(
-                            isAdd: category.categorySelected,
+                            isAdd: category.categoryLiked,
                           )
                         ],
                       ),
-                      onTap: () => {
-                        category.categorySelected = !category.categorySelected,
-                      },
+                      onTap: () =>
+                          {category.categoryLiked = !category.categoryLiked},
                     );
                   })
             ],

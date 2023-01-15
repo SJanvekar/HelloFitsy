@@ -1,17 +1,12 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/explore/components/exploreHome.dart';
 import 'package:balance/screen/home/home%20copy.dart';
-import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
-import 'package:balance/screen/profile/components/profile.dart';
-import 'package:balance/screen/profile/components/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -72,8 +67,6 @@ class _MainPageState extends State<MainPage> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.top,
     ]);
-    // getSet1UserDetails();
-    // getSet2UserDetails();
   }
 
   // void getSet1UserDetails() async {

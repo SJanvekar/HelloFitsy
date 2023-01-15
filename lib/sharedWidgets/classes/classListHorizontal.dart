@@ -1,14 +1,6 @@
-import 'dart:io';
-import 'package:balance/screen/home/components/homeClassItem.dart';
-import 'package:balance/sharedWidgets/categories/addRemoveButton.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter_svg/svg.dart';
 import '../../constants.dart';
-import '../categories/categories.dart';
-import '../../feModels/classModel.dart';
+import '../../feModels/categories.dart';
 
 class ClassListHorizontal extends StatefulWidget {
   const ClassListHorizontal({Key? key}) : super(key: key);

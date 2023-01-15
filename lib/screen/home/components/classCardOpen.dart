@@ -67,6 +67,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   late ScrollController _scrollController;
   Brightness statusBarTheme = Brightness.dark;
 
+  //Get Trainer Details
+
   @override
   void initState() {
     // TODO: implement initState
@@ -90,6 +92,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             (MediaQuery.of(context).size.height * 0.38 - kToolbarHeight);
   }
 
+  //----------Widgets----------
+
   Widget classTrainer() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
@@ -98,9 +102,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         children: [
           UserProfileComponentDark(
             imageURL: widget.trainerImageUrl,
-            profileImageRadius: 25,
+            profileImageRadius: 20,
             userFullName: widget.classTrainer,
-            userFullNameFontSize: 15,
+            userFullNameFontSize: 16,
             userName: widget.classTrainerUserName,
             userNameFontSize: 13,
             userFirstName: widget.classTrainerFirstName,
@@ -138,6 +142,270 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     );
   }
 
+  //Price Container
+  Widget classPriceWidget() {
+    return Container(
+        color: snow,
+        child: Row(
+          children: [
+            Text(
+              '\$${oCcy.format(widget.classPrice.round())}',
+              style: TextStyle(
+                color: strawberry,
+                fontSize: 26,
+                fontFamily: 'SFDisplay',
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 1.0),
+              child: Text(' /session',
+                  style: TextStyle(
+                      color: shark,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500)),
+            )
+          ],
+        ));
+  }
+
+//Class Type and Title
+  Widget classTitle() {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: AutoSizeText(
+                          widget.className,
+                          minFontSize: 22,
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontFamily: 'SFDisplay',
+                            fontWeight: FontWeight.w600,
+                            color: jetBlack,
+                          ),
+                        ),
+                      )
+                    ]),
+              ),
+            ],
+          )
+        ]);
+  }
+
+//Class Location
+  Widget classSubHeader() {
+    return Container(
+      color: snow,
+      child: Row(
+        children: [
+          classRating(),
+          Padding(
+              padding: EdgeInsets.only(
+                left: 5,
+                right: 5,
+              ),
+              child: ClipOval(
+                child: Container(
+                  color: jetBlack,
+                  height: 3,
+                  width: 3,
+                ),
+              )),
+          Text(
+            widget.classLocation,
+            style: TextStyle(
+                color: jetBlack,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'SFDisplay'),
+          ),
+        ],
+      ),
+    );
+  }
+
+//Class Trainer Rating
+  Widget classRating() {
+    return Row(
+      children: [
+        //Star Icon
+        SvgPicture.asset(
+          'assets/icons/generalIcons/star.svg',
+          height: 14,
+          width: 14,
+          color: sunflower,
+        ),
+
+        //Rating (Numeric)
+        Padding(
+          padding: const EdgeInsets.only(left: 5.0),
+          child: Center(
+            child: Text(
+              '${widget.classRating}',
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  color: jetBlack,
+                  fontFamily: 'SFDisplay'),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+//Class Desc
+  Widget classDesc() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.classDescription,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 9,
+          style: TextStyle(
+            fontFamily: 'SFDisplay',
+            color: jetBlack80,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  //Class What To Expect
+  Widget classWhatToExpect() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.classWhatToExpect,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 9,
+          style: TextStyle(
+              fontFamily: 'SFDisplay',
+              color: jetBlack80,
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+
+  //Class What You'll Need
+  Widget classWhatYouwillNeed() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.classWhatYouWillNeed,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 6,
+          style: TextStyle(
+              fontFamily: 'SFDisplay',
+              color: jetBlack80,
+              fontSize: 14,
+              fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+
+//Class Categories
+  Widget classCategories() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 15.0),
+          child: Text('Related Categories',
+              style: TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600)),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: CategorySmall(
+            categoryImage: '',
+            categoryName: '',
+          ),
+        ),
+      ],
+    );
+  }
+
+//Class Reviews
+  Widget classReviews() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ReviewCard(),
+      ],
+    );
+  }
+
+  //Class Trainer Spotlight
+  Widget classTrainerSpotlight() {
+    //Get Trainer Details ----- We should definitely try to move this
+    var joinedDate = DateTime.now();
+    var formattedJoinedDate = DateFormat.y().format(joinedDate);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        UserProfileComponentLight(
+          imageURL: widget.trainerImageUrl,
+          profileImageRadius: 25,
+          userFullName: widget.classTrainer,
+          userFullNameFontSize: 16,
+          userName: widget.classTrainerUserName,
+          userNameFontSize: 13,
+          userFirstName: widget.classTrainerFirstName,
+        ),
+
+        //Trainer Joined Date + Further Details
+        Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            'Joined ' + formattedJoinedDate,
+            style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack40,
+                fontSize: 15,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Text(
+            //Implement the Trainer bio here
+            'Roger Federer holds several ATP records and is considered to be one of the greatest tennis players of all time. The Swiss player has proved his dominance on court with 20 Grand Slam titles and 103 career ATP titles. In 2003, he founded the Roger Federer Foundation, which is dedicated to providing education programs for children living in poverty in Africa and Switzerland',
+            style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack80,
+                fontSize: 14,
+                fontWeight: FontWeight.w500),
+          ),
+        ),
+      ],
+    );
+  }
+
+  //----------Body----------
   @override
   Widget build(BuildContext context) {
     var top = 0.0;
@@ -342,9 +610,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classSubHeader(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
             child: PageDivider(),
           ),
+
+          //Class Description
           Padding(
             padding: const EdgeInsets.only(left: 26.0, right: 26.0),
             child: Row(
@@ -352,7 +622,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               children: [
                 Text(
                   "About this class",
-                  style: profileSectionTitles,
+                  style: sectionTitles,
                 ),
                 GestureDetector(
                   child: Text(
@@ -384,9 +654,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classDesc(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
             child: PageDivider(),
           ),
+
+          //Class What To Expect
           Padding(
             padding: const EdgeInsets.only(left: 26.0, right: 26.0),
             child: Row(
@@ -394,7 +666,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               children: [
                 Text(
                   "What to expect",
-                  style: profileSectionTitles,
+                  style: sectionTitles,
                 ),
                 GestureDetector(
                   child: Text(
@@ -421,14 +693,17 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               ],
             ),
           ),
+
           Padding(
             padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
             child: classWhatToExpect(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
             child: PageDivider(),
           ),
+
+          //Class What you'll need
           Padding(
             padding: const EdgeInsets.only(left: 26.0, right: 26.0),
             child: Row(
@@ -436,7 +711,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               children: [
                 Text(
                   "What you'll need",
-                  style: profileSectionTitles,
+                  style: sectionTitles,
                 ),
                 GestureDetector(
                   child: Text(
@@ -468,13 +743,60 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classWhatYouwillNeed(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
             child: PageDivider(),
           ),
+
+          //Class Trianer Spotlight
           Padding(
-              padding: EdgeInsets.only(
-                  top: 20.0, bottom: 20.0, left: 26.0, right: 26.0),
-              child: classReviewsWidget())
+            padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+            child: Text(
+              "Trainer Spotlight",
+              style: sectionTitles,
+            ),
+          ),
+          Padding(
+              padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
+              child: classTrainerSpotlight()),
+          Padding(
+            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            child: PageDivider(),
+          ),
+
+          //Class Reviews
+          Padding(
+            padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Reviews",
+                  style: sectionTitles,
+                ),
+                GestureDetector(
+                  child: Text(
+                    'See all',
+                    style: TextStyle(
+                      color: ocean,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  // onTap:
+                  //Implement expanded review view for classes here
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
+            child:
+                classReviews(), // The reviews list needs to be implemented (Horizontal)
+          ),
+          SizedBox(
+            height: 35,
+          )
         ])),
       ]),
       //Bottom Navigation Bar
@@ -496,321 +818,5 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             ),
           )),
     );
-  }
-
-  //Price Container
-  Widget classPriceWidget() {
-    return Container(
-        color: snow,
-        child: Row(
-          children: [
-            Text(
-              '\$${oCcy.format(widget.classPrice.round())}',
-              style: TextStyle(
-                color: strawberry,
-                fontSize: 26,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 1.0),
-              child: Text(' /session',
-                  style: TextStyle(
-                      color: shark,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500)),
-            )
-          ],
-        ));
-  }
-
-//Class Type and Title
-  Widget classTitle() {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: AutoSizeText(
-                          widget.className,
-                          minFontSize: 22,
-                          style: TextStyle(
-                            fontSize: 22,
-                            fontFamily: 'SFDisplay',
-                            fontWeight: FontWeight.w600,
-                            color: jetBlack,
-                          ),
-                        ),
-                      )
-                    ]),
-              ),
-            ],
-          )
-        ]);
-  }
-
-//Class Location
-  Widget classSubHeader() {
-    return Container(
-      color: snow,
-      child: Row(
-        children: [
-          trainerRating(),
-          Padding(
-              padding: EdgeInsets.only(
-                left: 5,
-                right: 5,
-              ),
-              child: ClipOval(
-                child: Container(
-                  color: jetBlack,
-                  height: 3,
-                  width: 3,
-                ),
-              )),
-          Text(
-            widget.classLocation,
-            style: TextStyle(
-                color: jetBlack,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'SFDisplay'),
-          ),
-        ],
-      ),
-    );
-  }
-
-//Class Trainer Rating
-  Widget trainerRating() {
-    return Row(
-      children: [
-        //Star Icon
-        SvgPicture.asset(
-          'assets/icons/generalIcons/star.svg',
-          height: 14,
-          width: 14,
-          color: sunflower,
-        ),
-
-        //Rating (Numeric)
-        Padding(
-          padding: const EdgeInsets.only(left: 5.0),
-          child: Center(
-            child: Text(
-              '${widget.classRating}',
-              style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: jetBlack,
-                  fontFamily: 'SFRounded'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-//Class Desc
-  Widget classDesc() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.classDescription,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 9,
-          style: TextStyle(
-            fontFamily: 'SFDisplay',
-            color: jetBlack80,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-
-  //Class What To Expect
-  Widget classWhatToExpect() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.classWhatToExpect,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 9,
-          style: TextStyle(
-              fontFamily: 'SFDisplay',
-              color: jetBlack80,
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
-  }
-
-  //Class What You'll Need
-  Widget classWhatYouwillNeed() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          widget.classWhatYouWillNeed,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 6,
-          style: TextStyle(
-              fontFamily: 'SFDisplay',
-              color: jetBlack80,
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
-        ),
-      ],
-    );
-  }
-
-//Class Categories
-  Widget classCategories() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 15.0),
-          child: Text('Related Categories',
-              style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600)),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: CategorySmall(),
-        ),
-      ],
-    );
-  }
-
-//Class Reviews
-  Widget classReviewsWidget() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Reviews',
-                  style: TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: jetBlack,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600)),
-              GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20.0),
-                  child: Text('View all',
-                      style: TextStyle(
-                          fontFamily: 'SFDisplay',
-                          color: shark,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600)),
-                ),
-                onTap: () => print('View all Reviews Button Pressed'),
-              )
-            ],
-          ),
-        ),
-        ReviewCard(),
-      ],
-    );
-  }
-}
-
-//Persistent Header Private Class
-class _TitleSliverDelegate extends SliverPersistentHeaderDelegate {
-  final String _classType;
-  final String _classTitle;
-
-  _TitleSliverDelegate(this._classType, this._classTitle);
-
-  @override
-  Widget build(
-      BuildContext context, double shrjetBlackOffset, bool overlapsContent) {
-    // TODO: implement build
-    return Container(
-        decoration: BoxDecoration(
-          color: snow,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 15,
-                right: 0,
-                left: 20,
-                bottom: 2,
-              ),
-              child: Text(
-                _classType,
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                    color: jetBlack40,
-                    letterSpacing: -0.75),
-                maxLines: 1,
-              ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                ),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 52,
-                    minHeight: 26,
-                    maxWidth: 335,
-                    minWidth: 335,
-                  ),
-                  child: AutoSizeText(
-                    _classTitle,
-                    minFontSize: 18,
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w700,
-                        color: jetBlack,
-                        letterSpacing: -0.75),
-                    maxLines: 2,
-                  ),
-                )),
-          ],
-        ));
-  }
-
-  @override
-  // TODO: implement maxExtent
-  double get maxExtent => 100;
-
-  @override
-  // TODO: implement minExtent
-  double get minExtent => 74;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    // TODO: implement shouldRebuild
-    return false;
   }
 }

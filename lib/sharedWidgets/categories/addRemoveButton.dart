@@ -1,4 +1,4 @@
-import 'package:balance/sharedWidgets/categories/categories.dart';
+import 'package:balance/feModels/categories.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';

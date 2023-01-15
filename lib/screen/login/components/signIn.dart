@@ -150,49 +150,7 @@ class _SignInState extends State<SignIn> {
                           textColor: snow,
                           buttonText: 'Log in'),
                       onTap: () {
-                        AuthService().signIn(account, password).then((val) {
-                          if (val.data['success']) {
-                            token = val.data['token'];
-                            print(token);
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => MainPage()));
-                            AuthService().getUserInfo(token).then((val) async {
-                              final sharedPrefs =
-                                  await SharedPreferences.getInstance();
-                              if (val.data['success']) {
-                                print('successful get info');
-                                sharedPrefs.setString(
-                                    'userType', val.data['userType']);
-                                sharedPrefs.setString('profileImageURL',
-                                    val.data['profileImageURL']);
-                                sharedPrefs.setString(
-                                    'userName', val.data['userName']);
-                                sharedPrefs.setString(
-                                    'firstName', val.data['firstName']);
-                                sharedPrefs.setString(
-                                    'lastName', val.data['lastName']);
-                                sharedPrefs.setString(
-                                    'userEmail', val.data['userEmail']);
-                                print(sharedPrefs.getString('userType'));
-                              }
-                            });
-                            //Temporary Sign In validation test
-                            // print('${account}, ${password}');
-                            // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            //   content: Padding(
-                            //     padding: const EdgeInsets.only(bottom: 320.0),
-                            //     child: successfulSignInTemp(),
-                            //   ),
-                            //   behavior: SnackBarBehavior.floating,
-                            //   duration: Duration(seconds: 2),
-                            //   backgroundColor: Colors.transparent,
-                            //   elevation: 0,
-                            // ));
-
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => MainPage()));
-                          }
-                        });
+                        onSubmitSignInField();
                       },
                     ),
                   ),
@@ -205,6 +163,246 @@ class _SignInState extends State<SignIn> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
+    );
+  }
+
+  void onSubmitSignInField() {
+    AuthService().signIn(account, password).then((val) {
+      if (val.data['success']) {
+        token = val.data['token'];
+        print(token);
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => MainPage()));
+        AuthService().getUserInfo(token).then((val) async {
+          final sharedPrefs = await SharedPreferences.getInstance();
+          if (val.data['success']) {
+            print('successful get info');
+            sharedPrefs.setString('userType', val.data['userType']);
+            sharedPrefs.setString(
+                'profileImageURL', val.data['profileImageURL']);
+            sharedPrefs.setString('userName', val.data['userName']);
+            sharedPrefs.setString('firstName', val.data['firstName']);
+            sharedPrefs.setString('lastName', val.data['lastName']);
+            sharedPrefs.setString('userEmail', val.data['userEmail']);
+            print(sharedPrefs.getString('userType'));
+          }
+        });
+      }
+    });
+  }
+
+//TextInput Username/Email/Phone
+  Widget textInputUsername() {
+    return Container(
+      width: 326,
+      height: 50,
+      decoration: BoxDecoration(
+        color: bone60,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 10),
+              child: Center(
+                  child: SvgPicture.asset(
+                'assets/icons/generalIcons/user.svg',
+                color: jetBlack40,
+              )),
+            ),
+          ),
+          Expanded(
+            child: TextFormField(
+                textInputAction: TextInputAction.next,
+                textCapitalization: TextCapitalization.sentences,
+                style: const TextStyle(
+                    overflow: TextOverflow.fade,
+                    fontFamily: 'SFDisplay',
+                    color: jetBlack80,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700),
+                // ignore: prefer_const_constructors
+                decoration: InputDecoration.collapsed(
+                  border: InputBorder.none,
+                  hintText: 'Username',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'SFDisplay',
+                    color: shark,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onChanged: (val) {
+                  account = val;
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+//TextInput Password
+  Widget textInputPassword() {
+    return Container(
+      width: 326,
+      height: 50,
+      decoration: BoxDecoration(
+        color: bone60,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 21, right: 12),
+              child: Center(
+                  child: SvgPicture.asset(
+                'assets/icons/generalIcons/lock.svg',
+                color: jetBlack40,
+              )),
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              textInputAction: TextInputAction.done,
+              obscureText: true,
+              textCapitalization: TextCapitalization.sentences,
+              style: const TextStyle(
+                  overflow: TextOverflow.fade,
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack80,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700),
+              decoration: InputDecoration.collapsed(
+                border: InputBorder.none,
+                hintText: 'Password',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: shark60,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onChanged: (val) {
+                password = val;
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//Forgot Passowrd?
+  Widget forgotPassword() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, left: 200),
+      child: GestureDetector(
+        child: Text(
+          'Forgot password?',
+          style: TextStyle(
+            fontFamily: 'SFDisplay',
+            color: jetBlack40,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        onTap: () {
+          print('Forgot Password Selected');
+        },
+      ),
+    );
+  }
+
+  Widget orDivider() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 25.0),
+        child: Text(
+          'or',
+          style: TextStyle(
+            fontFamily: 'SFDisplay',
+            color: jetBlack40,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+//Login with sign-in partners
+  Widget signInPartners() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 25.0),
+      child: Column(
+        children: [
+          GestureDetector(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 11),
+                  child: SvgPicture.asset(
+                    'assets/icons/externalCompanyIcons/Apple.svg',
+                    color: jetBlack,
+                  ),
+                ),
+                Text(
+                  'Continue with Apple',
+                  style: TextStyle(
+                    fontFamily: 'SFDisplay',
+                    color: jetBlack40,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+
+            //This stuff should work once we set up and pay for an Apple Developer Account ( Not sure 100% why this isnt working, getting an error 1000 || Auth error )
+
+            // onTap: () async {
+            //   final credential = await SignInWithApple.getAppleIDCredential(
+            //     scopes: [
+            //       AppleIDAuthorizationScopes.email,
+            //       AppleIDAuthorizationScopes.fullName,
+            //     ],
+            //   );
+
+            //   print(credential);
+
+            //   // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+            //   // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+            // },
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 11),
+                  child: SvgPicture.asset(
+                      'assets/icons/externalCompanyIcons/Google.svg'),
+                ),
+                Text(
+                  'Continue with Google',
+                  style: TextStyle(
+                    fontFamily: 'SFDisplay',
+                    color: jetBlack40,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -225,221 +423,6 @@ Widget typeFace() {
               "assets/images/Typeface.png",
             ),
           ))),
-    ),
-  );
-}
-
-//TextInput Username/Email/Phone
-Widget textInputUsername() {
-  return Container(
-    width: 326,
-    height: 50,
-    decoration: BoxDecoration(
-      color: bone60,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 8),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 10),
-            child: Center(
-                child: SvgPicture.asset(
-              'assets/icons/generalIcons/user.svg',
-              color: jetBlack40,
-            )),
-          ),
-        ),
-        Expanded(
-          child: TextFormField(
-              textInputAction: TextInputAction.next,
-              textCapitalization: TextCapitalization.sentences,
-              style: const TextStyle(
-                  overflow: TextOverflow.fade,
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack80,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700),
-              decoration: InputDecoration.collapsed(
-                border: InputBorder.none,
-                hintText: 'Username / Email / Phone',
-                hintStyle: const TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: shark,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              onChanged: (val) {
-                account = val;
-                print('I am not null');
-              }),
-        ),
-      ],
-    ),
-  );
-}
-
-//TextInput Password
-Widget textInputPassword() {
-  return Container(
-    width: 326,
-    height: 50,
-    decoration: BoxDecoration(
-      color: bone60,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 8),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 21, right: 12),
-            child: Center(
-                child: SvgPicture.asset(
-              'assets/icons/generalIcons/lock.svg',
-              color: jetBlack40,
-            )),
-          ),
-        ),
-        Expanded(
-          child: TextField(
-            textInputAction: TextInputAction.done,
-            obscureText: true,
-            textCapitalization: TextCapitalization.sentences,
-            style: const TextStyle(
-                overflow: TextOverflow.fade,
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
-            decoration: InputDecoration.collapsed(
-              border: InputBorder.none,
-              hintText: 'Password',
-              hintStyle: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: shark60,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            onChanged: (val) {
-              password = val;
-            },
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-//Forgot Passowrd?
-Widget forgotPassword() {
-  return Padding(
-    padding: const EdgeInsets.only(top: 15, left: 200),
-    child: GestureDetector(
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(
-          fontFamily: 'SFDisplay',
-          color: jetBlack40,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      onTap: () {
-        print('Forgot Password Selected');
-      },
-    ),
-  );
-}
-
-Widget orDivider() {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(top: 25.0),
-      child: Text(
-        'or',
-        style: TextStyle(
-          fontFamily: 'SFDisplay',
-          color: jetBlack40,
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ),
-  );
-}
-
-//Login with sign-in partners
-Widget signInPartners() {
-  return Padding(
-    padding: const EdgeInsets.only(top: 25.0),
-    child: Column(
-      children: [
-        GestureDetector(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 11),
-                child: SvgPicture.asset(
-                  'assets/icons/externalCompanyIcons/Apple.svg',
-                  color: jetBlack,
-                ),
-              ),
-              Text(
-                'Continue with Apple',
-                style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack40,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-
-          //This stuff should work once we set up and pay for an Apple Developer Account ( Not sure 100% why this isnt working, getting an error 1000 || Auth error )
-
-          // onTap: () async {
-          //   final credential = await SignInWithApple.getAppleIDCredential(
-          //     scopes: [
-          //       AppleIDAuthorizationScopes.email,
-          //       AppleIDAuthorizationScopes.fullName,
-          //     ],
-          //   );
-
-          //   print(credential);
-
-          //   // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
-          //   // after they have been validated with Apple (see `Integration` section for more information on how to do this)
-          // },
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 11),
-                child: SvgPicture.asset(
-                    'assets/icons/externalCompanyIcons/Google.svg'),
-              ),
-              Text(
-                'Continue with Google',
-                style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack40,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     ),
   );
 }

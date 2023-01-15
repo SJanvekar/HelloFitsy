@@ -1,12 +1,20 @@
+import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/categories.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
+import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
+import 'package:balance/sharedWidgets/reviewCard.dart';
 import 'package:balance/sharedWidgets/unfollowDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+
+import '../../../feModels/classModel.dart';
+import '../../home/components/upcomingClassesItem.dart';
 
 class PersonalProfile extends StatefulWidget {
   PersonalProfile({
@@ -16,6 +24,10 @@ class PersonalProfile extends StatefulWidget {
   @override
   State<PersonalProfile> createState() => _PersonalProfileState();
 }
+
+List<Category> interests = categoriesList;
+List<Category> myInterestsFinal = myInterests;
+List<Class> savedClassesList = classList;
 
 class _PersonalProfileState extends State<PersonalProfile> {
   //User details:
@@ -32,6 +44,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
   late ScrollController _scrollController;
   Brightness statusBarTheme = Brightness.dark;
   bool isFollowing = false;
+
+  var userInterests = ['Flexibility', 'Boxing', 'Tennis', 'Soccer'];
 
 //----------
   @override
@@ -68,6 +82,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
               '${sharedPrefs.getString('lastName')!}';
     }
     getSet2UserDetails();
+    checkInterests();
+
     setState(() {});
   }
 
@@ -77,7 +93,16 @@ class _PersonalProfileState extends State<PersonalProfile> {
     if (profilePictureNullCheck != null) {
       profileImageUrl = sharedPrefs.getString('profileImageURL')!;
     }
-    print(profileImageUrl);
+  }
+
+//----------
+  void checkInterests() {
+    for (var i = 0; i < interests.length; i++) {
+      if (userInterests.contains(interests[i].categoryName)) {
+        myInterestsFinal.add(interests[i]);
+      }
+    }
+    ;
   }
 
 //----------
@@ -101,26 +126,34 @@ class _PersonalProfileState extends State<PersonalProfile> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            userFullName,
-            style: TextStyle(
-                fontSize: 26,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w600,
-                color: snow,
-                shadows: <Shadow>[
-                  Shadow(
-                    offset: Offset(0, 0),
-                    blurRadius: 8.0,
-                    color: jetBlack80,
-                  ),
-                ]),
-            maxLines: 1,
+          Row(
+            children: [
+              Text(
+                userFullName,
+                style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'SFDisplay',
+                    fontWeight: FontWeight.w600,
+                    color: snow,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(0, 0),
+                        blurRadius: 8.0,
+                        color: jetBlack80,
+                      ),
+                    ]),
+                maxLines: 1,
+              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(left: 10.0),
+              //   child:
+              // ),
+            ],
           ),
           Text(
             '@' + userName,
             style: TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w400,
                 color: snow,
                 fontFamily: 'SFDisplay',
@@ -137,80 +170,25 @@ class _PersonalProfileState extends State<PersonalProfile> {
         ]);
   }
 
-  Widget followButton() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: new ImageFilter.blur(
-          sigmaX: 1,
-          sigmaY: 1,
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          height: 34,
-          width: 90,
-          decoration: BoxDecoration(
-              color: shark40,
-              border: Border.all(color: shark60),
-              borderRadius: BorderRadius.circular(20)),
+//Edit Profile button
+  Widget editProfileButton() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 26.0),
+      child: Container(
+        alignment: Alignment.center,
+        height: 35,
+        width: (MediaQuery.of(context).size.width - (26 * 2) - 32 - 8),
+        decoration: BoxDecoration(
+            color: shark40, borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           child: Text(
-            'Follow',
+            'Edit profile',
             style: TextStyle(
-                color: snow,
+                color: jetBlack,
                 fontFamily: 'SFDisplay',
                 fontSize: 13.0,
                 fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
-    );
-  }
-
-//Follow Button
-  Widget followingButton() {
-    return Container(
-      alignment: Alignment.center,
-      height: 34,
-      width: 90,
-      decoration: BoxDecoration(
-          color: strawberry, borderRadius: BorderRadius.circular(20)),
-      child: Text(
-        'Following',
-        style: TextStyle(
-            color: snow,
-            fontFamily: 'SFDisplay',
-            fontSize: 13.0,
-            fontWeight: FontWeight.w600),
-      ),
-    );
-  }
-
-//Contact button
-  Widget contactTrainerButton() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: new ImageFilter.blur(
-          sigmaX: 1,
-          sigmaY: 1,
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          height: 34,
-          decoration: BoxDecoration(
-              color: Colors.transparent,
-              border: Border.all(color: shark60),
-              borderRadius: BorderRadius.circular(20)),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-            child: Text(
-              'Chat with ' + userFirstName,
-              style: TextStyle(
-                  color: snow,
-                  fontFamily: 'SFDisplay',
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.w600),
-            ),
           ),
         ),
       ),
@@ -262,7 +240,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              profileImageUrl,
+                              // profileImageUrl ?? '',
+                              'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -287,9 +266,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 ),
                 titlePadding: EdgeInsets.zero,
                 title: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 26.0,
-                  ),
+                  padding: const EdgeInsets.only(left: 26.0, right: 26.0),
                   child: LayoutBuilder(
                     builder:
                         (BuildContext context, BoxConstraints constraints) {
@@ -330,111 +307,205 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       color: _textColor,
                       fontFamily: 'SFDisplay',
                       fontWeight: FontWeight.w600,
-                      fontSize: 22.0)),
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      right: 26.0, top: 11.5, bottom: 11.5),
-                  child: ClipOval(
-                      child: BackdropFilter(
-                    filter: new ImageFilter.blur(
-                      sigmaX: 1,
-                      sigmaY: 1,
-                    ),
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(color: iconCircleColor),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 14, bottom: 14),
-                        child: SvgPicture.asset(
-                          'assets/icons/generalIcons/ellipses.svg',
-                          color: iconColor,
-                          height: 13,
-                          width: 6,
-                        ),
-                      ),
-                    ),
-                  )),
-                ),
-              ],
+                      fontSize: 16.0)),
             ),
-            SliverList(
-                delegate: SliverChildListDelegate([
+            MultiSliver(children: [
               Padding(
-                  padding:
-                      const EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Text(
-                          'Roger Federer holds several ATP records and is considered to be one of the greatest tennis players of all time. The Swiss player has proved his dominance on court with 20 Grand Slam titles and 103 career ATP titles. In 2003, he founded the Roger Federer Foundation, which is dedicated to providing education programs for children living in poverty in Africa and Switzerland',
-                          style: TextStyle(
-                              color: jetBlack60,
-                              fontFamily: 'SFDisplay',
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    editProfileButton(),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 26.0),
+                      child: ClipOval(
+                          child: BackdropFilter(
+                        filter: new ImageFilter.blur(
+                          sigmaX: 1,
+                          sigmaY: 1,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Text(
-                          "Your Interests",
-                          style: profileSectionTitles,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: CategorySmall(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Text(
-                          "Saved Classes",
-                          style: profileSectionTitles,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
                         child: Container(
-                          color: jetBlack80,
-                          height: 200,
+                          height: 32,
+                          width: 32,
+                          decoration: BoxDecoration(color: shark60),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8, bottom: 8),
+                            child: SvgPicture.asset(
+                              'assets/icons/generalIcons/settings.svg',
+                              color: jetBlack,
+                              height: 15,
+                              width: 15,
+                            ),
+                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Text(
-                          "Class History",
-                          style: profileSectionTitles,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Container(
-                          color: jetBlack60,
-                          height: 200,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Text(
-                          "Reviews",
-                          style: profileSectionTitles,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15),
-                        child: Container(
-                          color: jetBlack40,
-                          height: 200,
-                        ),
-                      ),
-                    ],
-                  )),
-            ])),
+                      )),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 15.0, left: 26.0, right: 26.0),
+                child: Text(
+                  'About me',
+                  style: sectionTitles,
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 10.0, left: 26.0, right: 26.0),
+                child: Text(
+                  'Toronto, Ontario, Canada',
+                  style: TextStyle(
+                      color: jetBlack,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.only(top: 8.0, left: 26.0, right: 26.0),
+                child: Text(
+                  "I've been looking for a boxing trainer these last few months and really want to get started with the right trainer! My hobbies include tennis, soccer, golf, and general working out.",
+                  style: TextStyle(
+                      color: jetBlack60,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
+            ]),
+            MultiSliver(children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                child: Text(
+                  "Your Interests",
+                  style: sectionTitles,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Center(
+                  child: Container(
+                    height: 84,
+                    child: ListView.builder(
+                      primary: false,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(left: 13, right: 13),
+                      itemCount: myInterestsFinal.length,
+                      itemBuilder: (context, index) {
+                        final _likedInterests = myInterestsFinal[index];
+                        return CategorySmall(
+                          categoryImage: _likedInterests.categoryImage,
+                          categoryName: _likedInterests.categoryName,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+            MultiSliver(children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                child: Text(
+                  "Saved Classes",
+                  style: sectionTitles,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 250,
+                  child: ListView.builder(
+                    primary: false,
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.only(left: 26, right: 26),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      final _savedClasses = savedClassesList[index];
+                      return ClassItemCondensed1(
+                        classImageUrl: _savedClasses.classImage,
+                        buttonBookOrRebookText: 'Book',
+                        classTitle: _savedClasses.className,
+                        classTrainer: _savedClasses.classTrainerFirstName,
+                        classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ]),
+            MultiSliver(children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                child: Text(
+                  "Class History",
+                  style: sectionTitles,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Container(
+                  height: 250,
+                  child: ListView.builder(
+                    primary: false,
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.only(left: 26, right: 26),
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      final _savedClasses = savedClassesList[index];
+                      return ClassItemCondensed1(
+                        classImageUrl: _savedClasses.classImage,
+                        buttonBookOrRebookText: 'Rebook',
+                        classTitle: _savedClasses.className,
+                        classTrainer: _savedClasses.classTrainerFirstName,
+                        classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ]),
+            MultiSliver(children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                child: Text(
+                  "Posted Reviews",
+                  style: sectionTitles,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                child: ReviewCard(),
+              ),
+              // SliverToBoxAdapter(
+              //   child: Container(
+              //     height: 250,
+              //     child: ListView.builder(
+              //       physics: NeverScrollableScrollPhysics(),
+              //       scrollDirection: Axis.vertical,
+              //       padding: EdgeInsets.only(left: 26, right: 26),
+              //       itemCount: 3,
+              //       itemBuilder: (context, index) {
+              //         final _savedClasses = savedClassesList[index];
+              //         return ClassItemCondensed1(
+              //           classImageUrl: _savedClasses.classImage,
+              //           buttonBookOrRebookText: 'Rebook',
+              //           classTitle: _savedClasses.className,
+              //           classTrainer: _savedClasses.classTrainerFirstName,
+              //           classTrainerImageUrl: _savedClasses.trainerImageUrl,
+              //         );
+              //       },
+              //     ),
+              //   ),
+              // ),
+              SizedBox(
+                height: 35,
+              )
+            ]),
           ]),
     );
   }

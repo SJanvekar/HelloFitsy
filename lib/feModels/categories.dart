@@ -1,109 +1,111 @@
 class Category {
   final String categoryName;
   final String categoryImage;
-  bool categorySelected;
+  bool categoryLiked;
 
   Category(
       {required this.categoryName,
       required this.categoryImage,
-      required this.categorySelected});
+      required this.categoryLiked});
 }
+
+List<Category> myInterests = [];
 
 List<Category> categoriesList = [
   Category(
       categoryName: "Physique",
       categoryImage: "assets/categories/weightTraining.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Conditioning",
       categoryImage: "assets/categories/conditioning.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Flexibility",
       categoryImage: "assets/categories/flexibility.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Lifestyle",
       categoryImage: "assets/categories/lifestyle.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Badminton",
       categoryImage: "assets/categories/badminton.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Baseball",
       categoryImage: "assets/categories/baseball.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Basketball",
       categoryImage: "assets/categories/basketball.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Boxing",
       categoryImage: "assets/categories/boxing.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Cricket",
       categoryImage: "assets/categories/cricket.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Crossfit",
       categoryImage: "assets/categories/crossfit.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Cycling",
       categoryImage: "assets/categories/cycling.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Football",
       categoryImage: "assets/categories/football.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Golf",
       categoryImage: "assets/categories/golf.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Gymnastics",
       categoryImage: "assets/categories/gymnastics.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Hockey",
       categoryImage: "assets/categories/hockey.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Mixed Martial Arts",
       categoryImage: "assets/categories/mma.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Rugby",
       categoryImage: "assets/categories/rugby.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Running",
       categoryImage: "assets/categories/running.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Soccer",
       categoryImage: "assets/categories/soccer.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Table Tennis",
       categoryImage: "assets/categories/tabletennis.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Tennis",
       categoryImage: "assets/categories/tennis.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Track & Field",
       categoryImage: "assets/categories/trackandfield.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Volleyball",
       categoryImage: "assets/categories/volleyball.png",
-      categorySelected: false),
+      categoryLiked: false),
   Category(
       categoryName: "Weight Lifting",
       categoryImage: "assets/categories/competitveweightlifting.png",
-      categorySelected: false),
+      categoryLiked: false),
 ];

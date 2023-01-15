@@ -175,7 +175,7 @@ class _CreateClassType extends State<CreateClassType> {
                               height: 75,
                               width: 75,
                               child: SvgPicture.asset(
-                                'assets/icons/navigationBarIcon/User.svg',
+                                'assets/icons/generalIcons/classOneOnOne.svg',
                                 color: _currentIconColorSolo,
                               ),
                             ),
@@ -230,7 +230,7 @@ class _CreateClassType extends State<CreateClassType> {
                               height: 75,
                               width: 75,
                               child: SvgPicture.asset(
-                                "assets/icons/Group.svg",
+                                "assets/icons/generalIcons/classGroup.svg",
                                 color: _currentIconColorGroup,
                               ),
                             ),
@@ -285,7 +285,7 @@ class _CreateClassType extends State<CreateClassType> {
                               height: 75,
                               width: 75,
                               child: SvgPicture.asset(
-                                "assets/icons/Virtual.svg",
+                                "assets/icons/generalIcons/classVirtual.svg",
                                 color: _currentIconColorVirtual,
                               ),
                             ),
