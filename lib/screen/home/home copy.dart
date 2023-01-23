@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../feModels/classModel.dart';
-import '../createClass/createClassType.dart';
+import '../createClass/createClassStep1SelectType.dart';
 import 'components/search.dart';
 
 class HomeTest extends StatelessWidget {
@@ -74,7 +74,9 @@ class HomeTest extends StatelessWidget {
                       Navigator.push(
                           context,
                           PageTransition(
-                              child: CreateClassType(),
+                              child: CreateClassSelectType(
+                                isTypeSelected: false,
+                              ),
                               type: PageTransitionType.fade,
                               isIos: false,
                               duration: Duration(milliseconds: 0),

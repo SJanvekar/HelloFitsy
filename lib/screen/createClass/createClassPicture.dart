@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/createClass/createClassCategory.dart';
-import 'package:balance/screen/createClass/createClassDetails.dart';
+import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
+import 'package:balance/screen/createClass/createClassStep2Description.dart';
 import 'package:balance/screen/createClass/createClassDocument.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';

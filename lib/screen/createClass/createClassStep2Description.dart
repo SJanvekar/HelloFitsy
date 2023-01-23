@@ -6,7 +6,8 @@ import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassPicture.dart';
 import 'package:balance/screen/createClass/createClassSchedule.dart';
-import 'package:balance/screen/createClass/createClassType.dart';
+import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
+import 'package:balance/screen/createClass/createClassStep3WhatToExpect.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -18,17 +19,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
-class CreateClassDetails extends StatefulWidget {
-  const CreateClassDetails({Key? key, required this.classTemplate})
+class CreateClassDescription extends StatefulWidget {
+  const CreateClassDescription({Key? key, required this.classTemplate})
       : super(key: key);
 
   final Class classTemplate;
 
   @override
-  State<CreateClassDetails> createState() => _CreateClassDetails();
+  State<CreateClassDescription> createState() => _CreateClassDescription();
 }
 
-class _CreateClassDetails extends State<CreateClassDetails> {
+class _CreateClassDescription extends State<CreateClassDescription> {
   //variables
 
   @override
@@ -54,7 +55,9 @@ class _CreateClassDetails extends State<CreateClassDetails> {
                   print("Back");
                   Navigator.of(context).pop(CupertinoPageRoute(
                       fullscreenDialog: true,
-                      builder: (context) => CreateClassType()));
+                      builder: (context) => CreateClassSelectType(
+                            isTypeSelected: true,
+                          )));
                 },
                 child: Text("Back", style: logInPageNavigationButtons),
               ),
@@ -68,46 +71,9 @@ class _CreateClassDetails extends State<CreateClassDetails> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               pageTitle(),
-              editClassTitle(widget.classTemplate),
-              editClassPrice(widget.classTemplate),
               editClassDescription(widget.classTemplate),
-
-              //Slider Stuff
-              Padding(
-                padding: const EdgeInsets.only(top: 36.0, bottom: 45),
-                child: GestureDetector(
-                    child: LoginFooterButton(
-                      buttonColor: strawberry,
-                      textColor: snow,
-                      buttonText: "Continue",
-                    ),
-                    onTap: () {
-                      print(widget.classTemplate.classType
-                          .toString()
-                          .split('.')
-                          .last);
-                      switch (widget.classTemplate.classType) {
-                        case ClassType.solo:
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CreateClassPicture(
-                                  classTemplate: widget.classTemplate)));
-                          break;
-                        case ClassType.group:
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CreateClassSchedule(
-                                  classTemplate: widget.classTemplate)));
-                          break;
-                        case ClassType.virtual:
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => CreateClassPicture(
-                                  classTemplate: widget.classTemplate)));
-                          break;
-                      }
-                    }),
-              ),
             ],
           ),
         ),
@@ -115,6 +81,45 @@ class _CreateClassDetails extends State<CreateClassDetails> {
           FocusScope.of(context).requestFocus(new FocusNode());
         },
       ),
+      //Bottom Navigation Bar
+      bottomNavigationBar: Container(
+          height: 110,
+          decoration: BoxDecoration(),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 14,
+              bottom: 46,
+            ),
+            child: GestureDetector(
+                child: LoginFooterButton(
+                  buttonColor: strawberry,
+                  textColor: snow,
+                  buttonText: "Continue",
+                ),
+                onTap: () {
+                  print(widget.classTemplate.classType
+                      .toString()
+                      .split('.')
+                      .last);
+                  switch (widget.classTemplate.classType) {
+                    case ClassType.solo:
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CreateClassWhatToExpect(
+                              classTemplate: widget.classTemplate)));
+                      break;
+                    case ClassType.group:
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CreateClassWhatToExpect(
+                              classTemplate: widget.classTemplate)));
+                      break;
+                    case ClassType.virtual:
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CreateClassWhatToExpect(
+                              classTemplate: widget.classTemplate)));
+                      break;
+                  }
+                }),
+          )),
     );
   }
 }
@@ -131,7 +136,7 @@ Widget pageTitle() {
           padding: EdgeInsets.only(top: 25),
           decoration: BoxDecoration(color: snow),
           child: Text(
-            'Add a title, price, and description',
+            'Write a brief description of your class',
             style: logInPageTitle,
             textAlign: TextAlign.center,
           )),
@@ -235,6 +240,8 @@ Widget editClassDescription(Class template) {
           padding: EdgeInsets.only(top: 25),
           decoration: BoxDecoration(color: snow),
           child: TextField(
+            maxLength: 500,
+            maxLengthEnforcement: MaxLengthEnforcement.none,
             autocorrect: true,
             cursorColor: ocean,
             maxLines: null,
@@ -247,7 +254,7 @@ Widget editClassDescription(Class template) {
                 fontWeight: FontWeight.w600),
             decoration: InputDecoration(
               border: InputBorder.none,
-              hintText: 'Describe your class',
+              hintText: 'Start typing here',
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,

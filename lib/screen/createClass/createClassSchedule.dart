@@ -6,7 +6,7 @@ import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassPicture.dart';
 import 'package:balance/screen/createClass/createClassTimeList.dart';
-import 'package:balance/screen/createClass/createClassType.dart';
+import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/scheduleCalendar.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
@@ -62,7 +62,9 @@ class _CreateClassSchedule extends State<CreateClassSchedule> {
                   print("Back");
                   Navigator.of(context).pop(CupertinoPageRoute(
                       fullscreenDialog: true,
-                      builder: (context) => CreateClassType()));
+                      builder: (context) => CreateClassSelectType(
+                            isTypeSelected: true,
+                          )));
                 },
                 child: Text("Back", style: logInPageNavigationButtons),
               ),

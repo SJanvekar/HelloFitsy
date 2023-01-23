@@ -64,32 +64,10 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-      SystemUiOverlay.top,
-    ]);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+    //   SystemUiOverlay.top,
+    // ]);
   }
-
-  // void getSet1UserDetails() async {
-  //   final sharedPrefs = await SharedPreferences.getInstance();
-  //   var userNameNullCheck = sharedPrefs.getString('userName');
-  //   var userFirstNameNullCheck = sharedPrefs.getString('firstName');
-  //   var userLastNameNullCheck = sharedPrefs.getString('lastName');
-  //   if (userNameNullCheck != null) {
-  //     userName = sharedPrefs.getString('userName')!;
-  //   }
-  //   if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
-  //     userFirstName = sharedPrefs.getString('firstName')! +
-  //         sharedPrefs.getString('lastName')!;
-  //   }
-  // }
-
-  // void getSet2UserDetails() async {
-  //   final sharedPrefs = await SharedPreferences.getInstance();
-  //   var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
-  //   if (profilePictureNullCheck != null) {
-  //     profileImageUrl = sharedPrefs.getString('profileImageURL')!;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

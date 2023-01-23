@@ -294,7 +294,7 @@ class _UserProfileState extends State<UserProfile> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              profileImageUrl,
+                              '',
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -367,8 +367,7 @@ class _UserProfileState extends State<UserProfile> {
                                                         return CustomDialogBox(
                                                             trainerName:
                                                                 userFullName,
-                                                            trainerImg:
-                                                                profileImageUrl);
+                                                            trainerImg: '');
                                                       })
                                                 }
                                               else if (isFollowing == false)

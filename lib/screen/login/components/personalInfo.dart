@@ -511,14 +511,6 @@ Widget pageTitle() {
   );
 }
 
-//PageText
-Widget pageText() {
-  return Padding(
-      padding: const EdgeInsets.only(top: 5),
-      child:
-          Text('Are you looking to train or learn?', style: logInPageBodyText));
-}
-
 //User First + Last Name input
 Widget textInputFirstLastName(boxWidth) {
   return Row(

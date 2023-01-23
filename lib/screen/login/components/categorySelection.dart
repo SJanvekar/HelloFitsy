@@ -4,7 +4,6 @@ import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/login/components/categorySelect_bloc.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

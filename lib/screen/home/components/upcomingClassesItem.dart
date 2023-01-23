@@ -130,7 +130,7 @@ class UpcomingClassesItem extends StatelessWidget {
                                 child: CircleAvatar(
                                   radius: 8,
                                   foregroundImage: NetworkImage(
-                                      'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/8BCF146D-E6AD-4E23-AD5F-6FFF97A63B6C.jpeg?alt=media&token=c4811f11-46b3-4bfd-a610-bead8933eac7'),
+                                      'https://www.strongfitnessmag.com/wp-content/uploads/2021/04/Sydney-Cummings-on-set.jpg'),
                                   backgroundColor: Colors.transparent,
                                 ),
                               ),

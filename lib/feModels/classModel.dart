@@ -31,6 +31,7 @@ class Class {
   bool classLiked;
   List<Schedule> classTimes;
   String trainerImageUrl;
+  late List<String> classCategories;
 
   Class({
     required this.className,

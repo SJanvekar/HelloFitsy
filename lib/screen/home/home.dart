@@ -8,7 +8,7 @@ import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:balance/screen/createClass/createClassType.dart';
+import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../testScreens/searchTestVersion1.dart';
@@ -48,21 +48,7 @@ class Home extends StatelessWidget {
                 backgroundColor: snow,
                 automaticallyImplyLeading: false,
                 leadingWidth: 60,
-                leading: Padding(
-                  padding: EdgeInsets.only(
-                    left: 26.0,
-                  ),
 
-                  //Profile Picture
-                  child: GestureDetector(
-                    child: CircleAvatar(
-                      foregroundImage: NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/profilePictureSalman.jpeg?alt=media&token=7e20cf4e-a32a-4e1a-ae8d-6fd7a755cde1'),
-                      backgroundColor: Colors.transparent,
-                    ),
-                    onTap: () => {Scaffold.of(context).openDrawer()},
-                  ),
-                ),
                 stretch: true,
 
                 //Typeface

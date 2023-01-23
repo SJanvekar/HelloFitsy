@@ -6,7 +6,7 @@ import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
-import 'package:balance/screen/createClass/createClassDetails.dart';
+import 'package:balance/screen/createClass/createClassStep2Description.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/classModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -16,11 +16,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
-class CreateClassType extends StatefulWidget {
-  const CreateClassType({Key? key}) : super(key: key);
+class CreateClassSelectType extends StatefulWidget {
+  CreateClassSelectType({Key? key, required this.isTypeSelected})
+      : super(key: key);
+
+  bool isTypeSelected = false;
 
   @override
-  State<CreateClassType> createState() => _CreateClassType();
+  State<CreateClassSelectType> createState() => _CreateClassSelectType();
 }
 
 Class classTemplate = Class(
@@ -44,56 +47,44 @@ Class classTemplate = Class(
 
 // enum ClassType { solo, group, virtual }
 
-class _CreateClassType extends State<CreateClassType> {
+class _CreateClassSelectType extends State<CreateClassSelectType> {
   //variables
   Color _currentBorderColorSolo = snow;
-  Color _currentIconBackgroundColorSolo = bone60;
-  Color _currentIconColorSolo = strawberry;
   Color _currentTextColorSolo = jetBlack;
   Color _currentBorderColorGroup = snow;
-  Color _currentIconBackgroundColorGroup = bone60;
-  Color _currentIconColorGroup = strawberry;
   Color _currentTextColorGroup = jetBlack;
   Color _currentBorderColorVirtual = snow;
-  Color _currentIconBackgroundColorVirtual = bone60;
-  Color _currentIconColorVirtual = strawberry;
   Color _currentTextColorVirtual = jetBlack;
 
   void _ButtonOnPressed(classType) {
     setState(() {
       _currentBorderColorSolo = snow;
-      _currentIconBackgroundColorSolo = bone60;
-      _currentIconColorSolo = strawberry;
       _currentTextColorSolo = jetBlack;
       _currentBorderColorGroup = snow;
-      _currentIconBackgroundColorGroup = bone60;
-      _currentIconColorGroup = strawberry;
       _currentTextColorGroup = jetBlack;
       _currentBorderColorVirtual = snow;
-      _currentIconBackgroundColorVirtual = bone60;
-      _currentIconColorVirtual = strawberry;
       _currentTextColorVirtual = jetBlack;
       switch (classType) {
         case ClassType.solo:
           _currentBorderColorSolo = strawberry;
-          _currentIconBackgroundColorSolo = strawberry;
-          _currentIconColorSolo = snow;
           _currentTextColorSolo = snow;
           break;
         case ClassType.group:
           _currentBorderColorGroup = strawberry;
-          _currentIconBackgroundColorGroup = strawberry;
-          _currentIconColorGroup = snow;
           _currentTextColorGroup = snow;
           break;
         case ClassType.virtual:
           _currentBorderColorVirtual = strawberry;
-          _currentIconBackgroundColorVirtual = strawberry;
-          _currentIconColorVirtual = snow;
           _currentTextColorVirtual = snow;
           break;
       }
     });
+  }
+
+  //----------
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -137,47 +128,29 @@ class _CreateClassType extends State<CreateClassType> {
 
             //Class Type selection
             Padding(
-              padding: const EdgeInsets.only(
-                left: 26,
-                right: 26,
-                top: 30,
-              ),
+              padding: const EdgeInsets.only(left: 26, right: 26, top: 70),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //One-on-one selection
                   GestureDetector(
                     child: AnimatedContainer(
+                      height: 85,
                       duration: Duration(milliseconds: 100),
                       curve: Curves.linear,
                       decoration: BoxDecoration(
-                          color: _currentBorderColorSolo,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: _currentBorderColorSolo,
-                            width: 3,
-                          )),
+                        color: _currentBorderColorSolo,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(
-                              left: 40,
-                              right: 12,
-                              top: 25,
-                              bottom: 25,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: _currentIconBackgroundColorSolo,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              padding: EdgeInsets.all(10),
-                              height: 75,
-                              width: 75,
-                              child: SvgPicture.asset(
-                                'assets/icons/generalIcons/classOneOnOne.svg',
-                                color: _currentIconColorSolo,
-                              ),
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: SvgPicture.asset(
+                              'assets/icons/generalIcons/oneOnOne.svg',
+                              color: _currentTextColorSolo,
                             ),
                           ),
                           Text('One-on-one training',
@@ -196,98 +169,73 @@ class _CreateClassType extends State<CreateClassType> {
                         HapticFeedback.mediumImpact();
                         // print(ClassType.solo.toString().split('.').last);
                         classTemplate.classType = ClassType.solo;
+                        widget.isTypeSelected = true;
                       })
                     },
                   ),
 
                   //Group selection
-                  GestureDetector(
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                      decoration: BoxDecoration(
+                  Padding(
+                    padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
+                    child: GestureDetector(
+                      child: AnimatedContainer(
+                        height: 85.0,
+                        duration: Duration(milliseconds: 100),
+                        curve: Curves.linear,
+                        decoration: BoxDecoration(
                           color: _currentBorderColorGroup,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: _currentBorderColorGroup,
-                            width: 3,
-                          )),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(
-                              left: 40,
-                              right: 12,
-                              top: 25,
-                              bottom: 25,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: _currentIconBackgroundColorGroup,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              padding: EdgeInsets.all(10),
-                              height: 75,
-                              width: 75,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
                               child: SvgPicture.asset(
-                                "assets/icons/generalIcons/classGroup.svg",
-                                color: _currentIconColorGroup,
+                                "assets/icons/generalIcons/group.svg",
+                                color: _currentTextColorGroup,
                               ),
                             ),
-                          ),
-                          Text('Group session',
-                              style: TextStyle(
-                                color: _currentTextColorGroup,
-                                fontFamily: 'SFDisplay',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ))
-                        ],
+                            Text('Group session',
+                                style: TextStyle(
+                                  color: _currentTextColorGroup,
+                                  fontFamily: 'SFDisplay',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ))
+                          ],
+                        ),
                       ),
+                      onTap: () => {
+                        setState(() {
+                          _ButtonOnPressed(ClassType.group);
+                          HapticFeedback.mediumImpact();
+                          // print(ClassType.group.toString().split('.').last);
+                          classTemplate.classType = ClassType.group;
+                          widget.isTypeSelected = true;
+                        })
+                      },
                     ),
-                    onTap: () => {
-                      setState(() {
-                        _ButtonOnPressed(ClassType.group);
-                        HapticFeedback.mediumImpact();
-                        // print(ClassType.group.toString().split('.').last);
-                        classTemplate.classType = ClassType.group;
-                      })
-                    },
                   ),
 
                   //Virtual selection
                   GestureDetector(
                     child: AnimatedContainer(
+                      height: 85,
                       duration: Duration(milliseconds: 100),
                       curve: Curves.linear,
                       decoration: BoxDecoration(
-                          color: _currentBorderColorVirtual,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                            color: _currentBorderColorVirtual,
-                            width: 3,
-                          )),
+                        color: _currentBorderColorVirtual,
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(
-                              left: 40,
-                              right: 12,
-                              top: 25,
-                              bottom: 25,
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: _currentIconBackgroundColorVirtual,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              padding: EdgeInsets.all(10),
-                              height: 75,
-                              width: 75,
-                              child: SvgPicture.asset(
-                                "assets/icons/generalIcons/classVirtual.svg",
-                                color: _currentIconColorVirtual,
-                              ),
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: SvgPicture.asset(
+                              "assets/icons/generalIcons/virtual.svg",
+                              color: _currentTextColorVirtual,
                             ),
                           ),
                           Text('Virtual program',
@@ -306,33 +254,46 @@ class _CreateClassType extends State<CreateClassType> {
                         HapticFeedback.mediumImpact();
                         // print(ClassType.virtual.toString().split('.').last);
                         classTemplate.classType = ClassType.virtual;
+                        widget.isTypeSelected = true;
                       })
                     },
                   ),
                 ],
               ),
             ),
-
-            //Slider Stuff
-            Padding(
-              padding: const EdgeInsets.only(top: 36.0, bottom: 45),
-              child: GestureDetector(
-                  child: LoginFooterButton(
-                    buttonColor: strawberry,
-                    textColor: snow,
-                    buttonText: "Continue",
-                  ),
-                  onTap: () => {
-                        print("Continue button pressed"),
-                        Navigator.of(context).push(CupertinoPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => CreateClassDetails(
-                                classTemplate: classTemplate)))
-                      }),
-            ),
           ],
         ),
       ),
+      //Bottom Navigation Bar
+      bottomNavigationBar: GestureDetector(
+          child: Container(
+              height: 110,
+              decoration: BoxDecoration(
+                  border: Border(
+                top: BorderSide(color: bone, width: 1),
+              )),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 14,
+                  bottom: 46,
+                ),
+                child: LoginFooterButton(
+                  buttonColor: strawberry,
+                  buttonText: 'Continue',
+                  textColor: snow,
+                ),
+              )),
+          onTap: () => {
+                print(widget.isTypeSelected),
+                if (widget.isTypeSelected == false)
+                  {}
+                else
+                  {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => CreateClassDescription(
+                            classTemplate: classTemplate)))
+                  }
+              }),
     );
   }
 }
@@ -350,7 +311,7 @@ Widget pageTitle() {
           decoration: BoxDecoration(color: snow),
           child: Text(
             'What type of class are you listing?',
-            style: logInPageTitle,
+            style: pageTitles,
             textAlign: TextAlign.center,
           )),
     ),
