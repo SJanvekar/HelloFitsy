@@ -2,12 +2,14 @@ import 'package:balance/constants.dart';
 import 'package:flutter/cupertino.dart';
 
 class PageDivider extends StatelessWidget {
-  const PageDivider({Key? key}) : super(key: key);
-
+  PageDivider({Key? key, required this.leftPadding, required this.rightPadding})
+      : super(key: key);
+  double leftPadding;
+  double rightPadding;
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+      padding: EdgeInsets.only(left: leftPadding, right: rightPadding),
       child: Center(
         child: Container(
           height: 0.66,

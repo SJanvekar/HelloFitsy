@@ -5,7 +5,7 @@ import 'dart:collection';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
-import 'package:balance/screen/createClass/createClassPicture.dart';
+import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassTimeList.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
@@ -22,20 +22,20 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class ScheduleCalendar extends StatefulWidget {
-  const ScheduleCalendar({Key? key, required this.classTemplate})
+class ScheduleCalendarOG extends StatefulWidget {
+  const ScheduleCalendarOG({Key? key, required this.classTemplate})
       : super(key: key);
 
   final Class classTemplate;
 
   @override
-  State<ScheduleCalendar> createState() => _ScheduleCalendar();
+  State<ScheduleCalendarOG> createState() => _ScheduleCalendarOG();
 }
 
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.utc(2001, 9, 11, 8, 14);
 
-class _ScheduleCalendar extends State<ScheduleCalendar> {
+class _ScheduleCalendarOG extends State<ScheduleCalendarOG> {
   //variables
   DateTime _focusedDay = DateTime.now();
   final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
@@ -58,11 +58,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       titleCentered: true,
       formatButtonVisible: false,
       leftChevronIcon: SvgPicture.asset(
-        'assets/icons/arrowLeft.svg',
+        'assets/icons/generalIcons/arrowLeft.svg',
         height: 15,
       ),
       rightChevronIcon: SvgPicture.asset(
-        'assets/icons/arrowRight.svg',
+        'assets/icons/generalIcons/arrowRight.svg',
         height: 15,
       ),
       titleTextFormatter: (date, locale) {
@@ -81,7 +81,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: strawberry60,
+            color: strawberry,
           ),
           child: Text(
             date.day.toString(),
@@ -382,7 +382,7 @@ Widget _buildEventsMarker(DateTime date) {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: strawberry60,
+          color: strawberry,
         ),
         child: Text(
           date.day.toString(),

@@ -1,6 +1,7 @@
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/userModel.dart';
+import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -174,7 +175,7 @@ class _SignInState extends State<SignIn> {
         token = val.data['token'];
         print(token);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MainPage()));
+            .push(MaterialPageRoute(builder: (context) => HomeTest()));
         AuthService().getUserInfo(token).then((val) async {
           final sharedPrefs = await SharedPreferences.getInstance();
           if (val.data['success']) {

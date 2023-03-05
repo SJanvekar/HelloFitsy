@@ -1,8 +1,10 @@
 import 'dart:io';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
 import 'package:balance/screen/createClass/createClassStep2Description.dart';
 import 'package:balance/screen/createClass/createClassDocument.dart';
+import 'package:balance/screen/createClass/createClassStep7TitleAndPrice.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 class CreateClassPicture extends StatefulWidget {
   CreateClassPicture({Key? key, required this.classTemplate}) : super(key: key);
@@ -47,61 +50,70 @@ class _CreateClassPicture extends State<CreateClassPicture> {
     return Scaffold(
       backgroundColor: snow,
       appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: false,
+        toolbarHeight: 0,
         elevation: 0,
         backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
+      ),
+      body: CustomScrollView(physics: NeverScrollableScrollPhysics(), slivers: [
+        SliverAppBar(
+          toolbarHeight: 80,
+          pinned: false,
+          centerTitle: false,
+          elevation: 0,
+          backgroundColor: snow,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 0,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    print("Back");
+                    Navigator.of(context).pop(CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) =>
+                            CreateClassCategory(classTemplate: classTemplate)));
+                  },
+                  child: Text("Back", style: logInPageNavigationButtons),
+                ),
+              ),
+            ],
+          ),
+        ),
+        MultiSliver(children: [
+          pageTitle(),
+          Center(
+              child: Padding(
+            padding: EdgeInsets.only(left: 26, right: 26, top: 20),
+            child: Container(
+              width: double.maxFinite,
+              height: 420,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: bone,
+                  image: image != null
+                      ? DecorationImage(
+                          image: FileImage(image!), fit: BoxFit.cover)
+                      : DecorationImage(
+                          image: AssetImage(
+                              'assets/images/createClass/uploadClassImage.png'),
+                          fit: BoxFit.contain)),
+            ),
+          )),
+        ])
+      ]),
+      bottomNavigationBar: SizedBox(
+        height: 175,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: 0,
+                top: 15.0,
+                bottom: 15.0,
               ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back");
-                  // Navigator.of(context).pop(CupertinoPageRoute(
-                  //     fullscreenDialog: true,
-                  //     builder: (context) => ProfilePictureUpload()));
-                },
-                child: Text("Back", style: logInPageNavigationButtons),
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            pageTitle(),
-
-            Center(
-                child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 26, right: 26, top: 50),
-                  child: Column(
-                    children: [
-                      image != null
-                          ? Image.file(
-                              image!,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset(
-                              'assets/images/createClass/uploadClassImage.png',
-                            ),
-                    ],
-                  ),
-                )
-              ],
-            )),
-
-            //Slider Stuff
-            Padding(
-              padding: const EdgeInsets.only(top: 50, bottom: 15),
               child: GestureDetector(
                 child: LoginFooterButton(
                     buttonColor: ocean,
@@ -127,17 +139,17 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                   switch (widget.classTemplate.classType) {
                     case ClassType.solo:
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassCategory(
+                          builder: (context) => CreateClassTitleAndPrice(
                               classTemplate: widget.classTemplate)));
                       break;
                     case ClassType.group:
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassCategory(
+                          builder: (context) => CreateClassTitleAndPrice(
                               classTemplate: widget.classTemplate)));
                       break;
                     case ClassType.virtual:
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassDocument(
+                          builder: (context) => CreateClassTitleAndPrice(
                               classTemplate: widget.classTemplate)));
                       break;
                   }
@@ -160,7 +172,7 @@ Widget pageTitle() {
         right: 46.5,
       ),
       child: Container(
-          padding: EdgeInsets.only(top: 25),
+          padding: EdgeInsets.only(top: 10),
           decoration: BoxDecoration(color: snow),
           child: Text(
             'Upload a picture for your class',

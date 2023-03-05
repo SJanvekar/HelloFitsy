@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
-import 'package:balance/screen/createClass/createClassPicture.dart';
+import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep2Description.dart';
@@ -92,10 +92,16 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
               bottom: 46,
             ),
             child: GestureDetector(
-                child: LoginFooterButton(
-                  buttonColor: strawberry,
-                  textColor: snow,
-                  buttonText: "Continue",
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 26.0,
+                    right: 26.0,
+                  ),
+                  child: LoginFooterButton(
+                    buttonColor: strawberry,
+                    textColor: snow,
+                    buttonText: "Continue",
+                  ),
                 ),
                 onTap: () {
                   print(widget.classTemplate.classType
@@ -162,7 +168,7 @@ Widget editClassWhatToExpect(Class template) {
             cursorColor: ocean,
             maxLines: null,
             textInputAction: TextInputAction.done,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             style: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,

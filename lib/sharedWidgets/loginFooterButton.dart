@@ -18,23 +18,21 @@ class LoginFooterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 26, right: 26),
-      child: Container(
-        height: 50,
-        width: 323,
-        decoration: BoxDecoration(
-            color: buttonColor, borderRadius: BorderRadius.circular(20)),
-        child: Center(
-            child: Text(
-          buttonText,
-          style: TextStyle(
-              color: textColor,
-              fontSize: 15,
-              fontFamily: 'SFDisplay',
-              fontWeight: FontWeight.w600),
-        )),
-      ),
+    return Container(
+      height: 50,
+      width: 323,
+      decoration: BoxDecoration(
+          color: buttonColor, borderRadius: BorderRadius.circular(20)),
+      child: Center(
+          child: Text(
+        buttonText,
+        style: TextStyle(
+            color: textColor,
+            fontSize: 15,
+            fontFamily: 'SFDisplay',
+            fontWeight: FontWeight.w600,
+            decoration: TextDecoration.none),
+      )),
     );
   }
 }

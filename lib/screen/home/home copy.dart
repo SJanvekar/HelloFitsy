@@ -1,21 +1,45 @@
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/upcomingClassesItem.dart';
+import 'package:balance/screen/profile/components/myProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../feModels/classModel.dart';
+import '../../sharedWidgets/searchBarWidget.dart';
 import '../createClass/createClassStep1SelectType.dart';
 import 'components/search.dart';
 
-class HomeTest extends StatelessWidget {
+class HomeTest extends StatefulWidget {
   HomeTest({Key? key}) : super(key: key);
 
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  @override
+  State<HomeTest> createState() => _HomeTestState();
+}
 
+class _HomeTestState extends State<HomeTest> {
+  //Variables
+  final GlobalKey<ScaffoldState> _key = GlobalKey();
+  String profileImageUrl = "";
   List<Class> allClasses = classList;
+
+  //----------
+  @override
+  void initState() {
+    super.initState();
+    getUserProfilePictures();
+  }
+
+  void getUserProfilePictures() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
+    if (profilePictureNullCheck != null) {
+      profileImageUrl = sharedPrefs.getString('profileImageURL')!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +53,7 @@ class HomeTest extends StatelessWidget {
         key: _key,
         backgroundColor: snow,
 
-        //Profile SideBar
+        // // Profile SideBar
         // drawer: SideBar(),
         // drawerEdgeDragWidth: MediaQuery.of(context).size.width,
 
@@ -46,18 +70,31 @@ class HomeTest extends StatelessWidget {
             pinned: false,
             floating: true,
             toolbarHeight: 50,
-            centerTitle: false,
+            centerTitle: true,
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
+            // Profile
+            leading: GestureDetector(
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 26.0),
+                  child: CircleAvatar(
+                    backgroundImage: NetworkImage(profileImageUrl),
+                  ),
+                ),
+              ),
+              onTap: () => {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => PersonalProfile(),
+                ))
+              },
+            ),
 
             // Typeface
-            title: Padding(
-              padding: const EdgeInsets.only(left: 9.0),
-              child: Image.asset(
-                'assets/images/Typeface.png',
-                height: 44,
-              ),
+            title: Image.asset(
+              'assets/images/Typeface.png',
+              height: 44,
             ),
 
             //Notifications & Chat & Create Class
@@ -127,39 +164,39 @@ class HomeTest extends StatelessWidget {
             ],
           ),
 
-          //Search Bar Sliver
-          // SliverPersistentHeader(
-          //   floating: true,
-          //   delegate: _SliverSearchBarDelegate(GestureDetector(
-          //     child: Stack(
-          //       alignment: Alignment.center,
-          //       children: [
-          //         Hero(
-          //             tag: 'SearchBar',
-          //             child: SearchBar(
-          //               isAutoFocusTrue: false,
-          //               searchBarWidth: searchBarWidth,
-          //               searchHintText: 'Search',
-          //             )),
-          //         Container(
-          //             height: 45,
-          //             width: searchBarWidth,
-          //             color: Colors.transparent)
-          //       ],
-          //     ),
-          //     onTap: () {
-          //       Navigator.push(
-          //           context,
-          //           PageTransition(
-          //               child: Search(),
-          //               type: PageTransitionType.fade,
-          //               isIos: false,
-          //               duration: Duration(milliseconds: 0),
-          //               reverseDuration: Duration(milliseconds: 0)));
-          //     },
-          //   )),
-          //   pinned: false,
-          // ),
+          // Search Bar Sliver
+          SliverPersistentHeader(
+            floating: true,
+            delegate: _SliverSearchBarDelegate(GestureDetector(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Hero(
+                      tag: 'SearchBar',
+                      child: SearchBar(
+                        isAutoFocusTrue: false,
+                        searchBarWidth: searchBarWidth,
+                        searchHintText: 'Search',
+                      )),
+                  Container(
+                      height: 45,
+                      width: searchBarWidth,
+                      color: Colors.transparent)
+                ],
+              ),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    PageTransition(
+                        child: Search(),
+                        type: PageTransitionType.fade,
+                        isIos: false,
+                        duration: Duration(milliseconds: 250),
+                        reverseDuration: Duration(milliseconds: 250)));
+              },
+            )),
+            pinned: false,
+          ),
 
           MultiSliver(children: [
             Padding(

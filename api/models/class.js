@@ -20,8 +20,20 @@ var ClassSchema = new Schema({
         required: true
     },
 
-    //Class Name
+    //Class Desc
     ClassDescription: {
+        type: String,
+        required: true
+    },
+
+      //Class What to expect
+      ClassWhatToExpect: {
+        type: String,
+        required: true
+    },
+
+      //Class User Requirements
+      ClassUserRequirements: {
         type: String,
         required: true
     },

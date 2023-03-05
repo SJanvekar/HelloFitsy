@@ -1,5 +1,7 @@
 import 'package:balance/constants.dart';
-import 'package:balance/screen/createClass/createClassPicture.dart';
+import 'package:balance/screen/createClass/createClassDocument.dart';
+import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
+import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
@@ -38,33 +40,39 @@ class _CreateClassCategory extends State<CreateClassCategory> {
 
       //AppBar
       appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: false,
+        toolbarHeight: 0,
         elevation: 0,
         backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => CreateClassWhatYouWillNeed(
-                          classTemplate: classTemplate)));
-                },
-                child: Text("Back", style: logInPageNavigationButtons),
-              ),
-            ),
-          ],
-        ),
       ),
 
       body: CustomScrollView(slivers: [
+        SliverAppBar(
+          toolbarHeight: 80,
+          pinned: false,
+          centerTitle: false,
+          elevation: 0,
+          backgroundColor: snow,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 0,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    print("Back");
+                    Navigator.of(context).pop(CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => CreateClassWhatYouWillNeed(
+                            classTemplate: classTemplate)));
+                  },
+                  child: Text("Back", style: logInPageNavigationButtons),
+                ),
+              ),
+            ],
+          ),
+        ),
         MultiSliver(children: [
           pageTitle(),
           SliverGrid(
@@ -133,8 +141,16 @@ class _CreateClassCategory extends State<CreateClassCategory> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 55.0, top: 10.0),
         child: GestureDetector(
-          child: LoginFooterButton(
-              buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 26.0,
+              right: 26.0,
+            ),
+            child: LoginFooterButton(
+                buttonColor: strawberry,
+                textColor: snow,
+                buttonText: 'Continue'),
+          ),
           onTap: () => {
             selectedCategories.clear(),
             for (i = 0; i < allCategories.length; i++)
@@ -145,10 +161,27 @@ class _CreateClassCategory extends State<CreateClassCategory> {
                   {selectedCategories.remove(allCategories[i].categoryName)}
               },
             widget.classTemplate.classCategories = selectedCategories,
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CreateClassPicture(
-                      classTemplate: classTemplate,
-                    )))
+            if (classTemplate.classType == ClassType.solo)
+              {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CreateClassPicture(
+                          classTemplate: classTemplate,
+                        )))
+              }
+            else if (classTemplate.classType == ClassType.group)
+              {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CreateClassPicture(
+                          classTemplate: classTemplate,
+                        )))
+              }
+            else
+              {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CreateClassPicture(
+                          classTemplate: classTemplate,
+                        )))
+              }
           },
         ),
       ),

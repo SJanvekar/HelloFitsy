@@ -1,5 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/createClass/createClassSchedule.dart';
+import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
@@ -34,7 +36,7 @@ class FITSY extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: Login(),
+      home: HomeTest(),
     );
   }
 }

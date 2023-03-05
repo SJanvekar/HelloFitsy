@@ -611,7 +611,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
-            child: PageDivider(),
+            child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
           //Class Description
@@ -655,7 +655,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
-            child: PageDivider(),
+            child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
           //Class What To Expect
@@ -700,7 +700,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
-            child: PageDivider(),
+            child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
           //Class What you'll need
@@ -744,7 +744,10 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
-            child: PageDivider(),
+            child: PageDivider(
+              leftPadding: 26.0,
+              rightPadding: 26.0,
+            ),
           ),
 
           //Class Trianer Spotlight
@@ -760,7 +763,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               child: classTrainerSpotlight()),
           Padding(
             padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
-            child: PageDivider(),
+            child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
           //Class Reviews

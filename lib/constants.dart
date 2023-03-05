@@ -23,6 +23,9 @@ const jetBlack60 = Color(0x9923292F);
 const jetBlack40 = Color(0x6623292F);
 const jetBlack20 = Color(0x3323292F);
 
+//Tarmac
+const tarmac = Color(0xff515860);
+
 //Bone
 const bone = Color(0xffEFF2F3);
 const bone80 = Color(0xccEFF2F3);
@@ -73,32 +76,32 @@ const logInPageNavigationButtons = TextStyle(
 );
 
 const logInPageBodyText = TextStyle(
-  fontFamily: 'SFDisplay',
-  color: jetBlack40,
-  fontSize: 16,
-  fontWeight: FontWeight.w400,
-);
+    fontFamily: 'SFDisplay',
+    color: jetBlack40,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    decoration: TextDecoration.none);
 
 const logInPageBodyStrawberry = TextStyle(
-  fontFamily: 'SFDisplay',
-  color: strawberry,
-  fontSize: 15,
-  fontWeight: FontWeight.w400,
-);
+    fontFamily: 'SFDisplay',
+    color: strawberry,
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    decoration: TextDecoration.none);
 
 const disclaimerTitle = TextStyle(
-  fontFamily: 'SFDisplay',
-  color: jetBlack,
-  fontSize: 20,
-  fontWeight: FontWeight.w600,
-);
+    fontFamily: 'SFDisplay',
+    color: jetBlack,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none);
 
 const homeFeedTitle = TextStyle(
-  fontFamily: 'SFDisplay',
-  color: jetBlack,
-  fontSize: 15,
-  fontWeight: FontWeight.w400,
-);
+    fontFamily: 'SFDisplay',
+    color: jetBlack,
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    decoration: TextDecoration.none);
 
 const pageTitles = TextStyle(
   fontFamily: 'SFDisplay',
@@ -115,3 +118,39 @@ const sectionTitles = TextStyle(
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
+
+const dateSelectionTitle = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 20.0,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const scheduleStartTimes = TextStyle(
+    fontFamily: 'SFRounded',
+    color: jetBlack60,
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none);
+
+const settingsDefaultHeaderText = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: jetBlack,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    decoration: TextDecoration.none);
+
+const settingsDefaultSelectionText = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: jetBlack60,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    decoration: TextDecoration.none);
+
+const popUpMenuText = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: jetBlack80,
+    fontSize: 17,
+    fontWeight: FontWeight.w500,
+    decoration: TextDecoration.none);

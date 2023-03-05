@@ -1,8 +1,3 @@
-import 'dart:io';
-
-import 'package:balance/constants.dart';
-import 'package:balance/screen/login/components/signIn.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:dio/dio.dart';
 
 import '../../../feModels/userModel.dart';
@@ -21,15 +16,6 @@ class AuthService {
     } on DioError catch (e) {
       print(e);
     }
-
-    //   Fluttertoast.showToast(
-    //       msg: e.response?.data['msg'],
-    //       gravity: ToastGravity.CENTER,
-    //       toastLength: Toast.LENGTH_SHORT,
-    //       backgroundColor: strawberry,
-    //       textColor: snow,
-    //       fontSize: 15.0);
-    // }
   }
 
   getUserInfo(token) async {

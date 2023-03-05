@@ -266,23 +266,23 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
       ),
       //Bottom Navigation Bar
       bottomNavigationBar: GestureDetector(
-          child: Container(
-              height: 110,
-              decoration: BoxDecoration(
-                  border: Border(
-                top: BorderSide(color: bone, width: 1),
-              )),
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 14,
-                  bottom: 46,
-                ),
-                child: LoginFooterButton(
-                  buttonColor: strawberry,
-                  buttonText: 'Continue',
-                  textColor: snow,
-                ),
-              )),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              top: 14,
+              bottom: 46,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 26.0,
+                right: 26.0,
+              ),
+              child: LoginFooterButton(
+                buttonColor: strawberry,
+                buttonText: 'Continue',
+                textColor: snow,
+              ),
+            ),
+          ),
           onTap: () => {
                 print(widget.isTypeSelected),
                 if (widget.isTypeSelected == false)

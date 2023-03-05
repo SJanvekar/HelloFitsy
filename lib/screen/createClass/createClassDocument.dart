@@ -61,9 +61,7 @@ class _CreateClassDocument extends State<CreateClassDocument> {
               child: TextButton(
                 onPressed: () {
                   print("Back");
-                  // Navigator.of(context).pop(CupertinoPageRoute(
-                  //     fullscreenDialog: true,
-                  //     builder: (context) => ProfilePictureUpload()));
+                  Navigator.of(context).pop();
                 },
                 child: Text("Back", style: logInPageNavigationButtons),
               ),

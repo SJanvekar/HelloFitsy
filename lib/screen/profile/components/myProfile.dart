@@ -173,7 +173,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
 //Edit Profile button
   Widget editProfileButton() {
     return Padding(
-      padding: const EdgeInsets.only(left: 26.0),
+      padding: const EdgeInsets.only(left: 26.0, right: 26.0),
       child: Container(
         alignment: Alignment.center,
         height: 35,
@@ -224,6 +224,38 @@ class _PersonalProfileState extends State<PersonalProfile> {
           controller: _scrollController,
           slivers: [
             SliverAppBar(
+              leading: GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 26.0,
+                    top: 11.5,
+                    bottom: 11.5,
+                  ),
+                  child: ClipOval(
+                      child: BackdropFilter(
+                    filter: new ImageFilter.blur(
+                      sigmaX: 1,
+                      sigmaY: 1,
+                    ),
+                    child: Container(
+                      height: 32,
+                      width: 32,
+                      decoration: BoxDecoration(color: iconCircleColor),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
+                        child: SvgPicture.asset(
+                          'assets/icons/generalIcons/arrowLeft.svg',
+                          color: iconColor,
+                          height: 13,
+                          width: 6,
+                        ),
+                      ),
+                    ),
+                  )),
+                ),
+                onTap: () => {Navigator.of(context).pop()},
+              ),
+              leadingWidth: 58,
               automaticallyImplyLeading: false,
               backgroundColor: snow,
               elevation: 0,
@@ -240,8 +272,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              // profileImageUrl ?? '',
-                              'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
+                              profileImageUrl,
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -302,6 +333,33 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 expandedTitleScale: 1,
                 centerTitle: false,
               ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      right: 26.0, top: 11.5, bottom: 11.5),
+                  child: ClipOval(
+                      child: BackdropFilter(
+                    filter: new ImageFilter.blur(
+                      sigmaX: 1,
+                      sigmaY: 1,
+                    ),
+                    child: Container(
+                      height: 32,
+                      width: 32,
+                      decoration: BoxDecoration(color: iconCircleColor),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8, bottom: 8),
+                        child: SvgPicture.asset(
+                          'assets/icons/generalIcons/settings.svg',
+                          color: iconColor,
+                          height: 15,
+                          width: 15,
+                        ),
+                      ),
+                    ),
+                  )),
+                ),
+              ],
               title: Text(userFullName,
                   style: TextStyle(
                       color: _textColor,
@@ -312,36 +370,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    editProfileButton(),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 26.0),
-                      child: ClipOval(
-                          child: BackdropFilter(
-                        filter: new ImageFilter.blur(
-                          sigmaX: 1,
-                          sigmaY: 1,
-                        ),
-                        child: Container(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(color: shark60),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8, bottom: 8),
-                            child: SvgPicture.asset(
-                              'assets/icons/generalIcons/settings.svg',
-                              color: jetBlack,
-                              height: 15,
-                              width: 15,
-                            ),
-                          ),
-                        ),
-                      )),
-                    ),
-                  ],
-                ),
+                child: editProfileButton(),
               ),
               Padding(
                 padding:
