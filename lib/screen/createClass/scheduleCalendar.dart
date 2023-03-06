@@ -210,6 +210,7 @@ class _ScheduleCalendarOG extends State<ScheduleCalendarOG> {
                       fullscreenDialog: true,
                       builder: (context) => CreateClassSelectType(
                             isTypeSelected: true,
+                            classTemplate: classTemplate,
                           )));
                 },
                 child: Text("Back", style: logInPageNavigationButtons),

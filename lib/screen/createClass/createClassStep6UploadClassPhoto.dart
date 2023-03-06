@@ -39,6 +39,7 @@ class _CreateClassPicture extends State<CreateClassPicture> {
       }
 
       final imageTemporary = File(image.path);
+      classTemplate.profileImageTempHolder = imageTemporary;
       setState(() => this.image = imageTemporary);
     } on PlatformException catch (e) {
       print('Failed to pick image $e');

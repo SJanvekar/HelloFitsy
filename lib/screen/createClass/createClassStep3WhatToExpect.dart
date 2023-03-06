@@ -35,98 +35,103 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: snow,
-
-      //AppBar
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: false,
-        elevation: 0,
+    return GestureDetector(
+      child: Scaffold(
         backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => CreateClassDescription(
-                            classTemplate: classTemplate,
-                          )));
-                },
-                child: Text("Back", style: logInPageNavigationButtons),
-              ),
-            ),
-          ],
-        ),
-      ),
 
-      //Body
-      body: GestureDetector(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+        //AppBar
+        appBar: AppBar(
+          toolbarHeight: 80,
+          centerTitle: false,
+          elevation: 0,
+          backgroundColor: snow,
+          automaticallyImplyLeading: false,
+          title: Row(
             children: [
-              pageTitle(),
-              editClassWhatToExpect(widget.classTemplate),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 0,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    print("Back");
+                    Navigator.of(context).pop(CupertinoPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => CreateClassDescription(
+                              classTemplate: classTemplate,
+                            )));
+                  },
+                  child: Text("Back", style: logInPageNavigationButtons),
+                ),
+              ),
             ],
           ),
         ),
-        onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
-        },
-      ),
-      //Bottom Navigation Bar
-      bottomNavigationBar: Container(
-          height: 110,
-          decoration: BoxDecoration(),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 14,
-              bottom: 46,
+
+        //Body
+        body: GestureDetector(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                pageTitle(),
+                editClassWhatToExpect(widget.classTemplate),
+              ],
             ),
-            child: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 26.0,
-                    right: 26.0,
+          ),
+          onTap: () {
+            FocusScope.of(context).requestFocus(new FocusNode());
+          },
+        ),
+        //Bottom Navigation Bar
+        bottomNavigationBar: Container(
+            height: 110,
+            decoration: BoxDecoration(),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 14,
+                bottom: 46,
+              ),
+              child: GestureDetector(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 26.0,
+                      right: 26.0,
+                    ),
+                    child: LoginFooterButton(
+                      buttonColor: strawberry,
+                      textColor: snow,
+                      buttonText: "Continue",
+                    ),
                   ),
-                  child: LoginFooterButton(
-                    buttonColor: strawberry,
-                    textColor: snow,
-                    buttonText: "Continue",
-                  ),
-                ),
-                onTap: () {
-                  print(widget.classTemplate.classType
-                      .toString()
-                      .split('.')
-                      .last);
-                  switch (widget.classTemplate.classType) {
-                    case ClassType.solo:
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassWhatYouWillNeed(
-                              classTemplate: widget.classTemplate)));
-                      break;
-                    case ClassType.group:
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassWhatYouWillNeed(
-                              classTemplate: widget.classTemplate)));
-                      break;
-                    case ClassType.virtual:
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassWhatYouWillNeed(
-                              classTemplate: widget.classTemplate)));
-                      break;
-                  }
-                }),
-          )),
+                  onTap: () {
+                    print(widget.classTemplate.classType
+                        .toString()
+                        .split('.')
+                        .last);
+                    switch (widget.classTemplate.classType) {
+                      case ClassType.solo:
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateClassWhatYouWillNeed(
+                                classTemplate: widget.classTemplate)));
+                        break;
+                      case ClassType.group:
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateClassWhatYouWillNeed(
+                                classTemplate: widget.classTemplate)));
+                        break;
+                      case ClassType.virtual:
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateClassWhatYouWillNeed(
+                                classTemplate: widget.classTemplate)));
+                        break;
+                    }
+                  }),
+            )),
+      ),
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
     );
   }
 }
@@ -155,37 +160,39 @@ Widget editClassWhatToExpect(Class template) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
+        left: 30,
+        right: 30,
+        bottom: 45,
       ),
       child: Container(
           padding: EdgeInsets.only(top: 25),
           decoration: BoxDecoration(color: snow),
           child: TextField(
             maxLength: 500,
-            maxLengthEnforcement: MaxLengthEnforcement.none,
             autocorrect: true,
             cursorColor: ocean,
             maxLines: null,
-            textInputAction: TextInputAction.done,
+            textCapitalization: TextCapitalization.sentences,
+            maxLengthEnforcement: MaxLengthEnforcement.none,
+            textInputAction: TextInputAction.newline,
             textAlign: TextAlign.left,
             style: const TextStyle(
                 fontFamily: 'SFDisplay',
-                color: jetBlack80,
+                color: jetBlack,
                 fontSize: 18,
-                fontWeight: FontWeight.w600),
+                fontWeight: FontWeight.w500),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: 'Start typing here',
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark60,
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
               ),
             ),
             onChanged: (val) {
-              template.classWhatToExpect = val;
+              template.classDescription = val;
             },
           )),
     ),

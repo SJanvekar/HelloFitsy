@@ -17,33 +17,34 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
 class CreateClassSelectType extends StatefulWidget {
-  CreateClassSelectType({Key? key, required this.isTypeSelected})
+  CreateClassSelectType(
+      {Key? key, required this.isTypeSelected, required this.classTemplate})
       : super(key: key);
 
   bool isTypeSelected = false;
+  Class classTemplate;
 
   @override
   State<CreateClassSelectType> createState() => _CreateClassSelectType();
 }
 
 Class classTemplate = Class(
-    className: "",
-    classDescription: "",
-    classImage: "",
+    className: '',
+    classDescription: '',
     classType: ClassType.solo,
-    classLocation: "",
+    classLocation: '',
     classRating: 0,
     classReview: 0,
     classPrice: 0,
-    classTrainer: "",
+    classTrainer: '',
     classLiked: false,
     classTimes: [],
-    trainerImageUrl:
-        'https://www.ahigherbranch.com/wp-content/uploads/2019/06/David-Goggins.jpg',
+    trainerImageUrl: '',
     classTrainerUsername: '',
     classTrainerFirstName: '',
     classUserRequirements: '',
-    classWhatToExpect: '');
+    classWhatToExpect: '',
+    classImageUrl: '');
 
 // enum ClassType { solo, group, virtual }
 

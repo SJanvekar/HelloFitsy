@@ -113,6 +113,7 @@ class _HomeTestState extends State<HomeTest> {
                           PageTransition(
                               child: CreateClassSelectType(
                                 isTypeSelected: false,
+                                classTemplate: classTemplate,
                               ),
                               type: PageTransitionType.fade,
                               isIos: false,

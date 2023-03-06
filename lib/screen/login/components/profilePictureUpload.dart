@@ -60,7 +60,6 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           firebaseStorage.child(profilePictureImage!.path);
 
       //Upload file. FILE MUST EXIST
-
       await profilePictureRef.putFile(profilePictureImage!);
 
       final imageURL = await profilePictureRef.getDownloadURL();

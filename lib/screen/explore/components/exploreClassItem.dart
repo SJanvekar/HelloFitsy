@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../sharedWidgets/userProfileComponentLight.dart';
 import 'package:balance/feModels/classModel.dart';
-import 'package:balance/Requests/requests.dart';
 
 class ExploreClassItem extends StatefulWidget {
   ExploreClassItem({

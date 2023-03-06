@@ -2,6 +2,7 @@
 import 'dart:ffi';
 
 import 'package:balance/Authentication/authService.dart';
+import 'package:balance/Requests/classRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
@@ -16,6 +17,7 @@ import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/classModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -30,6 +32,29 @@ class CreateClassTitleAndPrice extends StatefulWidget {
 
   @override
   State<CreateClassTitleAndPrice> createState() => _CreateClassTitleAndPrice();
+}
+
+Future uploadImage() async {
+  if (classTemplate.profileImageTempHolder == null) return;
+
+  try {
+    //Storage Reference
+    final firebaseStorage = FirebaseStorage.instance.ref();
+
+    //Create a reference to image
+    // print(profilePictureImage!.path);
+    final profilePictureRef =
+        firebaseStorage.child(classTemplate.profileImageTempHolder!.path);
+
+    //Upload file. FILE MUST EXIST
+    await profilePictureRef.putFile(classTemplate.profileImageTempHolder!);
+
+    final imageURL = await profilePictureRef.getDownloadURL();
+
+    classTemplate.classImageUrl = imageURL;
+  } catch (e) {
+    print("Error: $e");
+  }
 }
 
 class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
@@ -83,6 +108,10 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                 padding: const EdgeInsets.only(top: 35.0),
                 child: ClassCost(widget.classTemplate),
               ),
+              Padding(
+                padding: const EdgeInsets.only(top: 35.0),
+                child: ClassLocation(widget.classTemplate),
+              ),
             ],
           ),
         ),
@@ -112,14 +141,27 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(PageTransition(
-                      fullscreenDialog: true,
-                      type: PageTransitionType.topToBottomPop,
-                      duration: Duration(milliseconds: 250),
-                      childCurrent: CreateClassTitleAndPrice(
-                        classTemplate: classTemplate,
-                      ),
-                      child: HomeTest()));
+                  //Firebase Image Upload
+                  uploadImage();
+
+                  //Auth Service Call
+                  ClassRequests().addClass(classTemplate).then((val) {
+                    //Request Success Conditional
+
+                    if (val.data['success']) {
+                      print('Successful class add');
+                      Navigator.of(context).push(PageTransition(
+                          fullscreenDialog: true,
+                          type: PageTransitionType.topToBottomPop,
+                          duration: Duration(milliseconds: 250),
+                          childCurrent: CreateClassTitleAndPrice(
+                            classTemplate: classTemplate,
+                          ),
+                          child: HomeTest()));
+                    } else {
+                      print("MEGA ERROR FUCK KEK ${val.data}");
+                    }
+                  });
                 }),
           )),
     );
@@ -138,7 +180,7 @@ Widget pageTitle() {
           padding: EdgeInsets.only(top: 25),
           decoration: BoxDecoration(color: snow),
           child: Text(
-            "Let’s name your class and set a price",
+            "Let’s add some finishing touches",
             style: logInPageTitle,
             textAlign: TextAlign.center,
           )),
@@ -150,8 +192,9 @@ Widget ClassTitle(Class template) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
+        top: 15,
+        left: 30,
+        right: 30,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -159,7 +202,7 @@ Widget ClassTitle(Class template) {
         children: [
           Text(
             'What is your class called?',
-            style: sectionTitles,
+            style: sectionTitlesClassCreation,
           ),
           Container(
               padding: EdgeInsets.only(top: 0),
@@ -175,7 +218,7 @@ Widget ClassTitle(Class template) {
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                     fontFamily: 'SFDisplay',
-                    color: jetBlack80,
+                    color: jetBlack,
                     fontSize: 16.5,
                     fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
@@ -189,7 +232,7 @@ Widget ClassTitle(Class template) {
                   ),
                 ),
                 onChanged: (val) {
-                  template.classUserRequirements = val;
+                  template.className = val;
                 },
               )),
         ],
@@ -202,8 +245,8 @@ Widget ClassCost(Class template) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
+        left: 30,
+        right: 30,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -211,7 +254,7 @@ Widget ClassCost(Class template) {
         children: [
           Text(
             'How much does your class cost?',
-            style: sectionTitles,
+            style: sectionTitlesClassCreation,
           ),
           Container(
               padding: EdgeInsets.only(top: 0),
@@ -229,7 +272,7 @@ Widget ClassCost(Class template) {
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                     fontFamily: 'SFDisplay',
-                    color: jetBlack80,
+                    color: jetBlack,
                     fontSize: 16.5,
                     fontWeight: FontWeight.w500),
                 decoration: InputDecoration(
@@ -251,7 +294,65 @@ Widget ClassCost(Class template) {
                   ),
                 ),
                 onChanged: (val) {
-                  template.classUserRequirements = val;
+                  if (val == ' ') {
+                    var price = double.parse(val);
+                    template.classPrice = price;
+                  } else {
+                    return;
+                  }
+                },
+              )),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget ClassLocation(Class template) {
+  return Center(
+    child: Padding(
+      padding: const EdgeInsets.only(
+        left: 30,
+        right: 30,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Where is your class located?',
+            style: sectionTitlesClassCreation,
+          ),
+          Container(
+              padding: EdgeInsets.only(top: 0),
+              decoration: BoxDecoration(color: snow),
+              child: TextField(
+                maxLength: 80,
+                maxLengthEnforcement: MaxLengthEnforcement.none,
+                autocorrect: true,
+                cursorColor: ocean,
+                maxLines: null,
+                textCapitalization: TextCapitalization.sentences,
+                textInputAction: TextInputAction.done,
+                textAlign: TextAlign.left,
+                style: const TextStyle(
+                    fontFamily: 'SFDisplay',
+                    color: jetBlack,
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w500),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Start typing here',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'SFDisplay',
+                    color: shark60,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                onChanged: (val) {
+                  template.classLocation = val;
+                  template.classTrainer = 'a19aab0fdf6d52e0fa2eccaf5abad315';
                 },
               )),
         ],

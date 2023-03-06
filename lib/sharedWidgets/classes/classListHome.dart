@@ -42,7 +42,7 @@ class _ClassListHomeState extends State<ClassListHome> {
                   classLocation: classItem.classLocation,
                   classPrice: classItem.classPrice,
                   classLiked: classItem.classLiked,
-                  classImage: classItem.classImage,
+                  classImage: classItem.classImageUrl,
                   trainerImageUrl: classItem.trainerImageUrl,
                   classDescription: classItem.classDescription,
                   classRating: classItem.classRating,

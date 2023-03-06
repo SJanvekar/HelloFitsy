@@ -455,7 +455,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                     itemBuilder: (context, index) {
                       final _savedClasses = savedClassesList[index];
                       return ClassItemCondensed1(
-                        classImageUrl: _savedClasses.classImage,
+                        classImageUrl: _savedClasses.classImageUrl,
                         buttonBookOrRebookText: 'Book',
                         classTitle: _savedClasses.className,
                         classTrainer: _savedClasses.classTrainerFirstName,
@@ -486,7 +486,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                     itemBuilder: (context, index) {
                       final _savedClasses = savedClassesList[index];
                       return ClassItemCondensed1(
-                        classImageUrl: _savedClasses.classImage,
+                        classImageUrl: _savedClasses.classImageUrl,
                         buttonBookOrRebookText: 'Rebook',
                         classTitle: _savedClasses.className,
                         classTrainer: _savedClasses.classTrainerFirstName,

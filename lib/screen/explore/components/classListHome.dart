@@ -35,7 +35,7 @@ class _ClassListExploreState extends State<ClassListExplore> {
                 classLocation: classItem.classLocation,
                 classPrice: classItem.classPrice,
                 classLiked: classItem.classLiked,
-                classImage: classItem.classImage,
+                classImage: classItem.classImageUrl,
               );
             })
       ],

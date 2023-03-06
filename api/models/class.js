@@ -20,6 +20,12 @@ var ClassSchema = new Schema({
         required: true
     },
 
+    //Class Name
+    ClassImageUrl: {
+        type: String,
+        required: true
+    },
+    
     //Class Desc
     ClassDescription: {
         type: String,

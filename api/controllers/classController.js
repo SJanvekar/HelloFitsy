@@ -13,6 +13,7 @@ var functions = {
             var newClass = Class({
                 ClassID: req.body.ClassID,
                 ClassName: req.body.ClassName,
+                ClassImageUrl: req.body.ClassImageUrl,
                 ClassDescription: req.body.ClassDescription,
                 ClassWhatToExpect: req.body.ClassWhatToExpect,
                 ClassUserRequirements: req.body.ClassUserRequirements,

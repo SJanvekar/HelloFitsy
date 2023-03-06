@@ -114,7 +114,15 @@ const pageTitles = TextStyle(
 const sectionTitles = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 18.5,
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const sectionTitlesClassCreation = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 19,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
