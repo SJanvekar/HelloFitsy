@@ -138,17 +138,17 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                       .split('.')
                       .last);
                   switch (widget.classTemplate.classType) {
-                    case ClassType.solo:
+                    case ClassType.Solo:
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => CreateClassTitleAndPrice(
                               classTemplate: widget.classTemplate)));
                       break;
-                    case ClassType.group:
+                    case ClassType.Group:
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => CreateClassTitleAndPrice(
                               classTemplate: widget.classTemplate)));
                       break;
-                    case ClassType.virtual:
+                    case ClassType.Virtual:
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => CreateClassTitleAndPrice(
                               classTemplate: widget.classTemplate)));

@@ -160,15 +160,15 @@ class _CreateClassCategory extends State<CreateClassCategory> {
                 else
                   {selectedCategories.remove(allCategories[i].categoryName)}
               },
-            widget.classTemplate.classCategories = selectedCategories,
-            if (classTemplate.classType == ClassType.solo)
+            classTemplate.classCategories = selectedCategories,
+            if (classTemplate.classType == ClassType.Solo)
               {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CreateClassPicture(
                           classTemplate: classTemplate,
                         )))
               }
-            else if (classTemplate.classType == ClassType.group)
+            else if (classTemplate.classType == ClassType.Group)
               {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CreateClassPicture(
@@ -187,25 +187,6 @@ class _CreateClassCategory extends State<CreateClassCategory> {
       ),
     );
   }
-
-  // void sendUserModel() {
-  //   userTemplate.likedClasses = <String>[];
-  //   userTemplate.classHistory = <String>[];
-  //   userTemplate.followers = <String>[];
-  //   userTemplate.following = <String>[];
-
-  //   //Auth Service Call
-  //   AuthService().signUp(userTemplate).then((val) {
-  //     // print("Whatever");
-  //     if (val.data['success']) {
-  //       print('Successful user add');
-  //       Navigator.of(context)
-  //           .push(MaterialPageRoute(builder: (context) => MainPage()));
-  //     } else {
-  //       print("MEGASS ERROR KEK: ${val.data}");
-  //     }
-  //   });
-  // }
 }
 
 //Page title

@@ -96,6 +96,13 @@ var ClassSchema = new Schema({
         default: false
     },
 
+    //Categories (Linked)
+    Categories: [{
+        type: String,
+        required: false,
+    }],
+    
+
 })
 
 module.exports = mongoose.model('Class', ClassSchema)

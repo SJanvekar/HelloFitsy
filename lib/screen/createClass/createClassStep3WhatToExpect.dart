@@ -110,17 +110,17 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
                         .split('.')
                         .last);
                     switch (widget.classTemplate.classType) {
-                      case ClassType.solo:
+                      case ClassType.Solo:
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CreateClassWhatYouWillNeed(
                                 classTemplate: widget.classTemplate)));
                         break;
-                      case ClassType.group:
+                      case ClassType.Group:
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CreateClassWhatYouWillNeed(
                                 classTemplate: widget.classTemplate)));
                         break;
-                      case ClassType.virtual:
+                      case ClassType.Virtual:
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CreateClassWhatYouWillNeed(
                                 classTemplate: widget.classTemplate)));
@@ -192,7 +192,7 @@ Widget editClassWhatToExpect(Class template) {
               ),
             ),
             onChanged: (val) {
-              template.classDescription = val;
+              template.classWhatToExpect = val;
             },
           )),
     ),

@@ -1,7 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
-enum ClassType { solo, group, virtual }
+enum ClassType { Solo, Group, Virtual }
 
 class Schedule {
   Set<DateTime> dates;

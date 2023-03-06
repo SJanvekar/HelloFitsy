@@ -36,6 +36,7 @@ class ClassRequests {
             "ClassTrainer": classModel.classTrainer,
             "ClassLiked": classModel.classLiked,
             "ClassTimes": classModel.classTimes,
+            "Categories": classModel.classCategories,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

@@ -31,7 +31,7 @@ class CreateClassSelectType extends StatefulWidget {
 Class classTemplate = Class(
     className: '',
     classDescription: '',
-    classType: ClassType.solo,
+    classType: ClassType.Solo,
     classLocation: '',
     classRating: 0,
     classReview: 0,
@@ -66,15 +66,15 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
       _currentBorderColorVirtual = snow;
       _currentTextColorVirtual = jetBlack;
       switch (classType) {
-        case ClassType.solo:
+        case ClassType.Solo:
           _currentBorderColorSolo = strawberry;
           _currentTextColorSolo = snow;
           break;
-        case ClassType.group:
+        case ClassType.Group:
           _currentBorderColorGroup = strawberry;
           _currentTextColorGroup = snow;
           break;
-        case ClassType.virtual:
+        case ClassType.Virtual:
           _currentBorderColorVirtual = strawberry;
           _currentTextColorVirtual = snow;
           break;
@@ -166,10 +166,10 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                     ),
                     onTap: () => {
                       setState(() {
-                        _ButtonOnPressed(ClassType.solo);
+                        _ButtonOnPressed(ClassType.Solo);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.solo.toString().split('.').last);
-                        classTemplate.classType = ClassType.solo;
+                        classTemplate.classType = ClassType.Solo;
                         widget.isTypeSelected = true;
                       })
                     },
@@ -209,10 +209,10 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       ),
                       onTap: () => {
                         setState(() {
-                          _ButtonOnPressed(ClassType.group);
+                          _ButtonOnPressed(ClassType.Group);
                           HapticFeedback.mediumImpact();
                           // print(ClassType.group.toString().split('.').last);
-                          classTemplate.classType = ClassType.group;
+                          classTemplate.classType = ClassType.Group;
                           widget.isTypeSelected = true;
                         })
                       },
@@ -251,10 +251,10 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                     ),
                     onTap: () => {
                       setState(() {
-                        _ButtonOnPressed(ClassType.virtual);
+                        _ButtonOnPressed(ClassType.Virtual);
                         HapticFeedback.mediumImpact();
                         // print(ClassType.virtual.toString().split('.').last);
-                        classTemplate.classType = ClassType.virtual;
+                        classTemplate.classType = ClassType.Virtual;
                         widget.isTypeSelected = true;
                       })
                     },

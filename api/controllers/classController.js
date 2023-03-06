@@ -25,6 +25,7 @@ var functions = {
                 ClassTrainer: req.body.ClassTrainer,
                 ClassLiked: req.body.ClassLiked,
                 ClassTimes: req.body.ClassTimes,
+                Categories: req.body.Categories,
             });
             newClass.save(function (err, newClass){
                 if(err){

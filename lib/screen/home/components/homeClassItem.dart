@@ -52,17 +52,17 @@ class HomeClassItem extends StatefulWidget {
 
   void classTypeIcon(classType) {
     switch (classType) {
-      case ClassType.solo:
+      case ClassType.Solo:
         {
           var classTypeIconPath = 'assets/icons/generalIcons/classOneOnOne.svg';
           break;
         }
-      case ClassType.group:
+      case ClassType.Group:
         {
           var classTypeIconPath = 'assets/icons/generalIcons/classGroup.svg';
           break;
         }
-      case ClassType.virtual:
+      case ClassType.Virtual:
         {
           var classTypeIconPath = 'assets/icons/generalIcons/classVirtual.svg';
           break;
