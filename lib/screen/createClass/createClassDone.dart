@@ -67,7 +67,7 @@ class _CreateClassDone extends State<CreateClassDone> {
           Padding(
             padding: const EdgeInsets.only(bottom: 45.0),
             child: GestureDetector(
-              child: LoginFooterButton(
+              child: FooterButton(
                   buttonColor: strawberry, textColor: snow, buttonText: 'Done'),
               onTap: () => {
                 Navigator.of(context).push(

@@ -148,7 +148,7 @@ class _SignInState extends State<SignIn> {
                   Padding(
                     padding: const EdgeInsets.only(top: 45.0),
                     child: GestureDetector(
-                      child: LoginFooterButton(
+                      child: FooterButton(
                           buttonColor: strawberry,
                           textColor: snow,
                           buttonText: 'Log in'),
@@ -180,6 +180,7 @@ class _SignInState extends State<SignIn> {
           final sharedPrefs = await SharedPreferences.getInstance();
           if (val.data['success']) {
             print('successful get info');
+            final String encodedCategories = val.data['categories'].encode;
             sharedPrefs.setString('userType', val.data['userType']);
             sharedPrefs.setString(
                 'profileImageURL', val.data['profileImageURL']);
@@ -187,6 +188,7 @@ class _SignInState extends State<SignIn> {
             sharedPrefs.setString('firstName', val.data['firstName']);
             sharedPrefs.setString('lastName', val.data['lastName']);
             sharedPrefs.setString('userEmail', val.data['userEmail']);
+            sharedPrefs.setString('categories', encodedCategories);
             print(sharedPrefs.getString('userType'));
           }
         });

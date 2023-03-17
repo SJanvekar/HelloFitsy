@@ -154,7 +154,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           Padding(
             padding: EdgeInsets.only(bottom: 15.0),
             child: GestureDetector(
-              child: LoginFooterButton(
+              child: FooterButton(
                   buttonColor: ocean,
                   textColor: snow,
                   buttonText: 'Upload Picture'),
@@ -168,7 +168,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 55.0),
         child: GestureDetector(
-          child: LoginFooterButton(
+          child: FooterButton(
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
           onTap: () => {
             uploadImage(),

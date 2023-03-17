@@ -1,10 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/categories.dart';
+import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
+import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/reviewCard.dart';
 import 'package:balance/sharedWidgets/unfollowDialog.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +139,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                     fontFamily: 'SFDisplay',
                     fontWeight: FontWeight.w600,
                     color: snow,
+                    // ignore: prefer_const_literals_to_create_immutables
                     shadows: <Shadow>[
                       Shadow(
                         offset: Offset(0, 0),
@@ -157,6 +162,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 fontWeight: FontWeight.w400,
                 color: snow,
                 fontFamily: 'SFDisplay',
+                // ignore: prefer_const_literals_to_create_immutables
                 shadows: <Shadow>[
                   Shadow(
                     offset: Offset(0, 0),
@@ -176,10 +182,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
       padding: const EdgeInsets.only(left: 26.0, right: 26.0),
       child: Container(
         alignment: Alignment.center,
-        height: 35,
+        height: 40,
         width: (MediaQuery.of(context).size.width - (26 * 2) - 32 - 8),
         decoration: BoxDecoration(
-            color: shark40, borderRadius: BorderRadius.circular(20)),
+            color: shark40, borderRadius: BorderRadius.circular(12)),
         child: Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           child: Text(
@@ -187,7 +193,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
             style: TextStyle(
                 color: jetBlack,
                 fontFamily: 'SFDisplay',
-                fontSize: 13.0,
+                fontSize: 14.0,
                 fontWeight: FontWeight.w600),
           ),
         ),
@@ -233,7 +239,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                   ),
                   child: ClipOval(
                       child: BackdropFilter(
-                    filter: new ImageFilter.blur(
+                    filter: ImageFilter.blur(
                       sigmaX: 1,
                       sigmaY: 1,
                     ),
@@ -287,6 +293,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                             jetBlack.withOpacity(0.15),
                             jetBlack.withOpacity(0.35),
                           ],
+                              // ignore: prefer_const_literals_to_create_immutables
                               stops: [
                             0.0,
                             0.6,
@@ -339,7 +346,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       right: 26.0, top: 11.5, bottom: 11.5),
                   child: ClipOval(
                       child: BackdropFilter(
-                    filter: new ImageFilter.blur(
+                    filter: ImageFilter.blur(
                       sigmaX: 1,
                       sigmaY: 1,
                     ),
@@ -369,12 +376,12 @@ class _PersonalProfileState extends State<PersonalProfile> {
             ),
             MultiSliver(children: [
               Padding(
-                padding: const EdgeInsets.only(top: 15.0),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: editProfileButton(),
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(top: 15.0, left: 26.0, right: 26.0),
+                    const EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
                 child: Text(
                   'About me',
                   style: sectionTitles,
@@ -388,21 +395,16 @@ class _PersonalProfileState extends State<PersonalProfile> {
                   style: TextStyle(
                       color: jetBlack,
                       fontFamily: 'SFDisplay',
-                      fontSize: 14,
+                      fontSize: 15.0,
                       fontWeight: FontWeight.w500),
                 ),
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(top: 8.0, left: 26.0, right: 26.0),
+                    const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
                 child: Text(
-                  "I've been looking for a boxing trainer these last few months and really want to get started with the right trainer! My hobbies include tennis, soccer, golf, and general working out.",
-                  style: TextStyle(
-                      color: jetBlack60,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w400),
-                ),
+                    "I've been looking for a boxing trainer the last few weeks and really want to get started with the right trainer! My hobbies include tennis, soccer, golf, and general working out.",
+                    style: profileBodyTextFont),
               ),
             ]),
             MultiSliver(children: [
@@ -416,7 +418,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
               ),
               SliverToBoxAdapter(
                 child: Center(
-                  child: Container(
+                  child: SizedBox(
                     height: 84,
                     child: ListView.builder(
                       primary: false,
@@ -435,36 +437,72 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 ),
               ),
             ]),
+
             MultiSliver(children: [
               Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                     top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
                   "Saved Classes",
                   style: sectionTitles,
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Container(
-                  height: 250,
-                  child: ListView.builder(
-                    primary: false,
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.only(left: 26, right: 26),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      final _savedClasses = savedClassesList[index];
-                      return ClassItemCondensed1(
-                        classImageUrl: _savedClasses.classImageUrl,
-                        buttonBookOrRebookText: 'Book',
-                        classTitle: _savedClasses.className,
-                        classTrainer: _savedClasses.classTrainerFirstName,
-                        classTrainerImageUrl: _savedClasses.trainerImageUrl,
-                      );
-                    },
+
+              //If the user has no liked classes
+              if (savedClassesList.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                  child: Column(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: SvgPicture.asset(
+                          'assets/icons/generalIcons/favouriteFill.svg',
+                          color: shark,
+                          height: 28,
+                        ),
+                      ),
+                      Text(
+                        'No saved classes yet',
+                        textAlign: TextAlign.center,
+                        style: emptyListDisclaimerText,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: BodyButton(
+                            buttonColor: strawberry,
+                            textColor: snow,
+                            buttonText: 'Explore classes'),
+                      )
+                    ],
+                  ),
+                )
+
+              //If the user has liked classes ~ display the list
+              else
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 250,
+                    child: ListView.builder(
+                      primary: false,
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(left: 26, right: 26),
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        final _savedClasses = savedClassesList[index];
+                        return ClassItemCondensed1(
+                          classImageUrl: _savedClasses.classImageUrl,
+                          buttonBookOrRebookText: 'Book',
+                          classTitle: _savedClasses.className,
+                          classTrainer: _savedClasses.classTrainerFirstName,
+                          classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
             ]),
             MultiSliver(children: [
               Padding(
@@ -475,28 +513,60 @@ class _PersonalProfileState extends State<PersonalProfile> {
                   style: sectionTitles,
                 ),
               ),
-              SliverToBoxAdapter(
-                child: Container(
-                  height: 250,
-                  child: ListView.builder(
-                    primary: false,
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.only(left: 26, right: 26),
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      final _savedClasses = savedClassesList[index];
-                      return ClassItemCondensed1(
-                        classImageUrl: _savedClasses.classImageUrl,
-                        buttonBookOrRebookText: 'Rebook',
-                        classTitle: _savedClasses.className,
-                        classTrainer: _savedClasses.classTrainerFirstName,
-                        classTrainerImageUrl: _savedClasses.trainerImageUrl,
-                      );
-                    },
+              //If the user has no liked classes
+              if (savedClassesList.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                  child: Column(
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: SvgPicture.asset(
+                          'assets/icons/generalIcons/listIcon.svg',
+                          color: shark,
+                          height: 35,
+                        ),
+                      ),
+                      Text(
+                        'No classes taken yet',
+                        textAlign: TextAlign.center,
+                        style: emptyListDisclaimerText,
+                      ),
+                    ],
+                  ),
+                )
+
+              //If the user has liked classes ~ display the list
+              else
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 250,
+                    child: ListView.builder(
+                      primary: false,
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.only(left: 26, right: 26),
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        if (savedClassesList.isEmpty) {
+                          return Container();
+                        } else {
+                          final _savedClasses = savedClassesList[index];
+                          return ClassItemCondensed1(
+                            classImageUrl: _savedClasses.classImageUrl,
+                            buttonBookOrRebookText: 'Book',
+                            classTitle: _savedClasses.className,
+                            classTrainer: _savedClasses.classTrainerFirstName,
+                            classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                          );
+                        }
+                      },
+                    ),
                   ),
                 ),
-              ),
             ]),
+            // ignore: prefer_const_literals_to_create_immutables
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -532,7 +602,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
               //   ),
               // ),
               SizedBox(
-                height: 35,
+                height: 100,
               )
             ]),
           ]),

@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
-class FooterButton extends StatelessWidget {
+class BodyButton extends StatelessWidget {
   Color buttonColor;
   Color textColor;
   String buttonText;
 
-  FooterButton(
+  BodyButton(
       {Key? key,
       required this.buttonColor,
       required this.textColor,
@@ -19,8 +19,8 @@ class FooterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      width: 323,
+      height: 35,
+      width: MediaQuery.of(context).size.width / 2.5,
       decoration: BoxDecoration(
           color: buttonColor, borderRadius: BorderRadius.circular(20)),
       child: Center(
@@ -28,7 +28,7 @@ class FooterButton extends StatelessWidget {
         buttonText,
         style: TextStyle(
             color: textColor,
-            fontSize: 15,
+            fontSize: 14,
             fontFamily: 'SFDisplay',
             fontWeight: FontWeight.w600,
             decoration: TextDecoration.none),

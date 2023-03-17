@@ -255,7 +255,7 @@ class _ScheduleCalendarOG extends State<ScheduleCalendarOG> {
             Padding(
               padding: const EdgeInsets.only(top: 36.0, bottom: 45),
               child: GestureDetector(
-                  child: LoginFooterButton(
+                  child: FooterButton(
                     buttonColor: strawberry,
                     textColor: snow,
                     buttonText: "Add time",

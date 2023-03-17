@@ -39,7 +39,7 @@ class Login extends StatelessWidget {
                   bottom: 10,
                 ),
                 child: GestureDetector(
-                  child: LoginFooterButton(
+                  child: FooterButton(
                       buttonColor: strawberry,
                       textColor: snow,
                       buttonText: "Start training"),

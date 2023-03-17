@@ -374,7 +374,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                   SizedBox(
                                     height: 50,
                                   ),
-                                  LoginFooterButton(
+                                  FooterButton(
                                       buttonColor: strawberry,
                                       textColor: snow,
                                       buttonText: 'Remove date'),
@@ -382,7 +382,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                     height: 10,
                                   ),
                                   GestureDetector(
-                                    child: LoginFooterButton(
+                                    child: FooterButton(
                                         buttonColor: ocean,
                                         textColor: snow,
                                         buttonText: 'Save'),
@@ -474,7 +474,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                   ),
                 ),
                 GestureDetector(
-                  child: LoginFooterButton(
+                  child: FooterButton(
                       buttonColor: bone,
                       textColor: jetBlack,
                       buttonText: 'Add'),

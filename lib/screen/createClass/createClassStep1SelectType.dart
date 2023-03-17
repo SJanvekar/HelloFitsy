@@ -277,7 +277,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                 left: 26.0,
                 right: 26.0,
               ),
-              child: LoginFooterButton(
+              child: FooterButton(
                 buttonColor: strawberry,
                 buttonText: 'Continue',
                 textColor: snow,

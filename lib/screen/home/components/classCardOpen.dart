@@ -814,7 +814,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               top: 14,
               bottom: 46,
             ),
-            child: LoginFooterButton(
+            child: FooterButton(
               buttonColor: strawberry,
               buttonText: 'Inquire',
               textColor: snow,

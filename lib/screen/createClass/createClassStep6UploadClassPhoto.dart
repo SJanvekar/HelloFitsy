@@ -116,7 +116,7 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                 bottom: 15.0,
               ),
               child: GestureDetector(
-                child: LoginFooterButton(
+                child: FooterButton(
                     buttonColor: ocean,
                     textColor: snow,
                     buttonText: 'Upload Picture'),
@@ -128,7 +128,7 @@ class _CreateClassPicture extends State<CreateClassPicture> {
             Padding(
               padding: const EdgeInsets.only(bottom: 45.0),
               child: GestureDetector(
-                child: LoginFooterButton(
+                child: FooterButton(
                     buttonColor: strawberry,
                     textColor: snow,
                     buttonText: 'Continue'),

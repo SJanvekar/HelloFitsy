@@ -134,7 +134,7 @@ class classMoreActions extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 10.0, bottom: 20),
               child: GestureDetector(
-                child: LoginFooterButton(
+                child: FooterButton(
                     buttonColor: snow,
                     textColor: jetBlack,
                     buttonText: 'Cancel'),

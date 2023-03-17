@@ -61,6 +61,7 @@ const defaultPadding = 10.0;
 
 //Fonts
 
+//LOG IN SPECIFIC FONTS
 const logInPageTitle = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
@@ -89,18 +90,12 @@ const logInPageBodyStrawberry = TextStyle(
     fontWeight: FontWeight.w400,
     decoration: TextDecoration.none);
 
+//GENERAL FONTS
 const disclaimerTitle = TextStyle(
     fontFamily: 'SFDisplay',
     color: jetBlack,
     fontSize: 20,
     fontWeight: FontWeight.w600,
-    decoration: TextDecoration.none);
-
-const homeFeedTitle = TextStyle(
-    fontFamily: 'SFDisplay',
-    color: jetBlack,
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
     decoration: TextDecoration.none);
 
 const pageTitles = TextStyle(
@@ -110,6 +105,13 @@ const pageTitles = TextStyle(
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
+
+const homeFeedTitle = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: jetBlack,
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    decoration: TextDecoration.none);
 
 const sectionTitles = TextStyle(
   fontFamily: 'SFDisplay',
@@ -162,3 +164,16 @@ const popUpMenuText = TextStyle(
     fontSize: 17,
     fontWeight: FontWeight.w500,
     decoration: TextDecoration.none);
+
+const emptyListDisclaimerText = TextStyle(
+    color: jetBlack40,
+    fontFamily: 'SFDisplay',
+    fontSize: 15,
+    fontWeight: FontWeight.w400);
+
+//PROFILE SPECIFIC FONTS
+const profileBodyTextFont = TextStyle(
+    color: jetBlack80,
+    fontFamily: 'SFDisplay',
+    fontSize: 14.5,
+    fontWeight: FontWeight.w400);

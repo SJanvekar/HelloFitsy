@@ -101,7 +101,7 @@ class _CreateClassDocument extends State<CreateClassDocument> {
             Padding(
               padding: const EdgeInsets.only(top: 50, bottom: 15),
               child: GestureDetector(
-                child: LoginFooterButton(
+                child: FooterButton(
                     buttonColor: ocean,
                     textColor: snow,
                     buttonText: 'Upload Document'),
@@ -113,7 +113,7 @@ class _CreateClassDocument extends State<CreateClassDocument> {
             Padding(
               padding: const EdgeInsets.only(bottom: 45.0),
               child: GestureDetector(
-                child: LoginFooterButton(
+                child: FooterButton(
                     buttonColor: strawberry,
                     textColor: snow,
                     buttonText: 'Continue'),

@@ -294,7 +294,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
         bottomNavigationBar: Padding(
           padding: const EdgeInsets.only(bottom: 55),
           child: GestureDetector(
-              child: LoginFooterButton(
+              child: FooterButton(
                 buttonColor: strawberry,
                 textColor: snow,
                 buttonText: "Continue",

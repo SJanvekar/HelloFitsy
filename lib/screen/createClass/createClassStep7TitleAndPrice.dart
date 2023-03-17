@@ -134,7 +134,7 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                     left: 26.0,
                     right: 26.0,
                   ),
-                  child: LoginFooterButton(
+                  child: FooterButton(
                     buttonColor: strawberry,
                     textColor: snow,
                     buttonText: "Finish",

@@ -98,7 +98,7 @@ class _CreateClassDescription extends State<CreateClassDescription> {
                       left: 26,
                       right: 26,
                     ),
-                    child: LoginFooterButton(
+                    child: FooterButton(
                       buttonColor: strawberry,
                       textColor: snow,
                       buttonText: "Continue",
