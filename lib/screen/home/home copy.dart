@@ -9,6 +9,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../feModels/classModel.dart';
+import '../../sharedWidgets/bodyButton.dart';
 import '../../sharedWidgets/searchBarWidget.dart';
 import '../createClass/createClassStep1SelectType.dart';
 import 'components/search.dart';
@@ -263,30 +264,63 @@ class _HomeTestState extends State<HomeTest> {
                 ),
               ),
             ),
-            // SliverList(
-            //     delegate: SliverChildBuilderDelegate(
-            //   (BuildContext context, int index) {
-            //     final classItem = classList[index];
-            //     return HomeClassItem(
-            //       classTrainer: classItem.classTrainer,
-            //       userName: classItem.classTrainerUsername,
-            //       className: classItem.className,
-            //       classType: classItem.classType,
-            //       classLocation: classItem.classLocation,
-            //       classPrice: classItem.classPrice,
-            //       classLiked: classItem.classLiked,
-            //       classImage: classItem.classImage,
-            //       trainerImageUrl: classItem.trainerImageUrl,
-            //       classDescription: classItem.classDescription,
-            //       classRating: classItem.classRating,
-            //       classReviews: classItem.classReview,
-            //       trainerFirstName: classItem.classTrainerFirstName,
-            //       classWhatToExpect: classItem.classWhatToExpect,
-            //       classWhatYouWillNeed: classItem.classUserRequirements,
-            //     );
-            //   },
-            //   childCount: classList.length,
-            // )),
+            if (savedClassesList.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                child: Column(
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: SvgPicture.asset(
+                        'assets/icons/generalIcons/listIcon.svg',
+                        color: shark,
+                        height: 50,
+                      ),
+                    ),
+                    Text(
+                      'Such Empty',
+                      textAlign: TextAlign.center,
+                      style: emptyListDisclaimerText,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: BodyButton(
+                          buttonColor: strawberry,
+                          textColor: snow,
+                          buttonText: 'Search for classes'),
+                    )
+                  ],
+                ),
+              )
+
+            //If the user has liked classes ~ display the list
+            else
+              SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  final classItem = classList[index];
+                  return HomeClassItem(
+                    classTrainer: classItem.classTrainer,
+                    userName: classItem.classTrainerUsername,
+                    className: classItem.className,
+                    classType: classItem.classType,
+                    classLocation: classItem.classLocation,
+                    classPrice: classItem.classPrice,
+                    classLiked: classItem.classLiked,
+                    classImage: classItem.classImageUrl,
+                    trainerImageUrl: classItem.trainerImageUrl,
+                    classDescription: classItem.classDescription,
+                    classRating: classItem.classRating,
+                    classReviews: classItem.classReview,
+                    trainerFirstName: classItem.classTrainerFirstName,
+                    classWhatToExpect: classItem.classWhatToExpect,
+                    classWhatYouWillNeed: classItem.classUserRequirements,
+                  );
+                },
+                childCount: classList.length,
+              )),
           ])
         ]),
       ),
