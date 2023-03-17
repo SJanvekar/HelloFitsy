@@ -84,7 +84,7 @@ var ClassSchema = new Schema({
     },
 
     //Class Trainer
-    ClassTrainerUserName: {
+    ClassTrainer: {
         type: String,
         required: true,
         required: true,
