@@ -22,7 +22,7 @@ var functions = {
                 ClassRating: req.body.ClassRating,
                 ClassReview: req.body.ClassReview,
                 ClassPrice: req.body.ClassPrice,
-                ClassTrainerUserName: req.body.ClassTrainerUserName,
+                ClassTrainer: req.body.ClassTrainer,
                 ClassLiked: req.body.ClassLiked,
                 ClassTimes: req.body.ClassTimes,
                 Categories: req.body.Categories,

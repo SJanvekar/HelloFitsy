@@ -33,7 +33,7 @@ class ClassRequests {
             "ClassRating": classModel.classRating,
             "ClassReview": classModel.classReview,
             "ClassPrice": classModel.classPrice,
-            "ClassTrainerUserName": classModel.classTrainerUsername,
+            "ClassTrainer": classModel.classTrainer,
             "ClassLiked": classModel.classLiked,
             "ClassTimes": classModel.classTimes,
             "Categories": classModel.classCategories,
