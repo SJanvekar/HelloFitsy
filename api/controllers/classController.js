@@ -64,6 +64,7 @@ var functions = {
                 return res.json({success: false, body: err})
             } else {
                 return classPromiseAsync(classArray).then(parsedResponse => 
+                    //RESPONSE string is an array of classes
                     res.json({success: true, 
                         classArray: parsedResponse,
                     }))

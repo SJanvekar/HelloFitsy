@@ -27,7 +27,7 @@ class _HomeTestState extends State<HomeTest> {
   //Variables
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   String profileImageUrl = "";
-  List<Class> allClasses = classList;
+  List<Class> allClasses = [];
 
   //----------
   @override
@@ -47,18 +47,14 @@ class _HomeTestState extends State<HomeTest> {
 
   void getClassFeed() async {
     ClassRequests().getClass("will").then((val) async {
-      final sharedPrefs = await SharedPreferences.getInstance();
       if (val.data['success']) {
         print('successful get classes');
+        //Response represents a list of classes
         List<dynamic> receivedJSON = val.data['classArray'];
-        // print(receivedJSON);
-        // List<dynamic> classArray = json.decode(receivedJSON);
-        Class classTest = Class.fromJson(receivedJSON[0]);
-        print(classTest.classDescription);
-
-        // val.data['classArray'].forEach((classItem) {
-        //   print(classItem.classDescription);
-        // });
+        //TODO: Theoretically, you should be able to foreach and get list of classes
+        //Hardcoded first item for now, since we're only getting one class
+        allClasses.add(Class.fromJson(receivedJSON[0]));
+        print(allClasses[0].classDescription);
       }
     });
   }
@@ -321,7 +317,7 @@ class _HomeTestState extends State<HomeTest> {
               SliverList(
                   delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  final classItem = classList[index];
+                  final classItem = allClasses[index];
                   return HomeClassItem(
                     classTrainer: classItem.classTrainer,
                     userName: classItem.classTrainerUsername,
@@ -340,7 +336,7 @@ class _HomeTestState extends State<HomeTest> {
                     classWhatYouWillNeed: classItem.classUserRequirements,
                   );
                 },
-                childCount: classList.length,
+                childCount: allClasses.length,
               )),
           ])
         ]),

@@ -28,11 +28,11 @@ class Class {
   double classRating;
   int classReview;
   String classTrainer;
-  late String? classTrainerFirstName;
-  late String? classTrainerUsername;
+  late String classTrainerFirstName;
+  late String classTrainerUsername;
   bool classLiked;
   late List<Schedule> classTimes;
-  late String? trainerImageUrl;
+  late String trainerImageUrl;
   late List<String> classCategories;
   File? profileImageTempHolder;
 
@@ -53,11 +53,12 @@ class Class {
     //Trainer Info
     //WHAT THE FUCK IS THIS
     required this.classTrainer,
-    this.trainerImageUrl,
-    this.classTrainerFirstName,
-    this.classTrainerUsername,
+    required this.trainerImageUrl,
+    required this.classTrainerFirstName,
+    required this.classTrainerUsername,
   });
 
+  //JSON parsers are required to parse arrays of JSON
   Class.fromJson(Map<String, dynamic> json)
       : className = json['ClassName'],
         classImageUrl = json['ClassImageUrl'],
@@ -88,6 +89,7 @@ class Class {
       };
 }
 
+//Semi-hardcoded casting from String to ClassType, not optimal but the best I can think of right now
 ClassType stringToClassType(String string) {
   switch (string) {
     case "Solo":
