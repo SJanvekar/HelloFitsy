@@ -28,11 +28,11 @@ class Class {
   double classRating;
   int classReview;
   String classTrainer;
-  late String classTrainerFirstName;
-  late String classTrainerUsername;
+  late String? classTrainerFirstName;
+  late String? classTrainerUsername;
   bool classLiked;
   late List<Schedule> classTimes;
-  late String trainerImageUrl;
+  late String? trainerImageUrl;
   late List<String> classCategories;
   File? profileImageTempHolder;
 
@@ -53,9 +53,9 @@ class Class {
     //Trainer Info
     //WHAT THE FUCK IS THIS
     required this.classTrainer,
-    required this.trainerImageUrl,
-    required this.classTrainerFirstName,
-    required this.classTrainerUsername,
+    this.trainerImageUrl,
+    this.classTrainerFirstName,
+    this.classTrainerUsername,
   });
 
   Class.fromJson(Map<String, dynamic> json)

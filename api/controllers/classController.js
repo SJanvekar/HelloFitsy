@@ -66,19 +66,6 @@ var functions = {
                 return classPromiseAsync(classArray).then(parsedResponse => 
                     res.json({success: true, 
                         classArray: parsedResponse,
-                        // className: parsedResponse.ClassName, 
-                        // classImageUrl: parsedResponse.ClassImageUrl,
-                        // classDescription: parsedResponse.ClassDescription,
-                        // classWhatToExpect: parsedResponse.ClassWhatToExpect,
-                        // classUserRequirements: parsedResponse.ClassUserRequirements,
-                        // classType: parsedResponse.ClassType,
-                        // classLocation: parsedResponse.ClassLocation,
-                        // classRating: parsedResponse.ClassRating,
-                        // classReview: parsedResponse.ClassReview,
-                        // classPrice: parsedResponse.ClassPrice,
-                        // classTrainer: parsedResponse.ClassTrainer,
-                        // classLiked: parsedResponse.ClassLiked,
-                        // categories: parsedResponse.Categories
                     }))
             }
         })
