@@ -1,3 +1,4 @@
+import 'package:balance/Requests/classRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/upcomingClassesItem.dart';
@@ -13,6 +14,7 @@ import '../../sharedWidgets/bodyButton.dart';
 import '../../sharedWidgets/searchBarWidget.dart';
 import '../createClass/createClassStep1SelectType.dart';
 import 'components/search.dart';
+import 'dart:convert';
 
 class HomeTest extends StatefulWidget {
   HomeTest({Key? key}) : super(key: key);
@@ -32,6 +34,7 @@ class _HomeTestState extends State<HomeTest> {
   void initState() {
     super.initState();
     getUserProfilePictures();
+    getClassFeed();
   }
 
   void getUserProfilePictures() async {
@@ -40,6 +43,24 @@ class _HomeTestState extends State<HomeTest> {
     if (profilePictureNullCheck != null) {
       profileImageUrl = sharedPrefs.getString('profileImageURL')!;
     }
+  }
+
+  void getClassFeed() async {
+    ClassRequests().getClass("will").then((val) async {
+      final sharedPrefs = await SharedPreferences.getInstance();
+      if (val.data['success']) {
+        print('successful get classes');
+        List<dynamic> receivedJSON = val.data['classArray'];
+        // print(receivedJSON);
+        // List<dynamic> classArray = json.decode(receivedJSON);
+        Class classTest = Class.fromJson(receivedJSON[0]);
+        print(classTest.classDescription);
+
+        // val.data['classArray'].forEach((classItem) {
+        //   print(classItem.classDescription);
+        // });
+      }
+    });
   }
 
   @override

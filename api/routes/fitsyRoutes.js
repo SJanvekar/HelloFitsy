@@ -26,6 +26,6 @@ router.post('/testing', classController.testing)
 //Get information for a new user
 router.get('/getinfo', userController.getinfo)
 //Get information for a new class
-router.get('/getClassInfo', classController.getinfo)
+router.get('/getClasses', classController.getClasses)
 
 module.exports = router

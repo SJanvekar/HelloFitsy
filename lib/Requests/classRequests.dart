@@ -6,17 +6,17 @@ import '../../../feModels/classModel.dart';
 class ClassRequests {
   Dio dio = new Dio();
 
-  getClassInfo(classType, classLocation, classRating, classReview, classPrice,
-      classTrainer, classLiked) async {
-    Response response;
-    try {
-      response = await dio.get('http://www.fitsy.ca/getClassInfo',
-          options: Options(contentType: Headers.formUrlEncodedContentType));
-      print(response.data);
-    } on DioError catch (e) {
-      print(e);
-    }
-  }
+  // getClassInfo(classType, classLocation, classRating, classReview, classPrice,
+  //     classTrainer, classLiked) async {
+  //   Response response;
+  //   try {
+  //     response = await dio.get('http://www.fitsy.ca/getClassInfo',
+  //         options: Options(contentType: Headers.formUrlEncodedContentType));
+  //     print(response.data);
+  //   } on DioError catch (e) {
+  //     print(e);
+  //   }
+  // }
 
   //Create class
   addClass(Class classModel) async {
@@ -39,6 +39,20 @@ class ClassRequests {
             "Categories": classModel.classCategories,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  getClass(String classTrainer) async {
+    print("Running getClass");
+    try {
+      return await dio.get(
+        'http://localhost:8888/getClasses',
+        queryParameters: {
+          "ClassTrainer": classTrainer,
+        },
+      );
     } on DioError catch (e) {
       print(e);
     }

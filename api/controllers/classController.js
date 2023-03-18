@@ -39,8 +39,49 @@ var functions = {
     },
 
     // Get Class Information
-    getinfo: function (req, res){
-
+    getClasses: function (req, res) {
+        const classPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                // console.log(classArray)
+                let responseString = JSON.stringify(responseJSON)
+                var classArray = Class()
+                classArray = JSON.parse(responseString)
+                if (classArray) {
+                    console.log(classArray[0])
+                    console.log(classArray[0].ClassDescription)
+                    resolve(classArray)
+                } else {
+                    reject(new Error('getClasses returned null'))
+                }
+            })
+        }
+        if  ((!req.query.ClassTrainer)) { //TODO: Check aganist empty and null query parameters, also apply to similar checks
+            res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
+        }
+        Class.find({ClassTrainer: req.query.ClassTrainer}, function (err, classArray) {
+            if (err) {
+                console.log(err)
+                return res.json({success: false, body: err})
+            } else {
+                return classPromiseAsync(classArray).then(parsedResponse => 
+                    res.json({success: true, 
+                        classArray: parsedResponse,
+                        // className: parsedResponse.ClassName, 
+                        // classImageUrl: parsedResponse.ClassImageUrl,
+                        // classDescription: parsedResponse.ClassDescription,
+                        // classWhatToExpect: parsedResponse.ClassWhatToExpect,
+                        // classUserRequirements: parsedResponse.ClassUserRequirements,
+                        // classType: parsedResponse.ClassType,
+                        // classLocation: parsedResponse.ClassLocation,
+                        // classRating: parsedResponse.ClassRating,
+                        // classReview: parsedResponse.ClassReview,
+                        // classPrice: parsedResponse.ClassPrice,
+                        // classTrainer: parsedResponse.ClassTrainer,
+                        // classLiked: parsedResponse.ClassLiked,
+                        // categories: parsedResponse.Categories
+                    }))
+            }
+        })
     },
 
     testing: function (req, res){
