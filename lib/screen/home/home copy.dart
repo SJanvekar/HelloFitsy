@@ -39,10 +39,8 @@ class _HomeTestState extends State<HomeTest> {
 
   void getUserProfilePictures() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
-    if (profilePictureNullCheck != null) {
-      profileImageUrl = sharedPrefs.getString('profileImageURL')!;
-    }
+    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? '';
+    setState(() {});
   }
 
   // void getClassFeed() async {

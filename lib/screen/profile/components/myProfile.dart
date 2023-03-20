@@ -70,19 +70,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
 //----------
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    var userNameNullCheck = sharedPrefs.getString('userName');
-    var userFirstNameNullCheck = sharedPrefs.getString('firstName');
-    var userLastNameNullCheck = sharedPrefs.getString('lastName');
-    if (userNameNullCheck != null) {
-      userName = sharedPrefs.getString('userName')!;
-    }
-    if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
-      userFirstName = sharedPrefs.getString('firstName')!;
-      userLastName = sharedPrefs.getString('lastName')!;
-      userFullName = '${sharedPrefs.getString('firstName')!}' +
-          ' '
-              '${sharedPrefs.getString('lastName')!}';
-    }
+    userName = sharedPrefs.getString('userName') ?? '';
+    userFirstName = sharedPrefs.getString('firstName') ?? '';
+    userLastName = sharedPrefs.getString('lastName') ?? '';
+    userFullName = '${userFirstName}' + '${userLastName}';
     getSet2UserDetails();
     checkInterests();
 
@@ -91,10 +82,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
 
   void getSet2UserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
-    if (profilePictureNullCheck != null) {
-      profileImageUrl = sharedPrefs.getString('profileImageURL')!;
-    }
+    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? '';
   }
 
 //----------
