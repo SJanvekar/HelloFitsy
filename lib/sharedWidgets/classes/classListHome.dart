@@ -43,13 +43,13 @@ class _ClassListHomeState extends State<ClassListHome> {
                   classPrice: classItem.classPrice,
                   classLiked: classItem.classLiked,
                   classImage: classItem.classImageUrl,
-                  trainerImageUrl: classItem.trainerImageUrl,
                   classDescription: classItem.classDescription,
-                  classRating: classItem.classRating,
-                  classReviews: classItem.classReview,
-                  trainerFirstName: classItem.classTrainerFirstName,
                   classWhatToExpect: classItem.classWhatToExpect,
                   classWhatYouWillNeed: classItem.classUserRequirements,
+                  classRating: classItem.classRating,
+                  classReviews: classItem.classReview,
+                  trainerImageUrl: classItem.trainerImageUrl,
+                  trainerFirstName: classItem.classTrainerFirstName,
                 );
               })
         ],

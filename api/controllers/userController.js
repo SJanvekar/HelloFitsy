@@ -112,6 +112,27 @@ var functions = {
         } else {
             return res.json({success: false, msg: 'No Headers'})
         }
+    },
+
+    //Update user info
+    updateinfo: function (req, res) {
+        if((!req.body.Username)){
+            res.json({success: false, msg: 'Missing Username'})
+        }
+        else {
+            const options = { upsert: false };
+            var myquery = { Username: req.body.Username};
+            var newvalues = { $set: { 
+                FirstName: req.body.FirstName,
+                LastName: req.body.LastName,
+                Username: req.body.Username,
+
+            } };
+        
+       const result = User.updateOne(myquery, newvalues, options);
+        
+
+        }
     }
 }
 

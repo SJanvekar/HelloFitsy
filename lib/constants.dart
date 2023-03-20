@@ -171,6 +171,13 @@ const emptyListDisclaimerText = TextStyle(
     fontSize: 15,
     fontWeight: FontWeight.w400);
 
+const doneTextButton = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: ocean,
+  fontSize: 17,
+  fontWeight: FontWeight.w600,
+);
+
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
     color: jetBlack80,

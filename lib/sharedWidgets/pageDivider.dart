@@ -12,7 +12,7 @@ class PageDivider extends StatelessWidget {
       padding: EdgeInsets.only(left: leftPadding, right: rightPadding),
       child: Center(
         child: Container(
-          height: 0.66,
+          height: 1,
           decoration: BoxDecoration(
               color: shark40, borderRadius: BorderRadius.circular(100)),
         ),

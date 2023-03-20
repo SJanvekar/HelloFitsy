@@ -34,7 +34,7 @@ class _HomeTestState extends State<HomeTest> {
   void initState() {
     super.initState();
     getUserProfilePictures();
-    getClassFeed();
+    // getClassFeed();
   }
 
   void getUserProfilePictures() async {
@@ -45,23 +45,22 @@ class _HomeTestState extends State<HomeTest> {
     }
   }
 
-  void getClassFeed() async {
-    ClassRequests().getClass("will").then((val) async {
-      final sharedPrefs = await SharedPreferences.getInstance();
-      if (val.data['success']) {
-        print('successful get classes');
-        List<dynamic> receivedJSON = val.data['classArray'];
-        // print(receivedJSON);
-        // List<dynamic> classArray = json.decode(receivedJSON);
-        Class classTest = Class.fromJson(receivedJSON[0]);
-        print(classTest.classDescription);
+  // void getClassFeed() async {
+  //   ClassRequests().getClass("will").then((val) async {
+  //     if (val.data['success']) {
+  //       print('successful get classes');
+  //       List<dynamic> receivedJSON = val.data['classArray'];
+  //       // print(receivedJSON);
+  //       // List<dynamic> classArray = json.decode(receivedJSON);
+  //       Class classTest = Class.fromJson(receivedJSON[0]);
+  //       print(classTest.classDescription);
 
-        // val.data['classArray'].forEach((classItem) {
-        //   print(classItem.classDescription);
-        // });
-      }
-    });
-  }
+  //       // val.data['classArray'].forEach((classItem) {
+  //       //   print(classItem.classDescription);
+  //       // });
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -162,26 +161,31 @@ class _HomeTestState extends State<HomeTest> {
                       //     builder: (context) => CreateClassType()));
                     },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 26.0),
-                    child: GestureDetector(
-                      child: SvgPicture.asset(
-                        'assets/icons/generalIcons/search.svg',
-                        height: 20,
-                        width: 20,
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                child: Search(),
-                                type: PageTransitionType.fade,
-                                isIos: false,
-                                duration: Duration(milliseconds: 0),
-                                reverseDuration: Duration(milliseconds: 0)));
-                      },
-                    ),
-                  ),
+
+                  //DEPRECATED SEARCH ICON
+
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 26.0),
+                  //   child: GestureDetector(
+                  //     child: SvgPicture.asset(
+                  //       'assets/icons/generalIcons/search.svg',
+                  //       height: 20,
+                  //       width: 20,
+                  //     ),
+                  //     onTap: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           PageTransition(
+                  //               child: Search(),
+                  //               type: PageTransitionType.fade,
+                  //               isIos: false,
+                  //               duration: Duration(milliseconds: 0),
+                  //               reverseDuration: Duration(milliseconds: 0)));
+                  //     },
+                  //   ),
+                  // ),
+                  //
+                  //
                 ],
               )
             ],
@@ -213,9 +217,8 @@ class _HomeTestState extends State<HomeTest> {
                     PageTransition(
                         child: Search(),
                         type: PageTransitionType.fade,
-                        isIos: false,
-                        duration: Duration(milliseconds: 250),
-                        reverseDuration: Duration(milliseconds: 250)));
+                        duration: Duration(milliseconds: 0),
+                        reverseDuration: Duration(milliseconds: 0)));
               },
             )),
             pinned: false,
@@ -285,7 +288,7 @@ class _HomeTestState extends State<HomeTest> {
                 ),
               ),
             ),
-            if (savedClassesList.isEmpty)
+            if (allClasses.isEmpty)
               Padding(
                 padding: const EdgeInsets.only(
                     left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
@@ -301,7 +304,7 @@ class _HomeTestState extends State<HomeTest> {
                       ),
                     ),
                     Text(
-                      'Such Empty',
+                      'No classes',
                       textAlign: TextAlign.center,
                       style: emptyListDisclaimerText,
                     ),
@@ -321,7 +324,7 @@ class _HomeTestState extends State<HomeTest> {
               SliverList(
                   delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  final classItem = classList[index];
+                  final classItem = allClasses[index];
                   return HomeClassItem(
                     classTrainer: classItem.classTrainer,
                     userName: classItem.classTrainerUsername,

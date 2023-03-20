@@ -352,7 +352,6 @@ Widget ClassLocation(Class template) {
                 ),
                 onChanged: (val) {
                   template.classLocation = val;
-                  template.classTrainer = 'a19aab0fdf6d52e0fa2eccaf5abad315';
                 },
               )),
         ],
