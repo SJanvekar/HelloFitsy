@@ -36,7 +36,10 @@ class FITSY extends StatelessWidget {
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
       ),
-      home: HomeTest(),
+      //Place comment on what the changes were if changed for testing purposes
+      //Example:
+      //Login(); -> HomeTest();
+      home: Login(),
     );
   }
 }

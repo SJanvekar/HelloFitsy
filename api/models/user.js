@@ -8,13 +8,11 @@ var validateEmail = function() {
     return re.test(UserEmail)
 };
 
-const id = crypto.randomBytes(16).toString("hex");
-
 var UserSchema = new Schema({
     //userID
     UserID: {
         type: String,
-        default: id,
+        default: crypto.randomBytes(16).toString("hex"),
         unique: true,
         required: false,
     },
@@ -58,14 +56,16 @@ var UserSchema = new Schema({
         required: true
 
     },
+    
     //Username
     Username: {
         type: String,
         required: true,
         unique: true,
-        lowercase: true
-
+        lowercase: true,
+        index: true
     },
+
     //Unique User Email
     UserEmail: {
         type: String,
