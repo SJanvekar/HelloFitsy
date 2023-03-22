@@ -25,7 +25,7 @@ router.post('/testing', classController.testing)
 //PUT
 
 //Update user information
-router.put('/updateUserInfo', userController.updateinfo)
+// router.put('/updateUserInfo', userController.updateinfo)
 
 //GET
 
