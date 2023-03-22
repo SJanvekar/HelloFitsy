@@ -9,7 +9,7 @@ class ClassRequests {
   //Create class
   addClass(Class classModel) async {
     try {
-      return await dio.post('http://www.fitsy.ca/addclass',
+      return await dio.post('$urlDomain/addclass',
           data: {
             "ClassName": classModel.className,
             "ClassImageUrl": classModel.classImageUrl,
@@ -35,7 +35,7 @@ class ClassRequests {
   getClass(List<dynamic> classTrainer) async {
     try {
       return await dio.get(
-        'http://localhost:8888/getClasses',
+        '$urlDomain/getClasses',
         queryParameters: {
           "ClassTrainer": classTrainer,
         },

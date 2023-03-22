@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:balance/constants.dart';
 
 import '../../../feModels/userModel.dart';
 
@@ -8,7 +9,7 @@ class UserRequests {
   getUserFollowing(String username) async {
     try {
       return await dio.get(
-        'http://localhost:8888/getUserFollowing',
+        '$urlDomain/getUserFollowing',
         queryParameters: {
           "Username": username,
         },

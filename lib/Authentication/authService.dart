@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:balance/constants.dart';
 
 import '../../../feModels/userModel.dart';
 
@@ -7,7 +8,7 @@ class AuthService {
 
   signIn(account, password) async {
     try {
-      return await dio.post('http://localhost:8888/authenticate',
+      return await dio.post('$urlDomain/authenticate',
           data: {
             "Username": account,
             "Password": password,
@@ -32,7 +33,7 @@ class AuthService {
 
   signUp(User userModel) async {
     try {
-      return await dio.post('http://localhost:8888/adduser',
+      return await dio.post('$urlDomain/adduser',
           data: {
             "ProfileImageURL": userModel.profileImageURL,
             "UserType": userModel.userType.name,
