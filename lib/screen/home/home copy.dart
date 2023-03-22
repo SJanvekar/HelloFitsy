@@ -34,13 +34,13 @@ class _HomeTestState extends State<HomeTest> {
   void initState() {
     super.initState();
     getUserProfilePictures();
+    setState(() {});
     // getClassFeed();
   }
 
   void getUserProfilePictures() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     profileImageUrl = sharedPrefs.getString('profileImageURL') ?? '';
-    setState(() {});
   }
 
   // void getClassFeed() async {
@@ -308,10 +308,21 @@ class _HomeTestState extends State<HomeTest> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 20.0),
-                      child: BodyButton(
-                          buttonColor: strawberry,
-                          textColor: snow,
-                          buttonText: 'Search for classes'),
+                      child: GestureDetector(
+                        child: BodyButton(
+                            buttonColor: strawberry,
+                            textColor: snow,
+                            buttonText: 'Search for classes'),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  child: Search(),
+                                  type: PageTransitionType.fade,
+                                  duration: Duration(milliseconds: 0),
+                                  reverseDuration: Duration(milliseconds: 0)));
+                        },
+                      ),
                     )
                   ],
                 ),

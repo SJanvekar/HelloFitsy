@@ -71,7 +71,7 @@ const logInPageTitle = TextStyle(
 
 const logInPageNavigationButtons = TextStyle(
   fontFamily: 'SFDisplay',
-  color: jetBlack40,
+  color: jetBlack80,
   fontSize: 17,
   fontWeight: FontWeight.w500,
 );

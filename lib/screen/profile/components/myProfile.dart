@@ -73,7 +73,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
     userName = sharedPrefs.getString('userName') ?? '';
     userFirstName = sharedPrefs.getString('firstName') ?? '';
     userLastName = sharedPrefs.getString('lastName') ?? '';
-    userFullName = '${userFirstName}' + '${userLastName}';
+    userFullName = '${userFirstName}' + ' ' + '${userLastName}';
     getSet2UserDetails();
     checkInterests();
 
