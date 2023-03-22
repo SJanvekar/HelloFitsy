@@ -73,7 +73,7 @@ const logInPageTitle = TextStyle(
 
 const logInPageNavigationButtons = TextStyle(
   fontFamily: 'SFDisplay',
-  color: jetBlack40,
+  color: jetBlack80,
   fontSize: 17,
   fontWeight: FontWeight.w500,
 );
@@ -172,6 +172,13 @@ const emptyListDisclaimerText = TextStyle(
     fontFamily: 'SFDisplay',
     fontSize: 15,
     fontWeight: FontWeight.w400);
+
+const doneTextButton = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: ocean,
+  fontSize: 17,
+  fontWeight: FontWeight.w600,
+);
 
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(

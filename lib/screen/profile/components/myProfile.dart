@@ -1,24 +1,22 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ffi';
+import 'dart:io';
 import 'dart:ui';
-
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/categories.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCard.dart';
-import 'package:balance/sharedWidgets/unfollowDialog.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-
 import '../../../feModels/classModel.dart';
-import '../../home/components/upcomingClassesItem.dart';
 
 class PersonalProfile extends StatefulWidget {
   PersonalProfile({
@@ -35,7 +33,7 @@ List<Class> savedClassesList = classList;
 
 class _PersonalProfileState extends State<PersonalProfile> {
   //User details:
-  String profileImageUrl = "";
+  String? profileImageUrl;
   String userName = "";
   String userFullName = "";
   String userFirstName = "";
@@ -72,19 +70,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
 //----------
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    var userNameNullCheck = sharedPrefs.getString('userName');
-    var userFirstNameNullCheck = sharedPrefs.getString('firstName');
-    var userLastNameNullCheck = sharedPrefs.getString('lastName');
-    if (userNameNullCheck != null) {
-      userName = sharedPrefs.getString('userName')!;
-    }
-    if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
-      userFirstName = sharedPrefs.getString('firstName')!;
-      userLastName = sharedPrefs.getString('lastName')!;
-      userFullName = '${sharedPrefs.getString('firstName')!}' +
-          ' '
-              '${sharedPrefs.getString('lastName')!}';
-    }
+    userName = sharedPrefs.getString('userName') ?? '';
+    userFirstName = sharedPrefs.getString('firstName') ?? '';
+    userLastName = sharedPrefs.getString('lastName') ?? '';
+    userFullName = '${userFirstName}' + ' ' + '${userLastName}';
     getSet2UserDetails();
     checkInterests();
 
@@ -93,10 +82,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
 
   void getSet2UserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
-    if (profilePictureNullCheck != null) {
-      profileImageUrl = sharedPrefs.getString('profileImageURL')!;
-    }
+    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? '';
   }
 
 //----------
@@ -116,6 +102,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
             (MediaQuery.of(context).size.height * 0.37 - kToolbarHeight);
   }
 
+//----------
 //Title Colour Function
   _followOnTap() {
     setState(() {
@@ -274,15 +261,25 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 stretchModes: const [StretchMode.zoomBackground],
                 background: Stack(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(
-                              profileImageUrl,
-                            ),
-                            fit: BoxFit.cover),
+                    if (profileImageUrl != null)
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(
+                                profileImageUrl!,
+                              ),
+                              fit: BoxFit.cover),
+                        ),
+                      )
+                    else
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/profilePictureDefault.png'),
+                              fit: BoxFit.cover),
+                        ),
                       ),
-                    ),
                     Container(
                       decoration: BoxDecoration(
                           gradient: LinearGradient(
@@ -377,7 +374,379 @@ class _PersonalProfileState extends State<PersonalProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
-                child: editProfileButton(),
+                child: GestureDetector(
+                  child: editProfileButton(),
+
+                  //Open edit profile modal sheet
+                  onTap: () {
+                    //Set the status bar theme to light (Black Header);
+                    setState(() {
+                      statusBarTheme = Brightness.light;
+                    });
+
+                    //FirstName
+                    final TextEditingController _firstNameController =
+                        new TextEditingController();
+                    _firstNameController.text = userFirstName;
+
+                    final TextEditingController _lastNameController =
+                        new TextEditingController();
+                    _lastNameController.text = userLastName;
+
+                    final TextEditingController _userNameController =
+                        new TextEditingController();
+                    _userNameController.text = userName;
+
+                    final TextEditingController _bioController =
+                        new TextEditingController();
+
+                    //Cupertino Modal Pop-up - Profile Edit
+                    showCupertinoModalPopup(
+                        semanticsDismissible: true,
+                        barrierColor: jetBlack60,
+                        context: context,
+                        builder: (BuildContext builder) {
+                          File? newProfileImage;
+                          String? newFirstName;
+                          String? newLastName;
+                          String? newUserName;
+                          String? newBio;
+
+                          return StatefulBuilder(
+                            builder: (BuildContext context,
+                                StateSetter setEditProfileState) {
+                              //Modal widgets + functions
+
+                              //Pick Image Function
+                              Future pickImage(ImageSource source) async {
+                                try {
+                                  var image = await ImagePicker()
+                                      .pickImage(source: ImageSource.gallery);
+                                  print(image?.path);
+                                  if (image == null) {
+                                    image = XFile(
+                                        'assets/images/profilePictureDefault.png');
+                                    return;
+                                  }
+
+                                  setEditProfileState(() {
+                                    if (image != null) {
+                                      newProfileImage = File(image.path);
+                                    }
+                                  });
+                                } on PlatformException catch (e) {
+                                  print('Failed to pick image $e');
+                                }
+                              }
+
+                              //Textfield widgets
+                              //Edit First Name
+                              Widget editFirstName() {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'First Name',
+                                      style: logInPageBodyText,
+                                    ),
+                                    TextField(
+                                      controller: _firstNameController,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
+                                      autocorrect: true,
+                                      cursorColor: ocean,
+                                      maxLines: null,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      textInputAction: TextInputAction.done,
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontFamily: 'SFDisplay',
+                                          color: jetBlack,
+                                          fontSize: 16.5,
+                                          fontWeight: FontWeight.w500),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
+                                      onChanged: (val) {
+                                        newFirstName = val;
+                                      },
+                                    ),
+                                    PageDivider(leftPadding: 0, rightPadding: 0)
+                                  ],
+                                );
+                              }
+
+                              //Edit Last Name
+                              Widget editLastName() {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Last Name',
+                                      style: logInPageBodyText,
+                                    ),
+                                    TextField(
+                                      controller: _lastNameController,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
+                                      autocorrect: true,
+                                      cursorColor: ocean,
+                                      maxLines: null,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      textInputAction: TextInputAction.done,
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontFamily: 'SFDisplay',
+                                          color: jetBlack,
+                                          fontSize: 16.5,
+                                          fontWeight: FontWeight.w500),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
+                                      onChanged: (val) {
+                                        newLastName = val;
+                                      },
+                                    ),
+                                    PageDivider(leftPadding: 0, rightPadding: 0)
+                                  ],
+                                );
+                              }
+
+                              //Edit UserName
+                              Widget editUserName() {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Username',
+                                      style: logInPageBodyText,
+                                    ),
+                                    TextField(
+                                      controller: _userNameController,
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
+                                      autocorrect: true,
+                                      cursorColor: ocean,
+                                      maxLines: null,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      textInputAction: TextInputAction.done,
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontFamily: 'SFDisplay',
+                                          color: jetBlack,
+                                          fontSize: 16.5,
+                                          fontWeight: FontWeight.w500),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
+                                      onChanged: (val) {
+                                        newUserName = val;
+                                      },
+                                    ),
+                                    PageDivider(leftPadding: 0, rightPadding: 0)
+                                  ],
+                                );
+                              }
+
+                              //Edit Bio
+                              Widget editBio() {
+                                return Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Bio',
+                                      style: logInPageBodyText,
+                                    ),
+                                    TextField(
+                                      maxLengthEnforcement:
+                                          MaxLengthEnforcement.none,
+                                      autocorrect: true,
+                                      cursorColor: ocean,
+                                      maxLines: null,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
+                                      textInputAction: TextInputAction.newline,
+                                      textAlign: TextAlign.left,
+                                      style: const TextStyle(
+                                          fontFamily: 'SFDisplay',
+                                          color: jetBlack,
+                                          fontSize: 16.5,
+                                          fontWeight: FontWeight.w500),
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                      ),
+                                      onChanged: (val) {
+                                        newBio = val;
+                                      },
+                                    ),
+                                    PageDivider(leftPadding: 0, rightPadding: 0)
+                                  ],
+                                );
+                              }
+
+                              return GestureDetector(
+                                child: Scaffold(
+                                  backgroundColor: snow,
+                                  appBar: AppBar(
+                                    toolbarHeight: 80,
+                                    centerTitle: false,
+                                    elevation: 0,
+                                    backgroundColor: snow,
+                                    automaticallyImplyLeading: false,
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            print("Cancel");
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Cancel",
+                                              style:
+                                                  logInPageNavigationButtons),
+                                        ),
+                                        Text(
+                                          'Edit Profile',
+                                          style: sectionTitles,
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            newFirstName ??= userFirstName;
+                                            newLastName ??= userLastName;
+                                            newUserName ??= userName;
+                                            print(newFirstName);
+                                            print(newLastName);
+                                            print(newUserName);
+                                            print("Save");
+
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("Done",
+                                              style: doneTextButton),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  body: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 26.0, right: 26.0),
+                                    child: Container(
+                                      height: MediaQuery.of(context)
+                                          .copyWith()
+                                          .size
+                                          .height,
+                                      decoration: BoxDecoration(
+                                        color: snow,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: CustomScrollView(
+                                        slivers: [
+                                          MultiSliver(children: [
+                                            Center(
+                                                child: Stack(
+                                              children: [
+                                                if (newProfileImage != null)
+                                                  ClipOval(
+                                                      child: Image.file(
+                                                    newProfileImage!,
+                                                    width: 180,
+                                                    height: 180,
+                                                    fit: BoxFit.cover,
+                                                  ))
+                                                else if (profileImageUrl !=
+                                                        null &&
+                                                    newProfileImage == null)
+                                                  ClipOval(
+                                                      child: Image(
+                                                    image: NetworkImage(
+                                                        profileImageUrl!),
+                                                    width: 180,
+                                                    height: 180,
+                                                    fit: BoxFit.cover,
+                                                  ))
+                                                else
+                                                  ClipOval(
+                                                      child: Image.asset(
+                                                    'assets/images/profilePictureDefault.png',
+                                                    width: 180,
+                                                    height: 180,
+                                                    fit: BoxFit.cover,
+                                                  ))
+                                              ],
+                                            )),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 15.0,
+                                                  left: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.2,
+                                                  right: MediaQuery.of(context)
+                                                          .size
+                                                          .width *
+                                                      0.2),
+                                              child: GestureDetector(
+                                                child: BodyButton(
+                                                  buttonColor: strawberry,
+                                                  textColor: snow,
+                                                  buttonText:
+                                                      'Upload new picture',
+                                                ),
+                                                onTap: () {
+                                                  pickImage(
+                                                      ImageSource.gallery);
+                                                },
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 40.0),
+                                              child: editFirstName(),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 25.0),
+                                              child: editLastName(),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 25.0),
+                                              child: editUserName(),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  EdgeInsets.only(top: 25.0),
+                                              child: editBio(),
+                                            ),
+                                            SizedBox(height: 80)
+                                          ])
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                onTap: () {
+                                  FocusScopeNode currentFocus =
+                                      FocusScope.of(context);
+
+                                  if (!currentFocus.hasPrimaryFocus) {
+                                    currentFocus.unfocus();
+                                  }
+                                },
+                              );
+                            },
+                          );
+                        });
+                  },
+                ),
               ),
               Padding(
                 padding:
@@ -580,124 +949,11 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 padding: const EdgeInsets.only(left: 26.0, right: 26.0),
                 child: ReviewCard(),
               ),
-              // SliverToBoxAdapter(
-              //   child: Container(
-              //     height: 250,
-              //     child: ListView.builder(
-              //       physics: NeverScrollableScrollPhysics(),
-              //       scrollDirection: Axis.vertical,
-              //       padding: EdgeInsets.only(left: 26, right: 26),
-              //       itemCount: 3,
-              //       itemBuilder: (context, index) {
-              //         final _savedClasses = savedClassesList[index];
-              //         return ClassItemCondensed1(
-              //           classImageUrl: _savedClasses.classImage,
-              //           buttonBookOrRebookText: 'Rebook',
-              //           classTitle: _savedClasses.className,
-              //           classTrainer: _savedClasses.classTrainerFirstName,
-              //           classTrainerImageUrl: _savedClasses.trainerImageUrl,
-              //         );
-              //       },
-              //     ),
-              //   ),
-              // ),
               SizedBox(
-                height: 100,
+                height: 80,
               )
             ]),
           ]),
     );
   }
 }
-
-// //Class Type and Title
-// Widget userTitleCard() {
-//   return Column(
-//       mainAxisAlignment: MainAxisAlignment.end,
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text(
-//           ,
-//           style: TextStyle(
-//               fontSize: 26,
-//               fontFamily: 'SFDisplay',
-//               fontWeight: FontWeight.w600,
-//               color: snow,
-//               shadows: <Shadow>[
-//                 Shadow(
-//                   offset: Offset(0, 0),
-//                   blurRadius: 8.0,
-//                   color: jetBlack80,
-//                 ),
-//               ]),
-//           maxLines: 1,
-//         ),
-//         Text(
-//           '@salman',
-//           style: TextStyle(
-//               fontSize: 16,
-//               fontWeight: FontWeight.w400,
-//               color: snow,
-//               fontFamily: 'SFDisplay',
-//               shadows: <Shadow>[
-//                 Shadow(
-//                   offset: Offset(0, 0),
-//                   blurRadius: 8.0,
-//                   color: jetBlack80,
-//                 ),
-//               ]),
-//           maxLines: 1,
-//         ),
-//         // trainerSubHeader(),
-//       ]);
-
-// }
-
-// //Follow Button
-// Widget followButton() {
-//   return ClipRRect(
-//     borderRadius: BorderRadius.circular(20),
-//     child: BackdropFilter(
-//       filter: new ImageFilter.blur(
-//         sigmaX: 1,
-//         sigmaY: 1,
-//       ),
-//       child: Container(
-//         alignment: Alignment.center,
-//         height: 34,
-//         width: 90,
-//         decoration: BoxDecoration(
-//             color: shark40,
-//             border: Border.all(color: shark60),
-//             borderRadius: BorderRadius.circular(20)),
-//         child: Text(
-//           'Follow',
-//           style: TextStyle(
-//               color: snow,
-//               fontFamily: 'SFDisplay',
-//               fontSize: 13.0,
-//               fontWeight: FontWeight.w600),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-
-// //Follow Button
-// Widget followingButton() {
-//   return Container(
-//     alignment: Alignment.center,
-//     height: 34,
-//     width: 90,
-//     decoration: BoxDecoration(
-//         color: strawberry, borderRadius: BorderRadius.circular(20)),
-//     child: Text(
-//       'Following',
-//       style: TextStyle(
-//           color: snow,
-//           fontFamily: 'SFDisplay',
-//           fontSize: 13.0,
-//           fontWeight: FontWeight.w600),
-//     ),
-//   );
-// }

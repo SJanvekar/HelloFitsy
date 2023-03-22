@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/components/categorySelect_bloc.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
@@ -265,7 +266,7 @@ class _CategorySelectionState extends State<CategorySelection> {
       if (val.data['success']) {
         print('Successful user add');
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MainPage()));
+            .push(MaterialPageRoute(builder: (context) => HomeTest()));
       } else {
         print("MEGASS ERROR KEK: ${val.data}");
       }

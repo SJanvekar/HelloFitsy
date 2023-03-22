@@ -1,10 +1,21 @@
 import 'package:dio/dio.dart';
 import 'package:balance/constants.dart';
 
-import '../../../feModels/userModel.dart';
-
 class UserRequests {
   Dio dio = new Dio();
+
+  updateUserInformation(
+      String firstName, String lastName, String userName) async {
+    try {
+      return await dio.put('http://localhost:8888/updateUserInfo', data: {
+        "FirstName": firstName,
+        "LastName": lastName,
+        "Username": userName,
+      });
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 
   getUserFollowing(String username) async {
     try {
