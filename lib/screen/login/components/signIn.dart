@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/userModel.dart';
@@ -172,15 +173,17 @@ class _SignInState extends State<SignIn> {
   void onSubmitSignInField() {
     AuthService().signIn(account, password).then((val) {
       if (val.data['success']) {
+        print('successful sign in');
         token = val.data['token'];
-        print(token);
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeTest()));
-        AuthService().getUserInfo(token).then((val) async {
+        AuthService().getUserInfo(token, account).then((val) async {
           final sharedPrefs = await SharedPreferences.getInstance();
           if (val.data['success']) {
             print('successful get info');
-            final String encodedCategories = val.data['categories'].encode;
+            // final String encodedCategories = val.data['categories'].encode;
+            final String encodedCategories =
+                json.encode(val.data['categories']);
             sharedPrefs.setString('userType', val.data['userType']);
             sharedPrefs.setString(
                 'profileImageURL', val.data['profileImageURL']);
@@ -189,7 +192,8 @@ class _SignInState extends State<SignIn> {
             sharedPrefs.setString('lastName', val.data['lastName']);
             sharedPrefs.setString('userEmail', val.data['userEmail']);
             sharedPrefs.setString('categories', encodedCategories);
-            print(sharedPrefs.getString('userType'));
+          } else {
+            print('error get info');
           }
         });
       }

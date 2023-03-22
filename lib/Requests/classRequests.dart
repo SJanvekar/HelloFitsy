@@ -32,8 +32,7 @@ class ClassRequests {
     }
   }
 
-  getClass(String classTrainer) async {
-    print("Running getClass");
+  getClass(List<dynamic> classTrainer) async {
     try {
       return await dio.get(
         'http://localhost:8888/getClasses',

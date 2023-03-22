@@ -27,5 +27,7 @@ router.post('/testing', classController.testing)
 router.get('/getinfo', userController.getinfo)
 //Get information for a new class
 router.get('/getClasses', classController.getClasses)
+//Get current user's following list
+router.get('/getUserFollowing', userController.getUserFollowing)
 
 module.exports = router

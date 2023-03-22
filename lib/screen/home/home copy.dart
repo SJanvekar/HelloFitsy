@@ -1,4 +1,5 @@
 import 'package:balance/Requests/classRequests.dart';
+import 'package:balance/Requests/userRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/upcomingClassesItem.dart';
@@ -28,33 +29,48 @@ class _HomeTestState extends State<HomeTest> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   String profileImageUrl = "";
   List<Class> allClasses = [];
+  String? username;
 
   //----------
   @override
   void initState() {
     super.initState();
     getUserProfilePictures();
-    getClassFeed();
+    getUserFollowing();
+    // getClassFeed();
   }
 
   void getUserProfilePictures() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
-    if (profilePictureNullCheck != null) {
-      profileImageUrl = sharedPrefs.getString('profileImageURL')!;
-    }
+    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? "";
   }
 
-  void getClassFeed() async {
-    ClassRequests().getClass("will").then((val) async {
+  void getUserFollowing() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    UserRequests()
+        .getUserFollowing(sharedPrefs.getString('userName') ?? "")
+        .then((val) async {
       if (val.data['success']) {
-        print('successful get classes');
+        print('successful get following list');
+        getClassFeed(val.data['following']);
+      }
+    });
+  }
+
+  void getClassFeed(List<dynamic> followingList) async {
+    ClassRequests().getClass(followingList).then((val) async {
+      //get logged in user's following list
+
+      if (val.data['success']) {
+        print('successful get class feed');
         //Response represents a list of classes
         List<dynamic> receivedJSON = val.data['classArray'];
         //TODO: Theoretically, you should be able to foreach and get list of classes
         //Hardcoded first item for now, since we're only getting one class
         allClasses.add(Class.fromJson(receivedJSON[0]));
         print(allClasses[0].classDescription);
+      } else {
+        print('error get class feed');
       }
     });
   }
