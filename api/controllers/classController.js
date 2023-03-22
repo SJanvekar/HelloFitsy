@@ -42,13 +42,10 @@ var functions = {
     getClasses: function (req, res) {
         const classPromiseAsync = (responseJSON) => {
             return new Promise((resolve, reject) => {
-                // console.log(classArray)
                 let responseString = JSON.stringify(responseJSON)
                 var classArray = Class()
                 classArray = JSON.parse(responseString)
                 if (classArray) {
-                    console.log(classArray[0])
-                    console.log(classArray[0].ClassDescription)
                     resolve(classArray)
                 } else {
                     reject(new Error('getClasses returned null'))
@@ -58,12 +55,13 @@ var functions = {
         if  ((!req.query.ClassTrainer)) { //TODO: Check aganist empty and null query parameters, also apply to similar checks
             res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
         }
-        Class.find({ClassTrainer: req.query.ClassTrainer}, function (err, classArray) {
+        Class.find({ClassTrainer: {$in:req.query.ClassTrainer}}, function (err, classArray) {
             if (err) {
                 console.log(err)
                 return res.json({success: false, body: err})
             } else {
                 return classPromiseAsync(classArray).then(parsedResponse => 
+                    //RESPONSE string is an array of classes
                     res.json({success: true, 
                         classArray: parsedResponse,
                     }))

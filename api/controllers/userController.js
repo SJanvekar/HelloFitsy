@@ -32,7 +32,6 @@ var functions = {
             await newUser.save(function (err, newUser){
                 if(err){
                     // print('failure');
-                    console.log("FUCKKKKKKKKKKKK")
                     console.error(err)
                     res.send({success: false, msg: "Didnt work bithc"})
                 }
@@ -73,7 +72,6 @@ var functions = {
         const userPromiseAsync = (responseJSON) => {
             return new Promise((resolve, reject) => {
                 let responseString = JSON.stringify(responseJSON)
-                //TODO: Look into deleting user
                 var user = User()
                 user = JSON.parse(responseString)
                 //TODO: Confirm this is actually checking for null
@@ -87,7 +85,9 @@ var functions = {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = jwt.decode(token, config.secret)
-            User.findOne({UserID: decodedtoken.UserID}, function (err, user) {
+            //TODO: TALK TO SALMAN ABOUT THIS: SCHEMA UNIQUE IS NOT UNIQUE
+            User.findOne({UserID: decodedtoken.UserID, $or:
+                [{ Username: req.query.Account}, {UserEmail: req.query.Account}]}, function (err, user) {
                 if (err) {
                     console.log(err)
                     return res.json({success: false, body: err})
@@ -107,33 +107,27 @@ var functions = {
                             followers: parsedResponse.Followers}))
                 }
             })
-            // return res.json(decodedtoken.UserID);
-            // return res.json({success: true, msg: 'Found ' + decodedtoken.UserType + ' ' + decodedtoken.FirstName })
         } else {
             return res.json({success: false, msg: 'No Headers'})
         }
     },
 
-    //Update user info
-    updateinfo: function (req, res) {
-        if((!req.body.Username)){
-            res.json({success: false, msg: 'Missing Username'})
+    // Get User Following list
+    getUserFollowing: function (req, res) {
+        if ((!req.query.Username)) {
+            res.json({success: false, msg: 'Missing query parameter Username'});
         }
-        else {
-            const options = { upsert: false };
-            var myquery = { Username: req.body.Username};
-            var newvalues = { $set: { 
-                FirstName: req.body.FirstName,
-                LastName: req.body.LastName,
-                Username: req.body.Username,
-
-            } };
-        
-       const result = User.updateOne(myquery, newvalues, options);
-        
-
-        }
-    }
+        User.findOne({Username: req.query.Username}, 'Following', function (err, response) {
+            if (err) {
+                console.log(err)
+                return res.json({success: false, body: err})
+            } else {
+                return res.json({success: true, 
+                        following: response.Following
+                    })
+            }
+        })
+    },
 }
 
 module.exports = functions

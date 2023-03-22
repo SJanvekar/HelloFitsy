@@ -7,7 +7,7 @@ class AuthService {
 
   signIn(account, password) async {
     try {
-      return await dio.post('http://www.fitsy.ca/authenticate',
+      return await dio.post('http://localhost:8888/authenticate',
           data: {
             "Username": account,
             "Password": password,
@@ -18,11 +18,12 @@ class AuthService {
     }
   }
 
-  getUserInfo(token) async {
+  getUserInfo(token, account) async {
     dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       return await dio.get(
-        'http://www.fitsy.ca/getinfo',
+        'http://localhost:8888/getinfo',
+        queryParameters: {"Account": account},
       );
     } on DioError catch (e) {
       print(e);
@@ -31,7 +32,7 @@ class AuthService {
 
   signUp(User userModel) async {
     try {
-      return await dio.post('http://www.fitsy.ca/adduser',
+      return await dio.post('http://localhost:8888/adduser',
           data: {
             "ProfileImageURL": userModel.profileImageURL,
             "UserType": userModel.userType.name,

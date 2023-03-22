@@ -58,6 +58,7 @@ class Class {
     required this.classTrainerUsername,
   });
 
+  //JSON parsers are required to parse arrays of JSON
   Class.fromJson(Map<String, dynamic> json)
       : className = json['ClassName'],
         classImageUrl = json['ClassImageUrl'],
@@ -88,6 +89,7 @@ class Class {
       };
 }
 
+//Semi-hardcoded casting from String to ClassType, not optimal but the best I can think of right now
 ClassType stringToClassType(String string) {
   switch (string) {
     case "Solo":
