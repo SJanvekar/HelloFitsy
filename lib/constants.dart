@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-const String urlDomain = 'http://localhost:8888';
+const String urlDomain = 'http://www.fitsy.ca';
 
 //-----------NEW--------------------//
 
