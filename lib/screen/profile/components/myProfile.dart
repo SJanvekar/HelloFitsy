@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'dart:ui';
+import 'package:balance/Requests/userRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/categories.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
@@ -9,6 +10,7 @@ import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCard.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,6 +40,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
   String userFullName = "";
   String userFirstName = "";
   String userLastName = "";
+  String userBio = "";
 
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
@@ -73,6 +76,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
     userName = sharedPrefs.getString('userName') ?? '';
     userFirstName = sharedPrefs.getString('firstName') ?? '';
     userLastName = sharedPrefs.getString('lastName') ?? '';
+    userBio = sharedPrefs.getString('userBio') ?? '';
     userFullName = '${userFirstName}' + ' ' + '${userLastName}';
     getSet2UserDetails();
     checkInterests();
@@ -399,6 +403,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
 
                     final TextEditingController _bioController =
                         new TextEditingController();
+                    _bioController.text = userBio;
 
                     //Cupertino Modal Pop-up - Profile Edit
                     showCupertinoModalPopup(
@@ -407,6 +412,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         context: context,
                         builder: (BuildContext builder) {
                           File? newProfileImage;
+                          String? newProfileImageURL;
                           String? newFirstName;
                           String? newLastName;
                           String? newUserName;
@@ -436,6 +442,32 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                   });
                                 } on PlatformException catch (e) {
                                   print('Failed to pick image $e');
+                                }
+                              }
+
+                              Future uploadImage() async {
+                                if (newProfileImage == null) return;
+
+                                try {
+                                  //Storage Reference
+                                  final firebaseStorage =
+                                      FirebaseStorage.instance.ref();
+
+                                  //Create a reference to image
+                                  // print(profilePictureImage!.path);
+                                  final profilePictureRef = firebaseStorage
+                                      .child(newProfileImage!.path);
+
+                                  //Upload file. FILE MUST EXIST
+                                  await profilePictureRef
+                                      .putFile(newProfileImage!);
+
+                                  final imageURL =
+                                      await profilePictureRef.getDownloadURL();
+
+                                  newProfileImageURL = imageURL;
+                                } catch (e) {
+                                  print("Error: $e");
                                 }
                               }
 
@@ -619,15 +651,48 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                         ),
                                         TextButton(
                                           onPressed: () {
+                                            newProfileImageURL ??=
+                                                profileImageUrl;
                                             newFirstName ??= userFirstName;
                                             newLastName ??= userLastName;
                                             newUserName ??= userName;
-                                            print(newFirstName);
-                                            print(newLastName);
-                                            print(newUserName);
+                                            newBio ??= userBio;
+                                            print(newProfileImageURL);
+                                            UserRequests()
+                                                .updateUserInformation(
+                                                    newProfileImageURL,
+                                                    userName,
+                                                    newFirstName,
+                                                    newLastName,
+                                                    newUserName,
+                                                    newBio)
+                                                .then((val) async {
+                                              if (val.data['success']) {
+                                                final sharedPrefs =
+                                                    await SharedPreferences
+                                                        .getInstance();
+                                                print('successful update user');
+                                                sharedPrefs.setString(
+                                                    'userName', newUserName!);
+                                                sharedPrefs.setString(
+                                                    'firstName', newFirstName!);
+                                                sharedPrefs.setString(
+                                                    'lastName', newLastName!);
+                                                sharedPrefs.setString(
+                                                    'userBio', newBio!);
+                                              } else {
+                                                if (val.data['errorCode'] ==
+                                                    duplicateKeycode) {
+                                                  print(
+                                                      'Unable to edit info, duplicate username');
+                                                }
+                                              }
+                                            });
                                             print("Save");
-
                                             Navigator.of(context).pop();
+                                            getUserDetails();
+                                            getSet2UserDetails();
+                                            setState(() {});
                                           },
                                           child: Text("Done",
                                               style: doneTextButton),
@@ -771,9 +836,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
               Padding(
                 padding:
                     const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
-                child: Text(
-                    "I've been looking for a boxing trainer the last few weeks and really want to get started with the right trainer! My hobbies include tennis, soccer, golf, and general working out.",
-                    style: profileBodyTextFont),
+                child: Text(userBio, style: profileBodyTextFont),
               ),
             ]),
             MultiSliver(children: [
