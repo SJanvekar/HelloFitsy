@@ -23,7 +23,7 @@ class AuthService {
     dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       return await dio.get(
-        'http://localhost:8888/getinfo',
+        '$urlDomain/getinfo',
         queryParameters: {"Account": account},
       );
     } on DioError catch (e) {

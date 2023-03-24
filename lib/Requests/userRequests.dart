@@ -7,7 +7,7 @@ class UserRequests {
   updateUserInformation(
       String firstName, String lastName, String userName) async {
     try {
-      return await dio.put('http://localhost:8888/updateUserInfo', data: {
+      return await dio.put('$urlDomain/updateUserInfo', data: {
         "FirstName": firstName,
         "LastName": lastName,
         "Username": userName,
