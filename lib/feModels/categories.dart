@@ -9,7 +9,8 @@ class Category {
       required this.categoryLiked});
 }
 
-List<Category> myInterests = [];
+List<Category> Interests = [];
+List<Category> trainerInterests = [];
 
 List<Category> categoriesList = [
   Category(

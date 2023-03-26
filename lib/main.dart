@@ -5,6 +5,7 @@ import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
+import 'package:balance/screen/profile/components/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -39,7 +40,7 @@ class FITSY extends StatelessWidget {
       //Place comment on what the changes were if changed for testing purposes
       //Example:
       //Login(); -> HomeTest();
-      home: Login(),
+      home: UserProfile(),
     );
   }
 }
