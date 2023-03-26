@@ -1,12 +1,15 @@
 import 'dart:ui';
-
 import 'package:balance/constants.dart';
-import 'package:balance/sharedWidgets/categories/categorySmall.dart';
+import 'package:balance/screen/home/components/profileClassCard.dart';
 import 'package:balance/sharedWidgets/unfollowDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sliver_tools/sliver_tools.dart';
+
+import '../../../feModels/categories.dart';
+import '../../../feModels/classModel.dart';
+import '../../../sharedWidgets/categories/categorySmall.dart';
 
 class UserProfile extends StatefulWidget {
   UserProfile({
@@ -19,11 +22,11 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   //User details:
-  String profileImageUrl = "";
-  String userName = "";
-  String userFullName = "";
-  String userFirstName = "";
-  String userLastName = "";
+  // String profileImageUrl = "";
+  // String userName = "";
+  // String userFullName = "";
+  // String userFirstName = "";
+  // String userLastName = "";
 
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
@@ -33,11 +36,23 @@ class _UserProfileState extends State<UserProfile> {
   Brightness statusBarTheme = Brightness.dark;
   bool isFollowing = false;
 
+  //Interests Lists
+  //A list contained within the Category model which holds the trainers' interests (since this list contains the category information)
+  List<Category> trainerInterestsFinal = trainerInterests;
+  //Original list of all category (interest) items ~ this contains the Category name and image
+  List<Category> interests = categoriesList;
+  //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info
+  var userInterests = ['Tennis', 'Boxing'];
+
+  //Class list
+  List<Class> trainerClasses = classList;
 //----------
   @override
   void initState() {
     super.initState();
-    // getUserDetails();
+
+    //Checks the trainer interests and creates a list from the categories models
+    checkInterests();
 
     _scrollController = ScrollController()
       ..addListener(() {
@@ -51,34 +66,15 @@ class _UserProfileState extends State<UserProfile> {
       });
   }
 
-//----------
-  // void getUserDetails() async {
-  //   final sharedPrefs = await SharedPreferences.getInstance();
-  //   var userNameNullCheck = sharedPrefs.getString('userName');
-  //   var userFirstNameNullCheck = sharedPrefs.getString('firstName');
-  //   var userLastNameNullCheck = sharedPrefs.getString('lastName');
-  //   if (userNameNullCheck != null) {
-  //     userName = sharedPrefs.getString('userName')!;
-  //   }
-  //   if (userFirstNameNullCheck != null && userLastNameNullCheck != null) {
-  //     userFirstName = sharedPrefs.getString('firstName')!;
-  //     userLastName = sharedPrefs.getString('lastName')!;
-  //     userFullName = '${sharedPrefs.getString('firstName')!}' +
-  //         ' '
-  //             '${sharedPrefs.getString('lastName')!}';
-  //   }
-  //   getSet2UserDetails();
-  //   setState(() {});
-  // }
-
-  // void getSet2UserDetails() async {
-  //   final sharedPrefs = await SharedPreferences.getInstance();
-  //   var profilePictureNullCheck = sharedPrefs.getString('profileImageURL');
-  //   if (profilePictureNullCheck != null) {
-  //     profileImageUrl = sharedPrefs.getString('profileImageURL')!;
-  //   }
-  //   print(profileImageUrl);
-  // }
+  //----------
+  void checkInterests() {
+    //Checks for categories that match the trainers' interests and populates trainerInterestsFinal
+    interests.forEach((interestsItem) {
+      if (userInterests.contains(interestsItem.categoryName)) {
+        trainerInterestsFinal.add(interestsItem);
+      }
+    });
+  }
 
 //----------
   bool get _isSliverAppBarExpanded {
@@ -102,7 +98,8 @@ class _UserProfileState extends State<UserProfile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            userFullName,
+            // userFullName
+            'Salman Janvekar',
             style: TextStyle(
                 fontSize: 26,
                 fontFamily: 'SFDisplay',
@@ -118,7 +115,8 @@ class _UserProfileState extends State<UserProfile> {
             maxLines: 1,
           ),
           Text(
-            '@' + userName,
+            '@salmanjanvekar',
+            // userName,
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
@@ -137,6 +135,7 @@ class _UserProfileState extends State<UserProfile> {
         ]);
   }
 
+  //Follow button ~ State 0
   Widget followButton() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
@@ -166,7 +165,7 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
-//Follow Button
+//Follow Button ~ state 1 (Following)
   Widget followingButton() {
     return Container(
       alignment: Alignment.center,
@@ -204,7 +203,8 @@ class _UserProfileState extends State<UserProfile> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Text(
-              'Chat with ' + userFirstName,
+              'Chat with Salman',
+              // userFirstName,
               style: TextStyle(
                   color: snow,
                   fontFamily: 'SFDisplay',
@@ -294,7 +294,7 @@ class _UserProfileState extends State<UserProfile> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              '',
+                              'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/private%2Fvar%2Fmobile%2FContainers%2FData%2FApplication%2FC30AF58C-8871-4EF9-92C2-D3FA41E5A4B7%2Ftmp%2Fimage_picker_4C4728D4-1416-4F73-BA34-0E3C86ABBFDD-2819-0000024C398674C2.jpg?alt=media&token=1299217a-1d3e-48cf-9180-f28a1e8c58f6',
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -366,7 +366,8 @@ class _UserProfileState extends State<UserProfile> {
                                                           context) {
                                                         return CustomDialogBox(
                                                             trainerName:
-                                                                userFullName,
+                                                                'Salman',
+                                                            // userFullName,
                                                             trainerImg: '');
                                                       })
                                                 }
@@ -390,7 +391,8 @@ class _UserProfileState extends State<UserProfile> {
                 expandedTitleScale: 1,
                 centerTitle: false,
               ),
-              title: Text(userFullName,
+              title: Text('Salman Janvekar',
+                  // userFullName,
                   style: TextStyle(
                       color: _textColor,
                       fontFamily: 'SFDisplay',
@@ -424,119 +426,159 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ],
             ),
-            SliverList(
-                delegate: SliverChildListDelegate([
-              Padding(
+
+            // About Trainer
+            MultiSliver(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
+                  child: Text(
+                    'About Salman',
+                    // ${userFirstName}',
+                    style: sectionTitles,
+                  ),
+                ),
+
+                //Trainer Rating Average + Location
+                Padding(
                   padding:
-                      const EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                      const EdgeInsets.only(top: 10.0, left: 26.0, right: 26.0),
+                  child: Row(
                     children: [
-                      Text(
-                        'About ${userFirstName}',
-                        style: sectionTitles,
+                      SvgPicture.asset(
+                        'assets/icons/generalIcons/star.svg',
+                        color: sunflower,
+                        height: 17.5,
+                        width: 17.5,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
-                        child: Row(
-                          children: [
-                            SvgPicture.asset(
-                              'assets/icons/generalIcons/star.svg',
-                              color: sunflower,
-                              height: 17.5,
-                              width: 17.5,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                left: 5.0,
-                              ),
-                              child: Text(
-                                '4.5',
-                                style: TextStyle(
-                                    color: jetBlack,
-                                    fontFamily: 'SFRounded',
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 4.0, right: 4.0),
-                              child: ClipOval(
-                                child: Container(
-                                  height: 2,
-                                  width: 2,
-                                  color: jetBlack,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'Toronto, Ontario, Canada',
-                              style: TextStyle(
-                                  color: jetBlack,
-                                  fontFamily: 'SFDisplay',
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
+                        padding: const EdgeInsets.only(
+                          left: 5.0,
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
                         child: Text(
-                          'Roger Federer holds several ATP records and is considered to be one of the greatest tennis players of all time. The Swiss player has proved his dominance on court with 20 Grand Slam titles and 103 career ATP titles. In 2003, he founded the Roger Federer Foundation, which is dedicated to providing education programs for children living in poverty in Africa and Switzerland',
+                          '4.5',
                           style: TextStyle(
-                              color: jetBlack60,
-                              fontFamily: 'SFDisplay',
+                              color: jetBlack,
+                              fontFamily: 'SFRounded',
                               fontSize: 14.0,
-                              fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w800),
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 25.0),
-                        child: Text(
-                          "${userFirstName}'s specialties",
-                          style: sectionTitles,
+                        padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+                        child: ClipOval(
+                          child: Container(
+                            height: 2,
+                            width: 2,
+                            color: jetBlack,
+                          ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10.0),
+                      Text(
+                        'Toronto, Ontario, Canada',
+                        style: TextStyle(
+                            color: jetBlack,
+                            fontFamily: 'SFDisplay',
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w500),
                       )
                     ],
-                  )),
+                  ),
+                ),
+
+                // Trainer Bio
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
+                  child: Text(
+                    'Roger Federer holds several ATP records and is considered to be one of the greatest tennis players of all time. The Swiss player has proved his dominance on court with 20 Grand Slam titles and 103 career ATP titles. In 2003, he founded the Roger Federer Foundation, which is dedicated to providing education programs for children living in poverty in Africa and Switzerland',
+                    style: TextStyle(
+                        color: jetBlack60,
+                        fontFamily: 'SFDisplay',
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400),
+                  ),
+                ),
+              ],
+            ),
+
+            //Trainer Interests (Specialities)
+            MultiSliver(children: [
               Padding(
-                padding: const EdgeInsets.only(top: 2, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack80,
-                  height: 200,
+                padding: const EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                child: Text(
+                  "Salman's Specialities",
+                  style: sectionTitles,
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack60,
-                  height: 200,
+              SliverToBoxAdapter(
+                child: Center(
+                  child: SizedBox(
+                    height: 84,
+                    child: ListView.builder(
+                      primary: false,
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(left: 13, right: 13),
+                      itemCount: trainerInterestsFinal.length,
+                      itemBuilder: (context, index) {
+                        final _likedInterests = trainerInterestsFinal[index];
+                        return CategorySmall(
+                          categoryImage: _likedInterests.categoryImage,
+                          categoryName: _likedInterests.categoryName,
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
+            ]),
+
+            //Trainer Classes
+            MultiSliver(children: [
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack40,
-                  height: 200,
+                padding: const EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                child: Text(
+                  "Train with Salman",
+                  style: sectionTitles,
                 ),
               ),
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
-                child: Container(
-                  color: jetBlack20,
-                  height: 200,
+              SliverToBoxAdapter(
+                child: Center(
+                  child: SizedBox(
+                    height: 500,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.only(left: 13, right: 13),
+                      itemCount: trainerClasses.length,
+                      itemBuilder: (context, index) {
+                        final trainerClassInfo = trainerClasses[index];
+                        return ProfileClassCard(
+                          classTrainer: trainerClassInfo.classTrainer,
+                          userName: trainerClassInfo.classTrainerUsername,
+                          className: trainerClassInfo.className,
+                          classType: trainerClassInfo.classType,
+                          classLocation: trainerClassInfo.classLocation,
+                          classPrice: trainerClassInfo.classPrice,
+                          classLiked: trainerClassInfo.classLiked,
+                          classImage: trainerClassInfo.classImageUrl,
+                          trainerImageUrl: trainerClassInfo.trainerImageUrl,
+                          classDescription: trainerClassInfo.classDescription,
+                          classRating: trainerClassInfo.classRating,
+                          classReviews: trainerClassInfo.classReview,
+                          trainerFirstName:
+                              trainerClassInfo.classTrainerFirstName,
+                          classWhatToExpect: trainerClassInfo.classWhatToExpect,
+                          classWhatYouWillNeed:
+                              trainerClassInfo.classUserRequirements,
+                        );
+                      },
+                    ),
+                  ),
                 ),
               ),
-            ])),
+            ]),
           ]),
     );
   }

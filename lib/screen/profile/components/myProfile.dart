@@ -30,7 +30,7 @@ class PersonalProfile extends StatefulWidget {
 }
 
 List<Category> interests = categoriesList;
-List<Category> myInterestsFinal = myInterests;
+List<Category> myInterestsFinal = Interests;
 List<Class> savedClassesList = classList;
 
 class _PersonalProfileState extends State<PersonalProfile> {
