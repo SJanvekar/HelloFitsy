@@ -131,7 +131,7 @@ var functions = {
     // Get User Following list
     updateUserinfo: function (req, res) {
         User.findOneAndUpdate({'Username': req.body.OldUsername}, {$set: {'FirstName' : req.body.FirstName, 
-        'LastName' : req.body.LastName, 'Username' : req.body.NewUsername, 'UserBio' : req.body.UserBio, 'ProfileImageURL': req.body.newProfileImageURL}}, 
+        'LastName' : req.body.LastName, 'Username' : req.body.NewUsername, 'UserBio' : req.body.UserBio, 'ProfileImageURL': req.body.ProfileImageURL}}, 
             function (err, response) {
             if (err) {
                 console.log(err)

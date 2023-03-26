@@ -651,6 +651,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                         ),
                                         TextButton(
                                           onPressed: () {
+                                            //TODO: Wrap next async in then statement, see if that fixes async concurrency issue
+                                            uploadImage();
                                             newProfileImageURL ??=
                                                 profileImageUrl;
                                             newFirstName ??= userFirstName;
