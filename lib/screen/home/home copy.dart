@@ -69,7 +69,6 @@ class _HomeTestState extends State<HomeTest> {
         //TODO: Theoretically, you should be able to foreach and get list of classes
         //Hardcoded first item for now, since we're only getting one class
         allClasses.add(Class.fromJson(receivedJSON[0]));
-        print(allClasses[0].classDescription);
       } else {
         print('error get class feed');
       }

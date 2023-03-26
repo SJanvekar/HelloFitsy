@@ -85,7 +85,6 @@ var functions = {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = jwt.decode(token, config.secret)
-            //TODO: TALK TO SALMAN ABOUT THIS: SCHEMA UNIQUE IS NOT UNIQUE
             User.findOne({UserID: decodedtoken.UserID, $or:
                 [{ Username: req.query.Account}, {UserEmail: req.query.Account}]}, function (err, user) {
                 if (err) {
@@ -124,6 +123,21 @@ var functions = {
             } else {
                 return res.json({success: true, 
                         following: response.Following
+                    })
+            }
+        })
+    },
+
+    // Get User Following list
+    updateUserinfo: function (req, res) {
+        User.findOneAndUpdate({'Username': req.body.OldUsername}, {$set: {'FirstName' : req.body.FirstName, 
+        'LastName' : req.body.LastName, 'Username' : req.body.NewUsername, 'UserBio' : req.body.UserBio, 'ProfileImageURL': req.body.ProfileImageURL}}, 
+            function (err, response) {
+            if (err) {
+                console.log(err)
+                return res.json({success: false, errorCode: err.code})
+            } else {
+                return res.json({success: true
                     })
             }
         })

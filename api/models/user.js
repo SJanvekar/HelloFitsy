@@ -54,7 +54,6 @@ var UserSchema = new Schema({
     LastName: {
         type: String,
         required: true
-
     },
     
     //Username
@@ -64,6 +63,12 @@ var UserSchema = new Schema({
         unique: true,
         lowercase: true,
         index: true
+    },
+
+    //User Bio
+    UserBio: {
+        type: String,
+        required: false
     },
 
     //Unique User Email

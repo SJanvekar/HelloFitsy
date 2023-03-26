@@ -9,6 +9,7 @@ class User {
   String firstName;
   String lastName;
   String userName;
+  late String? userBio;
   String userEmail;
   String password;
   late List<String> categories;

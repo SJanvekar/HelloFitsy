@@ -5,12 +5,20 @@ class UserRequests {
   Dio dio = new Dio();
 
   updateUserInformation(
-      String firstName, String lastName, String userName) async {
+      String? profileImageURL,
+      String? oldUsername,
+      String? firstName,
+      String? lastName,
+      String? newUserName,
+      String? bio) async {
     try {
       return await dio.put('$urlDomain/updateUserInfo', data: {
+        "OldUsername": oldUsername,
+        "ProfileImageURL": profileImageURL,
         "FirstName": firstName,
         "LastName": lastName,
-        "Username": userName,
+        "NewUsername": newUserName,
+        "UserBio": bio,
       });
     } on DioError catch (e) {
       print(e);
