@@ -42,7 +42,7 @@ class _UserProfileState extends State<UserProfile> {
   //Original list of all category (interest) items ~ this contains the Category name and image
   List<Category> interests = categoriesList;
   //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info
-  var userInterests = ['Tennis'];
+  var userInterests = ['Tennis', 'Boxing'];
 
   //Class list
   List<Class> trainerClasses = classList;
@@ -68,14 +68,12 @@ class _UserProfileState extends State<UserProfile> {
 
   //----------
   void checkInterests() {
-    //Loops through all cateogiries
-    for (var i = 0; i < interests.length; i++) {
-      //Can we condense this? ~ Checks if the category name is in the retrieved list and adds it to the trainer interest list
-      if (userInterests.contains(interests[i].categoryName)) {
-        trainerInterestsFinal.add(interests[i]);
+    //Checks for categories that match the trainers' interests and populates trainerInterestsFinal
+    interests.forEach((interestsItem) {
+      if (userInterests.contains(interestsItem.categoryName)) {
+        trainerInterestsFinal.add(interestsItem);
       }
-    }
-    ;
+    });
   }
 
 //----------
