@@ -32,14 +32,14 @@ var ClassSchema = new Schema({
         required: true
     },
 
-      //Class What to expect
-      ClassWhatToExpect: {
+    //Class What to expect
+    ClassWhatToExpect: {
         type: String,
         required: true
     },
 
-      //Class User Requirements
-      ClassUserRequirements: {
+    //Class User Requirements
+    ClassUserRequirements: {
         type: String,
         required: true
     },
@@ -90,19 +90,30 @@ var ClassSchema = new Schema({
         required: true,
     },
 
-    ClassLiked: {
-        type: Boolean,
-        required: true,
-        default: false
-    },
-
     //Categories (Linked)
     Categories: [{
         type: String,
         required: false,
     }],
-    
 
+    //Trainer Profile Image URL
+    TrainerImageUrl: {
+        type: String,
+        required: false
+
+    },
+    
+    //Trainer First Name
+    TrainerFirstName: {
+        type: String,
+        required: true
+    },
+
+    //Last Name
+    TrainerLastName: {
+        type: String,
+        required: true
+    },
 })
 
 module.exports = mongoose.model('Class', ClassSchema)

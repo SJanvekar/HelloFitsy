@@ -556,7 +556,7 @@ class _UserProfileState extends State<UserProfile> {
                         final trainerClassInfo = trainerClasses[index];
                         return ProfileClassCard(
                           classTrainer: trainerClassInfo.classTrainer,
-                          userName: trainerClassInfo.classTrainerUsername,
+                          userName: trainerClassInfo.trainerUsername,
                           className: trainerClassInfo.className,
                           classType: trainerClassInfo.classType,
                           classLocation: trainerClassInfo.classLocation,
@@ -567,8 +567,7 @@ class _UserProfileState extends State<UserProfile> {
                           classDescription: trainerClassInfo.classDescription,
                           classRating: trainerClassInfo.classRating,
                           classReviews: trainerClassInfo.classReview,
-                          trainerFirstName:
-                              trainerClassInfo.classTrainerFirstName,
+                          trainerFirstName: trainerClassInfo.trainerFirstName,
                           classWhatToExpect: trainerClassInfo.classWhatToExpect,
                           classWhatYouWillNeed:
                               trainerClassInfo.classUserRequirements,
