@@ -25,8 +25,8 @@ class ClassCardOpen extends StatefulWidget {
   ClassCardOpen({
     Key? key,
     required this.classTrainer,
-    required this.classTrainerFirstName,
-    required this.classTrainerUserName,
+    required this.trainerFirstName,
+    required this.trainerUsername,
     required this.className,
     required this.classType,
     required this.classLocation,
@@ -42,8 +42,8 @@ class ClassCardOpen extends StatefulWidget {
   }) : super(key: key);
 
   String classTrainer;
-  String classTrainerFirstName;
-  String classTrainerUserName;
+  String trainerFirstName;
+  String trainerUsername;
   String className;
   String classType;
   String classLocation;
@@ -105,9 +105,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             profileImageRadius: 20,
             userFullName: widget.classTrainer,
             userFullNameFontSize: 16,
-            userName: widget.classTrainerUserName,
+            userName: widget.trainerUsername,
             userNameFontSize: 13,
-            userFirstName: widget.classTrainerFirstName,
+            userFirstName: widget.trainerFirstName,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 26),
@@ -372,9 +372,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           profileImageRadius: 25,
           userFullName: widget.classTrainer,
           userFullNameFontSize: 16,
-          userName: widget.classTrainerUserName,
+          userName: widget.trainerUsername,
           userNameFontSize: 13,
-          userFirstName: widget.classTrainerFirstName,
+          userFirstName: widget.trainerFirstName,
         ),
 
         //Trainer Joined Date + Further Details

@@ -49,7 +49,7 @@ class _ClassListHomeState extends State<ClassListHome> {
                   classRating: classItem.classRating,
                   classReviews: classItem.classReview,
                   trainerImageUrl: classItem.trainerImageUrl,
-                  trainerFirstName: classItem.classTrainerFirstName,
+                  trainerFirstName: classItem.trainerFirstName,
                 );
               })
         ],

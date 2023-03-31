@@ -930,7 +930,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                           classImageUrl: _savedClasses.classImageUrl,
                           buttonBookOrRebookText: 'Book',
                           classTitle: _savedClasses.className,
-                          classTrainer: _savedClasses.classTrainerFirstName,
+                          classTrainer: _savedClasses.trainerFirstName,
                           classTrainerImageUrl: _savedClasses.trainerImageUrl,
                         );
                       },
@@ -991,7 +991,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                             classImageUrl: _savedClasses.classImageUrl,
                             buttonBookOrRebookText: 'Book',
                             classTitle: _savedClasses.className,
-                            classTrainer: _savedClasses.classTrainerFirstName,
+                            classTrainer: _savedClasses.trainerFirstName,
                             classTrainerImageUrl: _savedClasses.trainerImageUrl,
                           );
                         }

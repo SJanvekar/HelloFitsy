@@ -26,8 +26,8 @@ class Class {
   int classReview;
   double classPrice;
   String classTrainer;
-  String classTrainerFirstName;
-  String classTrainerUsername;
+  String trainerFirstName;
+  String trainerUsername;
   bool classLiked;
   List<Schedule> classTimes;
   String trainerImageUrl;
@@ -50,8 +50,8 @@ class Class {
     //Trainer Info
     required this.classTrainer,
     required this.trainerImageUrl,
-    required this.classTrainerFirstName,
-    required this.classTrainerUsername,
+    required this.trainerFirstName,
+    required this.trainerUsername,
   });
 }
 
@@ -75,8 +75,8 @@ List<Class> classList = [
     classReview: 40,
     classPrice: 250,
     classTrainer: "Roger Federer",
-    classTrainerFirstName: 'Roger',
-    classTrainerUsername: 'realrogerfreder',
+    trainerFirstName: 'Roger',
+    trainerUsername: 'realrogerfreder',
     classLiked: true,
     classTimes: [],
     trainerImageUrl:
@@ -95,8 +95,8 @@ List<Class> classList = [
     classReview: 10,
     classPrice: 50,
     classTrainer: "David Goggins",
-    classTrainerFirstName: 'David',
-    classTrainerUsername: 'davidgoggins',
+    trainerFirstName: 'David',
+    trainerUsername: 'davidgoggins',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
@@ -115,8 +115,8 @@ List<Class> classList = [
     classReview: 40,
     classPrice: 600,
     classTrainer: "Conor McGregor",
-    classTrainerFirstName: 'Conor',
-    classTrainerUsername: 'thenotoriousmma',
+    trainerFirstName: 'Conor',
+    trainerUsername: 'thenotoriousmma',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
@@ -134,8 +134,8 @@ List<Class> classList = [
     classReview: 12,
     classPrice: 55,
     classTrainer: "King TTennis",
-    classTrainerFirstName: 'King',
-    classTrainerUsername: 'kttennis',
+    trainerFirstName: 'King',
+    trainerUsername: 'kttennis',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:
@@ -154,8 +154,8 @@ List<Class> classList = [
     classReview: 23,
     classPrice: 60,
     classTrainer: "Kimberly Wang",
-    classTrainerFirstName: 'Kimberly',
-    classTrainerUsername: 'kimwang',
+    trainerFirstName: 'Kimberly',
+    trainerUsername: 'kimwang',
     classLiked: true,
     classTimes: [],
     trainerImageUrl:
@@ -174,8 +174,8 @@ List<Class> classList = [
     classReview: 40,
     classPrice: 140,
     classTrainer: "Usain Bolt",
-    classTrainerFirstName: 'Usain',
-    classTrainerUsername: 'bolt',
+    trainerFirstName: 'Usain',
+    trainerUsername: 'bolt',
     classLiked: false,
     classTimes: [],
     trainerImageUrl: 'https://wallpapercave.com/wp/mpBaKqa.jpg',
@@ -193,8 +193,8 @@ List<Class> classList = [
     classReview: 20,
     classPrice: 40,
     classTrainer: "Jason Smith",
-    classTrainerFirstName: 'Jason',
-    classTrainerUsername: 'jaysmith33',
+    trainerFirstName: 'Jason',
+    trainerUsername: 'jaysmith33',
     classLiked: false,
     classTimes: [],
     trainerImageUrl:

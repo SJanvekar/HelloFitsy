@@ -28,11 +28,12 @@ class Class {
   double classRating;
   int classReview;
   String classTrainer;
-  late String classTrainerFirstName;
-  late String classTrainerUsername;
+  String trainerFirstName;
+  String trainerLastName;
+  late String trainerUsername;
   bool classLiked;
   late List<Schedule> classTimes;
-  late String trainerImageUrl;
+  String trainerImageUrl;
   late List<String> classCategories;
   File? profileImageTempHolder;
 
@@ -57,11 +58,11 @@ class Class {
     required this.classTimes,
 
     //Trainer Info
-    //WHAT THE FUCK IS THIS
     required this.classTrainer,
     required this.trainerImageUrl,
-    required this.classTrainerFirstName,
-    required this.classTrainerUsername,
+    required this.trainerFirstName,
+    required this.trainerLastName,
+    // required this.trainerUsername,
   });
 
   //JSON parsers are required to parse arrays of JSON
@@ -77,7 +78,10 @@ class Class {
         classReview = json['ClassReview'],
         classPrice = json['ClassPrice'].toDouble(),
         classTrainer = json['ClassTrainer'],
-        classLiked = json['ClassLiked'];
+        classLiked = json['ClassLiked'],
+        trainerImageUrl = json['TrainerImageUrl'],
+        trainerFirstName = json['TrainerFirstName'],
+        trainerLastName = json['TrainerLastName'];
 
   Map<String, dynamic> toJson() => {
         'ClassName': className,
@@ -91,7 +95,10 @@ class Class {
         'ClassReview': classReview,
         'ClassPrice': classPrice,
         'ClassTrainer': classTrainer,
-        'ClassLiked': classLiked
+        'ClassLiked': classLiked,
+        'TrainerImageUrl': trainerImageUrl,
+        'TrainerFirstName': trainerFirstName,
+        'TrainerLastName': trainerLastName
       };
 }
 
@@ -130,6 +137,6 @@ List<Class> classList = [
       classTrainer: 'salmanjanvekar',
       trainerImageUrl:
           'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/private%2Fvar%2Fmobile%2FContainers%2FData%2FApplication%2FC30AF58C-8871-4EF9-92C2-D3FA41E5A4B7%2Ftmp%2Fimage_picker_4C4728D4-1416-4F73-BA34-0E3C86ABBFDD-2819-0000024C398674C2.jpg?alt=media&token=1299217a-1d3e-48cf-9180-f28a1e8c58f6',
-      classTrainerFirstName: 'Salman',
-      classTrainerUsername: 'Janvekar')
+      trainerFirstName: 'Salman',
+      trainerLastName: 'Janvekar')
 ];
