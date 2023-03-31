@@ -17,7 +17,7 @@ class ProfileClassCard extends StatefulWidget {
     Key? key,
     required this.classTrainer,
     required this.trainerFirstName,
-    required this.userName,
+    required this.trainerLastName,
     required this.classType,
     required this.className,
     required this.classDescription,
@@ -34,7 +34,7 @@ class ProfileClassCard extends StatefulWidget {
 
   String classTrainer;
   String trainerFirstName;
-  String userName;
+  String trainerLastName;
   ClassType classType;
   String className;
   String classDescription;
@@ -156,7 +156,7 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                 classPrice: widget.classPrice,
                 classTrainer: widget.classTrainer,
                 trainerFirstName: widget.trainerFirstName,
-                trainerUsername: widget.userName,
+                trainerLastName: widget.trainerLastName,
                 trainerImageUrl: widget.trainerImageUrl,
                 classRating: widget.classRating,
                 classReviews: widget.classReviews,

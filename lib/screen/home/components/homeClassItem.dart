@@ -17,7 +17,7 @@ class HomeClassItem extends StatefulWidget {
     Key? key,
     required this.classTrainer,
     required this.trainerFirstName,
-    required this.userName,
+    required this.trainerLastName,
     required this.classType,
     required this.className,
     required this.classDescription,
@@ -34,7 +34,7 @@ class HomeClassItem extends StatefulWidget {
 
   String classTrainer;
   String trainerFirstName;
-  String userName;
+  String trainerLastName;
   ClassType classType;
   String className;
   String classDescription;
@@ -95,8 +95,9 @@ class _HomeClassItem extends State<HomeClassItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               UserProfileComponentLight(
-                  userFullName: widget.classTrainer,
-                  userName: widget.userName,
+                  userFullName:
+                      widget.trainerFirstName + ' ' + widget.trainerLastName,
+                  userName: widget.classTrainer,
                   imageURL: widget.trainerImageUrl,
                   profileImageRadius: 22.5,
                   userFullNameFontSize: 15,
@@ -156,7 +157,7 @@ class _HomeClassItem extends State<HomeClassItem> {
                 classPrice: widget.classPrice,
                 classTrainer: widget.classTrainer,
                 trainerFirstName: widget.trainerFirstName,
-                trainerUsername: widget.userName,
+                trainerLastName: widget.trainerLastName,
                 trainerImageUrl: widget.trainerImageUrl,
                 classRating: widget.classRating,
                 classReviews: widget.classReviews,

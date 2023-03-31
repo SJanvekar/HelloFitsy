@@ -36,7 +36,6 @@ class _ClassListHomeState extends State<ClassListHome> {
                 final classItem = classList[index];
                 return HomeClassItem(
                   classTrainer: classItem.classTrainer,
-                  userName: 'username',
                   className: classItem.className,
                   classType: classItem.classType,
                   classLocation: classItem.classLocation,
@@ -50,6 +49,7 @@ class _ClassListHomeState extends State<ClassListHome> {
                   classReviews: classItem.classReview,
                   trainerImageUrl: classItem.trainerImageUrl,
                   trainerFirstName: classItem.trainerFirstName,
+                  trainerLastName: classItem.trainerLastName,
                 );
               })
         ],

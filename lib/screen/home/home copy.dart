@@ -351,7 +351,6 @@ class _HomeTestState extends State<HomeTest> {
                   final classItem = allClasses[index];
                   return HomeClassItem(
                     classTrainer: classItem.classTrainer,
-                    userName: classItem.trainerUsername,
                     className: classItem.className,
                     classType: classItem.classType,
                     classLocation: classItem.classLocation,
@@ -363,6 +362,7 @@ class _HomeTestState extends State<HomeTest> {
                     classRating: classItem.classRating,
                     classReviews: classItem.classReview,
                     trainerFirstName: classItem.trainerFirstName,
+                    trainerLastName: classItem.trainerLastName,
                     classWhatToExpect: classItem.classWhatToExpect,
                     classWhatYouWillNeed: classItem.classUserRequirements,
                   );

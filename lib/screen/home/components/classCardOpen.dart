@@ -26,7 +26,7 @@ class ClassCardOpen extends StatefulWidget {
     Key? key,
     required this.classTrainer,
     required this.trainerFirstName,
-    required this.trainerUsername,
+    required this.trainerLastName,
     required this.className,
     required this.classType,
     required this.classLocation,
@@ -43,7 +43,7 @@ class ClassCardOpen extends StatefulWidget {
 
   String classTrainer;
   String trainerFirstName;
-  String trainerUsername;
+  String trainerLastName;
   String className;
   String classType;
   String classLocation;
@@ -102,10 +102,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         children: [
           UserProfileComponentDark(
             imageURL: widget.trainerImageUrl,
-            profileImageRadius: 20,
-            userFullName: widget.classTrainer,
+            profileImageRadius: 25,
+            userFullName:
+                widget.trainerFirstName + ' ' + widget.trainerLastName,
             userFullNameFontSize: 16,
-            userName: widget.trainerUsername,
+            userName: widget.classTrainer,
             userNameFontSize: 13,
             userFirstName: widget.trainerFirstName,
           ),
@@ -360,34 +361,17 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
 
   //Class Trainer Spotlight
   Widget classTrainerSpotlight() {
-    //Get Trainer Details ----- We should definitely try to move this
-    var joinedDate = DateTime.now();
-    var formattedJoinedDate = DateFormat.y().format(joinedDate);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         UserProfileComponentLight(
           imageURL: widget.trainerImageUrl,
           profileImageRadius: 25,
-          userFullName: widget.classTrainer,
+          userFullName: widget.trainerFirstName + ' ' + widget.trainerLastName,
           userFullNameFontSize: 16,
-          userName: widget.trainerUsername,
+          userName: widget.classTrainer,
           userNameFontSize: 13,
           userFirstName: widget.trainerFirstName,
-        ),
-
-        //Trainer Joined Date + Further Details
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text(
-            'Joined ' + formattedJoinedDate,
-            style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack40,
-                fontSize: 15,
-                fontWeight: FontWeight.w500),
-          ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 15.0),
