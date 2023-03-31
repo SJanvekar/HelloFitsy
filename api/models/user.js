@@ -47,7 +47,6 @@ var UserSchema = new Schema({
     FirstName: {
         type: String,
         required: true
-
     },
 
     //Last Name

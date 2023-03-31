@@ -40,8 +40,9 @@ Class classTemplate = Class(
     classLiked: false,
     classTimes: [],
     trainerImageUrl: '',
-    classTrainerUsername: '',
-    classTrainerFirstName: '',
+    // trainerUsername: '',
+    trainerFirstName: '',
+    trainerLastName: '',
     classUserRequirements: '',
     classWhatToExpect: '',
     classImageUrl: '');

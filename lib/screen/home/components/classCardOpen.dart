@@ -25,8 +25,8 @@ class ClassCardOpen extends StatefulWidget {
   ClassCardOpen({
     Key? key,
     required this.classTrainer,
-    required this.classTrainerFirstName,
-    required this.classTrainerUserName,
+    required this.trainerFirstName,
+    required this.trainerLastName,
     required this.className,
     required this.classType,
     required this.classLocation,
@@ -42,8 +42,8 @@ class ClassCardOpen extends StatefulWidget {
   }) : super(key: key);
 
   String classTrainer;
-  String classTrainerFirstName;
-  String classTrainerUserName;
+  String trainerFirstName;
+  String trainerLastName;
   String className;
   String classType;
   String classLocation;
@@ -102,12 +102,13 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         children: [
           UserProfileComponentDark(
             imageURL: widget.trainerImageUrl,
-            profileImageRadius: 20,
-            userFullName: widget.classTrainer,
+            profileImageRadius: 25,
+            userFullName:
+                widget.trainerFirstName + ' ' + widget.trainerLastName,
             userFullNameFontSize: 16,
-            userName: widget.classTrainerUserName,
+            userName: widget.classTrainer,
             userNameFontSize: 13,
-            userFirstName: widget.classTrainerFirstName,
+            userFirstName: widget.trainerFirstName,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 26),
@@ -360,34 +361,17 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
 
   //Class Trainer Spotlight
   Widget classTrainerSpotlight() {
-    //Get Trainer Details ----- We should definitely try to move this
-    var joinedDate = DateTime.now();
-    var formattedJoinedDate = DateFormat.y().format(joinedDate);
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         UserProfileComponentLight(
           imageURL: widget.trainerImageUrl,
           profileImageRadius: 25,
-          userFullName: widget.classTrainer,
+          userFullName: widget.trainerFirstName + ' ' + widget.trainerLastName,
           userFullNameFontSize: 16,
-          userName: widget.classTrainerUserName,
+          userName: widget.classTrainer,
           userNameFontSize: 13,
-          userFirstName: widget.classTrainerFirstName,
-        ),
-
-        //Trainer Joined Date + Further Details
-        Padding(
-          padding: const EdgeInsets.only(top: 8.0),
-          child: Text(
-            'Joined ' + formattedJoinedDate,
-            style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack40,
-                fontSize: 15,
-                fontWeight: FontWeight.w500),
-          ),
+          userFirstName: widget.trainerFirstName,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 15.0),
