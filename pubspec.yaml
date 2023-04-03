@@ -57,6 +57,7 @@ dependencies:
   shared_preferences: ^2.0.15
   jiffy: ^5.0.0
   mongo_dart: ^0.9.1
+  skeletons: ^0.0.3
 
 dev_dependencies:
   dependency_validator: ^3.0.0
