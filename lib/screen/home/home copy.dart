@@ -28,10 +28,10 @@ class HomeTest extends StatefulWidget {
 class _HomeTestState extends State<HomeTest> {
   //Variables
   final GlobalKey<ScaffoldState> _key = GlobalKey();
-  String? profileImageUrl;
+  String profileImageUrl = "";
   List<Class> allClasses = [];
-  String? username;
-  String? userFirstName;
+  String username = "";
+  String userFirstName = "";
   bool isLoading = true;
 
   //----------
@@ -48,6 +48,9 @@ class _HomeTestState extends State<HomeTest> {
     final sharedPrefs = await SharedPreferences.getInstance();
     userFirstName = sharedPrefs.getString('firstName') ?? "";
     profileImageUrl = sharedPrefs.getString('profileImageURL') ?? "";
+
+    print(userFirstName);
+    print(profileImageUrl);
   }
 
   void getUserFollowing() async {
@@ -58,7 +61,7 @@ class _HomeTestState extends State<HomeTest> {
       if (val.data['success']) {
         print('successful get following list');
         getClassFeed(val.data['following']);
-        isLoading = true;
+        isLoading = false;
       }
     });
   }

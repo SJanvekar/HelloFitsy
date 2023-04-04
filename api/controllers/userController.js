@@ -135,7 +135,8 @@ var functions = {
             function (err, response) {
             if (err) {
                 console.log(err)
-                return res.json({success: false, errorCode: err.code})
+                return res.json({success: false, errorCode: err.code,})
+              
             } else {
                 return res.json({success: true
                     })
