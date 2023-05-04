@@ -104,19 +104,6 @@ var UserSchema = new Schema({
         type: String,
         required: false,
     }],
-
-    //Following 
-    Following: [{
-        type: String,
-        required: false,
-    }],
-
-    //Followers 
-    Followers: [{
-        type: String,
-        required: false,
-    }],
-
 })
 
 UserSchema.pre('save', function (next) {
