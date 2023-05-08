@@ -152,7 +152,7 @@ class _HomeClassItem extends State<HomeClassItem> {
                 classImage: widget.classImage,
                 classLiked: widget.classLiked,
                 classLocation: widget.classLocation,
-                classType: 'One-on-one training',
+                classType: widget.classType,
                 className: widget.className,
                 classPrice: widget.classPrice,
                 classTrainer: widget.classTrainer,

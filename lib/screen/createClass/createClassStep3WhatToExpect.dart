@@ -5,7 +5,6 @@ import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
-import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep2Description.dart';
 import 'package:balance/screen/createClass/createClassStep4WhatYouWillNeed.dart';

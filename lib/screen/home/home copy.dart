@@ -61,6 +61,7 @@ class _HomeTestState extends State<HomeTest> {
       if (val.data['success']) {
         print('successful get following list');
         getClassFeed(val.data['following']);
+
         isLoading = false;
       }
     });

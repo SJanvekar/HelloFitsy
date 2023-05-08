@@ -58,6 +58,8 @@ dependencies:
   jiffy: ^5.0.0
   mongo_dart: ^0.9.1
   skeletons: ^0.0.3
+  sign_in_with_apple: ^4.3.0
+  flutter_slidable: ^3.0.0
 
 dev_dependencies:
   dependency_validator: ^3.0.0

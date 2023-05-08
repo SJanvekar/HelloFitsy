@@ -1,24 +1,22 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
 import 'dart:ffi';
 import 'dart:collection';
-
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
-import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassTimeList.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/classModel.dart';
+import 'package:balance/screen/profile/components/createClassSchedule.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -255,22 +253,22 @@ class _ScheduleCalendarOG extends State<ScheduleCalendarOG> {
             Padding(
               padding: const EdgeInsets.only(top: 36.0, bottom: 45),
               child: GestureDetector(
-                  child: FooterButton(
-                    buttonColor: strawberry,
-                    textColor: snow,
-                    buttonText: "Add time",
-                  ),
-                  onTap: () {
-                    print(widget.classTemplate.className);
-                    Schedule newSchedule = Schedule(
-                        dates: _selectedDays,
-                        startTime: startTime,
-                        endTime: endTime);
-                    widget.classTemplate.classTimes.add(newSchedule);
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateClassSchedule(
-                            classTemplate: widget.classTemplate)));
-                  }),
+                child: FooterButton(
+                  buttonColor: strawberry,
+                  textColor: snow,
+                  buttonText: "Add time",
+                ),
+                // onTap: () {
+                //   print(widget.classTemplate.className);
+                //   Schedule newSchedule = Schedule(
+                //       dates: _selectedDays,
+                //       startTime: startTime,
+                //       endTime: endTime);
+                //   widget.classTemplate.classTimes.add(newSchedule);
+                //   Navigator.of(context).push(MaterialPageRoute(
+                //       builder: (context) => CreateClassSchedule()));
+                // }
+              ),
             ),
           ],
         ),

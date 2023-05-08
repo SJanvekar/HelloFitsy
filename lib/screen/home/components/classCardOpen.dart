@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
+import '../../../feModels/classModel.dart';
 import '../../../sharedWidgets/classMoreActions.dart';
 
 final oCcy = new NumberFormat("#,##0", "en_US");
@@ -45,7 +46,7 @@ class ClassCardOpen extends StatefulWidget {
   String trainerFirstName;
   String trainerLastName;
   String className;
-  String classType;
+  ClassType classType;
   String classLocation;
   double classPrice;
   bool classLiked;

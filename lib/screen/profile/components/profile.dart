@@ -42,15 +42,17 @@ class _UserProfileState extends State<UserProfile> {
   //Original list of all category (interest) items ~ this contains the Category name and image
   List<Category> interests = categoriesList;
   //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info
-  var userInterests = ['Tennis', 'Boxing'];
+  var userInterests = [];
 
   //Class list
   List<Class> trainerClasses = classList;
+
 //----------
   @override
   void initState() {
     super.initState();
 
+    print(trainerClasses.length);
     //Checks the trainer interests and creates a list from the categories models
     checkInterests();
 
@@ -69,6 +71,7 @@ class _UserProfileState extends State<UserProfile> {
   //----------
   void checkInterests() {
     //Checks for categories that match the trainers' interests and populates trainerInterestsFinal
+    userInterests = ['Tennis', 'Boxing'];
     interests.forEach((interestsItem) {
       if (userInterests.contains(interestsItem.categoryName)) {
         trainerInterestsFinal.add(interestsItem);
@@ -506,7 +509,7 @@ class _UserProfileState extends State<UserProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                    top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
                   "Salman's Specialities",
                   style: sectionTitles,
@@ -522,10 +525,10 @@ class _UserProfileState extends State<UserProfile> {
                       padding: EdgeInsets.only(left: 13, right: 13),
                       itemCount: trainerInterestsFinal.length,
                       itemBuilder: (context, index) {
-                        final _likedInterests = trainerInterestsFinal[index];
+                        final likedInterests = trainerInterestsFinal[index];
                         return CategorySmall(
-                          categoryImage: _likedInterests.categoryImage,
-                          categoryName: _likedInterests.categoryName,
+                          categoryImage: likedInterests.categoryImage,
+                          categoryName: likedInterests.categoryName,
                         );
                       },
                     ),
@@ -538,139 +541,50 @@ class _UserProfileState extends State<UserProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                    top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
                   "Train with Salman",
                   style: sectionTitles,
                 ),
               ),
               SliverToBoxAdapter(
-                child: Center(
-                  child: SizedBox(
-                    height: 500,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      padding: EdgeInsets.only(left: 13, right: 13),
-                      itemCount: trainerClasses.length,
-                      itemBuilder: (context, index) {
-                        final trainerClassInfo = trainerClasses[index];
-                        return ProfileClassCard(
-                          classTrainer: trainerClassInfo.classTrainer,
-                          className: trainerClassInfo.className,
-                          classType: trainerClassInfo.classType,
-                          classLocation: trainerClassInfo.classLocation,
-                          classPrice: trainerClassInfo.classPrice,
-                          classLiked: trainerClassInfo.classLiked,
-                          classImage: trainerClassInfo.classImageUrl,
-                          trainerImageUrl: trainerClassInfo.trainerImageUrl,
-                          classDescription: trainerClassInfo.classDescription,
-                          classRating: trainerClassInfo.classRating,
-                          classReviews: trainerClassInfo.classReview,
-                          trainerFirstName: trainerClassInfo.trainerFirstName,
-                          trainerLastName: trainerClassInfo.trainerLastName,
-                          classWhatToExpect: trainerClassInfo.classWhatToExpect,
-                          classWhatYouWillNeed:
-                              trainerClassInfo.classUserRequirements,
-                        );
-                      },
-                    ),
+                child: SizedBox(
+                  height: 340,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(left: 26.0, right: 26.0),
+                    itemCount: trainerClasses.length,
+                    itemBuilder: (context, index) {
+                      final trainerClassInfo = trainerClasses[index];
+                      return ProfileClassCard(
+                        classTrainer: trainerClassInfo.classTrainer,
+                        className: trainerClassInfo.className,
+                        classType: trainerClassInfo.classType,
+                        classLocation: trainerClassInfo.classLocation,
+                        classPrice: trainerClassInfo.classPrice,
+                        classLiked: trainerClassInfo.classLiked,
+                        classImage: trainerClassInfo.classImageUrl,
+                        trainerImageUrl: trainerClassInfo.trainerImageUrl,
+                        classDescription: trainerClassInfo.classDescription,
+                        classRating: trainerClassInfo.classRating,
+                        classReviews: trainerClassInfo.classReview,
+                        trainerFirstName: trainerClassInfo.trainerFirstName,
+                        trainerLastName: trainerClassInfo.trainerLastName,
+                        classWhatToExpect: trainerClassInfo.classWhatToExpect,
+                        classWhatYouWillNeed:
+                            trainerClassInfo.classUserRequirements,
+                        classTimes: [],
+                      );
+                    },
                   ),
                 ),
               ),
             ]),
+
+            MultiSliver(children: [
+              SizedBox(height: 60),
+            ])
           ]),
     );
   }
 }
-
-// //Class Type and Title
-// Widget userTitleCard() {
-//   return Column(
-//       mainAxisAlignment: MainAxisAlignment.end,
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Text(
-//           ,
-//           style: TextStyle(
-//               fontSize: 26,
-//               fontFamily: 'SFDisplay',
-//               fontWeight: FontWeight.w600,
-//               color: snow,
-//               shadows: <Shadow>[
-//                 Shadow(
-//                   offset: Offset(0, 0),
-//                   blurRadius: 8.0,
-//                   color: jetBlack80,
-//                 ),
-//               ]),
-//           maxLines: 1,
-//         ),
-//         Text(
-//           '@salman',
-//           style: TextStyle(
-//               fontSize: 16,
-//               fontWeight: FontWeight.w400,
-//               color: snow,
-//               fontFamily: 'SFDisplay',
-//               shadows: <Shadow>[
-//                 Shadow(
-//                   offset: Offset(0, 0),
-//                   blurRadius: 8.0,
-//                   color: jetBlack80,
-//                 ),
-//               ]),
-//           maxLines: 1,
-//         ),
-//         // trainerSubHeader(),
-//       ]);
-
-// }
-
-// //Follow Button
-// Widget followButton() {
-//   return ClipRRect(
-//     borderRadius: BorderRadius.circular(20),
-//     child: BackdropFilter(
-//       filter: new ImageFilter.blur(
-//         sigmaX: 1,
-//         sigmaY: 1,
-//       ),
-//       child: Container(
-//         alignment: Alignment.center,
-//         height: 34,
-//         width: 90,
-//         decoration: BoxDecoration(
-//             color: shark40,
-//             border: Border.all(color: shark60),
-//             borderRadius: BorderRadius.circular(20)),
-//         child: Text(
-//           'Follow',
-//           style: TextStyle(
-//               color: snow,
-//               fontFamily: 'SFDisplay',
-//               fontSize: 13.0,
-//               fontWeight: FontWeight.w600),
-//         ),
-//       ),
-//     ),
-//   );
-// }
-
-// //Follow Button
-// Widget followingButton() {
-//   return Container(
-//     alignment: Alignment.center,
-//     height: 34,
-//     width: 90,
-//     decoration: BoxDecoration(
-//         color: strawberry, borderRadius: BorderRadius.circular(20)),
-//     child: Text(
-//       'Following',
-//       style: TextStyle(
-//           color: snow,
-//           fontFamily: 'SFDisplay',
-//           fontSize: 13.0,
-//           fontWeight: FontWeight.w600),
-//     ),
-//   );
-// }

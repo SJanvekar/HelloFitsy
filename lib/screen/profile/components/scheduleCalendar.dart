@@ -5,17 +5,18 @@ import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
-import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassTimeList.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/classModel.dart';
+import 'package:balance/screen/profile/components/scheduledClassItem.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -25,10 +26,9 @@ import 'package:table_calendar/table_calendar.dart';
 String recurranceType = 'None';
 
 class ScheduleCalendar extends StatefulWidget {
-  const ScheduleCalendar({Key? key, required this.classTemplate})
-      : super(key: key);
-
-  final Class classTemplate;
+  const ScheduleCalendar({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ScheduleCalendar> createState() => _ScheduleCalendar();
@@ -36,6 +36,7 @@ class ScheduleCalendar extends StatefulWidget {
 
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.utc(2001, 9, 11, 8, 14);
+List<Class> scheduledClassesList = classList;
 
 class _ScheduleCalendar extends State<ScheduleCalendar> {
   //variables
@@ -48,21 +49,34 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     hashCode: getHashCode,
   );
 
+  void initState() {
+    super.initState();
+    _selectedDays.add(_focusedDay);
+  }
+
   CalendarStyle calendarStyle = CalendarStyle(
       selectedDecoration: BoxDecoration(
           color: strawberry, borderRadius: BorderRadius.circular(10.0)),
       todayTextStyle: TextStyle(
           fontWeight: FontWeight.w700,
+          fontSize: 15,
           color: strawberry,
+          fontFamily: 'SFDisplay'),
+      defaultTextStyle: TextStyle(
+          fontWeight: FontWeight.w500,
+          fontSize: 15,
+          color: jetBlack,
           fontFamily: 'SFDisplay'),
       todayDecoration: BoxDecoration(
         shape: BoxShape.circle,
       ));
 
   HeaderStyle headerStyle = HeaderStyle(
-      titleCentered: true,
+      titleCentered: false,
       formatButtonVisible: false,
-      headerPadding: EdgeInsets.only(bottom: 30),
+      headerPadding: EdgeInsets.only(bottom: 20, left: 10),
+      leftChevronVisible: false,
+      rightChevronVisible: false,
       leftChevronIcon: SvgPicture.asset(
         'assets/icons/generalIcons/arrowLeft.svg',
         height: 15,
@@ -76,7 +90,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       },
       titleTextStyle: TextStyle(
           fontWeight: FontWeight.w700,
-          fontSize: 18.0,
+          fontSize: 22.0,
           color: jetBlack,
           fontFamily: 'SFDisplay'));
 
@@ -117,20 +131,37 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     setState(() {
       _focusedDay = focusedDay;
       _formattedDate = Jiffy(_focusedDay).format("MMMM do");
-      // Update values in a Set
-      if (_selectedDays.contains(selectedDay)) {
-        // _selectedDays.remove(selectedDay);
-      } else {
-        _selectedDays.add(selectedDay);
-      }
+      _selectedDays.clear();
+      _selectedDays.add(selectedDay);
+      // // Update values in a Set
+      // if (_selectedDays.contains(selectedDay)) {
+      //   _selectedDays.remove(selectedDay);
+      // } else {
+      //   _selectedDays.add(selectedDay);
+      // }
     });
 
+    void _onRecurranceTypeChange() {
+      switch (recurranceType) {
+        case 'None':
+          return;
+
+        case 'Daily':
+      }
+    }
+  }
+
+  void displayClassAndTimePicker() {
+    var date = DateTime.now();
+
+    print(scheduledClassesList.length);
     showCupertinoModalPopup(
         barrierColor: jetBlack60,
         context: context,
         builder: (BuildContext builder) {
           return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setModalSheet2State) {
+            builder:
+                (BuildContext context, StateSetter setModalSheetPage2State) {
               return Material(
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
@@ -208,7 +239,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                     TextDecoration.none),
                                           ),
                                           onTap: () => displayTimePicker(
-                                              true, setModalSheet2State),
+                                              true, setModalSheetPage2State),
                                         ),
                                       ],
                                     ),
@@ -284,7 +315,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                   ),
                                                 ),
                                                 onTap: () => {
-                                                  setModalSheet2State(
+                                                  setModalSheetPage2State(
                                                     () {
                                                       _focusedDateStartTimes
                                                           .remove(_startTimes);
@@ -302,7 +333,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                 MultiSliver(children: [
                                   SizedBox(height: 15),
                                   RecurrencePopUpMenu(
-                                    modalSetState: setModalSheet2State,
+                                    modalSetState: setModalSheetPage2State,
                                     child: Container(
                                       key: GlobalKey(),
                                       height: 60,
@@ -399,15 +430,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
             },
           );
         });
-
-    void _onRecurranceTypeChange() {
-      switch (recurranceType) {
-        case 'None':
-          return;
-
-        case 'Daily':
-      }
-    }
   }
 
   void displayTimePicker(bool isStartDateLabel, StateSetter modalsetState) {
@@ -498,30 +520,72 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.only(left: 25, right: 25, top: 35),
-          child: TableCalendar(
-            firstDay: DateTime.now(),
-            lastDay: DateTime.utc(2050, 12, 31),
-            focusedDay: _focusedDay,
-            calendarFormat: CalendarFormat.month,
-            calendarStyle: calendarStyle,
-            headerStyle: headerStyle,
-            startingDayOfWeek: StartingDayOfWeek.sunday,
-            calendarBuilders: calendarBuilder,
-            selectedDayPredicate: (day) {
-              return _selectedDays.contains(day);
-            },
-            onDaySelected: _onDaySelected,
-            daysOfWeekStyle: calendarDaysOfWeek,
+    void doNothing(BuildContext context) {}
+
+    return Column(
+      children: [
+        Center(
+          child: Padding(
+            padding: EdgeInsets.only(left: 25, right: 25, top: 10),
+            child: TableCalendar(
+              firstDay: DateTime.now(),
+              lastDay: DateTime.utc(2075, 12, 31),
+              focusedDay: _focusedDay,
+              calendarFormat: CalendarFormat.month,
+              calendarStyle: calendarStyle,
+              headerStyle: headerStyle,
+              startingDayOfWeek: StartingDayOfWeek.sunday,
+              calendarBuilders: calendarBuilder,
+              selectedDayPredicate: (day) {
+                return _selectedDays.contains(day);
+              },
+              onDaySelected: _onDaySelected,
+              daysOfWeekStyle: calendarDaysOfWeek,
+            ),
           ),
         ),
-      ),
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
+        SizedBox(
+          height: 250,
+          child: ListView.builder(
+              primary: false,
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.only(top: 20, left: 26.0, right: 26.0),
+              itemCount: scheduledClassesList.length,
+              itemBuilder: (context, index) {
+                final scheduledClass = scheduledClassesList[index];
+                return Slidable(
+                  endActionPane: ActionPane(motion: ScrollMotion(), children: [
+                    SlidableAction(
+                      // An action can be bigger than the others.
+                      flex: 2,
+                      onPressed: doNothing,
+                      backgroundColor: bone,
+                      foregroundColor: jetBlack,
+                      icon: Icons.edit,
+                      label: 'Edit',
+                    ),
+                    SlidableAction(
+                      flex: 2,
+                      onPressed: doNothing,
+                      backgroundColor: strawberry,
+                      foregroundColor: snow,
+                      icon: Icons.delete,
+                      label: 'Delete',
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20)),
+                    ),
+                  ]),
+                  child: ScheduledClassTile(
+                      classImageUrl: scheduledClass.classImageUrl,
+                      classTitle: scheduledClass.className,
+                      classTrainer: scheduledClass.trainerFirstName,
+                      classTrainerImageUrl: scheduledClass.trainerImageUrl),
+                );
+              }),
+        ),
+      ],
     );
   }
 

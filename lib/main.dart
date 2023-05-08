@@ -1,13 +1,9 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/createClass/createClassSchedule.dart';
-import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
-import 'package:balance/screen/profile/components/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -28,20 +24,20 @@ class FITSY extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      color: snow,
-      debugShowCheckedModeBanner: false,
-      title: 'Fitsy',
-      theme: ThemeData(
-        textTheme: Theme.of(context).textTheme.apply(),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        hoverColor: Colors.transparent,
-      ),
-      //Place comment on what the changes were if changed for testing purposes
-      //Example:
-      //Login(); -> UserProfile();
-      home: Login(),
-    );
+        color: snow,
+        debugShowCheckedModeBanner: false,
+        title: 'Fitsy',
+        theme: ThemeData(
+          textTheme: Theme.of(context).textTheme.apply(),
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+        ),
+        //Place comment on what the changes were if changed for testing purposes
+        //Example:
+        //Login(); -> UserProfile();
+
+        home: Login());
   }
 }
 
