@@ -1,18 +1,18 @@
 import 'dart:ffi';
 
 class Following {
-  String followingUserName;
-  String userName;
-  String follwingFirstName;
-  String follwingLastName;
-  late String follwingProfileImageURL;
-  late String? follwingUserBio;
+  String followingUsername;
+  String username;
+  String followingFirstName;
+  String followingLastName;
+  late String followingProfileImageURL;
+  late String? followingUserBio;
 
   Following({
-    required this.followingUserName,
-    required this.userName,
-    required this.follwingFirstName,
-    required this.follwingLastName,
-    required this.follwingProfileImageURL,
+    required this.followingUsername,
+    required this.username,
+    required this.followingFirstName,
+    required this.followingLastName,
+    required this.followingProfileImageURL,
   });
 }

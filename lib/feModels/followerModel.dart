@@ -1,16 +1,16 @@
 import 'dart:ffi';
 
 class Follower {
-  String followerUserName;
-  String userName;
+  String followerUsername;
+  String username;
   String followerFirstName;
   String followerLastName;
   late String followerProfileImageURL;
   late String? followerUserBio;
 
   Follower({
-    required this.followerUserName,
-    required this.userName,
+    required this.followerUsername,
+    required this.username,
     required this.followerFirstName,
     required this.followerLastName,
     required this.followerProfileImageURL,

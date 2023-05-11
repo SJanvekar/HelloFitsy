@@ -1,5 +1,6 @@
 import 'package:balance/Requests/classRequests.dart';
 import 'package:balance/Requests/userRequests.dart';
+import 'package:balance/Requests/followingRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/upcomingClassesItem.dart';
@@ -36,8 +37,7 @@ class _HomeTestState extends State<HomeTest> {
   void initState() {
     super.initState();
     getUserProfilePictures();
-    getUserFollowing();
-    // getClassFeed();
+    getFollowingList();
     setState(() {});
   }
 
@@ -46,16 +46,17 @@ class _HomeTestState extends State<HomeTest> {
     profileImageUrl = sharedPrefs.getString('profileImageURL') ?? "";
   }
 
-  void getUserFollowing() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    UserRequests()
-        .getUserFollowing(sharedPrefs.getString('userName') ?? "")
-        .then((val) async {
-      if (val.data['success']) {
-        print('successful get following list');
-        getClassFeed(val.data['following']);
-      }
-    });
+  void getFollowingList() async {
+    // final sharedPrefs = await SharedPreferences.getInstance();
+    // FollowingRequests()
+    //     .getFollowingList(sharedPrefs.getString('userName') ?? "")
+    //     .then((val) async {
+    //   if (val.data['success']) {
+    //     print('successful get following list');
+    //     print(val.response);
+    //     // getClassFeed(val.data['following']);
+    //   }
+    // });
   }
 
   void getClassFeed(List<dynamic> followingList) async {

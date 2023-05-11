@@ -24,17 +24,4 @@ class UserRequests {
       print(e);
     }
   }
-
-  getUserFollowing(String username) async {
-    try {
-      return await dio.get(
-        '$urlDomain/getUserFollowing',
-        queryParameters: {
-          "Username": username,
-        },
-      );
-    } on DioError catch (e) {
-      print(e);
-    }
-  }
 }

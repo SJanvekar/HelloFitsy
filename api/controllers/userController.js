@@ -112,23 +112,6 @@ var functions = {
     },
 
     // Get User Following list
-    getUserFollowing: function (req, res) {
-        if ((!req.query.Username)) {
-            res.json({success: false, msg: 'Missing query parameter Username'});
-        }
-        User.findOne({Username: req.query.Username}, 'Following', function (err, response) {
-            if (err) {
-                console.log(err)
-                return res.json({success: false, body: err})
-            } else {
-                return res.json({success: true, 
-                        following: response.Following
-                    })
-            }
-        })
-    },
-
-    // Get User Following list
     updateUserinfo: function (req, res) {
         User.findOneAndUpdate({'Username': req.body.OldUsername}, {$set: {'FirstName' : req.body.FirstName, 
         'LastName' : req.body.LastName, 'Username' : req.body.NewUsername, 'UserBio' : req.body.UserBio, 'ProfileImageURL': req.body.ProfileImageURL}}, 

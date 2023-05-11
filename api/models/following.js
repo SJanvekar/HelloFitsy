@@ -21,13 +21,6 @@ var UserFollowingSchema = new Schema({
         index: true
     },
 
-    //Following account Profile Image URL
-    FollowingProfileImageURL: {
-        type: String,
-        required: false
-
-    },
-    
     //Following account First Name
     FollowingFirstName: {
         type: String,
@@ -38,6 +31,13 @@ var UserFollowingSchema = new Schema({
     FollowingLastName: {
         type: String,
         required: true
+    },
+
+    //Following account Profile Image URL
+    FollowingProfileImageURL: {
+        type: String,
+        required: false
+
     },
 
     //Following account User Bio
