@@ -7,6 +7,7 @@ import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/createClassTimeList.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
+import 'package:balance/screen/home/components/classCardOpen.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -16,10 +17,12 @@ import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -37,8 +40,79 @@ class ScheduleCalendar extends StatefulWidget {
 }
 
 DateTime startTime = DateTime.now();
-DateTime endTime = DateTime.utc(2001, 9, 11, 8, 14);
+DateTime endTime = DateTime.now().add(Duration(hours: 1));
+bool isClassSelected = false;
+String selectedClassName = '';
+String selectedClassImageUrl = '';
 List<Class> scheduledClassesList = classList;
+List<Class> allClasses = classList;
+
+Widget selectClassPlaceholder() {
+  return Container(
+      width: double.maxFinite,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(width: 1.5, color: shark60)),
+      child: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Row(
+          children: [
+            Container(
+              height: 50,
+              width: 50,
+              decoration: BoxDecoration(
+                  color: shark60, borderRadius: BorderRadius.circular(10)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: Text(
+                'Select a class',
+                style: TextStyle(
+                    color: shark60,
+                    fontFamily: 'SFDisplay',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600),
+              ),
+            )
+          ],
+        ),
+      ));
+}
+
+Widget selectClassListItem(image, className) {
+  return Row(
+    children: [
+      Container(
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  image,
+                )),
+            borderRadius: BorderRadius.circular(10)),
+      ),
+      Flexible(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: Text(
+            className,
+            style: TextStyle(
+              fontFamily: 'SFDisplay',
+              color: jetBlack,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              decoration: TextDecoration.none,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      )
+    ],
+  );
+}
 
 class _ScheduleCalendar extends State<ScheduleCalendar> {
   //variables
@@ -132,7 +206,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _focusedDay = focusedDay;
-      _formattedDate = Jiffy(_focusedDay).format("MMMM do");
+      _formattedDate =
+          Jiffy.parseFromDateTime(_focusedDay).format(pattern: "MMMM do");
       _selectedDays.clear();
       _selectedDays.add(selectedDay);
       // // Update values in a Set
@@ -154,16 +229,31 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   }
 
   void displayClassAndTimePicker() {
-    var date = DateTime.now();
+    isClassSelected = false;
 
-    print(scheduledClassesList.length);
+    //Start Time Format
+    String returnedTime = '';
+
+    void formatTimes(DateTime dateToFormat) {
+      String formattedDate = dateToFormat.toString();
+      Jiffy.parse(formattedDate).format(pattern: "h:mm a");
+      returnedTime = Jiffy.parse(formattedDate).format(pattern: "h:mm a");
+    }
+
     showCupertinoModalPopup(
+        semanticsDismissible: true,
+        barrierDismissible: true,
         barrierColor: jetBlack60,
         context: context,
         builder: (BuildContext builder) {
           return StatefulBuilder(
             builder:
                 (BuildContext context, StateSetter setModalSheetPage2State) {
+              formatTimes(startTime);
+              String startTimeFormatted = returnedTime;
+              formatTimes(endTime);
+              String endTimeFormatted = returnedTime;
+
               return Material(
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
@@ -202,138 +292,156 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                           ),
                           Expanded(
                             child: CustomScrollView(
+                              physics: NeverScrollableScrollPhysics(),
                               slivers: [
-                                MultiSliver(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 10.0),
-                                      child: Text(
-                                        _formattedDate,
-                                        style: dateSelectionTitle,
-                                      ),
+                                MultiSliver(children: [
+                                  if (isClassSelected == false)
+                                    GestureDetector(
+                                      child: selectClassPlaceholder(),
+                                      onTap: () {
+                                        displayClassPicker(
+                                            setModalSheetPage2State);
+                                      },
+                                    )
+                                  else
+                                    GestureDetector(
+                                      child: selectClassListItem(
+                                          selectedClassImageUrl,
+                                          selectedClassName),
+                                      onTap: () {
+                                        displayClassPicker(
+                                            setModalSheetPage2State);
+                                      },
                                     ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          'Start times',
-                                          style: TextStyle(
-                                              fontFamily: 'SFDisplay',
-                                              color: jetBlack80,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
-                                              decoration: TextDecoration.none),
-                                        ),
-                                        GestureDetector(
-                                          child: Text(
-                                            'Select Time',
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                fontFamily: 'SFDisplay',
-                                                color: ocean,
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                                decoration:
-                                                    TextDecoration.none),
-                                          ),
-                                          onTap: () => displayTimePicker(
-                                              true, setModalSheetPage2State),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10.0),
-                                      child: GridView.builder(
-                                        padding: EdgeInsets.zero,
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        itemCount:
-                                            _focusedDateStartTimes.length,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        gridDelegate:
-                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                mainAxisSpacing: 1,
-                                                crossAxisSpacing: 1,
-                                                crossAxisCount: 3,
-                                                childAspectRatio: 2),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          var _startTimes =
-                                              _focusedDateStartTimes[index];
-                                          var _formattedStartTime =
-                                              Jiffy(_startTimes)
-                                                  .format("h:mm a");
-                                          return Stack(
-                                            children: [
-                                              Center(
-                                                child: Container(
-                                                  alignment: Alignment.center,
-                                                  width: 100,
-                                                  height: 45,
-                                                  decoration: BoxDecoration(
-                                                      color: bone80,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10)),
-                                                  child: Text(
-                                                    _formattedStartTime,
-                                                    style: scheduleStartTimes,
-                                                  ),
-                                                ),
+                                  SizedBox(height: 25),
+                                  Column(
+                                    children: [
+                                      GestureDetector(
+                                          child: Container(
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              color: bone80,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                                bottomRight: Radius.circular(0),
+                                                bottomLeft: Radius.circular(0),
                                               ),
-                                              GestureDetector(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                    left: 95,
-                                                    bottom: 5,
-                                                  ),
-                                                  child: Container(
-                                                    height: 19,
-                                                    width: 19,
-                                                    decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: shark,
-                                                        border: Border.all(
-                                                            color: snow,
-                                                            width: 3.0,
-                                                            strokeAlign: BorderSide
-                                                                .strokeAlignOutside)),
-                                                    child: Center(
-                                                      child: Padding(
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(5),
+                                                                    .only(
+                                                                left: 20.0),
                                                         child: SvgPicture.asset(
-                                                          'assets/icons/generalIcons/exitLine.svg',
-                                                          color: snow,
+                                                          'assets/icons/generalIcons/clock.svg',
+                                                          height: 21.5,
                                                         ),
                                                       ),
-                                                    ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 10.0),
+                                                        child: Text(
+                                                          'Start time',
+                                                          style:
+                                                              settingsDefaultHeaderText,
+                                                        ),
+                                                      ),
+                                                      Spacer(),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 20.0),
+                                                        child: Text(
+                                                          startTimeFormatted,
+                                                          style: popUpMenuText,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                                onTap: () => {
-                                                  setModalSheetPage2State(
-                                                    () {
-                                                      _focusedDateStartTimes
-                                                          .remove(_startTimes);
-                                                    },
-                                                  )
-                                                },
-                                              )
-                                            ],
-                                          );
-                                        },
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            displayTimePicker(
+                                                true, setModalSheetPage2State);
+                                          }),
+                                      PageDivider(
+                                        leftPadding: 0,
+                                        rightPadding: 0,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                MultiSliver(children: [
-                                  SizedBox(height: 15),
+                                      GestureDetector(
+                                          child: Container(
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              color: bone80,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(0),
+                                                topRight: Radius.circular(0),
+                                                bottomRight:
+                                                    Radius.circular(20),
+                                                bottomLeft: Radius.circular(20),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 20.0),
+                                                        child: SvgPicture.asset(
+                                                          'assets/icons/generalIcons/clock.svg',
+                                                          height: 21.5,
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 10.0),
+                                                        child: Text(
+                                                          'End time',
+                                                          style:
+                                                              settingsDefaultHeaderText,
+                                                        ),
+                                                      ),
+                                                      Spacer(),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                right: 20.0),
+                                                        child: Text(
+                                                          endTimeFormatted,
+                                                          style: popUpMenuText,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            displayTimePicker(
+                                                false, setModalSheetPage2State);
+                                          }),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20),
                                   RecurrencePopUpMenu(
                                     modalSetState: setModalSheetPage2State,
                                     child: Container(
@@ -360,7 +468,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 6.0),
+                                                          left: 10.0),
                                                   child: Text(
                                                     'Repeat',
                                                     style:
@@ -405,21 +513,14 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 50,
-                                  ),
-                                  FooterButton(
-                                      buttonColor: strawberry,
-                                      textColor: snow,
-                                      buttonText: 'Remove date'),
-                                  SizedBox(
-                                    height: 10,
+                                    height: 20,
                                   ),
                                   GestureDetector(
                                     child: FooterButton(
                                         buttonColor: ocean,
                                         textColor: snow,
                                         buttonText: 'Save'),
-                                    onTap: () => {},
+                                    onTap: () => {Navigator.of(context).pop()},
                                   ),
                                 ])
                               ],
@@ -434,6 +535,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         });
   }
 
+  //Time Picker Modal Sheet
   void displayTimePicker(bool isStartDateLabel, StateSetter modalsetState) {
     DateTime initialTime = isStartDateLabel ? startTime : endTime;
 
@@ -446,15 +548,18 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
               color: snow,
               borderRadius: BorderRadius.circular(20),
             ),
-            height: MediaQuery.of(context).copyWith().size.height * 0.42,
+            height: MediaQuery.of(context).copyWith().size.height * 0.57,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(
+                    top: 30.0,
+                    bottom: 20.0,
+                  ),
                   child: Center(
                       child: Text(
-                    "Start time",
+                    "Select a time",
                     style: TextStyle(
                       fontFamily: 'SFDisplay',
                       color: jetBlack,
@@ -474,20 +579,22 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 //   ),
                 // ),
                 Container(
-                  height: MediaQuery.of(context).copyWith().size.height * 0.25,
+                  height: MediaQuery.of(context).copyWith().size.height * 0.3,
                   child: CupertinoDatePicker(
                     mode: CupertinoDatePickerMode.time,
                     onDateTimeChanged: (value) {
                       if (isStartDateLabel) {
-                        if (value != null && value != startTime) {
+                        if (value != startTime) {
                           setState(() {
                             startTime = value;
                           });
                         }
                       } else {
-                        if (value != null && value != endTime) {
+                        if (value != endTime) {
                           setState(() {
                             endTime = value;
+
+                            //Add checks for if End Date is before start date
                           });
                         }
                       }
@@ -497,24 +604,110 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                     maximumYear: 2050,
                   ),
                 ),
+                SizedBox(height: 50.0),
                 GestureDetector(
                   child: FooterButton(
                       buttonColor: bone,
                       textColor: jetBlack,
-                      buttonText: 'Add'),
-                  onTap: () => {
-                    Navigator.of(context).pop(),
+                      buttonText: 'Done'),
+                  onTap: () {
+                    Navigator.of(context).pop();
                     modalsetState(() {
-                      if (_focusedDateStartTimes.contains(startTime)) {
-                        return;
-                      } else {
-                        _focusedDateStartTimes.add(startTime);
-                      }
-                      print(_focusedDateStartTimes);
-                    })
+                      startTime = startTime;
+                      endTime = endTime;
+                    });
                   },
                 )
               ],
+            ),
+          );
+        });
+  }
+
+  //Class Picker Modal Sheet
+  void displayClassPicker(StateSetter modalsetState) {
+    showCupertinoModalPopup(
+        barrierColor: jetBlack60,
+        context: context,
+        builder: (BuildContext builder) {
+          return Container(
+            decoration: BoxDecoration(
+              color: snow,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            height: MediaQuery.of(context).copyWith().size.height * 0.57,
+            width: double.maxFinite,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 25,
+                        bottom: 15,
+                      ),
+                      child: ClipOval(
+                        child: Container(
+                          color: jetBlack40,
+                          height: 25,
+                          width: 25,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: SvgPicture.asset(
+                              'assets/icons/generalIcons/exit.svg',
+                              color: snow,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () => {Navigator.of(context).pop()},
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      bottom: 20.0,
+                    ),
+                    child: Text(
+                      "Select a class",
+                      style: TextStyle(
+                        fontFamily: 'SFDisplay',
+                        color: jetBlack,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.none,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  ListView.builder(
+                      primary: false,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      padding: EdgeInsets.zero,
+                      itemCount: allClasses.length,
+                      itemBuilder: (context, index) {
+                        final allClassesList = allClasses[index];
+                        return GestureDetector(
+                          child: selectClassListItem(
+                              allClassesList.classImageUrl,
+                              allClassesList.className),
+                          onTap: () {
+                            modalsetState(() {
+                              isClassSelected = true;
+                              selectedClassName = allClassesList.className;
+                              selectedClassImageUrl =
+                                  allClassesList.classImageUrl;
+                            });
+                            HapticFeedback.lightImpact();
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      }),
+                ],
+              ),
             ),
           );
         });
@@ -528,28 +721,46 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
       //AppBar
       appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: false,
-        elevation: 0,
-        backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
+          toolbarHeight: 80,
+          centerTitle: false,
+          elevation: 0,
+          backgroundColor: snow,
+          automaticallyImplyLeading: false,
+          title: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 0,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    print("Back");
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Back", style: logInPageNavigationButtons),
+                ),
+              ),
+            ],
+          ),
+          actions: [
             Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back");
-                  Navigator.of(context).pop();
+              padding: const EdgeInsets.only(right: 26.0),
+              child: GestureDetector(
+                child: SvgPicture.asset(
+                  'assets/icons/generalIcons/create.svg',
+                  color: jetBlack,
+                  height: 22,
+                  width: 22,
+                ),
+                onTap: () {
+                  recurranceType = 'None';
+                  startTime = DateTime.now();
+                  endTime = DateTime.now().add(Duration(hours: 1));
+                  displayClassAndTimePicker();
                 },
-                child: Text("Back", style: logInPageNavigationButtons),
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          ]),
 
       //Body
       body: Column(
@@ -611,12 +822,50 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                 bottomRight: Radius.circular(20)),
                           ),
                         ]),
-                        child: ScheduledClassTile(
-                            classImageUrl: scheduledClass.classImageUrl,
-                            classTitle: scheduledClass.className,
-                            classTrainer: scheduledClass.trainerFirstName,
-                            classTrainerImageUrl:
-                                scheduledClass.trainerImageUrl),
+                        child: GestureDetector(
+                          child: ScheduledClassTile(
+                              classImageUrl: scheduledClass.classImageUrl,
+                              classTitle: scheduledClass.className,
+                              classTrainer: scheduledClass.trainerFirstName,
+                              classTrainerImageUrl:
+                                  scheduledClass.trainerImageUrl),
+//--------------------------------------------------------FIX THIS ------------------------------------------------------------------------------------//
+                          onTap: () => {
+                            print('Classpressed'),
+                            Navigator.push(
+                                context,
+                                PageTransition(
+                                    child: ClassCardOpen(
+                                        classTrainer:
+                                            scheduledClass.classTrainer,
+                                        trainerFirstName:
+                                            scheduledClass.trainerFirstName,
+                                        trainerLastName:
+                                            scheduledClass.trainerLastName,
+                                        className: scheduledClass.className,
+                                        classType: scheduledClass.classType,
+                                        classLocation:
+                                            scheduledClass.classLocation,
+                                        classPrice: scheduledClass.classPrice,
+                                        classLiked: scheduledClass.classLiked,
+                                        classImage:
+                                            scheduledClass.classImageUrl,
+                                        trainerImageUrl:
+                                            scheduledClass.trainerImageUrl,
+                                        classRating: scheduledClass.classRating,
+                                        classReviews:
+                                            scheduledClass.classReview,
+                                        classDescription:
+                                            scheduledClass.classDescription,
+                                        classWhatToExpect:
+                                            scheduledClass.classWhatToExpect,
+                                        classWhatYouWillNeed: scheduledClass
+                                            .classUserRequirements),
+                                    type: PageTransitionType.fade,
+                                    duration: Duration(milliseconds: 0),
+                                    reverseDuration: Duration(milliseconds: 0)))
+                          },
+                        ),
                       );
                     }),
               ),
@@ -828,6 +1077,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                     widget.modalSetState(() {
                       recurranceType = 'None';
                     }),
+                    HapticFeedback.selectionClick(),
+                    Navigator.of(context, rootNavigator: true).pop("Discard")
                   },
                 )
               ],
@@ -856,6 +1107,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                     widget.modalSetState(() {
                       recurranceType = 'Daily';
                     }),
+                    HapticFeedback.selectionClick(),
+                    Navigator.of(context, rootNavigator: true).pop("Discard")
                   },
                 )
               ],
@@ -884,6 +1137,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                     widget.modalSetState(() {
                       recurranceType = 'Weekly';
                     }),
+                    HapticFeedback.selectionClick(),
+                    Navigator.of(context, rootNavigator: true).pop("Discard")
                   },
                 )
               ],
@@ -912,6 +1167,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                     widget.modalSetState(() {
                       recurranceType = 'Bi-Weekly';
                     }),
+                    HapticFeedback.selectionClick(),
+                    Navigator.of(context, rootNavigator: true).pop("Discard")
                   },
                 )
               ],
@@ -940,6 +1197,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                     widget.modalSetState(() {
                       recurranceType = 'Monthly';
                     }),
+                    HapticFeedback.selectionClick(),
+                    Navigator.of(context, rootNavigator: true).pop("Discard")
                   },
                 )
               ],
@@ -968,6 +1227,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                     widget.modalSetState(() {
                       recurranceType = 'Yearly';
                     }),
+                    HapticFeedback.selectionClick(),
+                    Navigator.of(context, rootNavigator: true).pop("Discard")
                   },
                 )
               ],

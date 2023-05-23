@@ -11,8 +11,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
-import '../../../main.dart';
-
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
 
@@ -87,6 +85,8 @@ Widget textInputUsername() {
             child: Center(
                 child: SvgPicture.asset(
               'assets/icons/generalIcons/user.svg',
+              height: 22.5,
+              width: 18,
               color: jetBlack40,
             )),
           ),
@@ -174,7 +174,6 @@ Widget signInPartners() {
                 padding: const EdgeInsets.only(right: 11),
                 child: SvgPicture.asset(
                   'assets/icons/externalCompanyIcons/Apple.svg',
-                  color: jetBlack,
                 ),
               ),
               Text(
@@ -210,7 +209,8 @@ Widget signInPartners() {
               Padding(
                 padding: const EdgeInsets.only(right: 11),
                 child: SvgPicture.asset(
-                    'assets/icons/externalCompanyIcons/Google.svg'),
+                  'assets/icons/externalCompanyIcons/Google.svg',
+                ),
               ),
               Text(
                 'Continue with Google',
@@ -303,6 +303,7 @@ class _SignInState extends State<SignIn> {
                                 child: SvgPicture.asset(
                               'assets/icons/generalIcons/lock.svg',
                               color: jetBlack40,
+                              width: 18,
                             )),
                           ),
                         ),

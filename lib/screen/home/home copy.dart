@@ -147,7 +147,7 @@ class _HomeTestState extends State<HomeTest> {
                 children: [
                   GestureDetector(
                     child: SvgPicture.asset(
-                      'assets/icons/generalIcons/createClass.svg',
+                      'assets/icons/generalIcons/create.svg',
                       height: 20,
                       width: 20,
                     ),
@@ -223,7 +223,7 @@ class _HomeTestState extends State<HomeTest> {
                 children: [
                   Hero(
                       tag: 'SearchBar',
-                      child: SearchBar(
+                      child: FitsySearchBar(
                         isAutoFocusTrue: false,
                         searchBarWidth: searchBarWidth,
                         searchHintText: 'Search',

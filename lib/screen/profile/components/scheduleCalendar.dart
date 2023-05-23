@@ -130,7 +130,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _focusedDay = focusedDay;
-      _formattedDate = Jiffy(_focusedDay).format("MMMM do");
+      _formattedDate =
+          Jiffy.parseFromDateTime(_focusedDay).format(pattern: "MMMM do");
       _selectedDays.clear();
       _selectedDays.add(selectedDay);
       // // Update values in a Set
@@ -263,8 +264,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           var _startTimes =
                                               _focusedDateStartTimes[index];
                                           var _formattedStartTime =
-                                              Jiffy(_startTimes)
-                                                  .format("h:mm a");
+                                              Jiffy.parseFromDateTime(
+                                                      _startTimes)
+                                                  .format(pattern: "h:mm a");
                                           return Stack(
                                             children: [
                                               Center(
