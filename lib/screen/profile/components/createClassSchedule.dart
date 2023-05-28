@@ -798,73 +798,52 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                     itemCount: scheduledClassesList.length,
                     itemBuilder: (context, index) {
                       final scheduledClass = scheduledClassesList[index];
-                      return Slidable(
-                        endActionPane:
-                            ActionPane(motion: ScrollMotion(), children: [
-                          SlidableAction(
-                            // An action can be bigger than the others.
-                            flex: 2,
-                            onPressed: doNothing,
-                            backgroundColor: bone,
-                            foregroundColor: jetBlack,
-                            icon: Icons.edit,
-                            label: 'Edit',
-                          ),
-                          SlidableAction(
-                            flex: 2,
-                            onPressed: doNothing,
-                            backgroundColor: strawberry,
-                            foregroundColor: snow,
-                            icon: Icons.delete,
-                            label: 'Delete',
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20)),
-                          ),
-                        ]),
-                        child: GestureDetector(
+                      return GestureDetector(
+                        child: Slidable(
+                          endActionPane:
+                              ActionPane(motion: ScrollMotion(), children: [
+                            SlidableAction(
+                              // An action can be bigger than the others.
+                              flex: 2,
+                              onPressed: doNothing,
+                              backgroundColor: bone,
+                              foregroundColor: jetBlack,
+                              icon: Icons.edit,
+                              label: 'Edit',
+                            ),
+                            SlidableAction(
+                              flex: 2,
+                              onPressed: doNothing,
+                              backgroundColor: strawberry,
+                              foregroundColor: snow,
+                              icon: Icons.delete,
+                              label: 'Delete',
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20)),
+                            ),
+                          ]),
                           child: ScheduledClassTile(
-                              classImageUrl: scheduledClass.classImageUrl,
-                              classTitle: scheduledClass.className,
-                              classTrainer: scheduledClass.trainerFirstName,
-                              classTrainerImageUrl:
-                                  scheduledClass.trainerImageUrl),
-//--------------------------------------------------------FIX THIS ------------------------------------------------------------------------------------//
-                          onTap: () => {
-                            print('Classpressed'),
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    child: ClassCardOpen(
-                                        classTrainer:
-                                            scheduledClass.classTrainer,
-                                        trainerFirstName:
-                                            scheduledClass.trainerFirstName,
-                                        trainerLastName:
-                                            scheduledClass.trainerLastName,
-                                        className: scheduledClass.className,
-                                        classType: scheduledClass.classType,
-                                        classLocation:
-                                            scheduledClass.classLocation,
-                                        classPrice: scheduledClass.classPrice,
-                                        classLiked: scheduledClass.classLiked,
-                                        classImage:
-                                            scheduledClass.classImageUrl,
-                                        trainerImageUrl:
-                                            scheduledClass.trainerImageUrl,
-                                        classRating: scheduledClass.classRating,
-                                        classReviews:
-                                            scheduledClass.classReview,
-                                        classDescription:
-                                            scheduledClass.classDescription,
-                                        classWhatToExpect:
-                                            scheduledClass.classWhatToExpect,
-                                        classWhatYouWillNeed: scheduledClass
-                                            .classUserRequirements),
-                                    type: PageTransitionType.fade,
-                                    duration: Duration(milliseconds: 0),
-                                    reverseDuration: Duration(milliseconds: 0)))
-                          },
+                            classImageUrl: scheduledClass.classImageUrl,
+                            classTitle: scheduledClass.className,
+                            classTrainer: scheduledClass.trainerFirstName,
+                            classTrainerImageUrl:
+                                scheduledClass.trainerImageUrl,
+                            classDescription: scheduledClass.classDescription,
+                            classLiked: scheduledClass.classLiked,
+                            classLocation: scheduledClass.classLocation,
+                            classPrice: scheduledClass.classPrice,
+                            classRating: scheduledClass.classRating,
+                            classReviews: scheduledClass.classReview,
+                            classTrainerFirstName:
+                                scheduledClass.trainerFirstName,
+                            classTrainerLastName:
+                                scheduledClass.trainerLastName,
+                            classType: scheduledClass.classType,
+                            classWhatToExpect: scheduledClass.classWhatToExpect,
+                            classWhatYouWillNeed:
+                                scheduledClass.classUserRequirements,
+                          ),
                         ),
                       );
                     }),

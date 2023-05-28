@@ -1,7 +1,10 @@
+import 'package:balance/feModels/classModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:page_transition/page_transition.dart';
 
 import '../../../constants.dart';
+import '../../home/components/classCardOpen.dart';
 
 class ScheduledClassTile extends StatelessWidget {
   ScheduledClassTile({
@@ -10,13 +13,34 @@ class ScheduledClassTile extends StatelessWidget {
     required this.classTitle,
     required this.classTrainer,
     required this.classTrainerImageUrl,
+    required this.classTrainerFirstName,
+    required this.classTrainerLastName,
+    required this.classType,
+    required this.classLocation,
+    required this.classPrice,
+    required this.classLiked,
+    required this.classRating,
+    required this.classReviews,
+    required this.classDescription,
+    required this.classWhatToExpect,
+    required this.classWhatYouWillNeed,
   }) : super(key: key);
 
   String classImageUrl;
-
   String classTitle;
   String classTrainer;
   String classTrainerImageUrl;
+  String classTrainerFirstName;
+  String classTrainerLastName;
+  ClassType classType;
+  String classLocation;
+  double classPrice;
+  bool classLiked;
+  double classRating;
+  int classReviews;
+  String classDescription;
+  String classWhatToExpect;
+  String classWhatYouWillNeed;
 
 //------Widgets------
 
@@ -115,7 +139,31 @@ class ScheduledClassTile extends StatelessWidget {
           contentPadding: EdgeInsets.zero,
 
           //Tap Function
-          onTap: () {},
+          onTap: () => {
+            print('Classpressed'),
+            Navigator.push(
+                context,
+                PageTransition(
+                    child: ClassCardOpen(
+                        classTrainer: classTrainer,
+                        trainerFirstName: classTrainerFirstName,
+                        trainerLastName: classTrainerLastName,
+                        className: classTitle,
+                        classType: classType,
+                        classLocation: classLocation,
+                        classPrice: classPrice,
+                        classLiked: classLiked,
+                        classImage: classImageUrl,
+                        trainerImageUrl: classTrainerImageUrl,
+                        classRating: classRating,
+                        classReviews: classReviews,
+                        classDescription: classDescription,
+                        classWhatToExpect: classWhatToExpect,
+                        classWhatYouWillNeed: classWhatYouWillNeed),
+                    type: PageTransitionType.fade,
+                    duration: Duration(milliseconds: 0),
+                    reverseDuration: Duration(milliseconds: 0)))
+          },
 
           //Class Image (Leading)
           leading: Container(
