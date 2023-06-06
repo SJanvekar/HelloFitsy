@@ -135,6 +135,14 @@ const sectionTitles = TextStyle(
   decoration: TextDecoration.none,
 );
 
+const sectionTitlesH2 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
 const sectionTitlesClassCreation = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,

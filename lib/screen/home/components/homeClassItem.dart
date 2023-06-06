@@ -139,7 +139,7 @@ class _HomeClassItem extends State<HomeClassItem> {
               bottom: 10,
             ),
             child: OpenContainer(
-              transitionDuration: Duration(milliseconds: 350),
+              transitionDuration: const Duration(milliseconds: 300),
               openShape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               closedShape: RoundedRectangleBorder(
@@ -177,27 +177,19 @@ class _HomeClassItem extends State<HomeClassItem> {
                     child: Stack(
                       // alignment: Alignment.bottomCenter,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    jetBlack.withOpacity(0.0),
-                                    jetBlack,
-                                  ],
-                                  stops: [
-                                    0.0,
-                                    1.0
-                                  ]),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                    widget.classImage,
-                                  ),
-                                  fit: BoxFit.cover),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          height: 400,
+                        Hero(
+                          tag: widget.className,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                      widget.classImage,
+                                    ),
+                                    fit: BoxFit.cover),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            height: 400,
+                          ),
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -220,11 +212,6 @@ class _HomeClassItem extends State<HomeClassItem> {
                                   ])),
                           height: 400,
                         ),
-                        // Positioned(
-                        //     bottom: 20,
-                        //     left: 20,
-                        //     child:
-                        //         classTitle(widget.className, titleBoxWidth)),
                         Positioned(
                           bottom: 20,
                           left: 20,

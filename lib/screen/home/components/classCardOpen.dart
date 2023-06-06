@@ -1,9 +1,11 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/moreClassInfoModal.dart';
@@ -12,6 +14,7 @@ import 'package:balance/sharedWidgets/reviewCard.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:dismissible_page/dismissible_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -19,6 +22,7 @@ import 'package:intl/intl.dart';
 
 import '../../../feModels/classModel.dart';
 import '../../../sharedWidgets/classMoreActions.dart';
+import '../../profile/components/profile.dart';
 
 final oCcy = new NumberFormat("#,##0", "en_US");
 
@@ -97,7 +101,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
 
   Widget classTrainer() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -105,7 +109,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             imageURL: widget.trainerImageUrl,
             profileImageRadius: 25,
             userFullName:
-                widget.trainerFirstName + ' ' + widget.trainerLastName,
+                '${widget.trainerFirstName} ${widget.trainerLastName}',
             userFullNameFontSize: 16,
             userName: widget.classTrainer,
             userNameFontSize: 13,
@@ -453,11 +457,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           expandedHeight: MediaQuery.of(context).size.height * 0.38,
           flexibleSpace: FlexibleSpaceBar(
             stretchModes: const [StretchMode.zoomBackground],
-            background: Hero(
-              tag: widget.className,
-              child: Stack(
-                children: [
-                  Container(
+            background: Stack(
+              children: [
+                Hero(
+                  tag: widget.className,
+                  child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
                           image: NetworkImage(
@@ -466,24 +470,24 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                           fit: BoxFit.cover),
                     ),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                          snow.withOpacity(0.0),
-                          jetBlack.withOpacity(0.15),
-                          jetBlack.withOpacity(0.35),
-                        ],
-                            stops: [
-                          0.0,
-                          0.6,
-                          1.0
-                        ])),
-                  ),
-                ],
-              ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                        snow.withOpacity(0.0),
+                        jetBlack.withOpacity(0.15),
+                        jetBlack.withOpacity(0.35),
+                      ],
+                          stops: [
+                        0.0,
+                        0.6,
+                        1.0
+                      ])),
+                ),
+              ],
             ),
             titlePadding: EdgeInsets.zero,
             title: Padding(
@@ -591,11 +595,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classTitle(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 5, left: 26.0, right: 26.0),
+            padding: const EdgeInsets.only(top: 8, left: 26.0, right: 26.0),
             child: classSubHeader(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -639,7 +643,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classDesc(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -684,7 +688,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classWhatToExpect(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -728,7 +732,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classWhatYouwillNeed(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(
               leftPadding: 26.0,
               rightPadding: 26.0,
@@ -747,7 +751,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
               child: classTrainerSpotlight()),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -799,10 +803,31 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               top: 14,
               bottom: 46,
             ),
-            child: FooterButton(
-              buttonColor: strawberry,
-              buttonText: 'Inquire',
-              textColor: snow,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+              child: GestureDetector(
+                child: FooterButton(
+                  buttonColor: strawberry,
+                  buttonText: 'Purchase Class',
+                  textColor: snow,
+                ),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Timer(Duration(milliseconds: 150), () {
+                    showCupertinoModalPopup(
+                        semanticsDismissible: true,
+                        barrierDismissible: true,
+                        barrierColor: jetBlack60,
+                        context: context,
+                        builder: (BuildContext builder) {
+                          return PurchaseClassSelectDates(
+                            classImageUrl: widget.classImage,
+                            className: widget.className,
+                          );
+                        });
+                  });
+                },
+              ),
             ),
           )),
     );
