@@ -1,17 +1,15 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
-const crypto = require("crypto");
 
-const id = crypto.randomBytes(16).toString("hex");
+var ClassLikedSchema = new Schema({
 
-var ClassSchema = new Schema({
-    //classID
-    ClassID: {
+    //Username
+    Username: {
         type: String,
-        default: id,
-        unique: true
-
+        required: true,
+        unique: true,
+        lowercase: true,
+        index: true
     },
 
     //Class Name
@@ -22,24 +20,6 @@ var ClassSchema = new Schema({
 
     //Class Name
     ClassImageUrl: {
-        type: String,
-        required: true
-    },
-    
-    //Class Desc
-    ClassDescription: {
-        type: String,
-        required: true
-    },
-
-    //Class What to expect
-    ClassWhatToExpect: {
-        type: String,
-        required: true
-    },
-
-    //Class User Requirements
-    ClassUserRequirements: {
         type: String,
         required: true
     },
@@ -63,38 +43,12 @@ var ClassSchema = new Schema({
 
     },
 
-    //Class Rating
-    ClassRating: {
-        type: Number,
-        required: true
-
-    },
-
-    //Class Review
-    ClassReview: {
-        type: Number,
-        required: true
-
-    },
-
-    //Class Price
-    ClassPrice: {
-        type: Number,
-        required: true,
-    },
-
     //Class Trainer
     ClassTrainer: {
         type: String,
         required: true,
         required: true,
     },
-
-    //Categories (Linked)
-    Categories: [{
-        type: String,
-        required: false,
-    }],
 
     //Trainer Profile Image URL
     TrainerImageUrl: {
@@ -115,4 +69,4 @@ var ClassSchema = new Schema({
     },
 })
 
-module.exports = mongoose.model('Class', ClassSchema)
+module.exports = mongoose.model('Class Liked', ClassLikedSchema)

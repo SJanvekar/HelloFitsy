@@ -22,6 +22,7 @@ class FollowerRequests {
     }
   }
 
+  //Get Follower List
   getFollowerList(String username) async {
     try {
       return await dio.get(

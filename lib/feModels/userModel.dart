@@ -13,6 +13,8 @@ class User {
   String userEmail;
   String password;
   late List<String> categories;
+
+  //TODO: Delete below when done with listSchemaChanges branch
   late List<String> likedClasses;
   late List<String> classHistory;
   late List<String> following;
