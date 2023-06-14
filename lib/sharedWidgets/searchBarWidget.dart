@@ -1,4 +1,5 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:balance/Requests/userRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 class SearchBar extends StatefulWidget {
   SearchBar({
@@ -31,6 +33,20 @@ class SearchBar extends StatefulWidget {
 var _controller = TextEditingController();
 
 class _SearchBarState extends State<SearchBar> {
+  late Timer onStoppedTyping = new Timer(duration, () => search('test'));
+  static const duration = Duration(milliseconds: 800);
+
+  void search(String val) {
+    print('hello world from search . the value is $val');
+    if (val.isNotEmpty) {
+      UserRequests().searchTrainers(val).then((val) async {
+        if (val.data['success']) {
+          print(val.data['searchResults']);
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -39,8 +55,10 @@ class _SearchBarState extends State<SearchBar> {
         width: widget.searchBarWidth,
         height: 45,
         child: TextField(
-          onChanged: (String text) {
-            setState(() {});
+          onChanged: (val) {
+            setState(() => onStoppedTyping.cancel());
+            setState(
+                () => onStoppedTyping = new Timer(duration, () => search(val)));
           },
           controller: _controller,
           autofocus: widget.isAutoFocusTrue,
