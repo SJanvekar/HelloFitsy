@@ -18,7 +18,7 @@ var ClassHistorySchema = new Schema({
         required: true
     },
 
-    //Class Name
+    //Class Image
     ClassImageUrl: {
         type: String,
         required: true

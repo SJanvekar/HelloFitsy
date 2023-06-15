@@ -18,7 +18,7 @@ var ClassLikedSchema = new Schema({
         required: true
     },
 
-    //Class Name
+    //Class Picture
     ClassImageUrl: {
         type: String,
         required: true

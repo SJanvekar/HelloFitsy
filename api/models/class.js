@@ -60,21 +60,18 @@ var ClassSchema = new Schema({
     ClassLocation: {
         type: String,
         required: true
-
     },
 
     //Class Rating
     ClassRating: {
         type: Number,
         required: true
-
     },
 
     //Class Review
     ClassReview: {
         type: Number,
         required: true
-
     },
 
     //Class Price
