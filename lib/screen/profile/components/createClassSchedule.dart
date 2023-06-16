@@ -39,6 +39,7 @@ class ScheduleCalendar extends StatefulWidget {
   State<ScheduleCalendar> createState() => _ScheduleCalendar();
 }
 
+//Global Variables
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.now().add(Duration(hours: 1));
 bool isClassSelected = false;
@@ -47,6 +48,7 @@ String selectedClassImageUrl = '';
 List<Class> scheduledClassesList = classList;
 List<Class> allClasses = classList;
 
+//Class Placeholder until a class gets selected
 Widget selectClassPlaceholder() {
   return Container(
       width: double.maxFinite,
@@ -79,6 +81,7 @@ Widget selectClassPlaceholder() {
       ));
 }
 
+//Selected Class Item
 Widget selectClassListItem(image, className) {
   return Row(
     children: [

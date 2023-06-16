@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:balance/constants.dart';
+import 'package:balance/screen/profile/components/createClassSchedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,36 @@ class PurchaseClassSelectDates extends StatefulWidget {
   State<PurchaseClassSelectDates> createState() =>
       _PurchaseClassSelectDatesState();
 }
+
+//Test List of Dates/Times for purchasing a class (This is a custom class, will definately need cleaning up)
+class classTimes {
+  late DateTime startTime;
+  late DateTime endTime;
+  bool isSelected = false;
+
+  classTimes(
+      {required this.startTime,
+      required this.endTime,
+      required this.isSelected});
+}
+
+List<classTimes> availableTimesTemp = [
+  classTimes(
+      startTime: DateTime.now(),
+      endTime: DateTime.now().add(Duration(hours: 2)),
+      isSelected: false),
+  classTimes(
+      startTime: DateTime.now().add(Duration(hours: 4)),
+      endTime: DateTime.now().add(Duration(hours: 6)),
+      isSelected: false),
+  classTimes(
+      startTime: DateTime.now().add(Duration(hours: 8)),
+      endTime: DateTime.now().add(Duration(hours: 10)),
+      isSelected: false),
+];
+
+//Initialize the list for times for this class
+List<classTimes> availableTimes = availableTimesTemp;
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
@@ -234,6 +265,85 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                             ),
                             const SizedBox(
                               height: 20,
+                            ),
+                            SliverGrid(
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 0,
+                                crossAxisSpacing: 0,
+                                childAspectRatio: 2,
+                              ),
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  final classTime = availableTimes[index];
+                                  TextStyle startTimeStyle = classStartTime;
+                                  TextStyle endTimeStyle = classEndTime;
+                                  Color timeContainerColor = bone;
+                                  return StatefulBuilder(
+                                    builder: (BuildContext context,
+                                        StateSetter selectTimeState) {
+                                      return Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 5.0,
+                                          right: 5.0,
+                                        ),
+                                        child: GestureDetector(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: classTime.isSelected
+                                                    ? strawberry
+                                                    : bone,
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            padding: const EdgeInsets.all(10),
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    Jiffy.parse(classTime
+                                                            .startTime
+                                                            .toString())
+                                                        .format(
+                                                            pattern: "h:mm a"),
+                                                    style: classTime.isSelected
+                                                        ? classStartTimeSelected
+                                                        : classStartTime,
+                                                  ),
+                                                  Text(
+                                                    Jiffy.parse(classTime
+                                                            .endTime
+                                                            .toString())
+                                                        .format(
+                                                            pattern: "h:mm a"),
+                                                    style: classTime.isSelected
+                                                        ? classEndTimeSelected
+                                                        : classEndTime,
+                                                  ),
+                                                ]),
+                                          ),
+                                          onTap: () {
+                                            HapticFeedback.selectionClick();
+                                            selectTimeState(() {
+                                              print(classTime.startTime);
+                                              print(classTime.endTime);
+                                              classTime.isSelected =
+                                                  !classTime.isSelected;
+                                            });
+                                          },
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                childCount: availableTimes.length,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 45,
                             ),
                             Spacer(),
                           ])

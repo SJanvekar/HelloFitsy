@@ -3,6 +3,7 @@ import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/userModel.dart';
 import 'package:balance/screen/home/home%20copy.dart';
+import 'package:balance/screen/login/components/forgotPassword.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -125,19 +126,14 @@ Widget textInputUsername() {
 Widget forgotPassword() {
   return Padding(
     padding: const EdgeInsets.only(top: 15, left: 200),
-    child: GestureDetector(
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(
-          fontFamily: 'SFDisplay',
-          color: jetBlack40,
-          fontSize: 14,
-          fontWeight: FontWeight.w500,
-        ),
+    child: Text(
+      'Forgot password?',
+      style: TextStyle(
+        fontFamily: 'SFDisplay',
+        color: jetBlack40,
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
       ),
-      onTap: () {
-        print('Forgot Password Selected');
-      },
     ),
   );
 }
@@ -267,6 +263,15 @@ class _SignInState extends State<SignIn> {
                 right: 158,
               ),
               child: TextButton(
+                style: ButtonStyle(
+                  overlayColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.transparent;
+                    }
+                    return snow;
+                  }),
+                ),
                 onPressed: () {
                   print("Personal Information Pressed");
                   Navigator.of(context).pop(CupertinoPageRoute(
@@ -343,7 +348,14 @@ class _SignInState extends State<SignIn> {
                   //TextInput Password
 
                   //forgot password
-                  forgotPassword(),
+                  GestureDetector(
+                    child: forgotPassword(),
+                    onTap: () {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => ForgotPasswordPage()));
+                    },
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(top: 45.0),
                     child: GestureDetector(

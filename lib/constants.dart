@@ -159,12 +159,29 @@ const dateSelectionTitle = TextStyle(
   decoration: TextDecoration.none,
 );
 
-const scheduleStartTimes = TextStyle(
+const classStartTime = TextStyle(
+    color: jetBlack,
     fontFamily: 'SFRounded',
-    color: jetBlack60,
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    decoration: TextDecoration.none);
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
+
+const classEndTime = TextStyle(
+    color: jetBlack40,
+    fontFamily: 'SFRounded',
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
+
+const classStartTimeSelected = TextStyle(
+    color: snow,
+    fontFamily: 'SFRounded',
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
+
+const classEndTimeSelected = TextStyle(
+    color: snow,
+    fontFamily: 'SFRounded',
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
 
 const settingsDefaultHeaderText = TextStyle(
     fontFamily: 'SFDisplay',
@@ -205,6 +222,46 @@ const subheader1Font = TextStyle(
     fontFamily: 'SFDisplay',
     fontSize: 16,
     fontWeight: FontWeight.w500);
+
+const roundedNumberStyle1LightShadow = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+  shadows: <Shadow>[
+    Shadow(
+      offset: Offset(0, 0),
+      blurRadius: 8.0,
+      color: jetBlack80,
+    ),
+  ],
+);
+
+const roundedNumberStyle1LightShadowUnderlined = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 13,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.underline,
+  decorationStyle: TextDecorationStyle.solid,
+  shadows: <Shadow>[
+    Shadow(
+      offset: Offset(0, 0),
+      blurRadius: 8.0,
+      color: jetBlack80,
+    ),
+  ],
+);
+
+const roundedBodyTextStyle1 = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 12,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
     color: jetBlack80,

@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -61,6 +62,8 @@ class ClassCardOpen extends StatefulWidget {
   String classDescription;
   String classWhatToExpect;
   String classWhatYouWillNeed;
+  //This is a initalizer to test the highly rated badge on a class, this will need to be updated with actual values from the backend.
+  double classRatingTemp = 4.8;
 
   @override
   State<ClassCardOpen> createState() => _ClassCardOpenState();
@@ -90,14 +93,14 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       });
   }
 
-  //----------
+  //----------Functions-----------//
   bool get _isSliverAppBarExpanded {
     return _scrollController.hasClients &&
         _scrollController.offset >
             (MediaQuery.of(context).size.height * 0.38 - kToolbarHeight);
   }
 
-  //----------Widgets----------
+  //----------Widgets----------//
 
   Widget classTrainer() {
     return Padding(
@@ -121,8 +124,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  SvgPicture.asset('assets/icons/generalIcons/ellipses.svg',
-                      color: bone),
+                  Icon(
+                    Icons.more_horiz_rounded,
+                    color: iconColor,
+                    size: 25,
+                  ),
                   Container(
                     height: 40,
                     width: 60,
@@ -146,34 +152,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         ],
       ),
     );
-  }
-
-  //Price Container
-  Widget classPriceWidget() {
-    return Container(
-        color: snow,
-        child: Row(
-          children: [
-            Text(
-              '\$${oCcy.format(widget.classPrice.round())}',
-              style: TextStyle(
-                color: strawberry,
-                fontSize: 26,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 1.0),
-              child: Text(' /session',
-                  style: TextStyle(
-                      color: shark,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500)),
-            )
-          ],
-        ));
   }
 
 //Class Type and Title
@@ -246,16 +224,15 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     return Row(
       children: [
         //Star Icon
-        SvgPicture.asset(
-          'assets/icons/generalIcons/star.svg',
-          height: 14,
-          width: 14,
+        Icon(
+          Icons.stars_rounded,
           color: sunflower,
+          size: 20,
         ),
 
         //Rating (Numeric)
         Padding(
-          padding: const EdgeInsets.only(left: 5.0),
+          padding: const EdgeInsets.only(left: 2.0),
           child: Center(
             child: Text(
               '${widget.classRating}',
@@ -364,6 +341,34 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     );
   }
 
+  //Highly Rated Badge
+  Widget highlyRatedClassBadge() {
+    return Container(
+      height: 25,
+      padding: EdgeInsets.only(left: 8, right: 8),
+      decoration: const BoxDecoration(
+          color: sunflower,
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: 3.0),
+            child: Icon(
+              Icons.stars_rounded,
+              color: snow,
+              size: 20,
+            ),
+          ),
+          Text(
+            'Highly Rated',
+            style: roundedBodyTextStyle1,
+          )
+        ],
+      ),
+    );
+  }
+
   //Class Trainer Spotlight
   Widget classTrainerSpotlight() {
     return Column(
@@ -432,14 +437,10 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   height: 32,
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
-                    child: SvgPicture.asset(
-                      'assets/icons/generalIcons/arrowLeft.svg',
-                      color: iconColor,
-                      height: 13,
-                      width: 6,
-                    ),
+                  child: Icon(
+                    Icons.chevron_left_rounded,
+                    color: iconColor,
+                    size: 26,
                   ),
                 ),
               )),
@@ -459,16 +460,13 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             stretchModes: const [StretchMode.zoomBackground],
             background: Stack(
               children: [
-                Hero(
-                  tag: widget.className,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(
-                            widget.classImage,
-                          ),
-                          fit: BoxFit.cover),
-                    ),
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          widget.classImage,
+                        ),
+                        fit: BoxFit.cover),
                   ),
                 ),
                 Container(
@@ -528,7 +526,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           actions: [
             Padding(
               padding:
-                  const EdgeInsets.only(right: 20.0, top: 11.5, bottom: 11.5),
+                  const EdgeInsets.only(right: 15.0, top: 11.5, bottom: 11.5),
               child: GestureDetector(
                 child: ClipOval(
                     child: BackdropFilter(
@@ -543,12 +541,12 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                     decoration: BoxDecoration(color: iconCircleColor),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 2, bottom: 2),
-                      child: SvgPicture.asset(
+                      child: Icon(
                         widget.classLiked
-                            ? 'assets/icons/generalIcons/favouriteFill.svg'
-                            : 'assets/icons/generalIcons/favouriteEmpty.svg',
+                            ? Icons.favorite_rounded
+                            : Icons.favorite_outline_rounded,
                         color: widget.classLiked ? strawberry : iconColor,
-                        height: 16,
+                        size: 20,
                       ),
                     ),
                   ),
@@ -574,14 +572,10 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   height: 32,
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 14, bottom: 14),
-                    child: SvgPicture.asset(
-                      'assets/icons/generalIcons/ellipses.svg',
-                      color: iconColor,
-                      height: 13,
-                      width: 6,
-                    ),
+                  child: Icon(
+                    Icons.more_horiz_rounded,
+                    color: iconColor,
+                    size: 20,
                   ),
                 ),
               )),
@@ -591,7 +585,21 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         SliverList(
             delegate: SliverChildListDelegate([
           Padding(
-            padding: const EdgeInsets.only(top: 15.0, left: 26.0, right: 26.0),
+            padding: EdgeInsets.only(
+              top: 15.0,
+              left: 26.0,
+            ),
+
+            //Highly Rated Badge
+            //Row is added to reduce the size of the highly rated badge
+            child: Row(
+              children: [
+                if (widget.classRatingTemp > 4.7) highlyRatedClassBadge(),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
             child: classTitle(),
           ),
           Padding(
