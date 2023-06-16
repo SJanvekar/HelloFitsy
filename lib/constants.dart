@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+//localhost:8888
+//www.fitsy.ca
 const String urlDomain = 'http://www.fitsy.ca';
 
 //----MONGOOSE ERROR CODES-------------//
@@ -20,6 +22,13 @@ const strawberry80 = Color(0xccE6373A);
 const strawberry60 = Color(0x99E6373A);
 const strawberry40 = Color(0x66E6373A);
 const strawberry20 = Color(0x33E6373A);
+
+//Strawberry
+const emerald = Color(0xff0BD4A4);
+const emerald80 = Color(0xcc0BD4A4);
+const emerald60 = Color(0x990BD4A4);
+const emerald40 = Color(0x660BD4A4);
+const emerald20 = Color(0x330BD4A4);
 
 //JetBlack
 const jetBlack = Color(0xff23292F);
@@ -121,7 +130,15 @@ const homeFeedTitle = TextStyle(
 const sectionTitles = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 20,
+  fontSize: 19,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const sectionTitlesH2 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 16,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
@@ -137,17 +154,34 @@ const sectionTitlesClassCreation = TextStyle(
 const dateSelectionTitle = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 20.0,
+  fontSize: 22.0,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
 
-const scheduleStartTimes = TextStyle(
+const classStartTime = TextStyle(
+    color: jetBlack,
     fontFamily: 'SFRounded',
-    color: jetBlack60,
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    decoration: TextDecoration.none);
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
+
+const classEndTime = TextStyle(
+    color: jetBlack40,
+    fontFamily: 'SFRounded',
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
+
+const classStartTimeSelected = TextStyle(
+    color: snow,
+    fontFamily: 'SFRounded',
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
+
+const classEndTimeSelected = TextStyle(
+    color: snow,
+    fontFamily: 'SFRounded',
+    fontSize: 13,
+    fontWeight: FontWeight.w600);
 
 const settingsDefaultHeaderText = TextStyle(
     fontFamily: 'SFDisplay',
@@ -181,6 +215,51 @@ const doneTextButton = TextStyle(
   color: ocean,
   fontSize: 17,
   fontWeight: FontWeight.w600,
+);
+
+const subheader1Font = TextStyle(
+    color: jetBlack60,
+    fontFamily: 'SFDisplay',
+    fontSize: 16,
+    fontWeight: FontWeight.w500);
+
+const roundedNumberStyle1LightShadow = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+  shadows: <Shadow>[
+    Shadow(
+      offset: Offset(0, 0),
+      blurRadius: 8.0,
+      color: jetBlack80,
+    ),
+  ],
+);
+
+const roundedNumberStyle1LightShadowUnderlined = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 13,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.underline,
+  decorationStyle: TextDecorationStyle.solid,
+  shadows: <Shadow>[
+    Shadow(
+      offset: Offset(0, 0),
+      blurRadius: 8.0,
+      color: jetBlack80,
+    ),
+  ],
+);
+
+const roundedBodyTextStyle1 = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 12,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
 );
 
 //PROFILE SPECIFIC FONTS

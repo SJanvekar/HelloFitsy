@@ -1,9 +1,12 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/components/homeClassItem.dart';
+import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/moreClassInfoModal.dart';
@@ -12,12 +15,15 @@ import 'package:balance/sharedWidgets/reviewCard.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:dismissible_page/dismissible_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
+import '../../../feModels/classModel.dart';
 import '../../../sharedWidgets/classMoreActions.dart';
+import '../../profile/components/profile.dart';
 
 final oCcy = new NumberFormat("#,##0", "en_US");
 
@@ -45,7 +51,7 @@ class ClassCardOpen extends StatefulWidget {
   String trainerFirstName;
   String trainerLastName;
   String className;
-  String classType;
+  ClassType classType;
   String classLocation;
   double classPrice;
   bool classLiked;
@@ -56,6 +62,8 @@ class ClassCardOpen extends StatefulWidget {
   String classDescription;
   String classWhatToExpect;
   String classWhatYouWillNeed;
+  //This is a initalizer to test the highly rated badge on a class, this will need to be updated with actual values from the backend.
+  double classRatingTemp = 4.8;
 
   @override
   State<ClassCardOpen> createState() => _ClassCardOpenState();
@@ -85,18 +93,18 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       });
   }
 
-  //----------
+  //----------Functions-----------//
   bool get _isSliverAppBarExpanded {
     return _scrollController.hasClients &&
         _scrollController.offset >
             (MediaQuery.of(context).size.height * 0.38 - kToolbarHeight);
   }
 
-  //----------Widgets----------
+  //----------Widgets----------//
 
   Widget classTrainer() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -104,7 +112,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             imageURL: widget.trainerImageUrl,
             profileImageRadius: 25,
             userFullName:
-                widget.trainerFirstName + ' ' + widget.trainerLastName,
+                '${widget.trainerFirstName} ${widget.trainerLastName}',
             userFullNameFontSize: 16,
             userName: widget.classTrainer,
             userNameFontSize: 13,
@@ -116,8 +124,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  SvgPicture.asset('assets/icons/generalIcons/ellipses.svg',
-                      color: bone),
+                  Icon(
+                    Icons.more_horiz_rounded,
+                    color: iconColor,
+                    size: 25,
+                  ),
                   Container(
                     height: 40,
                     width: 60,
@@ -141,34 +152,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         ],
       ),
     );
-  }
-
-  //Price Container
-  Widget classPriceWidget() {
-    return Container(
-        color: snow,
-        child: Row(
-          children: [
-            Text(
-              '\$${oCcy.format(widget.classPrice.round())}',
-              style: TextStyle(
-                color: strawberry,
-                fontSize: 26,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 1.0),
-              child: Text(' /session',
-                  style: TextStyle(
-                      color: shark,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500)),
-            )
-          ],
-        ));
   }
 
 //Class Type and Title
@@ -241,16 +224,15 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     return Row(
       children: [
         //Star Icon
-        SvgPicture.asset(
-          'assets/icons/generalIcons/star.svg',
-          height: 14,
-          width: 14,
+        Icon(
+          Icons.stars_rounded,
           color: sunflower,
+          size: 20,
         ),
 
         //Rating (Numeric)
         Padding(
-          padding: const EdgeInsets.only(left: 5.0),
+          padding: const EdgeInsets.only(left: 2.0),
           child: Center(
             child: Text(
               '${widget.classRating}',
@@ -359,6 +341,34 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     );
   }
 
+  //Highly Rated Badge
+  Widget highlyRatedClassBadge() {
+    return Container(
+      height: 25,
+      padding: EdgeInsets.only(left: 8, right: 8),
+      decoration: const BoxDecoration(
+          color: sunflower,
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(right: 3.0),
+            child: Icon(
+              Icons.stars_rounded,
+              color: snow,
+              size: 20,
+            ),
+          ),
+          Text(
+            'Highly Rated',
+            style: roundedBodyTextStyle1,
+          )
+        ],
+      ),
+    );
+  }
+
   //Class Trainer Spotlight
   Widget classTrainerSpotlight() {
     return Column(
@@ -427,14 +437,10 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   height: 32,
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
-                    child: SvgPicture.asset(
-                      'assets/icons/generalIcons/arrowLeft.svg',
-                      color: iconColor,
-                      height: 13,
-                      width: 6,
-                    ),
+                  child: Icon(
+                    Icons.chevron_left_rounded,
+                    color: iconColor,
+                    size: 26,
                   ),
                 ),
               )),
@@ -452,37 +458,34 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           expandedHeight: MediaQuery.of(context).size.height * 0.38,
           flexibleSpace: FlexibleSpaceBar(
             stretchModes: const [StretchMode.zoomBackground],
-            background: Hero(
-              tag: widget.className,
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(
-                            widget.classImage,
-                          ),
-                          fit: BoxFit.cover),
-                    ),
+            background: Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          widget.classImage,
+                        ),
+                        fit: BoxFit.cover),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                          snow.withOpacity(0.0),
-                          jetBlack.withOpacity(0.15),
-                          jetBlack.withOpacity(0.35),
-                        ],
-                            stops: [
-                          0.0,
-                          0.6,
-                          1.0
-                        ])),
-                  ),
-                ],
-              ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                        snow.withOpacity(0.0),
+                        jetBlack.withOpacity(0.15),
+                        jetBlack.withOpacity(0.35),
+                      ],
+                          stops: [
+                        0.0,
+                        0.6,
+                        1.0
+                      ])),
+                ),
+              ],
             ),
             titlePadding: EdgeInsets.zero,
             title: Padding(
@@ -523,7 +526,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           actions: [
             Padding(
               padding:
-                  const EdgeInsets.only(right: 20.0, top: 11.5, bottom: 11.5),
+                  const EdgeInsets.only(right: 15.0, top: 11.5, bottom: 11.5),
               child: GestureDetector(
                 child: ClipOval(
                     child: BackdropFilter(
@@ -538,12 +541,12 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                     decoration: BoxDecoration(color: iconCircleColor),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 2, bottom: 2),
-                      child: SvgPicture.asset(
+                      child: Icon(
                         widget.classLiked
-                            ? 'assets/icons/generalIcons/favouriteFill.svg'
-                            : 'assets/icons/generalIcons/favouriteEmpty.svg',
+                            ? Icons.favorite_rounded
+                            : Icons.favorite_outline_rounded,
                         color: widget.classLiked ? strawberry : iconColor,
-                        height: 16,
+                        size: 20,
                       ),
                     ),
                   ),
@@ -569,14 +572,10 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   height: 32,
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 14, bottom: 14),
-                    child: SvgPicture.asset(
-                      'assets/icons/generalIcons/ellipses.svg',
-                      color: iconColor,
-                      height: 13,
-                      width: 6,
-                    ),
+                  child: Icon(
+                    Icons.more_horiz_rounded,
+                    color: iconColor,
+                    size: 20,
                   ),
                 ),
               )),
@@ -586,15 +585,29 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         SliverList(
             delegate: SliverChildListDelegate([
           Padding(
-            padding: const EdgeInsets.only(top: 15.0, left: 26.0, right: 26.0),
+            padding: EdgeInsets.only(
+              top: 15.0,
+              left: 26.0,
+            ),
+
+            //Highly Rated Badge
+            //Row is added to reduce the size of the highly rated badge
+            child: Row(
+              children: [
+                if (widget.classRatingTemp > 4.7) highlyRatedClassBadge(),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
             child: classTitle(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 5, left: 26.0, right: 26.0),
+            padding: const EdgeInsets.only(top: 8, left: 26.0, right: 26.0),
             child: classSubHeader(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -638,7 +651,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classDesc(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -683,7 +696,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classWhatToExpect(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -727,7 +740,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: classWhatYouwillNeed(),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(
               leftPadding: 26.0,
               rightPadding: 26.0,
@@ -746,7 +759,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
               child: classTrainerSpotlight()),
           Padding(
-            padding: const EdgeInsets.only(top: 25.0, bottom: 25.0),
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
           ),
 
@@ -798,10 +811,31 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               top: 14,
               bottom: 46,
             ),
-            child: FooterButton(
-              buttonColor: strawberry,
-              buttonText: 'Inquire',
-              textColor: snow,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+              child: GestureDetector(
+                child: FooterButton(
+                  buttonColor: strawberry,
+                  buttonText: 'Purchase Class',
+                  textColor: snow,
+                ),
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  Timer(Duration(milliseconds: 150), () {
+                    showCupertinoModalPopup(
+                        semanticsDismissible: true,
+                        barrierDismissible: true,
+                        barrierColor: jetBlack60,
+                        context: context,
+                        builder: (BuildContext builder) {
+                          return PurchaseClassSelectDates(
+                            classImageUrl: widget.classImage,
+                            className: widget.className,
+                          );
+                        });
+                  });
+                },
+              ),
             ),
           )),
     );

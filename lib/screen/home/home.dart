@@ -113,7 +113,7 @@ class Home extends StatelessWidget {
                       children: [
                         Hero(
                             tag: 'SearchBar',
-                            child: SearchBar(
+                            child: FitsySearchBar(
                               isAutoFocusTrue: false,
                               searchBarWidth: searchBarWidth,
                               searchHintText: 'Search',

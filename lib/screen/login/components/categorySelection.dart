@@ -320,7 +320,7 @@ class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrjetBlackOffset, bool overlapsContent) {
     // TODO: implement build
-    return SearchBar(
+    return FitsySearchBar(
       isAutoFocusTrue: false,
       searchBarWidth: 323,
       searchHintText: 'Search Categories',

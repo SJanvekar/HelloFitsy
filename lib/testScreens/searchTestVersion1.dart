@@ -42,7 +42,7 @@ class SearchTestV1 extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 26.0),
                     child: Hero(
                       tag: 'SearchBar',
-                      child: SearchBar(
+                      child: FitsySearchBar(
                         isAutoFocusTrue: true,
                         searchBarWidth: searchBarWidth,
                         searchHintText: 'Search trainers or classes',

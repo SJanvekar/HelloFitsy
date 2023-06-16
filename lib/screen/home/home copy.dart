@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../feModels/classModel.dart';
 import '../../sharedWidgets/bodyButton.dart';
@@ -29,21 +30,27 @@ class _HomeTestState extends State<HomeTest> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   String profileImageUrl = "";
   List<Class> allClasses = [];
-  String? username;
+  String username = "";
+  String userFirstName = "";
+  bool isLoading = true;
 
   //----------
   @override
   void initState() {
     super.initState();
-    getUserProfilePictures();
+    getUserInfo();
     getUserFollowing();
     // getClassFeed();
     setState(() {});
   }
 
-  void getUserProfilePictures() async {
+  void getUserInfo() async {
     final sharedPrefs = await SharedPreferences.getInstance();
+    userFirstName = sharedPrefs.getString('firstName') ?? "";
     profileImageUrl = sharedPrefs.getString('profileImageURL') ?? "";
+
+    print(userFirstName);
+    print(profileImageUrl);
   }
 
   void getUserFollowing() async {
@@ -54,6 +61,8 @@ class _HomeTestState extends State<HomeTest> {
       if (val.data['success']) {
         print('successful get following list');
         getClassFeed(val.data['following']);
+
+        isLoading = false;
       }
     });
   }
@@ -114,7 +123,8 @@ class _HomeTestState extends State<HomeTest> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 26.0),
                   child: CircleAvatar(
-                    backgroundImage: NetworkImage(profileImageUrl),
+                    backgroundColor: bone,
+                    backgroundImage: NetworkImage(profileImageUrl ?? ''),
                   ),
                 ),
               ),
@@ -137,7 +147,7 @@ class _HomeTestState extends State<HomeTest> {
                 children: [
                   GestureDetector(
                     child: SvgPicture.asset(
-                      'assets/icons/generalIcons/createClass.svg',
+                      'assets/icons/generalIcons/create.svg',
                       height: 20,
                       width: 20,
                     ),
@@ -213,7 +223,7 @@ class _HomeTestState extends State<HomeTest> {
                 children: [
                   Hero(
                       tag: 'SearchBar',
-                      child: SearchBar(
+                      child: FitsySearchBar(
                         isAutoFocusTrue: false,
                         searchBarWidth: searchBarWidth,
                         searchHintText: 'Search',
@@ -242,7 +252,7 @@ class _HomeTestState extends State<HomeTest> {
               padding:
                   const EdgeInsets.only(left: 26.0, right: 26.0, top: 15.0),
               child: Text(
-                'Hi, Salman',
+                'Hi, ${userFirstName}',
                 style: TextStyle(
                   color: jetBlack,
                   fontFamily: 'SFDisplay',
@@ -301,7 +311,63 @@ class _HomeTestState extends State<HomeTest> {
                 ),
               ),
             ),
-            if (allClasses.isEmpty)
+            if (isLoading)
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) => Padding(
+                    padding:
+                        const EdgeInsets.only(left: 26.0, right: 26.0, top: 20),
+                    child: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(color: Colors.white),
+                      child: SkeletonItem(
+                          child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              SkeletonAvatar(
+                                style: SkeletonAvatarStyle(
+                                    shape: BoxShape.circle,
+                                    width: 50,
+                                    height: 50),
+                              ),
+                              SizedBox(width: 8),
+                              Expanded(
+                                child: SkeletonParagraph(
+                                  style: SkeletonParagraphStyle(
+                                      lines: 2,
+                                      spacing: 4,
+                                      lineStyle: SkeletonLineStyle(
+                                        randomLength: true,
+                                        height: 10,
+                                        borderRadius: BorderRadius.circular(8),
+                                        minLength:
+                                            MediaQuery.of(context).size.width /
+                                                6,
+                                        maxLength:
+                                            MediaQuery.of(context).size.width /
+                                                3,
+                                      )),
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 12),
+                          SkeletonAvatar(
+                            style: SkeletonAvatarStyle(
+                                width: double.infinity,
+                                height: 400,
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                          SizedBox(height: 10),
+                        ],
+                      )),
+                    ),
+                  ),
+                  childCount: 3,
+                ),
+              )
+            else if (allClasses.isEmpty && !isLoading)
               Padding(
                 padding: const EdgeInsets.only(
                     left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
