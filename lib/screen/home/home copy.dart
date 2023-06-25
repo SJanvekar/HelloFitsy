@@ -311,12 +311,17 @@ class _HomeTestState extends State<HomeTest> {
                 ),
               ),
             ),
+            SizedBox(
+              height: 25,
+            ),
             if (isLoading)
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) => Padding(
-                    padding:
-                        const EdgeInsets.only(left: 26.0, right: 26.0, top: 20),
+                    padding: const EdgeInsets.only(
+                      left: 26.0,
+                      right: 26.0,
+                    ),
                     child: Container(
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(color: Colors.white),
@@ -370,7 +375,10 @@ class _HomeTestState extends State<HomeTest> {
             else if (allClasses.isEmpty && !isLoading)
               Padding(
                 padding: const EdgeInsets.only(
-                    left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                  left: 26.0,
+                  right: 26.0,
+                  bottom: 20.0,
+                ),
                 child: Column(
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [

@@ -235,9 +235,8 @@ class _HomeClassItem extends State<HomeClassItem> {
 
     return Padding(
       padding: const EdgeInsets.only(
-        left: 20.0,
-        right: 20.0,
-        top: 25,
+        left: 26.0,
+        right: 26.0,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -246,8 +245,7 @@ class _HomeClassItem extends State<HomeClassItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               UserProfileComponentLight(
-                  userFullName:
-                      widget.trainerFirstName + ' ' + widget.trainerLastName,
+                  userLastName: widget.trainerLastName,
                   userName: widget.classTrainer,
                   imageURL: widget.trainerImageUrl,
                   profileImageRadius: 22.5,
@@ -278,9 +276,7 @@ class _HomeClassItem extends State<HomeClassItem> {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (BuildContext context) {
-                          return classMoreActions(
-                            userFullName: widget.classTrainer,
-                          );
+                          return classMoreActions();
                         })
                   },
                 ),

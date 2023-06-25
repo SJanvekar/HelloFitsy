@@ -142,9 +142,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                     backgroundColor: Colors.transparent,
                     context: context,
                     builder: (BuildContext context) {
-                      return classMoreActions(
-                        userFullName: widget.classTrainer,
-                      );
+                      return classMoreActions();
                     })
               },
             ),
@@ -377,7 +375,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         UserProfileComponentLight(
           imageURL: widget.trainerImageUrl,
           profileImageRadius: 25,
-          userFullName: widget.trainerFirstName + ' ' + widget.trainerLastName,
+          userLastName: widget.trainerLastName,
           userFullNameFontSize: 16,
           userName: widget.classTrainer,
           userNameFontSize: 13,
