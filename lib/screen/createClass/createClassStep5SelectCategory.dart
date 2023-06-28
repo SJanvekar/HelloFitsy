@@ -1,13 +1,9 @@
 import 'package:balance/constants.dart';
-import 'package:balance/screen/createClass/createClassDocument.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
-import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
-import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
 import 'package:balance/feModels/classModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
-import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

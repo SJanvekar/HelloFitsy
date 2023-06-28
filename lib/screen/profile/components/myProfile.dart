@@ -16,9 +16,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
+import 'package:table_calendar/table_calendar.dart';
 import '../../../feModels/classModel.dart';
+import '../../profile/components/createClassSchedule.dart';
 
 class PersonalProfile extends StatefulWidget {
   PersonalProfile({
@@ -41,6 +44,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
   String userFirstName = "";
   String userLastName = "";
   String userBio = "";
+  String userType = "";
 
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
@@ -77,6 +81,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
     userFirstName = sharedPrefs.getString('firstName') ?? '';
     userLastName = sharedPrefs.getString('lastName') ?? '';
     userBio = sharedPrefs.getString('userBio') ?? '';
+    userType = sharedPrefs.getString('userType') ?? '';
     userFullName = '${userFirstName}' + ' ' + '${userLastName}';
     getSet2UserDetails();
     checkInterests();
@@ -115,6 +120,55 @@ class _PersonalProfileState extends State<PersonalProfile> {
     });
   }
 
+//------- Calendar Settings -------
+
+//Calendar Style
+  CalendarStyle calendarStyle = CalendarStyle(
+      selectedDecoration: BoxDecoration(
+          color: strawberry, borderRadius: BorderRadius.circular(10.0)),
+      todayTextStyle: TextStyle(
+          fontWeight: FontWeight.w700,
+          color: strawberry,
+          fontFamily: 'SFDisplay'),
+      todayDecoration: BoxDecoration(
+        shape: BoxShape.circle,
+      ));
+
+//Calendar Builder
+  var calendarBuilder = CalendarBuilders(
+    selectedBuilder: (context, date, events) => Padding(
+      padding: EdgeInsets.all(8),
+      child: Container(
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: strawberry,
+          ),
+          child: Text(
+            date.day.toString(),
+            style: TextStyle(color: snow),
+          )),
+    ),
+  );
+
+//Calendar Days of Week
+  var calendarDaysOfWeek = DaysOfWeekStyle(
+    weekdayStyle: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 15.0,
+        color: jetBlack,
+        fontFamily: 'SFDisplay'),
+    weekendStyle: TextStyle(
+        fontWeight: FontWeight.w400,
+        fontSize: 15.0,
+        color: jetBlack40,
+        fontFamily: 'SFDisplay'),
+    dowTextFormatter: (date, locale) {
+      // return date.toString().toUpperCase();
+      return DateFormat.E(locale).format(date).toString();
+    },
+  );
+
   //Class Type and Title
   Widget userTitleCard() {
     return Column(
@@ -140,10 +194,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
                     ]),
                 maxLines: 1,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 10.0),
-              //   child:
-              // ),
             ],
           ),
           Text(
@@ -841,6 +891,54 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 child: Text(userBio, style: profileBodyTextFont),
               ),
             ]),
+
+            //Your Schedule
+            MultiSliver(children: [
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Your Schedule",
+                      style: sectionTitles,
+                    ),
+                    GestureDetector(
+                      child: Text(
+                        'Edit',
+                        style: TextStyle(
+                          color: ocean,
+                          fontFamily: 'SFDisplay',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ScheduleCalendar()));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                child: TableCalendar(
+                  firstDay: DateTime.now(),
+                  lastDay: DateTime.now(),
+                  focusedDay: DateTime.now(),
+                  calendarFormat: CalendarFormat.week,
+                  calendarStyle: calendarStyle,
+                  headerVisible: false,
+                  startingDayOfWeek: StartingDayOfWeek.sunday,
+                  calendarBuilders: calendarBuilder,
+                  daysOfWeekStyle: calendarDaysOfWeek,
+                ),
+              ),
+            ]),
+
+            //Your Interests
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -875,10 +973,26 @@ class _PersonalProfileState extends State<PersonalProfile> {
             MultiSliver(children: [
               Padding(
                 padding: EdgeInsets.only(
-                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
-                child: Text(
-                  "Saved Classes",
-                  style: sectionTitles,
+                    top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Saved Classes",
+                      style: sectionTitles,
+                    ),
+                    GestureDetector(
+                      child: Text(
+                        'See All',
+                        style: TextStyle(
+                          color: ocean,
+                          fontFamily: 'SFDisplay',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -917,34 +1031,51 @@ class _PersonalProfileState extends State<PersonalProfile> {
               //If the user has liked classes ~ display the list
               else
                 SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 250,
-                    child: ListView.builder(
-                      primary: false,
-                      scrollDirection: Axis.vertical,
-                      padding: EdgeInsets.only(left: 26, right: 26),
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        final _savedClasses = savedClassesList[index];
-                        return ClassItemCondensed1(
-                          classImageUrl: _savedClasses.classImageUrl,
-                          buttonBookOrRebookText: 'Book',
-                          classTitle: _savedClasses.className,
-                          classTrainer: _savedClasses.trainerFirstName,
-                          classTrainerImageUrl: _savedClasses.trainerImageUrl,
-                        );
-                      },
-                    ),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.only(left: 26, right: 26),
+                    itemCount: savedClassesList.length < 3
+                        ? savedClassesList.length
+                        : 3,
+                    itemBuilder: (context, index) {
+                      final _savedClasses = savedClassesList[index];
+                      return ClassItemCondensed1(
+                        classImageUrl: _savedClasses.classImageUrl,
+                        buttonBookOrRebookText: 'Book',
+                        classTitle: _savedClasses.className,
+                        classTrainer: _savedClasses.trainerFirstName,
+                        classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                      );
+                    },
                   ),
                 ),
             ]),
             MultiSliver(children: [
               Padding(
-                padding: const EdgeInsets.only(
-                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
-                child: Text(
-                  "Class History",
-                  style: sectionTitles,
+                padding: EdgeInsets.only(
+                    top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Class History",
+                      style: sectionTitles,
+                    ),
+                    GestureDetector(
+                      child: Text(
+                        'See All',
+                        style: TextStyle(
+                          color: ocean,
+                          fontFamily: 'SFDisplay',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      onTap: () {},
+                    ),
+                  ],
                 ),
               ),
               //If the user has no liked classes
@@ -975,28 +1106,28 @@ class _PersonalProfileState extends State<PersonalProfile> {
               //If the user has liked classes ~ display the list
               else
                 SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: 250,
-                    child: ListView.builder(
-                      primary: false,
-                      scrollDirection: Axis.vertical,
-                      padding: EdgeInsets.only(left: 26, right: 26),
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        if (savedClassesList.isEmpty) {
-                          return Container();
-                        } else {
-                          final _savedClasses = savedClassesList[index];
-                          return ClassItemCondensed1(
-                            classImageUrl: _savedClasses.classImageUrl,
-                            buttonBookOrRebookText: 'Book',
-                            classTitle: _savedClasses.className,
-                            classTrainer: _savedClasses.trainerFirstName,
-                            classTrainerImageUrl: _savedClasses.trainerImageUrl,
-                          );
-                        }
-                      },
-                    ),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    primary: false,
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.only(left: 26, right: 26),
+                    itemCount: savedClassesList.length < 3
+                        ? savedClassesList.length
+                        : 3,
+                    itemBuilder: (context, index) {
+                      if (savedClassesList.isEmpty) {
+                        return Container();
+                      } else {
+                        final _savedClasses = savedClassesList[index];
+                        return ClassItemCondensed1(
+                          classImageUrl: _savedClasses.classImageUrl,
+                          buttonBookOrRebookText: 'Book',
+                          classTitle: _savedClasses.className,
+                          classTrainer: _savedClasses.trainerFirstName,
+                          classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                        );
+                      }
+                    },
                   ),
                 ),
             ]),
