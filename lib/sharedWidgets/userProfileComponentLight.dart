@@ -10,8 +10,8 @@ import '../screen/profile/components/profile.dart';
 class UserProfileComponentLight extends StatelessWidget {
   UserProfileComponentLight({
     Key? key,
-    required this.userFullName,
     required this.userFirstName,
+    required this.userLastName,
     required this.userFullNameFontSize,
     required this.userName,
     required this.userNameFontSize,
@@ -19,8 +19,8 @@ class UserProfileComponentLight extends StatelessWidget {
     required this.profileImageRadius,
   }) : super(key: key);
 
-  String userFullName;
   String userFirstName;
+  String userLastName;
   double userFullNameFontSize;
   String userName;
   double userNameFontSize;
@@ -92,7 +92,7 @@ class UserProfileComponentLight extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  userFullName,
+                  userFirstName + ' ' + userLastName,
                   style: TextStyle(
                       color: jetBlack,
                       fontFamily: 'SFDisplay',
