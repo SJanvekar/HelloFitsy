@@ -46,6 +46,7 @@ class SearchTestV1 extends StatelessWidget {
                         isAutoFocusTrue: true,
                         searchBarWidth: searchBarWidth,
                         searchHintText: 'Search trainers or classes',
+                        callback: null,
                       ),
                     ),
                   ),

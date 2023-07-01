@@ -81,7 +81,7 @@ var functions = {
                 }
             }},
             {$match: {UserType: 'Trainer'}},
-            {$project: {_id : 0, FirstName : 1, LastName : 1, Username : 1, ProfileImageURL : 1}},
+            // {$project: {_id : 0, FirstName : 1, LastName : 1, Username : 1, ProfileImageURL : 1}},
         ], function (err, response) {
             if (err) {
                 console.log(err)

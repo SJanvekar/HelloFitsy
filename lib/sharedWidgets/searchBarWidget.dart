@@ -2,6 +2,7 @@ import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:balance/Requests/userRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/feModels/userModel.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
@@ -16,12 +17,14 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 
 class FitsySearchBar extends StatefulWidget {
-  FitsySearchBar({
-    Key? key,
-    required this.isAutoFocusTrue,
-    required this.searchBarWidth,
-    required this.searchHintText,
-  }) : super(key: key);
+  final Function(List<User>)? callback;
+  FitsySearchBar(
+      {Key? key,
+      required this.isAutoFocusTrue,
+      required this.searchBarWidth,
+      required this.searchHintText,
+      required this.callback})
+      : super(key: key);
   bool isAutoFocusTrue;
   double searchBarWidth;
   String searchHintText;
@@ -35,16 +38,27 @@ var _controller = TextEditingController();
 class _FitsySearchBarState extends State<FitsySearchBar> {
   late Timer onStoppedTyping = new Timer(duration, () => search('test'));
   static const duration = Duration(milliseconds: 800);
+  List<User> searchResults = [];
 
   void search(String val) {
     print('hello world from search . the value is $val');
     if (val.isNotEmpty) {
       UserRequests().searchTrainers(val).then((val) async {
         if (val.data['success']) {
-          print(val.data['searchResults']);
+          // searchResults = val.data['searchResults'];
+          List<dynamic> receivedJSON = val.data['searchResults'];
+          receivedJSON.forEach((user) {
+            searchResults.add(User.fromJson(user));
+          });
+          _updateSearchData();
+          // print(val.data['searchResults']);
         }
       });
     }
+  }
+
+  void _updateSearchData() {
+    widget.callback!(searchResults);
   }
 
   @override

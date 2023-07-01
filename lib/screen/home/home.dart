@@ -117,6 +117,7 @@ class Home extends StatelessWidget {
                               isAutoFocusTrue: false,
                               searchBarWidth: searchBarWidth,
                               searchHintText: 'Search',
+                              callback: null,
                             )),
                         Container(
                             height: 45,
