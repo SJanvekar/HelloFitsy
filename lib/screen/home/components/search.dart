@@ -6,6 +6,7 @@ import 'package:balance/screen/home/components/userListItem.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
@@ -163,71 +164,122 @@ class Search extends StatelessWidget {
               child: TabBarView(
                 children: [
                   //Tab #1 - Users Search Tab
-                  Center(
-                    child: CustomScrollView(
-                      slivers: [
-                        MultiSliver(children: [
-                          SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              //Update this list to a list of users retrieved from search - we may need to work on this together.
-                              final classItem = allClasses[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 26.0, right: 26.0),
-                                child: UserProfileComponentLight(
-                                  userFirstName: classItem.trainerFirstName,
-                                  userLastName: classItem.trainerLastName,
-                                  userName: classItem.classTrainer,
-                                  imageURL: classItem.trainerImageUrl,
-                                  profileImageRadius: 22.5,
-                                  userFullNameFontSize: 15,
-                                  userNameFontSize: 14,
-                                ),
-                              );
-                            },
-                            childCount: allClasses.length,
-                          )),
-                        ]),
-                      ],
+
+                  if (allClasses.isEmpty)
+
+                    //Empty ClassList (No search results)
+                    Center(
+                        child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 120),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off_rounded,
+                              color: shark,
+                              size: 50,
+                            ),
+                            Text(
+                              'No trainers found',
+                              style: emptyListDisclaimerText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+                  else
+                    Center(
+                      child: CustomScrollView(
+                        slivers: [
+                          MultiSliver(children: [
+                            SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                //Update this list to a list of users retrieved from search - we may need to work on this together.
+                                final classItem = allClasses[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 26.0, right: 26.0),
+                                  child: UserProfileComponentLight(
+                                    userFirstName: classItem.trainerFirstName,
+                                    userLastName: classItem.trainerLastName,
+                                    userName: classItem.classTrainer,
+                                    imageURL: classItem.trainerImageUrl,
+                                    profileImageRadius: 22.5,
+                                    userFullNameFontSize: 15,
+                                    userNameFontSize: 14,
+                                  ),
+                                );
+                              },
+                              childCount: allClasses.length,
+                            )),
+                          ]),
+                        ],
+                      ),
                     ),
-                  ),
 
                   //Tab #2 - Classes Search Tab
-                  Center(
-                    child: CustomScrollView(
-                      slivers: [
-                        MultiSliver(children: [
-                          SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              //This will need to be replaced with a list of classes received from the search.
-                              final classItem = allClasses[index];
-                              return HomeClassItem(
-                                classTrainer: classItem.classTrainer,
-                                className: classItem.className,
-                                classType: classItem.classType,
-                                classLocation: classItem.classLocation,
-                                classPrice: classItem.classPrice,
-                                classLiked: classItem.classLiked,
-                                classImage: classItem.classImageUrl,
-                                trainerImageUrl: classItem.trainerImageUrl,
-                                classDescription: classItem.classDescription,
-                                classRating: classItem.classRating,
-                                classReviews: classItem.classReview,
-                                trainerFirstName: classItem.trainerFirstName,
-                                trainerLastName: classItem.trainerLastName,
-                                classWhatToExpect: classItem.classWhatToExpect,
-                                classWhatYouWillNeed:
-                                    classItem.classUserRequirements,
-                              );
-                            },
-                            childCount: allClasses.length,
-                          )),
-                        ]),
-                      ],
+
+                  if (allClasses.isEmpty)
+
+                    //Empty ClassList (No search results)
+                    Center(
+                        child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 150),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off_rounded,
+                              color: shark,
+                              size: 50,
+                            ),
+                            Text(
+                              'No classes found',
+                              style: emptyListDisclaimerText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+                  else
+                    Center(
+                      child: CustomScrollView(
+                        slivers: [
+                          MultiSliver(children: [
+                            SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                //This will need to be replaced with a list of classes received from the search.
+                                final classItem = allClasses[index];
+                                return HomeClassItem(
+                                  classTrainer: classItem.classTrainer,
+                                  className: classItem.className,
+                                  classType: classItem.classType,
+                                  classLocation: classItem.classLocation,
+                                  classPrice: classItem.classPrice,
+                                  classLiked: classItem.classLiked,
+                                  classImage: classItem.classImageUrl,
+                                  trainerImageUrl: classItem.trainerImageUrl,
+                                  classDescription: classItem.classDescription,
+                                  classRating: classItem.classRating,
+                                  classReviews: classItem.classReview,
+                                  trainerFirstName: classItem.trainerFirstName,
+                                  trainerLastName: classItem.trainerLastName,
+                                  classWhatToExpect:
+                                      classItem.classWhatToExpect,
+                                  classWhatYouWillNeed:
+                                      classItem.classUserRequirements,
+                                );
+                              },
+                              childCount: allClasses.length,
+                            )),
+                          ]),
+                        ],
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),
