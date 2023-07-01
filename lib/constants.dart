@@ -8,6 +8,17 @@ const String urlDomain = 'http://www.fitsy.ca';
 //----MONGOOSE ERROR CODES-------------//
 const int duplicateKeycode = 11000;
 
+//-----Stripe Publishable Key-----//
+
+String stripePublishableKey =
+    'pk_test_51N1KMLHPTcKdqvMqmxEGhpnBnrFS7KKdymTmwZlByroml00eU2g0ocRutSqH2K4WFTAx2BAmxLPFpvwhCzsb7nC900JCQMgDCH';
+
+//Test Mode Key - Only while testing payments via Stripe and Apple pay in Fitsy
+// 'pk_test_51N1KMLHPTcKdqvMqmxEGhpnBnrFS7KKdymTmwZlByroml00eU2g0ocRutSqH2K4WFTAx2BAmxLPFpvwhCzsb7nC900JCQMgDCH';
+
+//Live Mode Key - Only while the application is LIVE
+//  'pk_live_51N1KMLHPTcKdqvMq1UeC3voQJJmNwntv00CFrkY2QDZAY4J7SQCxE2AIn9HZHGUZKCuq7iT8Spa2czVQNHfJ9tm900qmqyAvdF';
+
 //-----------NEW--------------------//
 
 //Snow
