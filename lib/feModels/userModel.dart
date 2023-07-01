@@ -43,10 +43,6 @@ class User {
         userEmail = json['UserEmail'],
         password = json['Password'],
         categories = dyanamicArrayToStringArray(json['Categories']);
-  // likedClasses = json['LikedClasses'],
-  // classHistory = json['ClassHistory'],
-  // following = json['Following'],
-  // followers = json['Followers'];
 
   Map<String, dynamic> toJson() => {
         'IsActive': isActive,
@@ -59,14 +55,10 @@ class User {
         'UserEmail': userEmail,
         'Password': password,
         'Categories': categories,
-        // 'LikedClasses': likedClasses,
-        // 'ClassHistory': classHistory,
-        // 'Following': following,
-        // 'Followers': followers
       };
 }
 
-//Semi-hardcoded casting from String to ClassType, not optimal but the best I can think of right now
+//Semi-hardcoded casting from String to UserType, not optimal but the best I can think of right now
 UserType stringToUserType(String string) {
   switch (string) {
     case "Trainee":

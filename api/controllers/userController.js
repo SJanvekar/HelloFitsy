@@ -81,7 +81,6 @@ var functions = {
                 }
             }},
             {$match: {UserType: 'Trainer'}},
-            // {$project: {_id : 0, FirstName : 1, LastName : 1, Username : 1, ProfileImageURL : 1}},
         ], function (err, response) {
             if (err) {
                 console.log(err)
@@ -136,12 +135,10 @@ var functions = {
             });
             await newUser.save(function (err, newUser){
                 if(err){
-                    // print('failure');
                     console.error(err)
                     res.send({success: false, msg: "Didnt work bithc"})
                 }
                 else {
-                    // print('I have posted');
                     res.json({success: true, msg: 'Successfully saved'})
                 }
             })
