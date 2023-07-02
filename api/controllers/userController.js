@@ -86,7 +86,6 @@ var functions = {
                 console.log(err)
                 return res.json({success: false, errorCode: err.code})
             } else {
-                console.log(response)
                 return res.json({success: true, searchResults: response})
             }
         })

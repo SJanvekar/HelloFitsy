@@ -41,7 +41,7 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
   List<User> searchResults = [];
 
   void search(String val) {
-    print('hello world from search . the value is $val');
+    searchResults.clear();
     if (val.isNotEmpty) {
       UserRequests().searchTrainers(val).then((val) async {
         if (val.data['success']) {
