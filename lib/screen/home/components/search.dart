@@ -265,8 +265,8 @@ class Search extends StatelessWidget {
                                   classImage: classItem.classImageUrl,
                                   trainerImageUrl: classItem.trainerImageUrl,
                                   classDescription: classItem.classDescription,
-                                  classRating: classItem.classRating,
-                                  classReviews: classItem.classReview,
+                                  classRating: classItem.classOverallRating,
+                                  classReviews: classItem.classReviewsAmount,
                                   trainerFirstName: classItem.trainerFirstName,
                                   trainerLastName: classItem.trainerLastName,
                                   classWhatToExpect:

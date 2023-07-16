@@ -50,6 +50,8 @@ var ClassReviewSchema = new Schema({
         type: String,
         required: true
     },
+
+    //TODO: Add Class ObjectID ref when working on implementation
 })
 
 module.exports = mongoose.model('Class Reviews', ClassReviewSchema)

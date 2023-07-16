@@ -25,8 +25,8 @@ class Class {
   String classLocationName;
   double classLatitude;
   double classLongitude;
-  double classRating;
-  int classReview;
+  double classOverallRating;
+  int classReviewsAmount;
   String classTrainer;
   String trainerFirstName;
   String trainerLastName;
@@ -46,10 +46,8 @@ class Class {
     required this.classLocationName,
     required this.classLatitude,
     required this.classLongitude,
-    required this.classRating,
-
-    //What the fuck is class review? I can't rememmber - Salman
-    required this.classReview,
+    required this.classOverallRating,
+    required this.classReviewsAmount,
 
     //Good after this point
     required this.classPrice,
@@ -77,8 +75,8 @@ class Class {
         classLocationName = json['ClassLocationName'],
         classLatitude = json['ClassLatitude'],
         classLongitude = json['ClassLongitude'],
-        classRating = json['ClassRating'].toDouble(),
-        classReview = json['ClassReview'],
+        classOverallRating = json['ClassOverallRating'].toDouble(),
+        classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
         classTrainer = json['ClassTrainer'],
         classLiked = json['ClassLiked'],
@@ -96,8 +94,8 @@ class Class {
         'ClassLocationName': classLocationName,
         'ClassLatitude': classLatitude,
         'ClassLongitude': classLongitude,
-        'ClassRating': classRating,
-        'ClassReview': classReview,
+        'ClassRating': classOverallRating,
+        'ClassReview': classReviewsAmount,
         'ClassPrice': classPrice,
         'ClassTrainer': classTrainer,
         'ClassLiked': classLiked,
