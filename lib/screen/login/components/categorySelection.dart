@@ -324,6 +324,7 @@ class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
       isAutoFocusTrue: false,
       searchBarWidth: 323,
       searchHintText: 'Search Categories',
+      callback: null,
     );
   }
 

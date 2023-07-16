@@ -37,4 +37,17 @@ class UserRequests {
       print(e);
     }
   }
+
+  searchTrainers(String searchIndex) async {
+    try {
+      return await dio.get(
+        '$urlDomain/searchTrainers',
+        queryParameters: {
+          "SearchIndex": searchIndex,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 }

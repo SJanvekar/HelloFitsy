@@ -353,7 +353,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "1.0.0+1";
-				DEVELOPMENT_TEAM = 7H5U7P48CS;
+				DEVELOPMENT_TEAM = 9S6MB8VT54;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Fitsy;
@@ -491,7 +491,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "1.0.0+1";
-				DEVELOPMENT_TEAM = 7H5U7P48CS;
+				DEVELOPMENT_TEAM = 9S6MB8VT54;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Fitsy;
@@ -521,7 +521,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "1.0.0+1";
-				DEVELOPMENT_TEAM = 7H5U7P48CS;
+				DEVELOPMENT_TEAM = 9S6MB8VT54;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Fitsy;
