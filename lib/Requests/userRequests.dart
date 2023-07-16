@@ -24,4 +24,30 @@ class UserRequests {
       print(e);
     }
   }
+
+  getUserFollowing(String username) async {
+    try {
+      return await dio.get(
+        '$urlDomain/getUserFollowing',
+        queryParameters: {
+          "Username": username,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  searchTrainers(String searchIndex) async {
+    try {
+      return await dio.get(
+        '$urlDomain/searchTrainers',
+        queryParameters: {
+          "SearchIndex": searchIndex,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 }

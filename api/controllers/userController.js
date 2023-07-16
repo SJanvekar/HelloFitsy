@@ -6,6 +6,7 @@ const { json } = require('body-parser')
 const { findOne } = require('../models/user')
 
 var functions = {
+  
     //Add New User fnc
     addNew: async function (req, res){
         if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
@@ -86,6 +87,8 @@ var functions = {
         });
     },
 
+//*****GET REQUESTS*****//
+
     // Get Information
     getinfo: function (req, res) {
         const userPromiseAsync = (responseJSON) => {
@@ -130,6 +133,47 @@ var functions = {
     },
 
     // Get User Following list
+
+    getUserFollowing: function (req, res) {
+        if ((!req.query.Username)) {
+            res.json({success: false, msg: 'Missing query parameter Username'});
+        }
+        User.findOne({Username: req.query.Username}, 'Following', function (err, response) {
+            if (err) {
+                console.log(err)
+                return res.json({success: false, body: err})
+            } else {
+                return res.json({success: true, 
+                        following: response.Following
+                    })
+            }
+        })
+    },
+
+    // Search Trainers
+    searchTrainers: function (req, res) {
+        User.aggregate([
+            {$search: {
+                index: 'Username',
+                text: {
+                    query: req.query.SearchIndex,
+                    path: 'Username',
+                    fuzzy: {}
+                }
+            }},
+            {$match: {UserType: 'Trainer'}},
+        ], function (err, response) {
+            if (err) {
+                console.log(err)
+                return res.json({success: false, errorCode: err.code})
+            } else {
+                return res.json({success: true, searchResults: response})
+            }
+        })
+    },
+
+//*****POST REQUESTS*****//
+  
     updateUserinfo: function (req, res) {
         User.findOneAndUpdate({'Username': req.body.OldUsername}, {$set: {'FirstName' : req.body.FirstName, 
         'LastName' : req.body.LastName, 'Username' : req.body.NewUsername, 'UserBio' : req.body.UserBio, 'ProfileImageURL': req.body.ProfileImageURL}}, 

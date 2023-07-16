@@ -227,6 +227,7 @@ class _HomeTestState extends State<HomeTest> {
                         isAutoFocusTrue: false,
                         searchBarWidth: searchBarWidth,
                         searchHintText: 'Search',
+                        callback: null,
                       )),
                   Container(
                       height: 45,

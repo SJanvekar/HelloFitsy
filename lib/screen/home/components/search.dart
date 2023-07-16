@@ -2,6 +2,7 @@
 
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/classModel.dart';
+import 'package:balance/feModels/userModel.dart';
 import 'package:balance/screen/home/components/userListItem.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
@@ -13,9 +14,22 @@ import 'package:sliver_tools/sliver_tools.dart';
 import '../home.dart';
 import 'homeClassItem.dart';
 
-class Search extends StatelessWidget {
-  // ignore: prefer_const_constructors_in_immutables
+class Search extends StatefulWidget {
   Search({Key? key}) : super(key: key);
+
+  @override
+  State<Search> createState() => _Search();
+}
+
+class _Search extends State<Search> {
+  // ignore: prefer_const_constructors_in_immutables
+
+  List<User> userSearchResult = [];
+  void retrieveSearchResult(List<User> newResult) {
+    setState(() {
+      userSearchResult = newResult;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +96,7 @@ class Search extends StatelessWidget {
                                 isAutoFocusTrue: true,
                                 searchBarWidth: searchBarWidth,
                                 searchHintText: 'Search trainers or classes',
+                                callback: retrieveSearchResult,
                               ),
                             ),
                           ),
@@ -165,7 +180,7 @@ class Search extends StatelessWidget {
                 children: [
                   //Tab #1 - Users Search Tab
 
-                  if (allClasses.isEmpty)
+                  if (userSearchResult.isEmpty)
 
                     //Empty ClassList (No search results)
                     Center(
@@ -197,22 +212,23 @@ class Search extends StatelessWidget {
                                 delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                                 //Update this list to a list of users retrieved from search - we may need to work on this together.
-                                final classItem = allClasses[index];
+                                final userItem = userSearchResult[index];
+
                                 return Padding(
                                   padding: const EdgeInsets.only(
                                       left: 26.0, right: 26.0),
                                   child: UserProfileComponentLight(
-                                    userFirstName: classItem.trainerFirstName,
-                                    userLastName: classItem.trainerLastName,
-                                    userName: classItem.classTrainer,
-                                    imageURL: classItem.trainerImageUrl,
+                                    userFirstName: userItem.firstName,
+                                    userLastName: userItem.lastName,
+                                    userName: userItem.userName,
+                                    imageURL: userItem.profileImageURL,
                                     profileImageRadius: 22.5,
                                     userFullNameFontSize: 15,
                                     userNameFontSize: 14,
                                   ),
                                 );
                               },
-                              childCount: allClasses.length,
+                              childCount: userSearchResult.length,
                             )),
                           ]),
                         ],

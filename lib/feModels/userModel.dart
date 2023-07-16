@@ -1,4 +1,7 @@
 import 'package:balance/feModels/authModel.dart';
+import 'dart:ffi';
+import 'dart:convert';
+
 
 enum UserType { Trainee, Trainer }
 
@@ -28,4 +31,51 @@ class User {
     required this.userName,
     required this.authUser,
   });
+
+  //JSON parsers are required to parse arrays of JSON
+  User.fromJson(Map<String, dynamic> json)
+      : isActive =
+            json['IsActive'].toString().toLowerCase() == "true" ? true : false,
+        userType = stringToUserType(json['UserType'][0]),
+        profileImageURL = json['ProfileImageURL'],
+        firstName = json['FirstName'],
+        lastName = json['LastName'],
+        userName = json['Username'],
+        userBio = json['UserBio'],
+        userEmail = json['UserEmail'],
+        password = json['Password'],
+        categories = dyanamicArrayToStringArray(json['Categories']);
+
+  Map<String, dynamic> toJson() => {
+        'IsActive': isActive,
+        'UserType': userType.toString(),
+        'ProfileImageURL': profileImageURL,
+        'FirstName': firstName,
+        'LastName': lastName,
+        'Username': userName,
+        'UserBio': userBio,
+        'UserEmail': userEmail,
+        'Password': password,
+        'Categories': categories,
+      };
+}
+
+//Semi-hardcoded casting from String to UserType, not optimal but the best I can think of right now
+UserType stringToUserType(String string) {
+  switch (string) {
+    case "Trainee":
+      return UserType.Trainee;
+    case "Trainer":
+      return UserType.Trainer;
+    default:
+      throw Exception('String to UserType cast failed');
+  }
+}
+
+List<String> dyanamicArrayToStringArray(List<dynamic> string) {
+  List<String> list = [];
+  string.forEach((element) {
+    list.add(element);
+  });
+  return list;
 }

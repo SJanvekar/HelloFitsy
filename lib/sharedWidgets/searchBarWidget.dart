@@ -1,6 +1,8 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:balance/Requests/userRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/feModels/userModel.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
@@ -12,14 +14,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 class FitsySearchBar extends StatefulWidget {
-  FitsySearchBar({
-    Key? key,
-    required this.isAutoFocusTrue,
-    required this.searchBarWidth,
-    required this.searchHintText,
-  }) : super(key: key);
+  final Function(List<User>)? callback;
+  FitsySearchBar(
+      {Key? key,
+      required this.isAutoFocusTrue,
+      required this.searchBarWidth,
+      required this.searchHintText,
+      required this.callback})
+      : super(key: key);
   bool isAutoFocusTrue;
   double searchBarWidth;
   String searchHintText;
@@ -31,6 +36,29 @@ class FitsySearchBar extends StatefulWidget {
 var _controller = TextEditingController();
 
 class _FitsySearchBarState extends State<FitsySearchBar> {
+  late Timer onStoppedTyping = new Timer(duration, () => search('test'));
+  static const duration = Duration(milliseconds: 800);
+  List<User> searchResults = [];
+
+  void search(String val) {
+    searchResults.clear();
+    if (val.isNotEmpty) {
+      UserRequests().searchTrainers(val).then((val) async {
+        if (val.data['success']) {
+          List<dynamic> receivedJSON = val.data['searchResults'];
+          receivedJSON.forEach((user) {
+            searchResults.add(User.fromJson(user));
+          });
+          _updateSearchData();
+        }
+      });
+    }
+  }
+
+  void _updateSearchData() {
+    widget.callback!(searchResults);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -39,8 +67,10 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
         width: widget.searchBarWidth,
         height: 45,
         child: TextField(
-          onChanged: (String text) {
-            setState(() {});
+          onChanged: (val) {
+            setState(() => onStoppedTyping.cancel());
+            setState(
+                () => onStoppedTyping = new Timer(duration, () => search(val)));
           },
           controller: _controller,
           autofocus: widget.isAutoFocusTrue,
