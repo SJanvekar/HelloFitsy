@@ -5,14 +5,12 @@ import 'dart:convert';
 enum ClassType { Solo, Group, Virtual }
 
 class Schedule {
-  Set<DateTime> dates;
-  DateTime startTime;
-  DateTime endTime;
+  DateTime startDate;
+  DateTime endDate;
 
   Schedule({
-    required this.dates,
-    required this.startTime,
-    required this.endTime,
+    required this.startDate,
+    required this.endDate,
   });
 }
 
@@ -24,7 +22,9 @@ class Class {
   String classWhatToExpect;
   String classUserRequirements;
   ClassType classType;
-  String classLocation;
+  String classLocationName;
+  double classLatitude;
+  double classLongitude;
   double classRating;
   int classReview;
   String classTrainer;
@@ -43,7 +43,9 @@ class Class {
     required this.classWhatToExpect,
     required this.classUserRequirements,
     required this.classType,
-    required this.classLocation,
+    required this.classLocationName,
+    required this.classLatitude,
+    required this.classLongitude,
     required this.classRating,
 
     //What the fuck is class review? I can't rememmber - Salman
@@ -72,7 +74,9 @@ class Class {
         classWhatToExpect = json['ClassWhatToExpect'],
         classUserRequirements = json['ClassUserRequirements'],
         classType = stringToClassType(json['ClassType'][0]),
-        classLocation = json['ClassLocation'],
+        classLocationName = json['ClassLocationName'],
+        classLatitude = json['ClassLatitude'],
+        classLongitude = json['ClassLongitude'],
         classRating = json['ClassRating'].toDouble(),
         classReview = json['ClassReview'],
         classPrice = json['ClassPrice'].toDouble(),
@@ -89,7 +93,9 @@ class Class {
         'ClassWhatToExpect': classWhatToExpect,
         'ClassUserRequirements': classUserRequirements,
         'ClassType': classType.toString(),
-        'ClassLocation': classLocation,
+        'ClassLocationName': classLocationName,
+        'ClassLatitude': classLatitude,
+        'ClassLongitude': classLongitude,
         'ClassRating': classRating,
         'ClassReview': classReview,
         'ClassPrice': classPrice,
@@ -118,8 +124,8 @@ ClassType stringToClassType(String string) {
 List<Class> classList = [
   // Class(
   //     classImageUrl:
-  //         'https://i.guim.co.uk/img/media/22038aba1d2fadcfb2ffcdc793deb8a28c1b7f1e/0_125_5472_3283/master/5472.jpg?width=620&quality=45&dpr=2&s=none',
-  //     className: 'Wimbledon',
+  //         'https://www.londonmagicaltours.com/img/Wimbledon-tennis-tours-1.jpg',
+  //     className: 'Wimbledon Championship 2023 - Hosted by Patek Phillipe',
   //     classDescription:
   //         "Our mission is to champion opportunities for all. We use the collective strength of the All England Club and The Championships to make a positive difference to people's lives. - Respond in times of need by making a difference to those facing adversity.",
   //     classWhatToExpect:
@@ -137,5 +143,5 @@ List<Class> classList = [
   //     trainerImageUrl:
   //         'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/private%2Fvar%2Fmobile%2FContainers%2FData%2FApplication%2FC30AF58C-8871-4EF9-92C2-D3FA41E5A4B7%2Ftmp%2Fimage_picker_4C4728D4-1416-4F73-BA34-0E3C86ABBFDD-2819-0000024C398674C2.jpg?alt=media&token=1299217a-1d3e-48cf-9180-f28a1e8c58f6',
   //     trainerFirstName: 'Salman',
-  //     trainerLastName: 'Janvekar')
+  //     trainerLastName: 'Janvekar'),
 ];

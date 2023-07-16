@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/authModel.dart';
 import 'package:balance/screen/login/components/categorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -16,9 +17,11 @@ import '../../../feModels/userModel.dart';
 var image;
 
 class ProfilePictureUpload extends StatefulWidget {
-  ProfilePictureUpload({Key? key, required this.userTemplate})
+  ProfilePictureUpload(
+      {Key? key, required this.authTemplate, required this.userTemplate})
       : super(key: key);
 
+  final Auth authTemplate;
   final User userTemplate;
 
   @override
@@ -174,8 +177,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
             uploadImage(),
             print(userTemplate.profileImageURL),
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    CategorySelection(userTemplate: userTemplate)))
+                builder: (context) => CategorySelection(
+                    authTemplate: authTemplate, userTemplate: userTemplate)))
           },
         ),
       ),

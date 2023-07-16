@@ -52,7 +52,7 @@ class _CreateClassTimeListState extends State<CreateClassTimeList> {
                               SvgPicture.asset("assets/icons/removeIcon20.svg"),
                               Expanded(
                                 child: Text(
-                                  DateFormat.yMMMd().format(times.dates.first),
+                                  DateFormat.yMMMd().format(times.startDate),
                                   style: const TextStyle(
                                     fontFamily: 'SFDisplay',
                                     color: jetBlack,
@@ -95,7 +95,7 @@ class _CreateClassTimeListState extends State<CreateClassTimeList> {
                                 padding: EdgeInsets.only(
                                     left: 18, right: 18, top: 6, bottom: 6),
                                 child: Text(
-                                  DateFormat.jm().format(times.startTime),
+                                  DateFormat.jm().format(times.startDate),
                                   style: TextStyle(
                                     fontFamily: 'SFDisplay',
                                     color: jetBlack,
@@ -126,7 +126,7 @@ class _CreateClassTimeListState extends State<CreateClassTimeList> {
                                 padding: EdgeInsets.only(
                                     left: 18, right: 18, top: 6, bottom: 6),
                                 child: Text(
-                                  DateFormat.jm().format(times.endTime),
+                                  DateFormat.jm().format(times.endDate),
                                   style: TextStyle(
                                     fontFamily: 'SFDisplay',
                                     color: jetBlack,

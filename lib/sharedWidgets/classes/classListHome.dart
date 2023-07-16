@@ -38,7 +38,7 @@ class _ClassListHomeState extends State<ClassListHome> {
                   classTrainer: classItem.classTrainer,
                   className: classItem.className,
                   classType: classItem.classType,
-                  classLocation: classItem.classLocation,
+                  classLocationName: classItem.classLocationName,
                   classPrice: classItem.classPrice,
                   classLiked: classItem.classLiked,
                   classImage: classItem.classImageUrl,

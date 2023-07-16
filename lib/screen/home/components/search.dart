@@ -1,11 +1,17 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/classModel.dart';
+import 'package:balance/screen/home/components/userListItem.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
+import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:sliver_tools/sliver_tools.dart';
 
 import '../home.dart';
+import 'homeClassItem.dart';
 
 class Search extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -13,6 +19,7 @@ class Search extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Class> allClasses = classList;
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
     var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2) - 50;
@@ -28,7 +35,7 @@ class Search extends StatelessWidget {
           backgroundColor: snow,
         ),
         body: DefaultTabController(
-          length: 3,
+          length: 2,
           child: NestedScrollView(
             floatHeaderSlivers: true,
             headerSliverBuilder:
@@ -37,7 +44,7 @@ class Search extends StatelessWidget {
                 //AppBar Sliver
                 SliverAppBar(
                   floating: true,
-                  pinned: true,
+                  pinned: false,
                   toolbarHeight: appHeaderSize,
                   elevation: 0,
                   backgroundColor: snow,
@@ -62,57 +69,59 @@ class Search extends StatelessWidget {
 
                 //Search Sliver
                 SliverPersistentHeader(
-                  delegate: _SliverAppBarDelegateSearchBar(Padding(
-                    padding: const EdgeInsets.only(bottom: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 26.0),
-                          child: Hero(
-                            tag: 'SearchBar',
-                            child: SearchBar(
-                              isAutoFocusTrue: true,
-                              searchBarWidth: searchBarWidth,
-                              searchHintText: 'Search trainers or classes',
+                  delegate: _SliverAppBarDelegateSearchBar(Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 26.0),
+                            child: Hero(
+                              tag: 'SearchBar',
+                              child: FitsySearchBar(
+                                isAutoFocusTrue: true,
+                                searchBarWidth: searchBarWidth,
+                                searchHintText: 'Search trainers or classes',
+                              ),
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 15.0),
-                          child: GestureDetector(
-                            child: SizedBox(
-                              width: 50,
-                              child: Text('Cancel',
-                                  style: TextStyle(
-                                    color: jetBlack80,
-                                    fontFamily: 'SFDisplay',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 15.0,
-                                  )),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15.0),
+                            child: GestureDetector(
+                              child: SizedBox(
+                                width: 50,
+                                child: Text('Cancel',
+                                    style: TextStyle(
+                                      color: jetBlack80,
+                                      fontFamily: 'SFDisplay',
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15.0,
+                                    )),
+                              ),
+                              onTap: () {
+                                Navigator.pop(
+                                  context,
+                                  PageTransition(
+                                      child: Home(),
+                                      type: PageTransitionType.fade,
+                                      isIos: true,
+                                      reverseDuration:
+                                          Duration(milliseconds: 0),
+                                      duration: Duration(milliseconds: 0)),
+                                );
+                              },
                             ),
-                            onTap: () {
-                              Navigator.pop(
-                                context,
-                                PageTransition(
-                                    child: Home(),
-                                    type: PageTransitionType.fade,
-                                    isIos: true,
-                                    reverseDuration: Duration(milliseconds: 0),
-                                    duration: Duration(milliseconds: 0)),
-                              );
-                            },
-                          ),
-                        )
-                      ],
-                    ),
+                          )
+                        ],
+                      ),
+                    ],
                   )),
-                  floating: true,
+                  floating: false,
                 ),
 
                 //Tab Sliver
                 SliverPersistentHeader(
-                  pinned: true,
+                  pinned: false,
                   floating: true,
                   delegate: _SliverAppBarDelegate(
                     TabBar(
@@ -120,8 +129,13 @@ class Search extends StatelessWidget {
                       indicatorColor: jetBlack80,
                       indicatorWeight: 2,
                       labelPadding: EdgeInsets.zero,
-                      padding: EdgeInsets.only(right: 100, left: 26),
-                      indicatorPadding: EdgeInsets.symmetric(horizontal: 0),
+                      padding: EdgeInsets.only(
+                        right: ((MediaQuery.of(context).size.width) * 0.5),
+                        left: 15,
+                      ),
+                      indicatorPadding: EdgeInsets.symmetric(
+                        horizontal: 0,
+                      ),
                       labelColor: jetBlack80,
                       labelStyle: TextStyle(
                           fontFamily: 'SFDisplay',
@@ -139,9 +153,6 @@ class Search extends StatelessWidget {
                         Tab(
                           text: 'Classes',
                         ),
-                        Tab(
-                          text: 'Categories',
-                        ),
                       ],
                     ),
                   ),
@@ -152,23 +163,124 @@ class Search extends StatelessWidget {
               color: snow,
               child: TabBarView(
                 children: [
-                  Center(
-                      child: Text(
-                    'Trainers',
-                    style: pageTitles,
-                  )),
-                  Center(
-                    child: Text(
-                      'Classes',
-                      style: pageTitles,
+                  //Tab #1 - Users Search Tab
+
+                  if (allClasses.isEmpty)
+
+                    //Empty ClassList (No search results)
+                    Center(
+                        child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 120),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off_rounded,
+                              color: shark,
+                              size: 50,
+                            ),
+                            Text(
+                              'No trainers found',
+                              style: emptyListDisclaimerText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+                  else
+                    Center(
+                      child: CustomScrollView(
+                        slivers: [
+                          MultiSliver(children: [
+                            SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                //Update this list to a list of users retrieved from search - we may need to work on this together.
+                                final classItem = allClasses[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 26.0, right: 26.0),
+                                  child: UserProfileComponentLight(
+                                    userFirstName: classItem.trainerFirstName,
+                                    userLastName: classItem.trainerLastName,
+                                    userName: classItem.classTrainer,
+                                    imageURL: classItem.trainerImageUrl,
+                                    profileImageRadius: 22.5,
+                                    userFullNameFontSize: 15,
+                                    userNameFontSize: 14,
+                                  ),
+                                );
+                              },
+                              childCount: allClasses.length,
+                            )),
+                          ]),
+                        ],
+                      ),
                     ),
-                  ),
-                  Center(
-                    child: Text(
-                      'Categories',
-                      style: pageTitles,
+
+                  //Tab #2 - Classes Search Tab
+
+                  if (allClasses.isEmpty)
+
+                    //Empty ClassList (No search results)
+                    Center(
+                        child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 150),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.search_off_rounded,
+                              color: shark,
+                              size: 50,
+                            ),
+                            Text(
+                              'No classes found',
+                              style: emptyListDisclaimerText,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ))
+                  else
+                    Center(
+                      child: CustomScrollView(
+                        slivers: [
+                          MultiSliver(children: [
+                            SliverList(
+                                delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                                //This will need to be replaced with a list of classes received from the search.
+                                final classItem = allClasses[index];
+                                return HomeClassItem(
+                                  classTrainer: classItem.classTrainer,
+                                  className: classItem.className,
+                                  classType: classItem.classType,
+                                  classLocationName:
+                                      classItem.classLocationName,
+                                  classPrice: classItem.classPrice,
+                                  classLiked: classItem.classLiked,
+                                  classImage: classItem.classImageUrl,
+                                  trainerImageUrl: classItem.trainerImageUrl,
+                                  classDescription: classItem.classDescription,
+                                  classRating: classItem.classRating,
+                                  classReviews: classItem.classReview,
+                                  trainerFirstName: classItem.trainerFirstName,
+                                  trainerLastName: classItem.trainerLastName,
+                                  classWhatToExpect:
+                                      classItem.classWhatToExpect,
+                                  classWhatYouWillNeed:
+                                      classItem.classUserRequirements,
+                                );
+                              },
+                              childCount: allClasses.length,
+                            )),
+                          ]),
+                        ],
+                      ),
                     ),
-                  )
                 ],
               ),
             ),

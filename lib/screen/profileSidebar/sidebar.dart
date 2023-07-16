@@ -17,16 +17,16 @@ class SideBar extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20.0, right: 15.0, top: 90.0),
           child: Column(
             children: [
-              UserProfileComponentLight(
-                userFullName: 'Salman Janvekar',
-                userFullNameFontSize: 17,
-                userName: 'salman',
-                userNameFontSize: 15.5,
-                imageURL:
-                    'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f',
-                profileImageRadius: 35,
-                userFirstName: 'Salman',
-              ),
+              // UserProfileComponentLight(
+              //   userFullName: 'Salman Janvekar',
+              //   userFullNameFontSize: 17,
+              //   userName: 'salman',
+              //   userNameFontSize: 15.5,
+              //   imageURL:
+              //       'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/IMG_9010.jpeg?alt=media&token=3c7a2cfd-831b-4f19-8b23-9328f00aa76f',
+              //   profileImageRadius: 35,
+              //   userFirstName: 'Salman',
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 40, top: 35),
                 child: Row(

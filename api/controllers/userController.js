@@ -13,58 +13,59 @@ var functions = {
         }
         else {
             console.log(req.body.UserType)
-            var newUser = User({
-                UserID: req.body.UserID,
-                IsActive: req.body.IsActive,
-                UserType: req.body.UserType,
-                ProfileImageURL: req.body.ProfileImageURL,
-                FirstName: req.body.FirstName,
-                LastName: req.body.LastName,
-                Username: req.body.Username,
+            var newAuth = Auth({
                 UserEmail: req.body.UserEmail,
                 Password: req.body.Password,
-                Categories: req.body.Categories,
-                LikedClasses: req.body.LikedClasses,
-                ClassHistory: req.body.ClassHistory,
-                Following: req.body.Following,
-                Followers: req.body.Followers,
-            });
-            await newUser.save(function (err, newUser){
+            })
+        
+            newAuth.save(function (err, newAuth) {
                 if(err){
-                    // print('failure');
-                    console.error(err)
-                    res.send({success: false, msg: "Didnt work bithc"})
+                    res.send({success: false, msg: "Didnt auth bithc"})
                 }
-                else {
-                    // print('I have posted');
+                var newUser = User({
+                    IsActive: req.body.IsActive,
+                    UserType: req.body.UserType,
+                    ProfileImageURL: req.body.ProfileImageURL,
+                    FirstName: req.body.FirstName,
+                    LastName: req.body.LastName,
+                    Auth: newAuth._,
+                    Categories: req.body.Categories,
+                    LikedClasses: req.body.LikedClasses,
+                    ClassHistory: req.body.ClassHistory,
+                    Following: req.body.Following,
+                    Followers: req.body.Followers,
+                });
+                newUser.save(function (err, newUser) {
+                    if(err){
+                        // print('failure');
+                        res.send({success: false, msg: "Didnt user bithc"})
+                    }
                     res.json({success: true, msg: 'Successfully saved'})
-                }
+                })
             })
         }
     },
 
     // Authenticate User fnc
     authenticate: function(req, res) {
-        User.findOne({ $or:
-           [{ Username: req.body.Username}, {UserEmail: req.body.UserEmail}]},
-         function(err, user){
-            if (err) throw err
-            if (!user){
-                res.status(403).send({success: false, msg: 'Incorrect username. Please try again.'})
+        try {
+            const auth = Auth.findOne({UserEmail: req.body.Username});
+            const user = User.findOne({Username: req.body.Username});
+            if (!(auth && user)) { //TODO: confirm behaviour if account username resembles their email
+                throw new Error();
             }
-
-            else {
-                user.comparePassword(req.body.Password, function (err, isMatch){
-                    if(isMatch && !err){
-                        var token = jwt.encode(user, config.secret)
-                        res.json({success: true, token: token})
-                        
-                    }else{
-                        return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
-                    }
-                })
-            }
-        })
+            auth.comparePassword(req.body.Password, function (err, isMatch){
+                if(isMatch && !err){
+                    var token = jwt.encode(user, config.secret)
+                    res.json({success: true, token: token})
+                    
+                }else{
+                    return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
+                }
+            })
+        } catch(err) {
+            res.status(403).send({success: false, msg: 'Incorrect username or email. Please try again.'})
+        }
     },
 
     // Get Information
@@ -119,9 +120,9 @@ var functions = {
             if (err) {
                 console.log(err)
                 return res.json({success: false, errorCode: err.code})
+              
             } else {
-                return res.json({success: true
-                    })
+                return res.json({success: true})
             }
         })
     },

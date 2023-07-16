@@ -13,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
-class SearchBar extends StatefulWidget {
-  SearchBar({
+class FitsySearchBar extends StatefulWidget {
+  FitsySearchBar({
     Key? key,
     required this.isAutoFocusTrue,
     required this.searchBarWidth,
@@ -25,12 +25,12 @@ class SearchBar extends StatefulWidget {
   String searchHintText;
 
   @override
-  State<SearchBar> createState() => _SearchBarState();
+  State<FitsySearchBar> createState() => _FitsySearchBarState();
 }
 
 var _controller = TextEditingController();
 
-class _SearchBarState extends State<SearchBar> {
+class _FitsySearchBarState extends State<FitsySearchBar> {
   @override
   Widget build(BuildContext context) {
     return Material(

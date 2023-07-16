@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'package:balance/feModels/authModel.dart';
 
 enum UserType { Trainee, Trainer }
 
@@ -10,9 +10,8 @@ class User {
   String lastName;
   String userName;
   late String? userBio;
-  String userEmail;
-  String password;
   late List<String> categories;
+  Auth authUser;
 
   //TODO: Delete below when done with listSchemaChanges branch
   late List<String> likedClasses;
@@ -27,7 +26,6 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.userName,
-    required this.userEmail,
-    required this.password,
+    required this.authUser,
   });
 }

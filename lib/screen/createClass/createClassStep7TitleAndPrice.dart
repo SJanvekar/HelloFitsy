@@ -7,7 +7,6 @@ import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
-import 'package:balance/screen/createClass/createClassSchedule.dart';
 import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep3WhatToExpect.dart';
 import 'package:balance/screen/home/home%20copy.dart';
@@ -351,7 +350,10 @@ Widget ClassLocation(Class template) {
                   ),
                 ),
                 onChanged: (val) {
-                  template.classLocation = val;
+                  //TODO: HARDCODE 0 FOR NOW, IMPLEMENT GEOLOCATER
+                  template.classLocationName = '';
+                  template.classLatitude = 0;
+                  template.classLongitude = 0;
                 },
               )),
         ],
