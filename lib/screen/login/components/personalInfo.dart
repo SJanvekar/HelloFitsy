@@ -305,15 +305,14 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 buttonText: "Continue",
               ),
               onTap: () => {
-                    print(authTemplate.password),
                     if (authTemplate.password == passwordConfirmed)
-                      {
-                        //SNTG
-                        passwordCheck = true
-                      }
+                      {passwordCheck = true}
                     else
-                      {passwordCheck = false},
-                    print('not the same password bitch'),
+                      {
+                        print(
+                            'Not the same, original: ${authTemplate.password}, confirmed: $passwordConfirmed'),
+                        passwordCheck = false
+                      },
                     if (authTemplate.userEmail == null)
                       {emailValid = false}
                     else
@@ -321,7 +320,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         emailValid =
                             EmailValidator.validate(authTemplate.userEmail)
                       },
-                    print(emailValid),
                     if (passwordCheck && emailValid)
                       {
                         Navigator.of(context).push(MaterialPageRoute(

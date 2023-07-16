@@ -1,7 +1,5 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
-const crypto = require("crypto");
 
 var UserSchema = new Schema({
 
@@ -68,18 +66,6 @@ var UserSchema = new Schema({
 
     //Categories (Liked)
     Categories: [{
-        type: String,
-        required: false,
-    }],
-
-    //Liked Classes
-    LikedClasses: [{
-        type: String,
-        required: false,
-    }],
-
-    //Class History
-    ClassHistory: [{
         type: String,
         required: false,
     }],

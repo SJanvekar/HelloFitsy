@@ -1,4 +1,5 @@
 var User = require('../models/user')
+var Auth = require('../models/auth')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 const { json } = require('body-parser')
@@ -8,19 +9,17 @@ var functions = {
     //Add New User fnc
     addNew: async function (req, res){
         if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
-            res.json({success: false, msg: 'Enter all fields'})
-            
+            return res.json({success: false, msg: 'Enter all fields'})
         }
         else {
-            console.log(req.body.UserType)
             var newAuth = Auth({
                 UserEmail: req.body.UserEmail,
                 Password: req.body.Password,
             })
         
-            newAuth.save(function (err, newAuth) {
-                if(err){
-                    res.send({success: false, msg: "Didnt auth bithc"})
+            await newAuth.save(function (err, newAuth) {
+                if (err) {
+                    return res.send({success: false, msg: "Didn't save auth, " + err})
                 }
                 var newUser = User({
                     IsActive: req.body.IsActive,
@@ -28,19 +27,19 @@ var functions = {
                     ProfileImageURL: req.body.ProfileImageURL,
                     FirstName: req.body.FirstName,
                     LastName: req.body.LastName,
-                    Auth: newAuth._,
+                    Username: req.body.Username,
+                    Auth: newAuth.id,
                     Categories: req.body.Categories,
                     LikedClasses: req.body.LikedClasses,
                     ClassHistory: req.body.ClassHistory,
                     Following: req.body.Following,
                     Followers: req.body.Followers,
                 });
-                newUser.save(function (err, newUser) {
-                    if(err){
-                        // print('failure');
-                        res.send({success: false, msg: "Didnt user bithc"})
+                newUser.save(function (err) {
+                    if (err) {
+                        return res.send({success: false, msg: "Didn't save user, " + err})
                     }
-                    res.json({success: true, msg: 'Successfully saved'})
+                    return res.send({success: true, msg: 'Successfully saved'})
                 })
             })
         }
@@ -48,24 +47,43 @@ var functions = {
 
     // Authenticate User fnc
     authenticate: function(req, res) {
-        try {
-            const auth = Auth.findOne({UserEmail: req.body.Username});
-            const user = User.findOne({Username: req.body.Username});
-            if (!(auth && user)) { //TODO: confirm behaviour if account username resembles their email
-                throw new Error();
+
+        Auth.findOne({UserEmail: req.body.Username}, function (err, newAuth) {
+            if (err || newAuth == null) { //If not in Auth , check in User
+                User.findOne({Username: req.body.Username}, function (err, newUser) {
+                    if (err || newUser == null) { //Indicates incorrect username or email
+                        console.log("Error authenticating: " + err)
+                        return res.status(403).send({success: false, msg: 'Incorrect username or email. Please try again.'})
+                    } else {
+                        Auth.findById(newUser.Auth, function (err, newAuth) { //If in User, use objectID to find corresponding Auth object
+                            if (err || newAuth == null) { //Something is horribly wrong
+                                return res.json({success: false, msg: 'Something went wrong' + err})
+                            } else {
+                                newAuth.comparePassword(req.body.Password, function (err, isMatch) {
+                                    if (isMatch && !err) {
+                                        var token = jwt.encode(newAuth, config.secret)
+                                        return res.json({success: true, token: token})
+                                    } else {
+                                        console.log("Error Incorrect Password")
+                                        return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
+                                    }
+                                })
+                            }
+                        })
+                    }
+                });
+            } else {
+                newAuth.comparePassword(req.body.Password, function (err, isMatch) {
+                    if (isMatch && !err) {
+                        var token = jwt.encode(newAuth, config.secret)
+                        return res.json({success: true, token: token})
+                    } else {
+                        console.log("Error Incorrect Password")
+                        return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
+                    }
+                })
             }
-            auth.comparePassword(req.body.Password, function (err, isMatch){
-                if(isMatch && !err){
-                    var token = jwt.encode(user, config.secret)
-                    res.json({success: true, token: token})
-                    
-                }else{
-                    return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
-                }
-            })
-        } catch(err) {
-            res.status(403).send({success: false, msg: 'Incorrect username or email. Please try again.'})
-        }
+        });
     },
 
     // Get Information
@@ -75,7 +93,6 @@ var functions = {
                 let responseString = JSON.stringify(responseJSON)
                 var user = User()
                 user = JSON.parse(responseString)
-                //TODO: Confirm this is actually checking for null
                 if (user) {
                     resolve(user)
                 } else {

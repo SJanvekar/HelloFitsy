@@ -265,13 +265,12 @@ class _CategorySelectionState extends State<CategorySelection> {
 
     //Auth Service Call
     AuthService().signUp(authTemplate, userTemplate).then((val) {
-      // print("Whatever");
       if (val.data['success']) {
         print('Successful user add');
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeTest()));
       } else {
-        print("MEGASS ERROR KEK: ${val.data}");
+        print("Sign up error: ${val.data}");
       }
     });
   }

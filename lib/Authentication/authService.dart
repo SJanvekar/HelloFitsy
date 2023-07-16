@@ -15,8 +15,8 @@ class AuthService {
             "Password": password,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
-    } on DioError catch (e) {
-      print(e);
+    } catch (e) {
+      print("Authenticate/Sign In errors: ${e}");
     }
   }
 
@@ -27,8 +27,8 @@ class AuthService {
         '$urlDomain/getinfo',
         queryParameters: {"Account": account},
       );
-    } on DioError catch (e) {
-      print(e);
+    } catch (e) {
+      print("Get User Info Error: ${e}");
     }
   }
 
@@ -56,7 +56,7 @@ class AuthService {
             followRedirects: false,
             validateStatus: (status) => true,
           ));
-    } on DioError catch (e) {
+    } catch (e) {
       print("SignUp Error: ${e}");
     }
   }

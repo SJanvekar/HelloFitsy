@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
-const crypto = require("crypto");
 
 var validateEmail = function() {
     var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -30,7 +29,7 @@ var AuthSchema = new Schema({
 
 AuthSchema.pre('save', function (next) {
     var user = this;
-    if (this.isModified('Password') || this.isNew){
+    if (this.isModified('Password') || this.isNew) {
         bcrypt.genSalt(10, function (err, salt){
             if (err) {
                 return next(err)
@@ -52,7 +51,7 @@ AuthSchema.pre('save', function (next) {
 
 AuthSchema.methods.comparePassword = function(passw, cb){
     bcrypt.compare(passw, this.Password, function(err, isMatch){
-        if(err){
+        if (err) {
             return cb(err)
         }
         cb(null, isMatch)
