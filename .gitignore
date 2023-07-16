@@ -55,6 +55,12 @@ pubspec.lock
 /build/
 /reports
 
+
+########## MAKE SURE THIS IS ALWAYS IGNORED - IF COMMITTED PLEASE LET ME KNOW - Salman
+#Dotenv
+.env
+
+
 # Secret production URL
 /config
 
