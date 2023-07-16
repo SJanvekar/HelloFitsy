@@ -350,7 +350,10 @@ Widget ClassLocation(Class template) {
                   ),
                 ),
                 onChanged: (val) {
-                  template.classLocation = val;
+                  //TODO: HARDCODE 0 FOR NOW, IMPLEMENT GEOLOCATER
+                  template.classLocationName = '';
+                  template.classLatitude = 0;
+                  template.classLongitude = 0;
                 },
               )),
         ],

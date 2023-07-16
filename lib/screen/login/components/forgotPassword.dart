@@ -59,7 +59,7 @@ class ForgotPasswordPage extends StatelessWidget {
                 ),
               ),
               onChanged: (val) {
-                userTemplate.userEmail = val;
+                authTemplate.userEmail = val;
               },
               textInputAction: TextInputAction.done,
             ),

@@ -35,7 +35,7 @@ class ClassCardOpen extends StatefulWidget {
     required this.trainerLastName,
     required this.className,
     required this.classType,
-    required this.classLocation,
+    required this.classLocationName,
     required this.classPrice,
     required this.classLiked,
     required this.classImage,
@@ -52,7 +52,7 @@ class ClassCardOpen extends StatefulWidget {
   String trainerLastName;
   String className;
   ClassType classType;
-  String classLocation;
+  String classLocationName;
   double classPrice;
   bool classLiked;
   String classImage;
@@ -205,7 +205,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                 ),
               )),
           Text(
-            widget.classLocation,
+            widget.classLocationName,
             style: TextStyle(
                 color: jetBlack,
                 fontSize: 14,

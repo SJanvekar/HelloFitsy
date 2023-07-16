@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/authModel.dart';
 import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/components/categorySelect_bloc.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
@@ -18,9 +19,11 @@ import '../../../sharedWidgets/loginFooterButton.dart';
 import '../../../feModels/userModel.dart';
 
 class CategorySelection extends StatefulWidget {
-  const CategorySelection({Key? key, required this.userTemplate})
+  const CategorySelection(
+      {Key? key, required this.authTemplate, required this.userTemplate})
       : super(key: key);
 
+  final Auth authTemplate;
   final User userTemplate;
 
   @override
@@ -261,14 +264,13 @@ class _CategorySelectionState extends State<CategorySelection> {
     userTemplate.following = <String>[];
 
     //Auth Service Call
-    AuthService().signUp(userTemplate).then((val) {
-      // print("Whatever");
+    AuthService().signUp(authTemplate, userTemplate).then((val) {
       if (val.data['success']) {
         print('Successful user add');
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeTest()));
       } else {
-        print("MEGASS ERROR KEK: ${val.data}");
+        print("Sign up error: ${val.data}");
       }
     });
   }

@@ -1,5 +1,7 @@
+import 'package:balance/feModels/authModel.dart';
 import 'dart:ffi';
 import 'dart:convert';
+
 
 enum UserType { Trainee, Trainer }
 
@@ -11,9 +13,10 @@ class User {
   String lastName;
   String userName;
   late String? userBio;
-  String userEmail;
-  String password;
   late List<String> categories;
+  Auth authUser;
+
+  //TODO: Delete below when done with listSchemaChanges branch
   late List<String> likedClasses;
   late List<String> classHistory;
   late List<String> following;
@@ -26,8 +29,7 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.userName,
-    required this.userEmail,
-    required this.password,
+    required this.authUser,
   });
 
   //JSON parsers are required to parse arrays of JSON

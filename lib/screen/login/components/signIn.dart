@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/authModel.dart';
 import 'package:balance/feModels/userModel.dart';
 import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/components/forgotPassword.dart';
@@ -24,29 +25,18 @@ var account, password, token;
 FocusNode userNameFocusNode = FocusNode();
 FocusNode passwordFocusNode = FocusNode();
 
-User userTemplate = User(
-  isActive: true,
-  userType: UserType.Trainee,
-  profileImageURL: "",
-  firstName: "",
-  lastName: "",
-  userName: "",
-  userEmail: "",
-  password: "",
-);
-
 //---------------Functions-----------------
 
 //Submit Sign In
 void onSubmitSignInField(context) {
   AuthService().signIn(account, password).then((val) {
-    if (val.data['success']) {
-      print('successful sign in');
+    if (val?.data['success'] ?? false) {
+      print('Successful authenticate');
       token = val.data['token'];
       AuthService().getUserInfo(token, account).then((val) async {
         final sharedPrefs = await SharedPreferences.getInstance();
-        if (val.data['success']) {
-          print('successful get info');
+        if (val?.data['success'] ?? false) {
+          print('Successful get user info');
           // final String encodedCategories = val.data['categories'].encode;
           final String encodedCategories = json.encode(val.data['categories']);
           sharedPrefs.setString('userType', val.data['userType']);
@@ -54,14 +44,16 @@ void onSubmitSignInField(context) {
           sharedPrefs.setString('userName', val.data['userName']);
           sharedPrefs.setString('firstName', val.data['firstName']);
           sharedPrefs.setString('lastName', val.data['lastName']);
-          sharedPrefs.setString('userEmail', val.data['userEmail']);
           sharedPrefs.setString('categories', encodedCategories);
         } else {
-          print('error get info');
+          print('Failed get user info');
         }
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeTest()));
       });
+    } else {
+      //TODO: Should have message pop up about wrong username or password
+      print('Failed authenticate');
     }
   });
 }

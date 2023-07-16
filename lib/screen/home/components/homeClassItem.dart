@@ -23,7 +23,7 @@ class HomeClassItem extends StatefulWidget {
     required this.classDescription,
     required this.classWhatToExpect,
     required this.classWhatYouWillNeed,
-    required this.classLocation,
+    required this.classLocationName,
     required this.classPrice,
     required this.classLiked,
     required this.classImage,
@@ -40,7 +40,7 @@ class HomeClassItem extends StatefulWidget {
   String classDescription;
   String classWhatToExpect;
   String classWhatYouWillNeed;
-  String classLocation;
+  String classLocationName;
   double classPrice;
   bool classLiked;
   String classImage;
@@ -177,7 +177,7 @@ class _HomeClassItem extends State<HomeClassItem> {
               classTitle(widget.className, titleBoxWidth),
               Padding(
                 padding: const EdgeInsets.only(bottom: 5.0),
-                child: classSubHeader(widget.classLocation),
+                child: classSubHeader(widget.classLocationName),
               ),
               classPrice(widget.classPrice)
             ],
@@ -299,7 +299,7 @@ class _HomeClassItem extends State<HomeClassItem> {
               openBuilder: (BuildContext context, _) => ClassCardOpen(
                 classImage: widget.classImage,
                 classLiked: widget.classLiked,
-                classLocation: widget.classLocation,
+                classLocationName: widget.classLocationName,
                 classType: widget.classType,
                 className: widget.className,
                 classPrice: widget.classPrice,

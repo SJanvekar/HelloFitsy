@@ -5,14 +5,12 @@ import 'dart:convert';
 enum ClassType { Solo, Group, Virtual }
 
 class Schedule {
-  Set<DateTime> dates;
-  DateTime startTime;
-  DateTime endTime;
+  DateTime startDate;
+  DateTime endDate;
 
   Schedule({
-    required this.dates,
-    required this.startTime,
-    required this.endTime,
+    required this.startDate,
+    required this.endDate,
   });
 }
 
@@ -24,9 +22,11 @@ class Class {
   String classWhatToExpect;
   String classUserRequirements;
   ClassType classType;
-  String classLocation;
-  double classRating;
-  int classReview;
+  String classLocationName;
+  double classLatitude;
+  double classLongitude;
+  double classOverallRating;
+  int classReviewsAmount;
   String classTrainer;
   String trainerFirstName;
   String trainerLastName;
@@ -43,11 +43,11 @@ class Class {
     required this.classWhatToExpect,
     required this.classUserRequirements,
     required this.classType,
-    required this.classLocation,
-    required this.classRating,
-
-    //What the fuck is class review? I can't rememmber - Salman
-    required this.classReview,
+    required this.classLocationName,
+    required this.classLatitude,
+    required this.classLongitude,
+    required this.classOverallRating,
+    required this.classReviewsAmount,
 
     //Good after this point
     required this.classPrice,
@@ -72,9 +72,11 @@ class Class {
         classWhatToExpect = json['ClassWhatToExpect'],
         classUserRequirements = json['ClassUserRequirements'],
         classType = stringToClassType(json['ClassType'][0]),
-        classLocation = json['ClassLocation'],
-        classRating = json['ClassRating'].toDouble(),
-        classReview = json['ClassReview'],
+        classLocationName = json['ClassLocationName'],
+        classLatitude = json['ClassLatitude'],
+        classLongitude = json['ClassLongitude'],
+        classOverallRating = json['ClassOverallRating'].toDouble(),
+        classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
         classTrainer = json['ClassTrainer'],
         classLiked = json['ClassLiked'],
@@ -89,9 +91,11 @@ class Class {
         'ClassWhatToExpect': classWhatToExpect,
         'ClassUserRequirements': classUserRequirements,
         'ClassType': classType.toString(),
-        'ClassLocation': classLocation,
-        'ClassRating': classRating,
-        'ClassReview': classReview,
+        'ClassLocationName': classLocationName,
+        'ClassLatitude': classLatitude,
+        'ClassLongitude': classLongitude,
+        'ClassRating': classOverallRating,
+        'ClassReview': classReviewsAmount,
         'ClassPrice': classPrice,
         'ClassTrainer': classTrainer,
         'ClassLiked': classLiked,

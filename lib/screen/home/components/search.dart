@@ -274,14 +274,15 @@ class _Search extends State<Search> {
                                   classTrainer: classItem.classTrainer,
                                   className: classItem.className,
                                   classType: classItem.classType,
-                                  classLocation: classItem.classLocation,
+                                  classLocationName:
+                                      classItem.classLocationName,
                                   classPrice: classItem.classPrice,
                                   classLiked: classItem.classLiked,
                                   classImage: classItem.classImageUrl,
                                   trainerImageUrl: classItem.trainerImageUrl,
                                   classDescription: classItem.classDescription,
-                                  classRating: classItem.classRating,
-                                  classReviews: classItem.classReview,
+                                  classRating: classItem.classOverallRating,
+                                  classReviews: classItem.classReviewsAmount,
                                   trainerFirstName: classItem.trainerFirstName,
                                   trainerLastName: classItem.trainerLastName,
                                   classWhatToExpect:

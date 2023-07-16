@@ -1,3 +1,4 @@
+import 'package:balance/feModels/authModel.dart';
 import 'package:dio/dio.dart';
 import 'package:balance/constants.dart';
 
@@ -14,8 +15,8 @@ class AuthService {
             "Password": password,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
-    } on DioError catch (e) {
-      print(e);
+    } catch (e) {
+      print("Authenticate/Sign In errors: ${e}");
     }
   }
 
@@ -26,12 +27,12 @@ class AuthService {
         '$urlDomain/getinfo',
         queryParameters: {"Account": account},
       );
-    } on DioError catch (e) {
-      print(e);
+    } catch (e) {
+      print("Get User Info Error: ${e}");
     }
   }
 
-  signUp(User userModel) async {
+  signUp(Auth authModel, User userModel) async {
     try {
       return await dio.post('$urlDomain/adduser',
           data: {
@@ -41,8 +42,8 @@ class AuthService {
             "FirstName": userModel.firstName,
             "LastName": userModel.lastName,
             "Username": userModel.userName,
-            "UserEmail": userModel.userEmail,
-            "Password": userModel.password,
+            "UserEmail": authModel.userEmail,
+            "Password": authModel.password,
             "Categories": userModel.categories,
             "LikedClasses": userModel.likedClasses,
             "ClassHistory": userModel.classHistory,
@@ -55,7 +56,7 @@ class AuthService {
             followRedirects: false,
             validateStatus: (status) => true,
           ));
-    } on DioError catch (e) {
+    } catch (e) {
       print("SignUp Error: ${e}");
     }
   }

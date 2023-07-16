@@ -32,7 +32,7 @@ class _ClassListExploreState extends State<ClassListExplore> {
                 userName: 'username',
                 className: classItem.className,
                 classType: classItem.classType,
-                classLocation: classItem.classLocation,
+                classLocationName: classItem.classLocationName,
                 classPrice: classItem.classPrice,
                 classLiked: classItem.classLiked,
                 classImage: classItem.classImageUrl,

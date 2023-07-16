@@ -16,7 +16,7 @@ class ExploreClassItem extends StatefulWidget {
     required this.userName,
     required this.className,
     required this.classType,
-    required this.classLocation,
+    required this.classLocationName,
     required this.classPrice,
     required this.classLiked,
     required this.classImage,
@@ -26,7 +26,7 @@ class ExploreClassItem extends StatefulWidget {
   String userName;
   String className;
   ClassType classType;
-  String classLocation;
+  String classLocationName;
   double classPrice;
   bool classLiked;
   String classImage;
@@ -85,7 +85,7 @@ class _ExploreClassItem extends State<ExploreClassItem> {
                           classTitle(widget.className),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 2.0),
-                            child: classSubHeader(widget.classLocation),
+                            child: classSubHeader(widget.classLocationName),
                           ),
                           classPrice(widget.classPrice)
                         ],

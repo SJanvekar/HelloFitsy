@@ -834,10 +834,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                 scheduledClass.trainerImageUrl,
                             classDescription: scheduledClass.classDescription,
                             classLiked: scheduledClass.classLiked,
-                            classLocation: scheduledClass.classLocation,
+                            classLocationName: scheduledClass.classLocationName,
                             classPrice: scheduledClass.classPrice,
-                            classRating: scheduledClass.classRating,
-                            classReviews: scheduledClass.classReview,
+                            classRating: scheduledClass.classOverallRating,
+                            classReviews: scheduledClass.classReviewsAmount,
                             classTrainerFirstName:
                                 scheduledClass.trainerFirstName,
                             classTrainerLastName:

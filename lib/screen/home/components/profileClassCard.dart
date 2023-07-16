@@ -23,7 +23,7 @@ class ProfileClassCard extends StatefulWidget {
     required this.classDescription,
     required this.classWhatToExpect,
     required this.classWhatYouWillNeed,
-    required this.classLocation,
+    required this.classLocationName,
     required this.classPrice,
     required this.classLiked,
     required this.classImage,
@@ -41,7 +41,7 @@ class ProfileClassCard extends StatefulWidget {
   String classDescription;
   String classWhatToExpect;
   String classWhatYouWillNeed;
-  String classLocation;
+  String classLocationName;
   double classPrice;
   bool classLiked;
   String classImage;
@@ -100,7 +100,7 @@ class _ProfileClassCard extends State<ProfileClassCard> {
         openBuilder: (BuildContext context, _) => ClassCardOpen(
           classImage: widget.classImage,
           classLiked: widget.classLiked,
-          classLocation: widget.classLocation,
+          classLocationName: widget.classLocationName,
           classType: widget.classType,
           className: widget.className,
           classPrice: widget.classPrice,
@@ -179,7 +179,7 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                         classTitle(widget.className, titleBoxWidth),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 2.0),
-                          child: classSubHeader(widget.classLocation),
+                          child: classSubHeader(widget.classLocationName),
                         ),
                         classPrice(widget.classPrice)
                       ],

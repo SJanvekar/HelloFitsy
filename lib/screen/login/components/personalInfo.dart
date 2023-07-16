@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/feModels/authModel.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -23,15 +24,19 @@ class PersonalInfo extends StatefulWidget {
   State<PersonalInfo> createState() => _PersonalInfoState();
 }
 
+Auth authTemplate = Auth(
+  userEmail: '',
+  password: '',
+);
+
 User userTemplate = User(
   isActive: true,
   userType: UserType.Trainee,
-  profileImageURL: "",
-  firstName: "",
-  lastName: "",
-  userName: "",
-  userEmail: "",
-  password: "",
+  profileImageURL: '',
+  firstName: '',
+  lastName: '',
+  userName: '',
+  authUser: authTemplate,
 );
 
 var passwordConfirmed;
@@ -300,27 +305,26 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 buttonText: "Continue",
               ),
               onTap: () => {
-                    print(userTemplate.password),
-                    if (userTemplate.password == passwordConfirmed)
-                      {
-                        //SNTG
-                        passwordCheck = true
-                      }
+                    if (authTemplate.password == passwordConfirmed)
+                      {passwordCheck = true}
                     else
-                      {passwordCheck = false},
-                    print('not the same password bitch'),
-                    if (userTemplate.userEmail == null)
+                      {
+                        print(
+                            'Not the same, original: ${authTemplate.password}, confirmed: $passwordConfirmed'),
+                        passwordCheck = false
+                      },
+                    if (authTemplate.userEmail == null)
                       {emailValid = false}
                     else
                       {
                         emailValid =
-                            EmailValidator.validate(userTemplate.userEmail)
+                            EmailValidator.validate(authTemplate.userEmail)
                       },
-                    print(emailValid),
                     if (passwordCheck && emailValid)
                       {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProfilePictureUpload(
+                                authTemplate: authTemplate,
                                 userTemplate: userTemplate))),
                       }
                     else if (!emailValid)
@@ -403,7 +407,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     ),
                   ),
                   onChanged: (val) {
-                    userTemplate.password = val;
+                    authTemplate.password = val;
                   },
                   textInputAction: TextInputAction.next,
                 ),
@@ -719,7 +723,7 @@ Widget textInputEmail(BuildContext context) {
               ),
             ),
             onChanged: (val) {
-              userTemplate.userEmail = val;
+              authTemplate.userEmail = val;
             },
             textInputAction: TextInputAction.next,
           ),

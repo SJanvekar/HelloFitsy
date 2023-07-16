@@ -56,25 +56,34 @@ var ClassSchema = new Schema({
         required: true,
     },
 
-    //Class Location
-    ClassLocation: {
+    //Class Location Name
+    ClassLocationName: {
         type: String,
         required: true
-
     },
 
-    //Class Rating
-    ClassRating: {
+    //Class Latitude
+    ClassLatitude: {
         type: Number,
         required: true
-
     },
 
-    //Class Review
-    ClassReview: {
+    //Class Longitude
+    ClassLongitude: {
         type: Number,
         required: true
+    },
 
+    //Class Overall Rating
+    ClassOverallRating: {
+        type: Number,
+        required: true
+    },
+
+    //Class Reviews Amount
+    ClassReviewsAmount: {
+        type: Number,
+        required: true
     },
 
     //Class Price
@@ -100,7 +109,6 @@ var ClassSchema = new Schema({
     TrainerImageUrl: {
         type: String,
         required: false
-
     },
     
     //Trainer First Name

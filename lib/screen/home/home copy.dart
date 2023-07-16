@@ -1,5 +1,6 @@
 import 'package:balance/Requests/classRequests.dart';
 import 'package:balance/Requests/userRequests.dart';
+import 'package:balance/Requests/followingRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/upcomingClassesItem.dart';
@@ -40,7 +41,6 @@ class _HomeTestState extends State<HomeTest> {
     super.initState();
     getUserInfo();
     getUserFollowing();
-    // getClassFeed();
     setState(() {});
   }
 
@@ -55,8 +55,8 @@ class _HomeTestState extends State<HomeTest> {
 
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    UserRequests()
-        .getUserFollowing(sharedPrefs.getString('userName') ?? "")
+    FollowingRequests()
+        .getFollowingList(sharedPrefs.getString('userName') ?? "")
         .then((val) async {
       if (val.data['success']) {
         print('successful get following list');
@@ -428,14 +428,14 @@ class _HomeTestState extends State<HomeTest> {
                     classTrainer: classItem.classTrainer,
                     className: classItem.className,
                     classType: classItem.classType,
-                    classLocation: classItem.classLocation,
+                    classLocationName: classItem.classLocationName,
                     classPrice: classItem.classPrice,
                     classLiked: classItem.classLiked,
                     classImage: classItem.classImageUrl,
                     trainerImageUrl: classItem.trainerImageUrl,
                     classDescription: classItem.classDescription,
-                    classRating: classItem.classRating,
-                    classReviews: classItem.classReview,
+                    classRating: classItem.classOverallRating,
+                    classReviews: classItem.classReviewsAmount,
                     trainerFirstName: classItem.trainerFirstName,
                     trainerLastName: classItem.trainerLastName,
                     classWhatToExpect: classItem.classWhatToExpect,
