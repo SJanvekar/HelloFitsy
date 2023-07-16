@@ -126,7 +126,7 @@ const disclaimerTitle = TextStyle(
 const pageTitles = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 26,
+  fontSize: 28,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
@@ -272,6 +272,13 @@ const roundedBodyTextStyle1 = TextStyle(
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
+
+const notificationsDates = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: jetBlack40,
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none);
 
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(

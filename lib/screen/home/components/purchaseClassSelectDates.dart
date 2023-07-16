@@ -1,9 +1,13 @@
 import 'dart:collection';
-
-import 'package:balance/constants.dart';
-import 'package:balance/screen/profile/components/createClassSchedule.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:balance/screen/home/components/homeClassItem.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:balance/constants.dart';
+import 'package:balance/payments/paymentSheet.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -19,15 +23,20 @@ class PurchaseClassSelectDates extends StatefulWidget {
     Key? key,
     required this.classImageUrl,
     required this.className,
+    required this.classPrice,
   }) : super(key: key);
 
   String classImageUrl;
   String className;
+  double classPrice;
 
   @override
   State<PurchaseClassSelectDates> createState() =>
       _PurchaseClassSelectDatesState();
 }
+
+//Initialize Payment Intent
+var paymentIntent;
 
 //Test List of Dates/Times for purchasing a class (This is a custom class, will definately need cleaning up)
 class classTimes {
@@ -165,6 +174,70 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
       _selectedDays.clear();
       _selectedDays.add(selectedDay);
     });
+  }
+
+//---------------- Functions for Payment ----------------------
+
+//Initalize the payment intent
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      //Request body
+      Map<String, dynamic> body = {
+        'amount': amount,
+        'currency': currency,
+      };
+
+      //Make post request to Stripe
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      return json.decode(response.body);
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+
+//Make Payment Function
+  Future<void> makePayment(paymentAmount, paymentCurrency) async {
+    try {
+      //STEP 1: Create Payment Intent
+      paymentIntent = await createPaymentIntent(paymentAmount, paymentCurrency);
+
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent![
+                      'client_secret'], //Gotten from payment intent
+                  style: ThemeMode.light,
+                  merchantDisplayName: 'Fitsy'))
+          .then((value) {});
+
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet();
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        //Clear paymentIntent variable after successful payment
+        paymentIntent = null;
+      }).onError((error, stackTrace) {
+        throw Exception(error);
+      });
+    } on StripeException catch (e) {
+      print('Error is:---> $e');
+    } catch (e) {
+      print('$e');
+    }
   }
 
   @override
@@ -370,7 +443,14 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                                 buttonText: 'Purchase Class',
                                 textColor: snow,
                               ),
-                              onTap: () => {Navigator.of(context).pop()},
+                              onTap: () {
+                                //Stripe caculates amounts in cents, i.e. a 1 dollar is passed into the Stripe API as 10 (cents).
+                                var classPriceTotal = widget.classPrice * 100;
+
+                                //Call Make Payment (round() is used to make sure there are no decimals in the passed in amount, this will not be accepted by stripe)
+                                makePayment(
+                                    classPriceTotal.round().toString(), 'CAD');
+                              },
                             ),
                           ),
                         )),

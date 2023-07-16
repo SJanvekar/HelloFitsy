@@ -31,6 +31,9 @@ doc/api/
 .history
 .svn/
 
+#Dotenv
+.env
+
 # IntelliJ related
 *.iml
 *.ipr

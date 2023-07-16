@@ -73,148 +73,202 @@ class ProfileClassCard extends StatefulWidget {
     }
   }
 
+  //This is a initalizer to test the highly rated badge on a class, this will need to be updated with actual values from the backend.
+  double classRatingTemp = 4.8;
+
   @override
   State<ProfileClassCard> createState() => _ProfileClassCard();
 }
 
-class _ProfileClassCard extends State<ProfileClassCard> {
-  @override
-  Widget build(BuildContext context) {
-    var iconDistance = MediaQuery.of(context).size.width - (26 * 2) - 45;
-    final titleBoxWidth = MediaQuery.of(context).size.width - (26 * 2) - 40;
+//------Widgets------//
 
-    return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 10.0,
-      ),
-      child: OpenContainer(
-        transitionDuration: Duration(milliseconds: 350),
-        openShape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        closedShape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        openElevation: 0,
-        closedElevation: 0,
-        openColor: Colors.transparent,
-        closedColor: Colors.transparent,
-        openBuilder: (BuildContext context, _) => ClassCardOpen(
-          classImage: widget.classImage,
-          classLiked: widget.classLiked,
-          classLocation: widget.classLocation,
-          classType: widget.classType,
-          className: widget.className,
-          classPrice: widget.classPrice,
-          classTrainer: widget.classTrainer,
-          trainerFirstName: widget.trainerFirstName,
-          trainerLastName: widget.trainerLastName,
-          trainerImageUrl: widget.trainerImageUrl,
-          classRating: widget.classRating,
-          classReviews: widget.classReviews,
-          classDescription: widget.classDescription,
-          classWhatToExpect: widget.classWhatToExpect,
-          classWhatYouWillNeed: widget.classWhatYouWillNeed,
+//Class reviews
+Widget classReviewsCount() {
+  //Update this with a count of reviews for the class being viewed
+  return Text(
+    '45 Reviews',
+    style: roundedNumberStyle1LightShadowUnderlined,
+  );
+}
+
+Widget highlyRatedBadge() {
+  return Container(
+    height: 35,
+    width: 40,
+    decoration: const BoxDecoration(
+        color: sunflower,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          bottomRight: Radius.circular(20),
         ),
-        closedBuilder: (BuildContext context, VoidCallback openClass) =>
-            GestureDetector(
-          onTap: openClass,
-          child: Center(
-            child: Card(
-              color: snow,
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Stack(
-                // alignment: Alignment.bottomCenter,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              jetBlack.withOpacity(0.0),
-                              jetBlack,
-                            ],
-                            stops: [
-                              0.0,
-                              1.0
-                            ]),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                              widget.classImage,
-                            ),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    height: 320,
-                    width: 250,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              jetBlack20,
-                              jetBlack.withOpacity(0.0),
-                              jetBlack.withOpacity(0.2),
-                              jetBlack,
-                            ],
-                            stops: [
-                              0,
-                              0.25,
-                              0.5,
-                              1
-                            ])),
-                    height: 320,
-                    width: 250,
-                  ),
-                  Positioned(
-                    bottom: 20,
-                    left: 20,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        classTitle(widget.className, titleBoxWidth),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 2.0),
-                          child: classSubHeader(widget.classLocation),
-                        ),
-                        classPrice(widget.classPrice)
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: 20,
-                    right: 20,
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          child: SvgPicture.asset(
-                            widget.classLiked
-                                ? 'assets/icons/generalIcons/favouriteFill.svg'
-                                : 'assets/icons/generalIcons/favouriteEmpty.svg',
-                            color: widget.classLiked ? strawberry : snow,
-                            height: 18,
-                            width: 18,
-                          ),
-                          onTap: () {
-                            setState(() {
-                              widget.classLiked = !widget.classLiked;
-                              HapticFeedback.mediumImpact();
-                            });
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(2, 2),
+            blurRadius: 5.0,
+            color: jetBlack20,
+          )
+        ]),
+    child: const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(right: 3.0),
+          child: Icon(
+            Icons.stars_rounded,
+            color: snow,
+            size: 20,
           ),
         ),
-      ),
+      ],
+    ),
+  );
+}
+
+class _ProfileClassCard extends State<ProfileClassCard> {
+  @override
+  Widget closedContainer(titleBoxWidth) {
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(
+                    widget.classImage,
+                  ),
+                  fit: BoxFit.cover),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          height: 300,
+          width: 250,
+        ),
+        Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    jetBlack20,
+                    jetBlack.withOpacity(0.0),
+                    jetBlack.withOpacity(0.2),
+                    jetBlack60,
+                  ],
+                  stops: [
+                    0,
+                    0.25,
+                    0.5,
+                    1
+                  ])),
+          height: 300,
+          width: 250,
+        ),
+
+        //Class Details
+        Positioned(
+          bottom: 20,
+          left: 5,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              classReviewsCount(),
+              classTitle(widget.className, titleBoxWidth),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5.0),
+                child: classSubHeader(widget.classLocation),
+              ),
+              classPrice(widget.classPrice)
+            ],
+          ),
+        ),
+
+        //Highly Rated Badge
+        //Only shows the highly rated badge if the class is rated higher than 4.7/5 stars
+        if (widget.classRatingTemp > 4.7) Positioned(child: highlyRatedBadge()),
+
+        //Like Class
+        Positioned(
+          top: 25,
+          right: 25,
+          child: GestureDetector(
+            child: Column(
+              children: [
+                Icon(
+                  widget.classLiked
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_outline_rounded,
+                  color: widget.classLiked ? strawberry : snow,
+                  size: 26,
+                  shadows: <Shadow>[
+                    Shadow(
+                      offset: Offset(0, 0),
+                      blurRadius: 5.0,
+                      color: jetBlack,
+                    ),
+                  ],
+                ),
+
+                //Like Counter -- This needs to be updated
+                Text(
+                  '2005',
+                  style: roundedNumberStyle1LightShadow,
+                )
+              ],
+            ),
+            onTap: () {
+              setState(() {
+                widget.classLiked = !widget.classLiked;
+                HapticFeedback.mediumImpact();
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final titleBoxWidth = MediaQuery.of(context).size.width - (26 * 2) - 100;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 15.0,
+            bottom: 10,
+          ),
+          child: OpenContainer(
+            transitionDuration: const Duration(milliseconds: 350),
+            openShape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            closedShape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            openElevation: 0,
+            closedElevation: 0,
+            openBuilder: (BuildContext context, _) => ClassCardOpen(
+              classImage: widget.classImage,
+              classLiked: widget.classLiked,
+              classLocation: widget.classLocation,
+              classType: widget.classType,
+              className: widget.className,
+              classPrice: widget.classPrice,
+              classTrainer: widget.classTrainer,
+              trainerFirstName: widget.trainerFirstName,
+              trainerLastName: widget.trainerLastName,
+              trainerImageUrl: widget.trainerImageUrl,
+              classRating: widget.classRating,
+              classReviews: widget.classReviews,
+              classDescription: widget.classDescription,
+              classWhatToExpect: widget.classWhatToExpect,
+              classWhatYouWillNeed: widget.classWhatYouWillNeed,
+            ),
+            closedBuilder: (BuildContext context, VoidCallback openClass) =>
+                GestureDetector(
+                    onTap: openClass, child: closedContainer(titleBoxWidth)),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -225,9 +279,9 @@ Widget classTitle(classTitle, fixedWidth) {
     width: fixedWidth,
     child: AutoSizeText(
       classTitle,
-      minFontSize: 16,
+      minFontSize: 14,
       style: TextStyle(
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: 'SFDisplay',
         fontWeight: FontWeight.w600,
         color: snow,

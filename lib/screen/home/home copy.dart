@@ -15,6 +15,7 @@ import '../../feModels/classModel.dart';
 import '../../sharedWidgets/bodyButton.dart';
 import '../../sharedWidgets/searchBarWidget.dart';
 import '../createClass/createClassStep1SelectType.dart';
+import '../notifications/notifications.dart';
 import 'components/search.dart';
 import 'dart:convert';
 
@@ -112,7 +113,7 @@ class _HomeTestState extends State<HomeTest> {
             stretch: false,
             pinned: false,
             floating: true,
-            toolbarHeight: 50,
+            toolbarHeight: 40,
             centerTitle: true,
             elevation: 0,
             backgroundColor: snow,
@@ -178,10 +179,13 @@ class _HomeTestState extends State<HomeTest> {
                       ),
                     ),
                     onTap: () {
-                      print("Notifications Button Pressed");
-                      // Navigator.of(context).push(CupertinoPageRoute(
-                      //     fullscreenDialog: true,
-                      //     builder: (context) => CreateClassType()));
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              child: Notifications(),
+                              type: PageTransitionType.fade,
+                              duration: Duration(milliseconds: 0),
+                              reverseDuration: Duration(milliseconds: 0)));
                     },
                   ),
 

@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
 import 'dart:ffi';
-
+import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
@@ -94,14 +94,15 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
     return Scaffold(
       backgroundColor: snow,
 
-      //AppBar
+      //Appbar (White top, this should be consitent on every page.)
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 40,
         centerTitle: false,
         elevation: 0,
         backgroundColor: snow,
         automaticallyImplyLeading: false,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(
@@ -109,11 +110,19 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
               ),
               child: TextButton(
                 onPressed: () {
-                  print("Cancel");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true, builder: (context) => Home()));
+                  Navigator.of(context).pop();
                 },
-                child: Text("Cancel", style: logInPageNavigationButtons),
+                child: Row(
+                  children: [
+                    //Icon: arrowLeft from the Fitsy icon ttf library
+                    Icon(
+                      HelloFitsy.arrowleft,
+                      color: jetBlack80,
+                      size: 14,
+                    ),
+                    Text("Cancel", style: logInPageNavigationButtons),
+                  ],
+                ),
               ),
             ),
           ],
@@ -126,7 +135,10 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            pageTitle(),
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0),
+              child: pageTitle(),
+            ),
 
             //Class Type selection
             Padding(

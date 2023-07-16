@@ -831,6 +831,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                           return PurchaseClassSelectDates(
                             classImageUrl: widget.classImage,
                             className: widget.className,
+                            classPrice: widget.classPrice,
                           );
                         });
                   });

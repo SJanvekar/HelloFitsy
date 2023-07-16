@@ -1,53 +1,79 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
-class PaymentScreen extends StatelessWidget {
-  Future<void> processPayment() async {
-    // final paymentMethod =
-    //     await Stripe.instance.paymentField.createPaymentMethod();
-    // Handle the successful payment method creation.
-    // You can now send the payment method to your server for further processing.
+//This will be where the payments are processed versus on the actual time sheet via the class.
+//This will reduce code complexity on each screen and make it easier to debug in the future.
+
+class PaymentFunctions {
+  late String paymentAmount;
+  late String paymentCurrency;
+  Dio dio = new Dio();
+  var paymentIntent;
+
+//Initalize the payment intent
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      //Request body
+      Map<String, dynamic> body = {
+        'amount': amount,
+        'currency': currency,
+      };
+
+      //Make post request to Stripe
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      return json.decode(response.body);
+    } catch (err) {
+      throw Exception(err.toString());
+    }
   }
 
-  void _showPaymentSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Make a Payment',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 16),
-              CardField(),
-              SizedBox(height: 16),
-              TextButton(
-                onPressed: processPayment,
-                child: Text('Pay'),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  //Make Payment Function
+  Future<void> makePayment(paymentAmount, paymentCurrency) async {
+    try {
+      //STEP 1: Create Payment Intent
+      paymentIntent = await createPaymentIntent(paymentAmount, paymentCurrency);
+
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent![
+                      'client_secret'], //Gotten from payment intent
+                  style: ThemeMode.light,
+                  merchantDisplayName: 'Fitsy'))
+          .then((value) {});
+
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet();
+    } catch (err) {
+      throw Exception(err);
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Stripe Payment Example'),
-        ),
-        body: Center(
-            child: TextButton(
-          onPressed: () => _showPaymentSheet(context),
-          child: Text('Open Payment Sheet'),
-        )));
+  //Display Payment Sheet Flutter Stripe Function
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        //Clear paymentIntent variable after successful payment
+        paymentIntent = null;
+      }).onError((error, stackTrace) {
+        throw Exception(error);
+      });
+    } on StripeException catch (e) {
+      print('Error is:---> $e');
+    } catch (e) {
+      print('$e');
+    }
   }
 }
