@@ -13,7 +13,6 @@ class User {
   String userName;
   late String? userBio;
   late List<String> categories;
-  Auth authUser;
 
   //TODO: Delete below when done with listSchemaChanges branch
   late List<String> likedClasses;
@@ -28,7 +27,6 @@ class User {
     required this.firstName,
     required this.lastName,
     required this.userName,
-    required this.authUser,
   });
 
   //JSON parsers are required to parse arrays of JSON
@@ -41,8 +39,6 @@ class User {
         lastName = json['LastName'],
         userName = json['Username'],
         userBio = json['UserBio'],
-        userEmail = json['UserEmail'],
-        password = json['Password'],
         categories = dyanamicArrayToStringArray(json['Categories']);
 
   Map<String, dynamic> toJson() => {
@@ -53,8 +49,6 @@ class User {
         'LastName': lastName,
         'Username': userName,
         'UserBio': userBio,
-        'UserEmail': userEmail,
-        'Password': password,
         'Categories': categories,
       };
 }

@@ -37,10 +37,10 @@ void onSubmitSignInField(context) {
         final sharedPrefs = await SharedPreferences.getInstance();
         if (val?.data['success'] ?? false) {
           print('Successful get user info');
-          // final String encodedCategories = val.data['categories'].encode;
           final String encodedCategories = json.encode(val.data['categories']);
           sharedPrefs.setString('userType', val.data['userType']);
           sharedPrefs.setString('profileImageURL', val.data['profileImageURL']);
+          print(val.data['userName']);
           sharedPrefs.setString('userName', val.data['userName']);
           sharedPrefs.setString('firstName', val.data['firstName']);
           sharedPrefs.setString('lastName', val.data['lastName']);

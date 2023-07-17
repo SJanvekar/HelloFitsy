@@ -36,7 +36,6 @@ User userTemplate = User(
   firstName: '',
   lastName: '',
   userName: '',
-  authUser: authTemplate,
 );
 
 var passwordConfirmed;
