@@ -296,7 +296,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 55),
+          padding: const EdgeInsets.only(bottom: 55, left: 26.0, right: 26.0),
           child: GestureDetector(
               child: FooterButton(
                 buttonColor: strawberry,
@@ -329,15 +329,57 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     else if (!emailValid)
                       {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Padding(
-                            padding: const EdgeInsets.only(bottom: 320.0),
-                            child: emailCheckSnackbar(),
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          duration: Duration(seconds: 2),
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                        ))
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                            duration: Duration(milliseconds: 1500),
+                            padding: EdgeInsets.only(
+                                bottom:
+                                    MediaQuery.of(context).size.height * 0.3,
+                                left: 30.0,
+                                right: 30.0),
+                            content: Container(
+                              height: 65,
+                              decoration: BoxDecoration(
+                                  color: strawberry,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: jetBlack.withOpacity(0.01),
+                                      spreadRadius: 0,
+                                      blurRadius: 38,
+                                      offset: Offset(
+                                          0, 24), // changes position of shadow
+                                    ),
+                                    BoxShadow(
+                                      color: jetBlack.withOpacity(0.06),
+                                      spreadRadius: 0,
+                                      blurRadius: 46,
+                                      offset: Offset(
+                                          0, 9), // changes position of shadow
+                                    ),
+                                    BoxShadow(
+                                      color: jetBlack.withOpacity(0.10),
+                                      spreadRadius: 0,
+                                      blurRadius: 15,
+                                      offset: Offset(
+                                          0, 11), // changes position of shadow
+                                    ),
+                                  ]),
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  'You have entered an invalid email, please try again.',
+                                  style: TextStyle(
+                                      color: snow,
+                                      fontSize: 16,
+                                      fontFamily: 'SFDisplay',
+                                      letterSpacing: 0.5,
+                                      fontWeight: FontWeight.w400),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
+                            ))),
                       }
                     else if (!passwordCheck)
                       {
@@ -825,27 +867,6 @@ Widget passwordCheckSnackbar() {
     child: Center(
         child: Text(
       'Your passwords do not match, please try again.',
-      style: TextStyle(
-          color: snow,
-          fontSize: 15,
-          fontFamily: 'SFDisplay',
-          letterSpacing: 0.5,
-          fontWeight: FontWeight.w500),
-    )),
-  );
-}
-
-Widget emailCheckSnackbar() {
-  return Container(
-    height: 50,
-    width: 323,
-    decoration: BoxDecoration(
-      color: strawberry,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Center(
-        child: Text(
-      'You have entered an invalid email, please try again.',
       style: TextStyle(
           color: snow,
           fontSize: 15,

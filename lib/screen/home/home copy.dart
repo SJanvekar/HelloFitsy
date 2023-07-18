@@ -33,14 +33,17 @@ class _HomeTestState extends State<HomeTest> {
   List<Class> allClasses = [];
   String username = "";
   String userFirstName = "";
-  bool isLoading = true;
+
+  //Update this to true once the app is launched
+  bool isLoading = false;
 
   //----------
   @override
   void initState() {
     super.initState();
     getUserInfo();
-    getUserFollowing();
+    // getUserFollowing();
+
     setState(() {});
   }
 
@@ -51,6 +54,7 @@ class _HomeTestState extends State<HomeTest> {
 
     print(userFirstName);
     print(profileImageUrl);
+    setState(() {});
   }
 
   void getUserFollowing() async {
@@ -63,6 +67,11 @@ class _HomeTestState extends State<HomeTest> {
         getClassFeed(val.data['following']);
 
         isLoading = false;
+      } else {
+        //Remove print statement in production
+        print('Empty Class List');
+        isLoading = false;
+        return;
       }
     });
   }
