@@ -220,7 +220,8 @@ class _CategorySelectionState extends State<CategorySelection> {
         ])
       ]),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 55.0, top: 10.0),
+        padding: const EdgeInsets.only(
+            bottom: 55.0, top: 10.0, left: 26.0, right: 26.0),
         child: GestureDetector(
           child: FooterButton(
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),

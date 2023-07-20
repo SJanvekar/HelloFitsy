@@ -315,28 +315,28 @@ class _SignInState extends State<SignIn> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            title: Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-                right: 158,
-              ),
-              child: TextButton(
-                style: ButtonStyle(
-                  overlayColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return Colors.transparent;
-                    }
-                    return snow;
-                  }),
-                ),
-                onPressed: () {
-                  print("Personal Information Pressed");
-                  Navigator.of(context).pop();
-                },
-                child: Text("Cancel", style: logInPageNavigationButtons),
-              ),
-            ),
+            // title: Padding(
+            //   padding: const EdgeInsets.only(
+            //     left: 0,
+            //     right: 158,
+            //   ),
+            //   child: TextButton(
+            //     style: ButtonStyle(
+            //       overlayColor: MaterialStateProperty.resolveWith<Color>(
+            //           (Set<MaterialState> states) {
+            //         if (states.contains(MaterialState.pressed)) {
+            //           return Colors.transparent;
+            //         }
+            //         return snow;
+            //       }),
+            //     ),
+            //     onPressed: () {
+            //       print("Personal Information Pressed");
+            //       Navigator.of(context).pop();
+            //     },
+            //     child: Text("Cancel", style: logInPageNavigationButtons),
+            //   ),
+            // ),
           ),
           body: SingleChildScrollView(
             child: Center(

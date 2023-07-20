@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/home%20copy.dart';
+import 'package:balance/screen/login/components/signIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class FITSY extends StatelessWidget {
         //Example:
         //Login(); -> UserProfile();
 
-        home: Login());
+        home: SignIn());
   }
 }
 
