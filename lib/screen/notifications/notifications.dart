@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
 import 'package:balance/constants.dart';
+import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/notifications/components/upcomingClassNoti.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
@@ -20,33 +21,42 @@ class Notifications extends StatelessWidget {
   List<Map> list = [
     {
       "time": "2023-07-13T19:41:00.000Z",
-      "type": "Upcoming Class",
+      "type": "Upcoming class",
       "message":
-          "Youth Tennis Fundraiser Program by The Sick Kids Cancer Society"
+          "Youth Tennis Fundraiser Program by The Sick Kids Cancer Society",
+      "image":
+          "https://warwick.ac.uk/services/sport/active/tennis/kids-tennis/banner.jpg",
     },
     {
       "time": "2023-07-13T09:41:18.000Z",
-      "type": "Upcoming Class",
-      "message":
-          "Youth Tennis Fundraiser Program by The Sick Kids Cancer Society"
+      "type": "New follower",
+      "message": "Roger Federer started following you",
+      "image":
+          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
     },
     {
       "time": "2023-07-12T10:29:35.000Z",
-      "type": "Upcoming Class",
+      "type": "Cancelled session",
       "message":
-          "Youth Tennis Fundraiser Program by The Sick Kids Cancer Society"
+          "Roger Federer has cancelled their booking for Youth Tennis Fundraiser Program by The Sick Kids Cancer Society scheduled on Monday July 3rd 2023, 10:30 am",
+      "image":
+          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
     },
     {
       "time": "2023-06-17T12:29:35.000Z",
-      "type": "Upcoming Class",
+      "type": "New class purchase",
       "message":
-          "Youth Tennis Fundraiser Program by The Sick Kids Cancer Society"
+          "Roger Federer has purchased Youth Tennis Fundraiser Program by The Sick Kids Cancer Society scheduled on Saturday July 1st 2023, 10:30 am",
+      "image":
+          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
     },
     {
       "time": "2023-06-16T10:31:12.000Z",
-      "type": "Upcoming Class",
+      "type": "New class available",
       "message":
-          "Youth Tennis Fundraiser Program by The Sick Kids Cancer Society"
+          "Roger Federer has posted a new class Youth Tennis Fundraiser Program by The Sick Kids Cancer Society",
+      "image":
+          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
     },
   ];
 
@@ -193,6 +203,7 @@ class Notifications extends StatelessWidget {
                               UpcomingClassNotification(
                                 notificationDate: date,
                                 notificationMessage: list[index]['message'],
+                                notificationImage: list[index]['image'],
                               )
                             ],
                           ),
@@ -204,6 +215,7 @@ class Notifications extends StatelessWidget {
                       child: UpcomingClassNotification(
                         notificationDate: date,
                         notificationMessage: list[index]['message'],
+                        notificationImage: list[index]['image'],
                       ));
                 }
               },

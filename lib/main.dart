@@ -4,6 +4,7 @@ import 'package:balance/payments/paymentSheet.dart';
 import 'package:balance/screen/home/home%20copy.dart';
 import 'package:balance/screen/login/components/signIn.dart';
 import 'package:balance/screen/login/login.dart';
+import 'package:balance/screen/notifications/notifications.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -46,7 +47,7 @@ class FITSY extends StatelessWidget {
         //Example:
         //Login(); -> UserProfile();
 
-        home: Login()
+        home: Notifications()
         //Change the above to Login() to revert to full flow
         // Login()
 

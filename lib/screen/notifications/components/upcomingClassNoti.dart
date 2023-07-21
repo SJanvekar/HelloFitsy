@@ -12,11 +12,13 @@ class UpcomingClassNotification extends StatelessWidget {
   UpcomingClassNotification(
       {Key? key,
       required this.notificationDate,
-      required this.notificationMessage})
+      required this.notificationMessage,
+      required this.notificationImage})
       : super(key: key);
 
   DateTime notificationDate;
   String notificationMessage;
+  String notificationImage;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +96,15 @@ class UpcomingClassNotification extends StatelessWidget {
                   )
                 ],
               ),
+              Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: NetworkImage(notificationImage),
+                        fit: BoxFit.cover),
+                    borderRadius: BorderRadius.circular(8)),
+              )
             ],
           ),
         ),
