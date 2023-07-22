@@ -62,7 +62,7 @@ pubspec.lock
 
 
 # Secret production URL
-/config
+/config/Private/dbconfig.js
 
 # Android related
 **/android/**/gradle-wrapper.jar
