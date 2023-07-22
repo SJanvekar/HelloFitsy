@@ -2,9 +2,9 @@
 
 import 'dart:io';
 import 'dart:ui';
-import 'package:balance/Requests/userRequests.dart';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/categories.dart';
+import 'package:balance/feModels/Categories.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
@@ -20,7 +20,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../feModels/classModel.dart';
+import '../../../feModels/ClassModel.dart';
 import '../../profile/components/createClassSchedule.dart';
 
 class PersonalProfile extends StatefulWidget {

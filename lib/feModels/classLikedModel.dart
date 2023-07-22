@@ -1,7 +1,3 @@
-import 'dart:ffi';
-import 'dart:io';
-import 'dart:convert';
-
 enum ClassType { Solo, Group, Virtual }
 
 class ClassLiked {
@@ -27,6 +23,5 @@ class ClassLiked {
     required this.trainerImageUrl,
     required this.trainerFirstName,
     required this.trainerLastName,
-    // required this.trainerUsername,
   });
 }

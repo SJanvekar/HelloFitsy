@@ -1,14 +1,8 @@
 import 'package:balance/constants.dart';
-import 'package:balance/screen/explore/components/exploreHome.dart';
 import 'package:balance/screen/home/home.dart';
 import 'package:balance/sharedWidgets/classes/classListHome.dart';
-import 'package:balance/sharedWidgets/searchBarReadOnly.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SearchTestV1 extends StatelessWidget {

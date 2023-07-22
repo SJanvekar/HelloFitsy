@@ -1,18 +1,18 @@
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/components/followingFeed.dart';
-import 'package:balance/screen/home/components/upcomingClassesItem.dart';
-import 'package:balance/screen/home/components/upcomingClassesFeed.dart';
+import 'package:balance/screen/home/components/FollowingFeed.dart';
+import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
+import 'package:balance/screen/home/components/UpcomingClassesFeed.dart';
 import 'package:balance/screen/profileSidebar/sidebar.dart';
 import 'package:balance/sharedWidgets/classes/classListHome.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
+import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../testScreens/searchTestVersion1.dart';
-import 'components/search.dart';
+import 'components/Search.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);

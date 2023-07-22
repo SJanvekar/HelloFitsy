@@ -4,7 +4,7 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
-import 'package:balance/feModels/authModel.dart';
+import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -15,7 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
-import '../../../feModels/userModel.dart';
+import '../../../feModels/UserModel.dart';
 
 class PersonalInfo extends StatefulWidget {
   PersonalInfo({Key? key}) : super(key: key);

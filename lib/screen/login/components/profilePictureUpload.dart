@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/authModel.dart';
-import 'package:balance/screen/login/components/categorySelection.dart';
+import 'package:balance/feModels/AuthModel.dart';
+import 'package:balance/screen/login/components/CategorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../../../feModels/userModel.dart';
+import '../../../feModels/UserModel.dart';
 
 // var image = AssetImage('assets/images/profilePictureDefault.png');
 var image;

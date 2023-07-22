@@ -1,4 +1,4 @@
-var Class = require('../models/class')
+var Class = require('../models/Class')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 

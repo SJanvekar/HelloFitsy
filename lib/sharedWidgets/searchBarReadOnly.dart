@@ -1,17 +1,7 @@
-import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/example.dart';
-import 'package:balance/screen/login/components/categorySelection.dart';
-import 'package:balance/screen/login/login.dart';
-import 'package:balance/screen/login/components/profilePictureUpload.dart';
-import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
-import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
-import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter/services.dart';
 
 class SearchBarRO extends StatefulWidget {
   const SearchBarRO({Key? key}) : super(key: key);

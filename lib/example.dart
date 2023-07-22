@@ -1,9 +1,8 @@
-import 'package:balance/concrete_cubit.dart';
+import 'package:balance/ConcreteCubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:balance/constants.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class TrainerTrainee extends StatelessWidget {
   final void Function(ConcreteCubit<bool>) ontap;

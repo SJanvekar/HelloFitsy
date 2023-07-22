@@ -1,4 +1,4 @@
-import 'package:balance/feModels/followerModel.dart';
+import 'package:balance/feModels/FollowerModel.dart';
 import 'package:dio/dio.dart';
 import 'package:balance/constants.dart';
 

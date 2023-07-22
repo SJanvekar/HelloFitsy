@@ -1,9 +1,9 @@
-var User = require('../models/user')
-var Auth = require('../models/auth')
+var User = require('../models/User')
+var Auth = require('../models/Auth')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 const { json } = require('body-parser')
-const { findOne } = require('../models/user')
+const { findOne } = require('../models/User')
 
 var functions = {
   

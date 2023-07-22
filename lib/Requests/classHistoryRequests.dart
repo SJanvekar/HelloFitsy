@@ -1,4 +1,4 @@
-import 'package:balance/feModels/classHistoryModel.dart';
+import 'package:balance/feModels/ClassHistoryModel.dart';
 import 'package:dio/dio.dart';
 import 'package:balance/constants.dart';
 

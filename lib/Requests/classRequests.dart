@@ -1,7 +1,6 @@
 import 'package:balance/constants.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:dio/dio.dart';
-import '../../../feModels/classModel.dart';
+import '../feModels/ClassModel.dart';
 
 class ClassRequests {
   Dio dio = new Dio();

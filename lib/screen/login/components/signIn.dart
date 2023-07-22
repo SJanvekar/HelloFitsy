@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/authModel.dart';
-import 'package:balance/feModels/userModel.dart';
-import 'package:balance/screen/home/home%20copy.dart';
-import 'package:balance/screen/login/components/forgotPassword.dart';
+import 'package:balance/screen/home/HomeCopy.dart';
+import 'package:balance/screen/login/components/ForgotPassword.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
@@ -42,7 +40,6 @@ void onSubmitSignInField(context) {
           final String encodedCategories = json.encode(val.data['categories']);
           sharedPrefs.setString('userType', val.data['userType']);
           sharedPrefs.setString('profileImageURL', val.data['profileImageURL']);
-          print(val.data['userName']);
           sharedPrefs.setString('userName', val.data['userName']);
           sharedPrefs.setString('firstName', val.data['firstName']);
           sharedPrefs.setString('lastName', val.data['lastName']);

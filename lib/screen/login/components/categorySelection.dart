@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/authModel.dart';
-import 'package:balance/screen/home/home%20copy.dart';
-import 'package:balance/screen/login/components/categorySelect_bloc.dart';
+import 'package:balance/feModels/AuthModel.dart';
+import 'package:balance/screen/home/HomeCopy.dart';
+import 'package:balance/screen/login/components/CategorySelect_bloc.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,10 +11,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-import '../../../main.dart';
-import '../../../feModels/categories.dart';
+import '../../../feModels/Categories.dart';
 import '../../../sharedWidgets/loginFooterButton.dart';
-import '../../../feModels/userModel.dart';
+import '../../../feModels/UserModel.dart';
 
 class CategorySelection extends StatefulWidget {
   const CategorySelection(
@@ -37,8 +34,6 @@ class _CategorySelectionState extends State<CategorySelection> {
   List<String> selectedCategories = [];
   int i = allCategories.length;
   final categorySelectBloc = CategorySelectBloc();
-  void _ButtonOnPressed() {}
-  var _inputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

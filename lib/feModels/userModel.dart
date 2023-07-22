@@ -1,7 +1,3 @@
-import 'package:balance/feModels/authModel.dart';
-import 'dart:ffi';
-import 'dart:convert';
-
 enum UserType { Trainee, Trainer }
 
 class User {
