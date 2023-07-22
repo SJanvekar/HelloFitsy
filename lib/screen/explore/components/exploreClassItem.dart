@@ -1,13 +1,9 @@
-import 'dart:ffi';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../../sharedWidgets/userProfileComponentLight.dart';
-import 'package:balance/feModels/classModel.dart';
+import 'package:balance/feModels/ClassModel.dart';
 
 class ExploreClassItem extends StatefulWidget {
   ExploreClassItem({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../constants.dart';
-import '../../feModels/categories.dart';
+import '../../feModels/Categories.dart';
 
 class ClassListHorizontal extends StatefulWidget {
   const ClassListHorizontal({Key? key}) : super(key: key);

@@ -1,20 +1,13 @@
 import 'dart:io';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
+import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
-import 'package:balance/screen/createClass/createClassStep2Description.dart';
-import 'package:balance/screen/createClass/createClassDocument.dart';
 import 'package:balance/screen/createClass/createClassStep7TitleAndPrice.dart';
-import 'package:balance/screen/login/components/categorySelection.dart';
-import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/screen/login/components/profilePictureUpload.dart';
-import 'package:balance/feModels/classModel.dart';
+import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 

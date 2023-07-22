@@ -5,7 +5,6 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/components/homeClassItem.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -14,16 +13,13 @@ import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCard.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
-import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
-import '../../../feModels/classModel.dart';
+import '../../../feModels/ClassModel.dart';
 import '../../../sharedWidgets/classMoreActions.dart';
-import '../../profile/components/profile.dart';
 
 final oCcy = new NumberFormat("#,##0", "en_US");
 

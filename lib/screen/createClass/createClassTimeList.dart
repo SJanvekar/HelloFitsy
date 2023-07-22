@@ -1,10 +1,5 @@
-import 'dart:io';
-import 'package:balance/sharedWidgets/categories/addRemoveButton.dart';
-import 'package:balance/feModels/classModel.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:balance/feModels/ClassModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 
@@ -21,7 +16,6 @@ class CreateClassTimeList extends StatefulWidget {
 }
 
 class _CreateClassTimeListState extends State<CreateClassTimeList> {
-  var _inputController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return ListView(

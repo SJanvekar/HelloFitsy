@@ -1,14 +1,14 @@
 import 'dart:ui';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/components/profileClassCard.dart';
+import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:balance/sharedWidgets/unfollowDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
-import '../../../feModels/categories.dart';
-import '../../../feModels/classModel.dart';
+import '../../../feModels/Categories.dart';
+import '../../../feModels/ClassModel.dart';
 import '../../../sharedWidgets/categories/categorySmall.dart';
 
 class UserProfile extends StatefulWidget {

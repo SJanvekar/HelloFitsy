@@ -1,11 +1,9 @@
-import 'dart:math';
 import 'dart:ui';
-
 import 'package:balance/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../screen/profile/components/profile.dart';
+import '../screen/profile/components/Profile.dart';
 
 class UserProfileComponentLight extends StatelessWidget {
   UserProfileComponentLight({

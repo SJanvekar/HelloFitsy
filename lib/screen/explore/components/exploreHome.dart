@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:balance/constants.dart';
-import 'package:balance/screen/explore/components/classListHome.dart';
+import 'package:balance/screen/explore/components/ClassListHome.dart';
 import 'package:balance/testScreens/searchTestVersion1.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';

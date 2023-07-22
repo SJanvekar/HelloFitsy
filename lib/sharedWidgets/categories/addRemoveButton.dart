@@ -1,7 +1,4 @@
-import 'package:balance/feModels/categories.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../constants.dart';

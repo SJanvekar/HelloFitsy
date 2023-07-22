@@ -1,9 +1,9 @@
-import 'package:balance/Requests/classRequests.dart';
-import 'package:balance/Requests/userRequests.dart';
-import 'package:balance/Requests/followingRequests.dart';
+import 'package:balance/Requests/ClassRequests.dart';
+import 'package:balance/Requests/UserRequests.dart';
+import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/components/homeClassItem.dart';
-import 'package:balance/screen/home/components/upcomingClassesItem.dart';
+import 'package:balance/screen/home/components/HomeClassItem.dart';
+import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,11 +12,11 @@ import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import '../../feModels/classModel.dart';
+import '../../feModels/ClassModel.dart';
 import '../../sharedWidgets/bodyButton.dart';
 import '../../sharedWidgets/searchBarWidget.dart';
-import '../createClass/createClassStep1SelectType.dart';
-import 'components/search.dart';
+import '../createClass/CreateClassStep1SelectType.dart';
+import 'components/Search.dart';
 import 'dart:convert';
 
 class HomeTest extends StatefulWidget {
@@ -33,14 +33,17 @@ class _HomeTestState extends State<HomeTest> {
   List<Class> allClasses = [];
   String username = "";
   String userFirstName = "";
-  bool isLoading = true;
+
+  //Update this to true once the app is launched
+  bool isLoading = false;
 
   //----------
   @override
   void initState() {
     super.initState();
     getUserInfo();
-    getUserFollowing();
+    // getUserFollowing();
+
     setState(() {});
   }
 
@@ -48,9 +51,7 @@ class _HomeTestState extends State<HomeTest> {
     final sharedPrefs = await SharedPreferences.getInstance();
     userFirstName = sharedPrefs.getString('firstName') ?? "";
     profileImageUrl = sharedPrefs.getString('profileImageURL') ?? "";
-
-    print(userFirstName);
-    print(profileImageUrl);
+    setState(() {});
   }
 
   void getUserFollowing() async {
@@ -63,6 +64,11 @@ class _HomeTestState extends State<HomeTest> {
         getClassFeed(val.data['following']);
 
         isLoading = false;
+      } else {
+        //Remove print statement in production
+        print('Empty Class List');
+        isLoading = false;
+        return;
       }
     });
   }

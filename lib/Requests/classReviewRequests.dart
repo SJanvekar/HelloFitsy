@@ -1,4 +1,4 @@
-import 'package:balance/feModels/classReviewModel.dart';
+import 'package:balance/feModels/ClassReviewModel.dart';
 import 'package:dio/dio.dart';
 import 'package:balance/constants.dart';
 

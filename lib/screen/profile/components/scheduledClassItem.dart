@@ -1,10 +1,9 @@
-import 'package:balance/feModels/classModel.dart';
+import 'package:balance/feModels/ClassModel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../constants.dart';
-import '../../home/components/classCardOpen.dart';
+import '../../home/components/ClassCardOpen.dart';
 
 class ScheduledClassTile extends StatelessWidget {
   ScheduledClassTile({

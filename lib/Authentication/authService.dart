@@ -1,8 +1,8 @@
-import 'package:balance/feModels/authModel.dart';
+import 'package:balance/feModels/AuthModel.dart';
 import 'package:dio/dio.dart';
 import 'package:balance/constants.dart';
 
-import '../../../feModels/userModel.dart';
+import '../feModels/UserModel.dart';
 
 class AuthService {
   Dio dio = new Dio();

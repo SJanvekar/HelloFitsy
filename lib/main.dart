@@ -1,12 +1,13 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/home%20copy.dart';
+import 'package:balance/screen/home/HomeCopy.dart';
+import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
-import 'package:balance/screen/profile/components/myProfile.dart';
+import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'FirebaseOptions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,7 +38,7 @@ class FITSY extends StatelessWidget {
         //Example:
         //Login(); -> UserProfile();
 
-        home: Login());
+        home: SignIn());
   }
 }
 

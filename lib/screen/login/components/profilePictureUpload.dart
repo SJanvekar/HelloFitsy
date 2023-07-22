@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/authModel.dart';
-import 'package:balance/screen/login/components/categorySelection.dart';
+import 'package:balance/feModels/AuthModel.dart';
+import 'package:balance/screen/login/components/CategorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-import '../../../feModels/userModel.dart';
+import '../../../feModels/UserModel.dart';
 
 // var image = AssetImage('assets/images/profilePictureDefault.png');
 var image;
@@ -127,26 +126,25 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
               child: Stack(
             children: [
               Container(
-                  height: 155,
-                  width: 155,
                   child: Column(
-                    children: [
-                      ClipOval(
-                        child: profilePictureImage != null
-                            ? Image.file(
-                                profilePictureImage!,
-                                width: 155,
-                                height: 155,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.asset(
-                                'assets/images/profilePictureDefault.png',
-                                height: 155,
-                                width: 155,
-                              ),
-                      ),
-                    ],
-                  )),
+                children: [
+                  ClipOval(
+                    child: profilePictureImage != null
+                        ? Image.file(
+                            profilePictureImage!,
+                            width: 200,
+                            height: 200,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            'assets/images/profilePictureDefault.png',
+                            height: 200,
+                            width: 200,
+                            scale: 0.8,
+                          ),
+                  ),
+                ],
+              )),
             ],
           )),
           pageTitle(),
@@ -155,7 +153,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
             child: pageText(),
           ),
           Padding(
-            padding: EdgeInsets.only(bottom: 15.0),
+            padding: EdgeInsets.only(bottom: 15.0, left: 26.0, right: 26.0),
             child: GestureDetector(
               child: FooterButton(
                   buttonColor: ocean,
@@ -169,7 +167,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         ],
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 55.0),
+        padding: const EdgeInsets.only(bottom: 55.0, left: 26.0, right: 26.0),
         child: GestureDetector(
           child: FooterButton(
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),

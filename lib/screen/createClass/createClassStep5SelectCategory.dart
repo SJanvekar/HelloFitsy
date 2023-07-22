@@ -1,8 +1,8 @@
 import 'package:balance/constants.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
-import 'package:balance/screen/createClass/createClassStep1SelectType.dart';
+import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
-import 'package:balance/feModels/classModel.dart';
+import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

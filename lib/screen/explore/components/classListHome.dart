@@ -1,7 +1,7 @@
 import 'package:balance/screen/explore/components/exploreClassItem.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../feModels/classModel.dart';
+import '../../../feModels/ClassModel.dart';
 
 class ClassListExplore extends StatefulWidget {
   const ClassListExplore({Key? key}) : super(key: key);

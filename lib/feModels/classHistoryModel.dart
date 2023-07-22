@@ -1,7 +1,3 @@
-import 'dart:ffi';
-import 'dart:io';
-import 'dart:convert';
-
 enum ClassType { Solo, Group, Virtual }
 
 class ClassHistory {
@@ -27,6 +23,5 @@ class ClassHistory {
     required this.trainerImageUrl,
     required this.trainerFirstName,
     required this.trainerLastName,
-    // required this.trainerUsername,
   });
 }

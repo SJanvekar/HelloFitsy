@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class Follower {
   String followerUsername;
   String username;

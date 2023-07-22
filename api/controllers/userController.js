@@ -1,9 +1,9 @@
-var User = require('../models/user')
-var Auth = require('../models/auth')
+var User = require('../models/User')
+var Auth = require('../models/Auth')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 const { json } = require('body-parser')
-const { findOne } = require('../models/user')
+const { findOne } = require('../models/User')
 
 var functions = {
   
@@ -37,7 +37,7 @@ var functions = {
                     Followers: req.body.Followers,
                 });
                 newUser.save(function (err) {
-                    if (err) {
+                    if (err) { //TODO: Maybe delete auth object when error occurs
                         return res.send({success: false, msg: "Didn't save user, " + err})
                     }
                     return res.send({success: true, msg: 'Successfully saved'})
@@ -106,8 +106,7 @@ var functions = {
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
             var decodedtoken = jwt.decode(token, config.secret)
-            User.findOne({UserID: decodedtoken.UserID, $or:
-                [{ Username: req.query.Account}, {UserEmail: req.query.Account}]}, function (err, user) {
+            User.findOne({Auth: decodedtoken._id}, function (err, user) {
                 if (err) {
                     console.log(err)
                     return res.json({success: false, body: err})

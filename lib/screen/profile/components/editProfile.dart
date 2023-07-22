@@ -1,21 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
-import 'dart:ui';
-import 'package:balance/Requests/userRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/categories.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
-import 'package:balance/sharedWidgets/categories/categorySmall.dart';
-import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
-import 'package:balance/sharedWidgets/reviewCard.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import '../../../feModels/classModel.dart';
 
 class EditProfile extends StatefulWidget {
   EditProfile({

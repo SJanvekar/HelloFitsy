@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const userController = require('../controllers/userController.js')
-const classController = require('../controllers/classController.js')
-const followingController = require('../controllers/followingController.js')
-const followerController = require('../controllers/followerController.js')
-const classLikedController = require('../controllers/classLikedController.js')
-const classHistoryController = require('../controllers/classHistoryController.js')
+const userController = require('../controllers/UserController.js')
+const classController = require('../controllers/ClassController.js')
+const followingController = require('../controllers/FollowingController.js')
+const followerController = require('../controllers/FollowerController.js')
+const classLikedController = require('../controllers/ClassLikedController.js')
+const classHistoryController = require('../controllers/ClassHistoryController.js')
 
 router.get('/dashboard', (req, res) =>{
   res.send('Dashboard')

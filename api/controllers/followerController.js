@@ -1,4 +1,4 @@
-var Follower = require('../models/follower')
+var Follower = require('../models/Follower')
 var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 const { json } = require('body-parser')
