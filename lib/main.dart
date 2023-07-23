@@ -47,7 +47,7 @@ class FITSY extends StatelessWidget {
         //Example:
         //Login(); -> UserProfile();
 
-        home: Notifications()
+        home: Login()
         //Change the above to Login() to revert to full flow
         // Login()
 
