@@ -167,7 +167,10 @@ class Notifications extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                              left: 26.0, top: 10.0, bottom: .0),
+                            left: 26.0,
+                            top: 10.0,
+                            bottom: 0.0,
+                          ),
                           child: Row(
                             children: [
                               if (isDateToday)
@@ -197,10 +200,13 @@ class Notifications extends StatelessWidget {
                         PageDivider(leftPadding: 26, rightPadding: 0),
                         Padding(
                           padding: const EdgeInsets.only(
-                              top: 5.0, left: 26.0, bottom: 10.0),
+                            top: 5.0,
+                            bottom: 10.0,
+                          ),
                           child: Row(
                             children: [
                               UpcomingClassNotification(
+                                notificationType: list[index]['type'],
                                 notificationDate: date,
                                 notificationMessage: list[index]['message'],
                                 notificationImage: list[index]['image'],
@@ -211,8 +217,11 @@ class Notifications extends StatelessWidget {
                       ]);
                 } else {
                   return Padding(
-                      padding: EdgeInsets.only(left: 26.0, bottom: 10.0),
+                      padding: EdgeInsets.only(
+                        bottom: 10.0,
+                      ),
                       child: UpcomingClassNotification(
+                        notificationType: list[index]['type'],
                         notificationDate: date,
                         notificationMessage: list[index]['message'],
                         notificationImage: list[index]['image'],
