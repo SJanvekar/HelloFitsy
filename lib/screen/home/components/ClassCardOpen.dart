@@ -10,7 +10,7 @@ import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/moreClassInfoModal.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
-import 'package:balance/sharedWidgets/reviewCard.dart';
+import 'package:balance/sharedWidgets/reviewCardPublic.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/cupertino.dart';

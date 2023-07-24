@@ -262,6 +262,12 @@ const roundedBodyTextStyle1 = TextStyle(
   decoration: TextDecoration.none,
 );
 
+const BodyTextFontBold80 = TextStyle(
+    color: jetBlack80,
+    fontFamily: 'SFDisplay',
+    fontSize: 14.5,
+    fontWeight: FontWeight.w600);
+
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
     color: jetBlack80,

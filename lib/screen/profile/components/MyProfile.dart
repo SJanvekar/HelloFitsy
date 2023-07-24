@@ -9,7 +9,7 @@ import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
-import 'package:balance/sharedWidgets/reviewCard.dart';
+import 'package:balance/sharedWidgets/reviewCardPersonalProfile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
