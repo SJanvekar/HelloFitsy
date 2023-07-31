@@ -262,6 +262,30 @@ const roundedBodyTextStyle1 = TextStyle(
   decoration: TextDecoration.none,
 );
 
+const buttonText1Jetblack80 = TextStyle(
+  fontFamily: 'SFRounded',
+  color: jetBlack80,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const buttonText3Jetblack40 = TextStyle(
+  fontFamily: 'SFRounded',
+  color: jetBlack40,
+  fontSize: 14,
+  fontWeight: FontWeight.w100,
+  decoration: TextDecoration.none,
+);
+
+const buttonText2snow = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
     color: jetBlack80,
