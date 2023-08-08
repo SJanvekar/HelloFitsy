@@ -24,7 +24,7 @@ import '../../../feModels/ClassModel.dart';
 import '../../profile/components/createClassSchedule.dart';
 
 class PersonalProfile extends StatefulWidget {
-  PersonalProfile({
+  const PersonalProfile({
     Key? key,
   }) : super(key: key);
 
@@ -82,7 +82,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
     userLastName = sharedPrefs.getString('lastName') ?? '';
     userBio = sharedPrefs.getString('userBio') ?? '';
     userType = sharedPrefs.getString('userType') ?? '';
-    userFullName = '${userFirstName}' + ' ' + '${userLastName}';
+    userFullName = '$userFirstName $userLastName';
     getSet2UserDetails();
     checkInterests();
 
@@ -101,7 +101,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
         myInterestsFinal.add(interests[i]);
       }
     }
-    ;
   }
 
 //----------
@@ -197,7 +196,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
             ],
           ),
           Text(
-            '@' + userName,
+            '@$userName',
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -439,21 +438,21 @@ class _PersonalProfileState extends State<PersonalProfile> {
                     });
 
                     //FirstName
-                    final TextEditingController _firstNameController =
-                        new TextEditingController();
-                    _firstNameController.text = userFirstName;
+                    final TextEditingController firstNameController =
+                        TextEditingController();
+                    firstNameController.text = userFirstName;
 
-                    final TextEditingController _lastNameController =
-                        new TextEditingController();
-                    _lastNameController.text = userLastName;
+                    final TextEditingController lastNameController =
+                        TextEditingController();
+                    lastNameController.text = userLastName;
 
-                    final TextEditingController _userNameController =
-                        new TextEditingController();
-                    _userNameController.text = userName;
+                    final TextEditingController userNameController =
+                        TextEditingController();
+                    userNameController.text = userName;
 
-                    final TextEditingController _bioController =
-                        new TextEditingController();
-                    _bioController.text = userBio;
+                    final TextEditingController bioController =
+                        TextEditingController();
+                    bioController.text = userBio;
 
                     //Cupertino Modal Pop-up - Profile Edit
                     showCupertinoModalPopup(
@@ -533,7 +532,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                       style: logInPageBodyText,
                                     ),
                                     TextField(
-                                      controller: _firstNameController,
+                                      controller: firstNameController,
                                       maxLengthEnforcement:
                                           MaxLengthEnforcement.none,
                                       autocorrect: true,
@@ -571,7 +570,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                       style: logInPageBodyText,
                                     ),
                                     TextField(
-                                      controller: _lastNameController,
+                                      controller: lastNameController,
                                       maxLengthEnforcement:
                                           MaxLengthEnforcement.none,
                                       autocorrect: true,
@@ -609,7 +608,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                       style: logInPageBodyText,
                                     ),
                                     TextField(
-                                      controller: _userNameController,
+                                      controller: userNameController,
                                       maxLengthEnforcement:
                                           MaxLengthEnforcement.none,
                                       autocorrect: true,
@@ -958,10 +957,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       padding: EdgeInsets.only(left: 13, right: 13),
                       itemCount: myInterestsFinal.length,
                       itemBuilder: (context, index) {
-                        final _likedInterests = myInterestsFinal[index];
+                        final likedInterests = myInterestsFinal[index];
                         return CategorySmall(
-                          categoryImage: _likedInterests.categoryImage,
-                          categoryName: _likedInterests.categoryName,
+                          categoryImage: likedInterests.categoryImage,
+                          categoryName: likedInterests.categoryName,
                         );
                       },
                     ),
@@ -1040,13 +1039,13 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         ? savedClassesList.length
                         : 3,
                     itemBuilder: (context, index) {
-                      final _savedClasses = savedClassesList[index];
+                      final savedClasses = savedClassesList[index];
                       return ClassItemCondensed1(
-                        classImageUrl: _savedClasses.classImageUrl,
+                        classImageUrl: savedClasses.classImageUrl,
                         buttonBookOrRebookText: 'Book',
-                        classTitle: _savedClasses.className,
-                        classTrainer: _savedClasses.trainerFirstName,
-                        classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                        classTitle: savedClasses.className,
+                        classTrainer: savedClasses.trainerFirstName,
+                        classTrainerImageUrl: savedClasses.trainerImageUrl,
                       );
                     },
                   ),
@@ -1118,13 +1117,13 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       if (savedClassesList.isEmpty) {
                         return Container();
                       } else {
-                        final _savedClasses = savedClassesList[index];
+                        final savedClasses = savedClassesList[index];
                         return ClassItemCondensed1(
-                          classImageUrl: _savedClasses.classImageUrl,
+                          classImageUrl: savedClasses.classImageUrl,
                           buttonBookOrRebookText: 'Book',
-                          classTitle: _savedClasses.className,
-                          classTrainer: _savedClasses.trainerFirstName,
-                          classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                          classTitle: savedClasses.className,
+                          classTrainer: savedClasses.trainerFirstName,
+                          classTrainerImageUrl: savedClasses.trainerImageUrl,
                         );
                       }
                     },

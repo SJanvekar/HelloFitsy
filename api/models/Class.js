@@ -6,14 +6,6 @@ const crypto = require("crypto");
 const id = crypto.randomBytes(16).toString("hex");
 
 var ClassSchema = new Schema({
-    //classID
-    ClassID: {
-        type: String,
-        default: id,
-        unique: true
-
-    },
-
     //Class Name
     ClassName: {
         type: String,
@@ -95,7 +87,6 @@ var ClassSchema = new Schema({
     //Class Trainer
     ClassTrainer: {
         type: String,
-        required: true,
         required: true,
     },
 

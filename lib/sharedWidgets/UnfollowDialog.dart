@@ -85,7 +85,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
                             fontWeight: FontWeight.w600),
                       ),
                     ),
-                    onTap: () => {print('Unfollow selected')}),
+                    onTap: () => {Navigator.of(context).pop()}),
                 SizedBox(height: 5),
                 GestureDetector(
                     child: Container(

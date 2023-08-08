@@ -1,3 +1,4 @@
+// ignore: constant_identifier_names
 enum UserType { Trainee, Trainer }
 
 class User {

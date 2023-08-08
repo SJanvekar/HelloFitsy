@@ -13,6 +13,7 @@ class Schedule {
 }
 
 class Class {
+  String? classID;
   String classImageUrl;
   String className;
   double classPrice;

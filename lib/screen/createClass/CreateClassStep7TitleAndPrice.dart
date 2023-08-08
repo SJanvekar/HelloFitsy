@@ -61,6 +61,30 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
 
   @override
   Widget build(BuildContext context) {
+    void createClass() {
+      //Firebase Image Upload
+      uploadImage();
+
+      //Auth Service Call
+      ClassRequests().addClass(classTemplate).then((val) {
+        //Request Success Conditional
+
+        if (val.data['success']) {
+          print('Successful class add');
+          Navigator.of(context).push(PageTransition(
+              fullscreenDialog: true,
+              type: PageTransitionType.topToBottomPop,
+              duration: Duration(milliseconds: 250),
+              childCurrent: CreateClassTitleAndPrice(
+                classTemplate: classTemplate,
+              ),
+              child: HomeTest()));
+        } else {
+          print("Creating class failed: ${val.data['msg']}");
+        }
+      });
+    }
+
     return Scaffold(
       backgroundColor: snow,
 
@@ -140,27 +164,7 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                   ),
                 ),
                 onTap: () {
-                  //Firebase Image Upload
-                  uploadImage();
-
-                  //Auth Service Call
-                  ClassRequests().addClass(classTemplate).then((val) {
-                    //Request Success Conditional
-
-                    if (val.data['success']) {
-                      print('Successful class add');
-                      Navigator.of(context).push(PageTransition(
-                          fullscreenDialog: true,
-                          type: PageTransitionType.topToBottomPop,
-                          duration: Duration(milliseconds: 250),
-                          childCurrent: CreateClassTitleAndPrice(
-                            classTemplate: classTemplate,
-                          ),
-                          child: HomeTest()));
-                    } else {
-                      print("MEGA ERROR FUCK KEK ${val.data}");
-                    }
-                  });
+                  createClass();
                 }),
           )),
     );

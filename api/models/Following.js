@@ -3,11 +3,10 @@ var Schema = mongoose.Schema;
 
 var UserFollowingSchema = new Schema({
 
-    //Following Username
+    //User perspective of who they're following Username
     FollowingUsername: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         index: true
     },
