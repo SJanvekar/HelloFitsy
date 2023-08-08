@@ -14,7 +14,7 @@ class ReviewCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        //Review Date Posted
+        //Review Date Posted  //HARD CODED - MUST CHANGE
         Padding(
           padding: const EdgeInsets.only(
             bottom: 10.0,
@@ -39,6 +39,8 @@ class ReviewCard extends StatelessWidget {
               padding: const EdgeInsets.only(
                 left: 5.0,
               ),
+
+              //HARD CODED - MUST CHANGE
               child: Text(
                 '4.5',
                 style: TextStyle(
@@ -50,12 +52,12 @@ class ReviewCard extends StatelessWidget {
             ),
           ]),
         ),
-        //Associated Class Title
+        //Associated Class Title //HARD CODED - MUST CHANGE
         Text(
           'Youth Tennis Fundraiser Program held by the Sick Kids Cancer Society',
           style: sectionTitlesH2,
         ),
-        //Review Body
+        //Review Body //HARD CODED - MUST CHANGE
         Padding(
           padding: const EdgeInsets.only(top: 5.0),
           child: Text(

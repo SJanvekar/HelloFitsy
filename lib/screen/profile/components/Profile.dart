@@ -14,7 +14,9 @@ import '../../../sharedWidgets/categories/categorySmall.dart';
 class UserProfile extends StatefulWidget {
   UserProfile({
     Key? key,
-  }) : super(key: key);
+  }) : super(
+          key: key,
+        );
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -22,11 +24,11 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   //User details:
-  // String profileImageUrl = "";
-  // String userName = "";
-  // String userFullName = "";
-  // String userFirstName = "";
-  // String userLastName = "";
+  String profileImageUrl = "";
+  String userName = "";
+  String userFullName = "";
+  String userFirstName = "";
+  String userLastName = "";
 
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
@@ -41,7 +43,7 @@ class _UserProfileState extends State<UserProfile> {
   List<Category> trainerInterestsFinal = trainerInterests;
   //Original list of all category (interest) items ~ this contains the Category name and image
   List<Category> interests = categoriesList;
-  //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info
+  //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info //HARD CODED - MUST CHANGE
   var userInterests = [];
 
   //Class list
@@ -70,7 +72,7 @@ class _UserProfileState extends State<UserProfile> {
 
   //----------
   void checkInterests() {
-    //Checks for categories that match the trainers' interests and populates trainerInterestsFinal
+    //Checks for categories that match the trainers' interests and populates trainerInterestsFinal //HARD CODED - MUST CHANGE
     userInterests = ['Tennis', 'Boxing'];
     interests.forEach((interestsItem) {
       if (userInterests.contains(interestsItem.categoryName)) {
@@ -394,6 +396,7 @@ class _UserProfileState extends State<UserProfile> {
                 expandedTitleScale: 1,
                 centerTitle: false,
               ),
+              //HARD CODED - MUST CHANGE
               title: Text('Salman Janvekar',
                   // userFullName,
                   style: TextStyle(
@@ -435,7 +438,9 @@ class _UserProfileState extends State<UserProfile> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
-                  child: Text(
+                  child:
+                      //HARD CODED - MUST CHANGE
+                      Text(
                     'About Salman',
                     // ${userFirstName}',
                     style: sectionTitles,
@@ -458,7 +463,9 @@ class _UserProfileState extends State<UserProfile> {
                         padding: const EdgeInsets.only(
                           left: 5.0,
                         ),
-                        child: Text(
+                        child:
+                            //HARD CODED - MUST CHANGE
+                            Text(
                           '4.5',
                           style: TextStyle(
                               color: jetBlack,
@@ -477,6 +484,7 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                       ),
+                      //HARD CODED - MUST CHANGE
                       Text(
                         'Toronto, Ontario, Canada',
                         style: TextStyle(
@@ -489,7 +497,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
 
-                // Trainer Bio
+                // Trainer Bio //HARD CODED - MUST CHANGE
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
@@ -505,7 +513,7 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
 
-            //Trainer Interests (Specialities)
+            //Trainer Interests (Specialities) //HARD CODED - MUST CHANGE
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -537,7 +545,7 @@ class _UserProfileState extends State<UserProfile> {
               ),
             ]),
 
-            //Trainer Classes
+            //Trainer Classes //HARD CODED - MUST CHANGE
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(

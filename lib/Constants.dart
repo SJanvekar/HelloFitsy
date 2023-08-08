@@ -115,7 +115,7 @@ const disclaimerTitle = TextStyle(
 const pageTitles = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 26,
+  fontSize: 24,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );

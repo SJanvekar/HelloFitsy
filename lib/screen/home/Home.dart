@@ -115,7 +115,6 @@ class Home extends StatelessWidget {
                             tag: 'SearchBar',
                             child: FitsySearchBar(
                               isAutoFocusTrue: false,
-                              searchBarWidth: searchBarWidth,
                               searchHintText: 'Search',
                               callback: null,
                             )),

@@ -320,7 +320,6 @@ class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
     // TODO: implement build
     return FitsySearchBar(
       isAutoFocusTrue: false,
-      searchBarWidth: 323,
       searchHintText: 'Search Categories',
       callback: null,
     );
