@@ -1,11 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
-const crypto = require("crypto");
 
-const id = crypto.randomBytes(16).toString("hex");
-
-var ClassScheduleSchema = new Schema({
+var ClassPurchasedSchema = new Schema({
     //Start Date
     StartDate: {
         type: Date,
@@ -74,4 +70,4 @@ var ClassScheduleSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('ClassSchedule', ClassScheduleSchema)
+module.exports = mongoose.model('ClassPurchased', ClassPurchasedSchema)

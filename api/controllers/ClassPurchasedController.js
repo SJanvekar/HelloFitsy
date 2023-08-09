@@ -1,12 +1,12 @@
-var ClassSchedule = require('../models/ClassSchedule')
 var jwt = require('jwt-simple')
-var config = require('../../config/Private/dbconfig')
+var config = require('../../config/Private/dbconfig');
+const ClassPurchased = require('../models/ClassPurchased');
 
 var functions = {
 
     //Add New Class fnc
-    addNewClassSchedule: function (req, res){
-        var newClassSchedule = ClassSchedule({
+    addNewClassPurchased: function (req, res){
+        var newClassPurchased = ClassPurchased({
             StartDate: req.body.StartDate,
             EndDate: req.body.EndDate,
             Recurrence: req.body.Recurrence,
@@ -16,7 +16,7 @@ var functions = {
             ClassTrainer: req.body.ClassTrainer,
             PurchasedUser: req.body.PurchasedUser,
         });
-        newClassSchedule.save(function (err, newClassSchedule){
+        newClassPurchased.save(function (err, newClassPurchased){
             if(err){
                 res.json({success: false, msg: err})
             }
@@ -27,8 +27,8 @@ var functions = {
     },
 
     // Get Class Information
-    getClassSchedule: function (req, res) {
-        ClassSchedule.find({Class: {$in:req.query.ClassID}}, function (err, classScheduleArray) {
+    getPurchasedClassSchedule: function (req, res) {
+        ClassPurchased.find({Class: {$in:req.query.ClassID}}, function (err, classScheduleArray) {
             if (err) {
                 console.log(err)
                 return res.json({success: false, msg: err})

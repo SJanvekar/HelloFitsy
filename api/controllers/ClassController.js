@@ -11,7 +11,6 @@ var functions = {
         }
         else{
             var newClass = Class({
-                ClassID: req.body.ClassID,
                 ClassName: req.body.ClassName,
                 ClassImageUrl: req.body.ClassImageUrl,
                 ClassDescription: req.body.ClassDescription,
@@ -21,12 +20,9 @@ var functions = {
                 ClassLocationName: req.body.ClassLocationName,
                 ClassLatitude: req.body.ClassLatitude,
                 ClassLongitude: req.body.ClassLongitude,
-                ClassOverallRating: req.body.ClassOverallRating,
                 ClassReviewsAmount: req.body.ClassReviewsAmount,
                 ClassPrice: req.body.ClassPrice,
                 ClassTrainer: req.body.ClassTrainer,
-                ClassLiked: req.body.ClassLiked,
-                ClassTimes: req.body.ClassTimes,
                 Categories: req.body.Categories,
                 TrainerImageUrl: req.body.TrainerImageUrl,
                 TrainerFirstName: req.body.TrainerFirstName,

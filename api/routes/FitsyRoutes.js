@@ -3,7 +3,7 @@ const router = express.Router()
 const classController = require('../controllers/ClassController.js')
 const classHistoryController = require('../controllers/ClassHistoryController.js')
 const classLikedController = require('../controllers/ClassLikedController.js')
-const classScheduleController = require('../controllers/ClassScheduleController.js')
+const classPurchasedController = require('../controllers/ClassPurchasedController.js')
 const followerController = require('../controllers/FollowerController.js')
 const followingController = require('../controllers/FollowingController.js')
 const userController = require('../controllers/UserController.js')
@@ -29,7 +29,7 @@ router.get('/dashboard', (req, res) =>{
 
   //Class Schedule routes
     //Get information for a class schedule
-    router.get('/getSchedule', classScheduleController.getClassSchedule)
+    router.get('/getSchedule', classPurchasedController.getPurchasedClassSchedule)
 
   //Follower routes
     //Get current user's follower list
@@ -70,7 +70,7 @@ router.get('/dashboard', (req, res) =>{
     router.post('/addClassHistory', classHistoryController.addClassHistory)
 
   //Class Schedule routes
-    router.post('/addClassSchedule', classScheduleController.addNewClassSchedule)
+    router.post('/addClassSchedule', classPurchasedController.addNewClassPurchased)
 
   //Follower routes
     //Add New Follower

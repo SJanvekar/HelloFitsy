@@ -126,10 +126,6 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                     textColor: snow,
                     buttonText: 'Continue'),
                 onTap: () {
-                  print(widget.classTemplate.classType
-                      .toString()
-                      .split('.')
-                      .last);
                   switch (widget.classTemplate.classType) {
                     case ClassType.Solo:
                       Navigator.of(context).push(MaterialPageRoute(

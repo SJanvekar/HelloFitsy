@@ -749,7 +749,6 @@ class _UserProfileState extends State<UserProfile> {
                         classType: trainerClassInfo.classType,
                         classLocationName: trainerClassInfo.classLocationName,
                         classPrice: trainerClassInfo.classPrice,
-                        classLiked: trainerClassInfo.classLiked,
                         classImage: trainerClassInfo.classImageUrl,
                         trainerImageUrl: trainerClassInfo.trainerImageUrl,
                         classDescription: trainerClassInfo.classDescription,

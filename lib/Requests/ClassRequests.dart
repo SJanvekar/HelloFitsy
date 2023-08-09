@@ -19,13 +19,13 @@ class ClassRequests {
             "ClassLocationName": classModel.classLocationName,
             "ClassLatitude": classModel.classLatitude,
             "ClassLongitude": classModel.classLongitude,
-            "ClassRating": classModel.classOverallRating,
-            "ClassReview": classModel.classReviewsAmount,
+            "ClassReviewsAmount": classModel.classReviewsAmount,
             "ClassPrice": classModel.classPrice,
             "ClassTrainer": classModel.classTrainer,
-            "ClassLiked": classModel.classLiked,
-            "ClassTimes": classModel.classTimes,
             "Categories": classModel.classCategories,
+            "TrainerImageUrl": classModel.trainerImageUrl,
+            "TrainerFirstName": classModel.trainerFirstName,
+            "TrainerLastName": classModel.trainerLastName,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

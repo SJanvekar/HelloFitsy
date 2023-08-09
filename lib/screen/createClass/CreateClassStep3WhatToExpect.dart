@@ -104,10 +104,6 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
                     ),
                   ),
                   onTap: () {
-                    print(widget.classTemplate.classType
-                        .toString()
-                        .split('.')
-                        .last);
                     switch (widget.classTemplate.classType) {
                       case ClassType.Solo:
                         Navigator.of(context).push(MaterialPageRoute(

@@ -22,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateClassTitleAndPrice extends StatefulWidget {
   const CreateClassTitleAndPrice({Key? key, required this.classTemplate})
@@ -41,7 +42,6 @@ Future uploadImage() async {
     final firebaseStorage = FirebaseStorage.instance.ref();
 
     //Create a reference to image
-    // print(profilePictureImage!.path);
     final profilePictureRef =
         firebaseStorage.child(classTemplate.profileImageTempHolder!.path);
 
@@ -61,14 +61,20 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
 
   @override
   Widget build(BuildContext context) {
-    void createClass() {
+    void createClass() async {
       //Firebase Image Upload
-      uploadImage();
-
-      //Auth Service Call
-      ClassRequests().addClass(classTemplate).then((val) {
-        //Request Success Conditional
-
+      await uploadImage();
+      final sharedPrefs = await SharedPreferences.getInstance();
+      widget.classTemplate.classTrainer =
+          sharedPrefs.getString('userName') ?? "";
+      widget.classTemplate.trainerImageUrl =
+          sharedPrefs.getString('profileImageURL') ?? "";
+      widget.classTemplate.trainerFirstName =
+          sharedPrefs.getString('firstName') ?? "";
+      widget.classTemplate.trainerLastName =
+          sharedPrefs.getString('lastName') ?? "";
+      print(widget.classTemplate.toJson());
+      ClassRequests().addClass(widget.classTemplate).then((val) {
         if (val.data['success']) {
           print('Successful class add');
           Navigator.of(context).push(PageTransition(
@@ -354,8 +360,8 @@ Widget ClassLocation(Class template) {
                   ),
                 ),
                 onChanged: (val) {
-                  //TODO: HARDCODE 0 FOR NOW, IMPLEMENT GEOLOCATER
-                  template.classLocationName = '';
+                  //HARD CODED - MUST CHANGE
+                  template.classLocationName = 'NA';
                   template.classLatitude = 0;
                   template.classLongitude = 0;
                 },
