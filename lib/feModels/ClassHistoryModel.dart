@@ -2,6 +2,7 @@ enum ClassType { Solo, Group, Virtual }
 
 class ClassHistory {
   String userName;
+  int amountTaken;
   String classImageUrl;
   String className;
   ClassType classType;
@@ -13,6 +14,7 @@ class ClassHistory {
 
   ClassHistory({
     required this.userName,
+    required this.amountTaken,
     required this.classImageUrl,
     required this.className,
     required this.classType,

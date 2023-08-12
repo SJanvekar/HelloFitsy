@@ -25,7 +25,6 @@ class ProfileClassCard extends StatefulWidget {
     required this.classWhatYouWillNeed,
     required this.classLocationName,
     required this.classPrice,
-    required this.classLiked,
     required this.classImage,
     required this.trainerImageUrl,
     required this.classRating,
@@ -43,7 +42,8 @@ class ProfileClassCard extends StatefulWidget {
   String classWhatYouWillNeed;
   String classLocationName;
   double classPrice;
-  bool classLiked;
+  //HARD CODED - MUST CHANGE
+  bool classLiked = false;
   String classImage;
   String trainerImageUrl;
   double classRating;

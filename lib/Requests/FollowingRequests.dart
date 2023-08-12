@@ -22,6 +22,34 @@ class FollowingRequests {
     }
   }
 
+  //Remove Following
+  removeFollowing(String followingUsername, String username) async {
+    try {
+      return await dio.get('$urlDomain/removeFollowing',
+          data: {
+            "FollowingUserName": followingUsername,
+            "Username": username,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  //Remove Following
+  isFollowing(String followingUsername, String username) async {
+    try {
+      return await dio.get('$urlDomain/isFollowing',
+          data: {
+            "FollowingUserName": followingUsername,
+            "Username": username,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
   //Get Following List
   getFollowingList(String username) async {
     try {

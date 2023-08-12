@@ -266,7 +266,7 @@ class _CategorySelectionState extends State<CategorySelection> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => HomeTest()));
       } else {
-        print("Sign up error: ${val.data}");
+        print("Sign up error: ${val.data['msg']}");
       }
     });
   }

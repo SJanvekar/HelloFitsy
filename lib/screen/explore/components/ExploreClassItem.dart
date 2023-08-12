@@ -14,7 +14,6 @@ class ExploreClassItem extends StatefulWidget {
     required this.classType,
     required this.classLocationName,
     required this.classPrice,
-    required this.classLiked,
     required this.classImage,
   }) : super(key: key);
 
@@ -24,7 +23,8 @@ class ExploreClassItem extends StatefulWidget {
   ClassType classType;
   String classLocationName;
   double classPrice;
-  bool classLiked;
+  //HARD CODED - MUST CHANGE
+  bool classLiked = false;
   String classImage;
 
   @override

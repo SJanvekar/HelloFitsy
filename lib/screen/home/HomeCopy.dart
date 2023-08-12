@@ -436,7 +436,6 @@ class _HomeTestState extends State<HomeTest> {
                     classType: classItem.classType,
                     classLocationName: classItem.classLocationName,
                     classPrice: classItem.classPrice,
-                    classLiked: classItem.classLiked,
                     classImage: classItem.classImageUrl,
                     trainerImageUrl: classItem.trainerImageUrl,
                     classDescription: classItem.classDescription,

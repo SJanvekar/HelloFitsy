@@ -115,7 +115,13 @@ class UserProfileComponentDark extends StatelessWidget {
       ),
       onTap: () {
         Navigator.of(context).push(CupertinoPageRoute(
-            maintainState: true, builder: (context) => UserProfile()));
+            maintainState: true,
+            builder: (context) => UserProfile(
+                profileImageURL: imageURL,
+                userName: userName,
+                userFirstName: userFirstName,
+                //HARD CODED - MUST CHANGE
+                userLastName: '')));
       },
     );
   }
