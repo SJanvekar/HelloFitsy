@@ -36,7 +36,6 @@ class _Search extends State<Search> {
     List<Class> allClasses = classList;
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
-    var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2) - 50;
 
     return GestureDetector(
       child: Scaffold(

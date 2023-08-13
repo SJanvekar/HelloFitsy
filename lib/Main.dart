@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/Categories.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
@@ -14,6 +17,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
+import 'feModels/UserModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,14 +62,14 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  String userType = "";
-  String userName = "";
-  String userFirstName = "";
-  String userLastName = "";
-  String userBio = "";
-  String userFullName = "";
-  String profileImageUrl = "";
-  String userInterests = "";
+  User userInstance = User(
+    isActive: true,
+    userType: UserType.Trainee,
+    profileImageURL: '',
+    firstName: '',
+    lastName: '',
+    userName: '',
+  );
 
   @override
   void initState() {
@@ -80,30 +84,36 @@ class _MainPageState extends State<MainPage> {
 
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    userName = sharedPrefs.getString('userName') ?? '';
-    userFirstName = sharedPrefs.getString('firstName') ?? '';
-    userLastName = sharedPrefs.getString('lastName') ?? '';
-    userBio = sharedPrefs.getString('userBio') ?? '';
-    userType = sharedPrefs.getString('userType') ?? '';
-    userFullName = '${userFirstName}' + ' ' + '${userLastName}';
-    userInterests = sharedPrefs.getString('categories') ?? '';
+    userInstance.userName = sharedPrefs.getString('userName') ?? '';
+    userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
+    userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
+    userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
+    userInstance.categories =
+        json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
+    String userType = sharedPrefs.getString('userType') ?? '';
+    userInstance.profileImageURL =
+        sharedPrefs.getString('profileImageURL') ?? '';
+    print(userInstance.userBio);
+    // print(json.decode(sharedPrefs.getString('user') ?? ''));
+    // User userInstance =
+    //     User.fromJson(json.decode(sharedPrefs.getString('user') ?? ''));
 
-    print(userInterests);
-    getSet2UserDetails();
+    // Trainer/Trainee assigning
+    if (userType == 'Trainee') {
+      userInstance.userType = UserType.Trainee;
+    } else {
+      userInstance.userType = UserType.Trainer;
+    }
 
-    if (userType == 'Trainer') {
+    // Add Create Class if user is a trainer
+    if (userInstance.userType == UserType.Trainer) {
       _widgetOptions[2] = CreateClassSelectType(
           isTypeSelected: false, classTemplate: classTemplate);
     }
+
+    //
     _widgetOptions.add(PersonalProfile(
-      profileImageUrl: profileImageUrl,
-      userFirstName: userFirstName,
-      userFullName: userFullName,
-      userLastName: userLastName,
-      userName: userName,
-      userType: userType,
-      userBio: userBio,
-      userInterests: userInterests,
+      userInstance: userInstance,
     ));
 
     setState(() {});
@@ -111,7 +121,6 @@ class _MainPageState extends State<MainPage> {
 
   void getSet2UserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? '';
   }
 
   List<Widget> _widgetOptions = <Widget>[
@@ -173,7 +182,7 @@ class _MainPageState extends State<MainPage> {
                     size: 20,
                   ),
                   label: ''),
-              if (userType == 'Trainer')
+              if (userInstance.userType == UserType.Trainer)
                 //Add Class
                 BottomNavigationBarItem(
                     icon: Icon(

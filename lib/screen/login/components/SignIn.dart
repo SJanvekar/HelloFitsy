@@ -46,6 +46,7 @@ void onSubmitSignInField(context) {
           sharedPrefs.setString('firstName', val.data['firstName']);
           sharedPrefs.setString('lastName', val.data['lastName']);
           sharedPrefs.setString('categories', encodedCategories);
+          sharedPrefs.setString('user', json.encode(val.data));
         } else {
           print('Failed get user info');
         }

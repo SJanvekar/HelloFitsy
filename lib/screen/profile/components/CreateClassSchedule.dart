@@ -1054,6 +1054,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
   }
 
   @override
+  //HARD CODED - MUST CHANGE
+  //HARD CODED RECURRANCE TYPES
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(20),

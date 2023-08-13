@@ -23,29 +23,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../feModels/ClassModel.dart';
+import '../../../feModels/UserModel.dart';
 import '../../profile/components/createClassSchedule.dart';
 
 class PersonalProfile extends StatefulWidget {
   PersonalProfile({
     Key? key,
-    required this.profileImageUrl,
-    required this.userName,
-    required this.userFullName,
-    required this.userFirstName,
-    required this.userLastName,
-    required this.userType,
-    required this.userBio,
-    required this.userInterests,
+    required this.userInstance,
   }) : super(key: key);
+
+  User userInstance;
+
   //User details:
-  String profileImageUrl;
-  String userName;
-  String userFullName;
-  String userFirstName;
-  String userLastName;
-  String userBio;
-  String userType;
-  String userInterests;
+  // String profileImageUrl;
+  // String userName;
+
+  // String userFirstName;
+  // String userLastName;
+  // String userBio;
+  // String userType;
+  // String userInterests;
   @override
   State<PersonalProfile> createState() => _PersonalProfileState();
 }
@@ -89,21 +86,28 @@ class _PersonalProfileState extends State<PersonalProfile> {
   //----------
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    widget.userName = sharedPrefs.getString('userName') ?? '';
-    widget.userFirstName = sharedPrefs.getString('firstName') ?? '';
-    widget.userLastName = sharedPrefs.getString('lastName') ?? '';
-    widget.userBio = sharedPrefs.getString('userBio') ?? '';
-    widget.userType = sharedPrefs.getString('userType') ?? '';
-    widget.userFullName =
-        '${widget.userFirstName}' + ' ' + '${widget.userLastName}';
-    widget.userInterests = sharedPrefs.getString('categories') ?? '';
+    widget.userInstance.userName = sharedPrefs.getString('userName') ?? '';
+    widget.userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
+    widget.userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
+    widget.userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
+    String userType = sharedPrefs.getString('userType') ?? '';
+    // Trainer/Trainee assigning
+    if (userType == 'Trainee') {
+      widget.userInstance.userType = UserType.Trainee;
+    } else {
+      widget.userInstance.userType = UserType.Trainer;
+    }
+
+    widget.userInstance.categories =
+        json.decode(sharedPrefs.getString('categories') ?? '');
 
     getSet2UserDetails();
   }
 
   void getSet2UserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    widget.profileImageUrl = sharedPrefs.getString('profileImageURL') ?? '';
+    widget.userInstance.profileImageURL =
+        sharedPrefs.getString('profileImageURL') ?? '';
 
     setState(() {});
   }
@@ -111,9 +115,9 @@ class _PersonalProfileState extends State<PersonalProfile> {
 //----------
   void checkInterests() {
     myInterestsFinal.clear();
-    decodedCategories = json.decode(widget.userInterests);
+
     for (var i = 0; i < interests.length; i++) {
-      if (decodedCategories.contains(interests[i].categoryName)) {
+      if (widget.userInstance.categories.contains(interests[i].categoryName)) {
         myInterestsFinal.add(interests[i]);
       }
     }
@@ -194,7 +198,9 @@ class _PersonalProfileState extends State<PersonalProfile> {
           Row(
             children: [
               Text(
-                widget.userFullName,
+                widget.userInstance.firstName +
+                    ' ' +
+                    widget.userInstance.lastName,
                 style: TextStyle(
                     fontSize: 30,
                     fontFamily: 'SFDisplay',
@@ -213,7 +219,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
             ],
           ),
           Text(
-            '@' + widget.userName,
+            '@' + widget.userInstance.userName,
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -333,12 +339,12 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 stretchModes: const [StretchMode.zoomBackground],
                 background: Stack(
                   children: [
-                    if (widget.profileImageUrl != null)
+                    if (widget.userInstance.profileImageURL != null)
                       Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                widget.profileImageUrl!,
+                                widget.userInstance.profileImageURL!,
                               ),
                               fit: BoxFit.cover),
                         ),
@@ -447,19 +453,22 @@ class _PersonalProfileState extends State<PersonalProfile> {
                               //FirstName
                               final TextEditingController _firstNameController =
                                   new TextEditingController();
-                              _firstNameController.text = widget.userFirstName;
+                              _firstNameController.text =
+                                  widget.userInstance.firstName;
 
                               final TextEditingController _lastNameController =
                                   new TextEditingController();
-                              _lastNameController.text = widget.userLastName;
+                              _lastNameController.text =
+                                  widget.userInstance.lastName;
 
                               final TextEditingController _userNameController =
                                   new TextEditingController();
-                              _userNameController.text = widget.userName;
+                              _userNameController.text =
+                                  widget.userInstance.userName;
 
                               final TextEditingController _bioController =
                                   new TextEditingController();
-                              _bioController.text = widget.userBio;
+                              _bioController.text = widget.userInstance.userBio;
 
                               //Cupertino Modal Pop-up - Profile Edit
                               showCupertinoModalPopup(
@@ -755,26 +764,31 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                                   500), () {
                                                         uploadImage();
                                                         newProfileImageURL ??=
-                                                            widget
-                                                                .profileImageUrl;
+                                                            widget.userInstance
+                                                                .profileImageURL;
                                                         newFirstName ??= widget
-                                                            .userFirstName;
-                                                        newLastName ??=
-                                                            widget.userLastName;
-                                                        newUserName ??=
-                                                            widget.userName;
-                                                        newBio ??=
-                                                            widget.userBio;
+                                                            .userInstance
+                                                            .firstName;
+                                                        newLastName ??= widget
+                                                            .userInstance
+                                                            .lastName;
+                                                        newUserName ??= widget
+                                                            .userInstance
+                                                            .userName;
+                                                        newBio ??= widget
+                                                            .userInstance
+                                                            .userBio;
                                                         print(
                                                             newProfileImageURL);
                                                         UserRequests()
                                                             .updateUserInformation(
-                                                                newProfileImageURL,
-                                                                widget.userName,
-                                                                newFirstName,
-                                                                newLastName,
-                                                                newUserName,
-                                                                newBio)
+                                                          newProfileImageURL,
+                                                          newUserName,
+                                                          newFirstName,
+                                                          newLastName,
+                                                          newUserName,
+                                                          newBio,
+                                                        )
                                                             .then((val) async {
                                                           if (val.data[
                                                               'success']) {
@@ -846,15 +860,16 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                               fit: BoxFit.cover,
                                                             ))
                                                           else if (widget
-                                                                      .profileImageUrl !=
+                                                                      .userInstance
+                                                                      .profileImageURL !=
                                                                   null &&
                                                               newProfileImage ==
                                                                   null)
                                                             ClipOval(
                                                                 child: Image(
-                                                              image: NetworkImage(
-                                                                  widget
-                                                                      .profileImageUrl!),
+                                                              image: NetworkImage(widget
+                                                                  .userInstance
+                                                                  .profileImageURL!),
                                                               width: 180,
                                                               height: 180,
                                                               fit: BoxFit.cover,
@@ -948,7 +963,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
                   ),
                 ),
               ],
-              title: Text(widget.userFullName,
+              title: Text(
+                  widget.userInstance.firstName +
+                      ' ' +
+                      widget.userInstance.lastName,
                   style: TextStyle(
                       color: _textColor,
                       fontFamily: 'SFDisplay',
@@ -979,7 +997,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
               Padding(
                 padding:
                     const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
-                child: Text(widget.userBio, style: profileBodyTextFont),
+                child: Text(widget.userInstance.userBio!,
+                    style: profileBodyTextFont),
               ),
             ]),
 
