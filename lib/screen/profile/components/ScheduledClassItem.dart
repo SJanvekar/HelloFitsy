@@ -17,7 +17,6 @@ class ScheduledClassTile extends StatelessWidget {
     required this.classType,
     required this.classLocationName,
     required this.classPrice,
-    required this.classLiked,
     required this.classRating,
     required this.classReviews,
     required this.classDescription,
@@ -34,7 +33,8 @@ class ScheduledClassTile extends StatelessWidget {
   ClassType classType;
   String classLocationName;
   double classPrice;
-  bool classLiked;
+  //HARD CODED - MUST CHANGE
+  bool classLiked = false;
   double classRating;
   int classReviews;
   String classDescription;

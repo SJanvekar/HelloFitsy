@@ -39,7 +39,6 @@ Class classTemplate = Class(
     classReviewsAmount: 0,
     classPrice: 0,
     classTrainer: '',
-    classLiked: false,
     classTimes: [],
     trainerImageUrl: '',
     // trainerUsername: '',
@@ -171,7 +170,6 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       setState(() {
                         _ButtonOnPressed(ClassType.Solo);
                         HapticFeedback.mediumImpact();
-                        // print(ClassType.solo.toString().split('.').last);
                         classTemplate.classType = ClassType.Solo;
                         widget.isTypeSelected = true;
                       })
@@ -214,7 +212,6 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                         setState(() {
                           _ButtonOnPressed(ClassType.Group);
                           HapticFeedback.mediumImpact();
-                          // print(ClassType.group.toString().split('.').last);
                           classTemplate.classType = ClassType.Group;
                           widget.isTypeSelected = true;
                         })
@@ -256,7 +253,6 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       setState(() {
                         _ButtonOnPressed(ClassType.Virtual);
                         HapticFeedback.mediumImpact();
-                        // print(ClassType.virtual.toString().split('.').last);
                         classTemplate.classType = ClassType.Virtual;
                         widget.isTypeSelected = true;
                       })

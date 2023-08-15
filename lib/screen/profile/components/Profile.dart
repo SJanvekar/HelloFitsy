@@ -1,10 +1,16 @@
+import 'dart:async';
 import 'dart:ui';
+import 'package:balance/Requests/FollowerRequests.dart';
+import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/FollowerModel.dart';
+import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:balance/sharedWidgets/unfollowDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../feModels/Categories.dart';
@@ -14,29 +20,30 @@ import '../../../sharedWidgets/categories/categorySmall.dart';
 class UserProfile extends StatefulWidget {
   UserProfile({
     Key? key,
-  }) : super(
-          key: key,
-        );
+    required this.profileImageURL,
+    required this.userName,
+    required this.userFirstName,
+    required this.userLastName,
+  }) : super(key: key);
+
+  //User details:
+  String profileImageURL;
+  String userName;
+  String userFirstName;
+  String userLastName;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
-  //User details:
-  String profileImageUrl = "";
-  String userName = "";
-  String userFullName = "";
-  String userFirstName = "";
-  String userLastName = "";
-
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
   Color iconCircleColor = shark60;
   Color iconColor = snow;
   late ScrollController _scrollController;
   Brightness statusBarTheme = Brightness.dark;
-  bool isFollowing = false;
+  bool isUserFollowing = false;
 
   //Interests Lists
   //A list contained within the Category model which holds the trainers' interests (since this list contains the category information)
@@ -49,11 +56,91 @@ class _UserProfileState extends State<UserProfile> {
   //Class list
   List<Class> trainerClasses = classList;
 
+  void isFollowing() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    await FollowingRequests()
+        .isFollowing(widget.userName, sharedPrefs.getString('userName') ?? '')
+        .then((val) async {
+      if (val.data['success']) {
+        print('successful is following');
+        isUserFollowing = val.data['found'];
+      } else {
+        print('error is following ${val.data['msg']}');
+      }
+      setState(() {
+        isUserFollowing;
+      });
+    });
+  }
+
+  void addFollowing() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    Following newFollowing = Following(
+        followingUsername: widget.userName,
+        username: sharedPrefs.getString('userName') ?? '',
+        followingFirstName: widget.userFirstName,
+        followingLastName: widget.userFirstName,
+        followingProfileImageURL: widget.profileImageURL);
+    FollowingRequests().addFollowing(newFollowing).then((val) async {
+      if (val.data['success']) {
+        print('successful add following');
+      } else {
+        print('error add following ${val.data['msg']}');
+      }
+    });
+  }
+
+  void addFollower() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    Follower newFollower = Follower(
+        followerUsername: sharedPrefs.getString('userName') ?? '',
+        username: widget.userName,
+        followerFirstName: sharedPrefs.getString('firstName') ?? '',
+        followerLastName: sharedPrefs.getString('lastName') ?? '',
+        followerProfileImageURL:
+            sharedPrefs.getString('profileImageURL') ?? '');
+    FollowerRequests().addFollower(newFollower).then((val) async {
+      if (val.data['success']) {
+        print('successful add follower');
+      } else {
+        print('error add follower ${val.data['msg']}');
+      }
+    });
+  }
+
+  void removeFollowing() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    FollowingRequests()
+        .removeFollowing(
+            widget.userName, sharedPrefs.getString('userName') ?? '')
+        .then((val) async {
+      if (val.data['success']) {
+        print('successful remove following');
+      } else {
+        print('error remove following ${val.data['msg']}');
+      }
+    });
+  }
+
+  void removeFollower() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    FollowerRequests()
+        .removeFollower(
+            sharedPrefs.getString('userName') ?? '', widget.userName)
+        .then((val) async {
+      if (val.data['success']) {
+        print('successful remove follower');
+      } else {
+        print('error remove follower ${val.data['msg']}');
+      }
+    });
+  }
+
 //----------
   @override
   void initState() {
     super.initState();
-
+    isFollowing();
     print(trainerClasses.length);
     //Checks the trainer interests and creates a list from the categories models
     checkInterests();
@@ -91,7 +178,14 @@ class _UserProfileState extends State<UserProfile> {
 //Title Colour Function
   _followOnTap() {
     setState(() {
-      isFollowing = !isFollowing;
+      if (!isUserFollowing) {
+        addFollowing();
+        addFollower();
+      } else {
+        removeFollowing();
+        removeFollower();
+      }
+      isUserFollowing = !isUserFollowing;
       HapticFeedback.mediumImpact();
     });
   }
@@ -104,7 +198,7 @@ class _UserProfileState extends State<UserProfile> {
         children: [
           Text(
             // userFullName
-            'Salman Janvekar',
+            widget.userFirstName + ' ' + widget.userLastName,
             style: TextStyle(
                 fontSize: 26,
                 fontFamily: 'SFDisplay',
@@ -120,7 +214,7 @@ class _UserProfileState extends State<UserProfile> {
             maxLines: 1,
           ),
           Text(
-            '@salmanjanvekar',
+            '@' + widget.userName,
             // userName,
             style: TextStyle(
                 fontSize: 16,
@@ -208,7 +302,7 @@ class _UserProfileState extends State<UserProfile> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Text(
-              'Chat with Salman',
+              'Chat with ' + widget.userFirstName,
               // userFirstName,
               style: TextStyle(
                   color: snow,
@@ -235,6 +329,87 @@ class _UserProfileState extends State<UserProfile> {
     //Shows the top status bar for iOS & Android
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
+
+    contentBox(context) {
+      return Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black, offset: Offset(0, 10), blurRadius: 10),
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+                child: Text(
+                  'Are you sure you want to unfollow ' + widget.userName + '?',
+                  style: TextStyle(
+                      color: jetBlack80,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Column(
+                children: [
+                  GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        width: 105,
+                        decoration: BoxDecoration(
+                            color: strawberry,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          'Unfollow',
+                          style: TextStyle(
+                              color: snow,
+                              fontFamily: 'SFDisplay',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      onTap: () =>
+                          {_followOnTap(), Navigator.of(context).pop()}),
+                  SizedBox(height: 5),
+                  GestureDetector(
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        width: 105,
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(
+                              color: jetBlack80,
+                              fontFamily: 'SFDisplay',
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ),
+                      onTap: () => {Navigator.of(context).pop()}),
+                  SizedBox(
+                    height: 15,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    }
 
     return Scaffold(
       backgroundColor: snow,
@@ -299,7 +474,7 @@ class _UserProfileState extends State<UserProfile> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              'https://firebasestorage.googleapis.com/v0/b/fitsy-5wx21.appspot.com/o/private%2Fvar%2Fmobile%2FContainers%2FData%2FApplication%2FC30AF58C-8871-4EF9-92C2-D3FA41E5A4B7%2Ftmp%2Fimage_picker_4C4728D4-1416-4F73-BA34-0E3C86ABBFDD-2819-0000024C398674C2.jpg?alt=media&token=1299217a-1d3e-48cf-9180-f28a1e8c58f6',
+                              widget.profileImageURL,
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -359,24 +534,34 @@ class _UserProfileState extends State<UserProfile> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     GestureDetector(
-                                        child: isFollowing
+                                        child: isUserFollowing
                                             ? followingButton()
                                             : followButton(),
                                         onTap: () => {
-                                              if (isFollowing == true)
+                                              if (isUserFollowing == true)
                                                 {
                                                   showDialog(
                                                       context: context,
                                                       builder: (BuildContext
                                                           context) {
-                                                        return CustomDialogBox(
-                                                            trainerName:
-                                                                'Salman',
-                                                            // userFullName,
-                                                            trainerImg: '');
-                                                      })
+                                                        return Dialog(
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20),
+                                                          ),
+                                                          elevation: 0,
+                                                          backgroundColor:
+                                                              Colors
+                                                                  .transparent,
+                                                          child: contentBox(
+                                                              context),
+                                                        );
+                                                      }),
                                                 }
-                                              else if (isFollowing == false)
+                                              else if (isUserFollowing == false)
                                                 {_followOnTap()}
                                             }),
                                     Padding(
@@ -396,8 +581,7 @@ class _UserProfileState extends State<UserProfile> {
                 expandedTitleScale: 1,
                 centerTitle: false,
               ),
-              //HARD CODED - MUST CHANGE
-              title: Text('Salman Janvekar',
+              title: Text(widget.userFirstName + ' ' + widget.userLastName,
                   // userFullName,
                   style: TextStyle(
                       color: _textColor,
@@ -438,10 +622,8 @@ class _UserProfileState extends State<UserProfile> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
-                  child:
-                      //HARD CODED - MUST CHANGE
-                      Text(
-                    'About Salman',
+                  child: Text(
+                    'About ' + widget.userFirstName,
                     // ${userFirstName}',
                     style: sectionTitles,
                   ),
@@ -519,7 +701,7 @@ class _UserProfileState extends State<UserProfile> {
                 padding: const EdgeInsets.only(
                     top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
-                  "Salman's Specialities",
+                  widget.userFirstName + "'s Specialities",
                   style: sectionTitles,
                 ),
               ),
@@ -551,7 +733,7 @@ class _UserProfileState extends State<UserProfile> {
                 padding: const EdgeInsets.only(
                     top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
-                  "Train with Salman",
+                  "Train with " + widget.userFirstName,
                   style: sectionTitles,
                 ),
               ),
@@ -570,7 +752,6 @@ class _UserProfileState extends State<UserProfile> {
                         classType: trainerClassInfo.classType,
                         classLocationName: trainerClassInfo.classLocationName,
                         classPrice: trainerClassInfo.classPrice,
-                        classLiked: trainerClassInfo.classLiked,
                         classImage: trainerClassInfo.classImageUrl,
                         trainerImageUrl: trainerClassInfo.trainerImageUrl,
                         classDescription: trainerClassInfo.classDescription,

@@ -1,19 +1,8 @@
 var mongoose = require('mongoose');
+var Schedule = require('./Schedule');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
-const crypto = require("crypto");
-
-const id = crypto.randomBytes(16).toString("hex");
 
 var ClassSchema = new Schema({
-    //classID
-    ClassID: {
-        type: String,
-        default: id,
-        unique: true
-
-    },
-
     //Class Name
     ClassName: {
         type: String,
@@ -77,7 +66,7 @@ var ClassSchema = new Schema({
     //Class Overall Rating
     ClassOverallRating: {
         type: Number,
-        required: true
+        required: false
     },
 
     //Class Reviews Amount
@@ -96,7 +85,12 @@ var ClassSchema = new Schema({
     ClassTrainer: {
         type: String,
         required: true,
-        required: true,
+    },
+
+    //Class Schedules
+    ClassTimes: {
+        type: [Schedule.schema],
+        required: false,
     },
 
     //Categories (Linked)

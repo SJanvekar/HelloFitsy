@@ -1,18 +1,24 @@
 import 'dart:io';
 
+// ignore: constant_identifier_names
+enum RecurrenceType { None, Daily, Weekly, BiWeekly, Monthly, Yearly }
+
+// ignore: constant_identifier_names
 enum ClassType { Solo, Group, Virtual }
 
 class Schedule {
   DateTime startDate;
   DateTime endDate;
+  RecurrenceType recurrence;
 
-  Schedule({
-    required this.startDate,
-    required this.endDate,
-  });
+  Schedule(
+      {required this.startDate,
+      required this.endDate,
+      required this.recurrence});
 }
 
 class Class {
+  String? classID;
   String classImageUrl;
   String className;
   double classPrice;
@@ -28,7 +34,6 @@ class Class {
   String classTrainer;
   String trainerFirstName;
   String trainerLastName;
-  bool classLiked;
   late List<Schedule> classTimes;
   String trainerImageUrl;
   late List<String> classCategories;
@@ -49,9 +54,6 @@ class Class {
 
     //Good after this point
     required this.classPrice,
-    required this.classLiked,
-
-    //May need to rework this based on new workflow
     required this.classTimes,
 
     //Trainer Info
@@ -77,7 +79,6 @@ class Class {
         classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
         classTrainer = json['ClassTrainer'],
-        classLiked = json['ClassLiked'],
         trainerImageUrl = json['TrainerImageUrl'],
         trainerFirstName = json['TrainerFirstName'],
         trainerLastName = json['TrainerLastName'];
@@ -96,7 +97,6 @@ class Class {
         'ClassReview': classReviewsAmount,
         'ClassPrice': classPrice,
         'ClassTrainer': classTrainer,
-        'ClassLiked': classLiked,
         'TrainerImageUrl': trainerImageUrl,
         'TrainerFirstName': trainerFirstName,
         'TrainerLastName': trainerLastName

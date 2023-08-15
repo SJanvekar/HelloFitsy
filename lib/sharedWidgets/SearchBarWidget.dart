@@ -34,6 +34,7 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
     if (val.isNotEmpty) {
       UserRequests().searchTrainers(val).then((val) async {
         if (val.data['success']) {
+          print(val.data['searchResults']);
           List<dynamic> receivedJSON = val.data['searchResults'];
           receivedJSON.forEach((user) {
             searchResults.add(User.fromJson(user));

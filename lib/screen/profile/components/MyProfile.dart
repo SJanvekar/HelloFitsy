@@ -121,7 +121,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
         myInterestsFinal.add(interests[i]);
       }
     }
-    ;
   }
 
 //----------
@@ -468,7 +467,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
 
                               final TextEditingController _bioController =
                                   new TextEditingController();
-                              _bioController.text = widget.userInstance.userBio;
+                              _bioController.text =
+                                  widget.userInstance.userBio!;
 
                               //Cupertino Modal Pop-up - Profile Edit
                               showCupertinoModalPopup(
@@ -1068,10 +1068,10 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       padding: EdgeInsets.only(left: 13, right: 13),
                       itemCount: myInterestsFinal.length,
                       itemBuilder: (context, index) {
-                        final _likedInterests = myInterestsFinal[index];
+                        final likedInterests = myInterestsFinal[index];
                         return CategorySmall(
-                          categoryImage: _likedInterests.categoryImage,
-                          categoryName: _likedInterests.categoryName,
+                          categoryImage: likedInterests.categoryImage,
+                          categoryName: likedInterests.categoryName,
                         );
                       },
                     ),
@@ -1156,13 +1156,13 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         ? savedClassesList.length
                         : 3,
                     itemBuilder: (context, index) {
-                      final _savedClasses = savedClassesList[index];
+                      final savedClasses = savedClassesList[index];
                       return ClassItemCondensed1(
-                        classImageUrl: _savedClasses.classImageUrl,
+                        classImageUrl: savedClasses.classImageUrl,
                         buttonBookOrRebookText: 'Book',
-                        classTitle: _savedClasses.className,
-                        classTrainer: _savedClasses.trainerFirstName,
-                        classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                        classTitle: savedClasses.className,
+                        classTrainer: savedClasses.trainerFirstName,
+                        classTrainerImageUrl: savedClasses.trainerImageUrl,
                       );
                     },
                   ),
@@ -1234,13 +1234,13 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       if (savedClassesList.isEmpty) {
                         return Container();
                       } else {
-                        final _savedClasses = savedClassesList[index];
+                        final savedClasses = savedClassesList[index];
                         return ClassItemCondensed1(
-                          classImageUrl: _savedClasses.classImageUrl,
+                          classImageUrl: savedClasses.classImageUrl,
                           buttonBookOrRebookText: 'Book',
-                          classTitle: _savedClasses.className,
-                          classTrainer: _savedClasses.trainerFirstName,
-                          classTrainerImageUrl: _savedClasses.trainerImageUrl,
+                          classTitle: savedClasses.className,
+                          classTrainer: savedClasses.trainerFirstName,
+                          classTrainerImageUrl: savedClasses.trainerImageUrl,
                         );
                       }
                     },

@@ -11,7 +11,6 @@ var functions = {
         }
         else{
             var newClass = Class({
-                ClassID: req.body.ClassID,
                 ClassName: req.body.ClassName,
                 ClassImageUrl: req.body.ClassImageUrl,
                 ClassDescription: req.body.ClassDescription,
@@ -21,12 +20,9 @@ var functions = {
                 ClassLocationName: req.body.ClassLocationName,
                 ClassLatitude: req.body.ClassLatitude,
                 ClassLongitude: req.body.ClassLongitude,
-                ClassOverallRating: req.body.ClassOverallRating,
                 ClassReviewsAmount: req.body.ClassReviewsAmount,
                 ClassPrice: req.body.ClassPrice,
                 ClassTrainer: req.body.ClassTrainer,
-                ClassLiked: req.body.ClassLiked,
-                ClassTimes: req.body.ClassTimes,
                 Categories: req.body.Categories,
                 TrainerImageUrl: req.body.TrainerImageUrl,
                 TrainerFirstName: req.body.TrainerFirstName,
@@ -63,7 +59,7 @@ var functions = {
         Class.find({ClassTrainer: {$in:req.query.ClassTrainer}}, function (err, classArray) {
             if (err) {
                 console.log(err)
-                return res.json({success: false, body: err})
+                return res.json({success: false, msg: err})
             } else {
                 return classPromiseAsync(classArray).then(parsedResponse => 
                     //RESPONSE string is an array of classes
@@ -72,32 +68,6 @@ var functions = {
                     }))
             }
         })
-    },
-
-    testing: function (req, res){
-        if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
-            res.json({success: false, msg: 'Enter all fields'})
-        }
-        else{
-            var newUser = User({
-                UserID: req.body.UserID,
-                UserType: req.body.UserType,
-                FirstName: req.body.FirstName,
-                LastName: req.body.LastName,
-                Username: req.body.Username,
-                UserEmail: req.body.UserEmail,
-                Password: req.body.Password
-
-            });
-            newUser.save(function (err, newUser){
-                if(err){
-                    res.json({success: false, msg: 'Failed to save'})
-                }
-                else {
-                    res.json({success: true, msg: 'Successfully saved'})
-                }
-            })
-        }
     },
 }
 

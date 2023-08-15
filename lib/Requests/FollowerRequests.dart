@@ -22,6 +22,20 @@ class FollowerRequests {
     }
   }
 
+  //Remove Follower
+  removeFollower(String followerUsername, String username) async {
+    try {
+      return await dio.get('$urlDomain/removeFollower',
+          data: {
+            "FollowerUserName": followerUsername,
+            "Username": username,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
   //Get Follower List
   getFollowerList(String username) async {
     try {
