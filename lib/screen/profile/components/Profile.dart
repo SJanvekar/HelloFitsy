@@ -50,7 +50,7 @@ class _UserProfileState extends State<UserProfile> {
   List<Category> trainerInterestsFinal = trainerInterests;
   //Original list of all category (interest) items ~ this contains the Category name and image
   List<Category> interests = categoriesList;
-  //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info
+  //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info //HARD CODED - MUST CHANGE
   var userInterests = [];
 
   //Class list
@@ -159,7 +159,7 @@ class _UserProfileState extends State<UserProfile> {
 
   //----------
   void checkInterests() {
-    //Checks for categories that match the trainers' interests and populates trainerInterestsFinal
+    //Checks for categories that match the trainers' interests and populates trainerInterestsFinal //HARD CODED - MUST CHANGE
     userInterests = ['Tennis', 'Boxing'];
     interests.forEach((interestsItem) {
       if (userInterests.contains(interestsItem.categoryName)) {
@@ -645,7 +645,9 @@ class _UserProfileState extends State<UserProfile> {
                         padding: const EdgeInsets.only(
                           left: 5.0,
                         ),
-                        child: Text(
+                        child:
+                            //HARD CODED - MUST CHANGE
+                            Text(
                           '4.5',
                           style: TextStyle(
                               color: jetBlack,
@@ -664,6 +666,7 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                       ),
+                      //HARD CODED - MUST CHANGE
                       Text(
                         'Toronto, Ontario, Canada',
                         style: TextStyle(
@@ -676,7 +679,7 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                 ),
 
-                // Trainer Bio
+                // Trainer Bio //HARD CODED - MUST CHANGE
                 Padding(
                   padding:
                       const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
@@ -692,7 +695,7 @@ class _UserProfileState extends State<UserProfile> {
               ],
             ),
 
-            //Trainer Interests (Specialities)
+            //Trainer Interests (Specialities) //HARD CODED - MUST CHANGE
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
@@ -724,7 +727,7 @@ class _UserProfileState extends State<UserProfile> {
               ),
             ]),
 
-            //Trainer Classes
+            //Trainer Classes //HARD CODED - MUST CHANGE
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(

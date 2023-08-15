@@ -38,7 +38,6 @@ class SearchTestV1 extends StatelessWidget {
                       tag: 'SearchBar',
                       child: FitsySearchBar(
                         isAutoFocusTrue: true,
-                        searchBarWidth: searchBarWidth,
                         searchHintText: 'Search trainers or classes',
                         callback: null,
                       ),

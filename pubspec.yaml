@@ -87,6 +87,9 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   fonts:
+    - family: HelloFitsy
+      fonts:
+        - asset: assets/fonts/HelloFitsy.ttf
     - family: SFRounded
       fonts:
         - asset: assets/fonts/SFRoundedRegular.otf

@@ -84,7 +84,7 @@ class UpcomingClassesItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          //Class Time
+                          //Class Time //HARD CODED - MUST CHANGE
                           Padding(
                             padding: const EdgeInsets.only(bottom: 3.0),
                             child: Text(
@@ -97,7 +97,7 @@ class UpcomingClassesItem extends StatelessWidget {
                             ),
                           ),
 
-                          //Class Title
+                          //Class Title //HARD CODED - MUST CHANGE
                           SizedBox(
                             width: 210,
                             child: Padding(
@@ -114,7 +114,7 @@ class UpcomingClassesItem extends StatelessWidget {
                             ),
                           ),
 
-                          //Class Trainer
+                          //Class Trainer //HARD CODED - MUST CHANGE
                           Row(
                             children: [
                               Text(
