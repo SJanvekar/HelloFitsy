@@ -172,7 +172,7 @@ class _UserProfileState extends State<UserProfile> {
   bool get _isSliverAppBarExpanded {
     return _scrollController.hasClients &&
         _scrollController.offset >
-            (MediaQuery.of(context).size.height * 0.37 - kToolbarHeight);
+            (MediaQuery.of(context).size.height * 0.381 - kToolbarHeight);
   }
 
 //Title Colour Function
@@ -230,7 +230,52 @@ class _UserProfileState extends State<UserProfile> {
                 ]),
             maxLines: 1,
           ),
-          // trainerSubHeader(),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: Row(
+              children: [
+                // Followers TextSpan denoting the number of followers a user has
+                RichText(
+                    text: TextSpan(children: <TextSpan>[
+                  TextSpan(
+                    text:
+                        // Following Count,
+                        //HARD CODED - MUST CHANGE
+                        '200',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: snow,
+                        fontFamily: 'SFDisplay',
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(0, 0),
+                            blurRadius: 8.0,
+                            color: jetBlack80,
+                          ),
+                        ]),
+                  ),
+                  TextSpan(
+                    text:
+                        // Following Count,
+                        ' Followers',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: snow,
+                        fontFamily: 'SFDisplay',
+                        shadows: <Shadow>[
+                          Shadow(
+                            offset: Offset(0, 0),
+                            blurRadius: 8.0,
+                            color: jetBlack80,
+                          ),
+                        ]),
+                  ),
+                ])),
+              ],
+            ),
+          ),
         ]);
   }
 

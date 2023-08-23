@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -12,7 +13,9 @@ import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -109,18 +112,15 @@ class _MainPageState extends State<MainPage> {
     if (userInstance.userType == UserType.Trainer) {
       _widgetOptions[2] = CreateClassSelectType(
           isTypeSelected: false, classTemplate: classTemplate);
+      _widgetOptions.add(ScheduleCalendar());
     }
 
-    //
+    //Add Personal Profile to list of navigation widgets
     _widgetOptions.add(PersonalProfile(
       userInstance: userInstance,
     ));
 
     setState(() {});
-  }
-
-  void getSet2UserDetails() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
   }
 
   List<Widget> _widgetOptions = <Widget>[
@@ -130,9 +130,12 @@ class _MainPageState extends State<MainPage> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 2 && userInstance.userType == UserType.Trainer) {
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -185,15 +188,41 @@ class _MainPageState extends State<MainPage> {
               if (userInstance.userType == UserType.Trainer)
                 //Add Class
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      Icons.add_box_rounded,
-                      color: jetBlack80,
-                      size: 20,
+                    icon: GestureDetector(
+                      child: Icon(
+                        Icons.add_box_rounded,
+                        color: jetBlack80,
+                        size: 23,
+                      ),
+
+                      //OnTap Open a bottom modal sheet for trianers to add classes
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        Timer(Duration(milliseconds: 100), () {
+                          showCupertinoModalPopup(
+                            context: context,
+                            useRootNavigator: true,
+                            semanticsDismissible: true,
+                            barrierDismissible: true,
+                            barrierColor: jetBlack60,
+                            builder: (context) {
+                              return Container(
+                                color: Colors.transparent,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.75,
+                                child: CreateClassSelectType(
+                                    isTypeSelected: false,
+                                    classTemplate: classTemplate),
+                              );
+                            },
+                          );
+                        });
+                      },
                     ),
                     activeIcon: Icon(
                       Icons.add_box_rounded,
                       color: strawberry,
-                      size: 20,
+                      size: 23,
                     ),
                     label: ''),
 

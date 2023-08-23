@@ -130,64 +130,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
             (MediaQuery.of(context).size.height * 0.381 - kToolbarHeight);
   }
 
-//----------
-//Title Colour Function
-  _followOnTap() {
-    setState(() {
-      isFollowing = !isFollowing;
-      HapticFeedback.mediumImpact();
-    });
-  }
-
-//------- Calendar Settings -------
-
-//Calendar Style
-  CalendarStyle calendarStyle = CalendarStyle(
-      selectedDecoration: BoxDecoration(
-          color: strawberry, borderRadius: BorderRadius.circular(10.0)),
-      todayTextStyle: TextStyle(
-          fontWeight: FontWeight.w700,
-          color: strawberry,
-          fontFamily: 'SFDisplay'),
-      todayDecoration: BoxDecoration(
-        shape: BoxShape.circle,
-      ));
-
-//Calendar Builder
-  var calendarBuilder = CalendarBuilders(
-    selectedBuilder: (context, date, events) => Padding(
-      padding: EdgeInsets.all(8),
-      child: Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: strawberry,
-          ),
-          child: Text(
-            date.day.toString(),
-            style: TextStyle(color: snow),
-          )),
-    ),
-  );
-
-//Calendar Days of Week
-  var calendarDaysOfWeek = DaysOfWeekStyle(
-    weekdayStyle: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: 15.0,
-        color: jetBlack,
-        fontFamily: 'SFDisplay'),
-    weekendStyle: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: 15.0,
-        color: jetBlack40,
-        fontFamily: 'SFDisplay'),
-    dowTextFormatter: (date, locale) {
-      // return date.toString().toUpperCase();
-      return DateFormat.E(locale).format(date).toString();
-    },
-  );
-
   //Class Type and Title
   Widget userTitleCard() {
     return Column(
@@ -234,7 +176,53 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 ]),
             maxLines: 1,
           ),
-          // trainerSubHeader(),
+          if (widget.userInstance.userType == UserType.Trainer)
+            Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Row(
+                children: [
+                  // Followers TextSpan denoting the number of followers a user has
+                  RichText(
+                      text: TextSpan(children: <TextSpan>[
+                    TextSpan(
+                      text:
+                          // Following Count,
+                          //HARD CODED - MUST CHANGE
+                          '200',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: snow,
+                          fontFamily: 'SFDisplay',
+                          shadows: <Shadow>[
+                            Shadow(
+                              offset: Offset(0, 0),
+                              blurRadius: 8.0,
+                              color: jetBlack80,
+                            ),
+                          ]),
+                    ),
+                    TextSpan(
+                      text:
+                          // Following Count,
+                          ' Followers',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: snow,
+                          fontFamily: 'SFDisplay',
+                          shadows: <Shadow>[
+                            Shadow(
+                              offset: Offset(0, 0),
+                              blurRadius: 8.0,
+                              color: jetBlack80,
+                            ),
+                          ]),
+                    ),
+                  ])),
+                ],
+              ),
+            ),
         ]);
   }
 

@@ -80,8 +80,9 @@ class _CreateClassPicture extends State<CreateClassPicture> {
           pageTitle(),
           Center(
               child: Padding(
-            padding: EdgeInsets.only(left: 26, right: 26, top: 20),
+            padding: EdgeInsets.only(left: 26, right: 26, top: 55),
             child: Container(
+              alignment: Alignment.center,
               width: double.maxFinite,
               height: 420,
               decoration: BoxDecoration(
@@ -105,6 +106,8 @@ class _CreateClassPicture extends State<CreateClassPicture> {
           children: [
             Padding(
               padding: const EdgeInsets.only(
+                left: 26.0,
+                right: 26.0,
                 top: 15.0,
                 bottom: 15.0,
               ),
@@ -119,7 +122,11 @@ class _CreateClassPicture extends State<CreateClassPicture> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 45.0),
+              padding: const EdgeInsets.only(
+                bottom: 45.0,
+                left: 26.0,
+                right: 26.0,
+              ),
               child: GestureDetector(
                 child: FooterButton(
                     buttonColor: strawberry,

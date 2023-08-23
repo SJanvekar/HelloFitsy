@@ -92,100 +92,46 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: snow,
+    return Material(
+      color: snow,
+      borderRadius: BorderRadius.circular(20),
+      child:
 
-      //AppBar
-      appBar: AppBar(
-        toolbarHeight: 80,
-        centerTitle: false,
-        elevation: 0,
-        backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Cancel");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true, builder: (context) => Home()));
-                },
-                child: Text("Cancel", style: logInPageNavigationButtons),
-              ),
+          //Body
+          Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 26.0, top: 30),
+            child: GestureDetector(
+              child: Text("Cancel", style: logInPageNavigationButtons),
+              onTap: () {
+                Navigator.of(context).pop(CupertinoPageRoute(
+                    fullscreenDialog: true, builder: (context) => Home()));
+              },
             ),
-          ],
-        ),
-      ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              pageTitle(),
 
-      //Body
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            pageTitle(),
-
-            //Class Type selection
-            Padding(
-              padding: const EdgeInsets.only(left: 26, right: 26, top: 70),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  //One-on-one selection
-                  GestureDetector(
-                    child: AnimatedContainer(
-                      height: 85,
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                      decoration: BoxDecoration(
-                        color: _currentBorderColorSolo,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: SvgPicture.asset(
-                              'assets/icons/generalIcons/oneOnOne.svg',
-                              color: _currentTextColorSolo,
-                            ),
-                          ),
-                          Text('One-on-one training',
-                              style: TextStyle(
-                                color: _currentTextColorSolo,
-                                fontFamily: 'SFDisplay',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ))
-                        ],
-                      ),
-                    ),
-                    onTap: () => {
-                      setState(() {
-                        _ButtonOnPressed(ClassType.Solo);
-                        HapticFeedback.mediumImpact();
-                        classTemplate.classType = ClassType.Solo;
-                        widget.isTypeSelected = true;
-                      })
-                    },
-                  ),
-
-                  //Group selection
-                  Padding(
-                    padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
-                    child: GestureDetector(
+              //Class Type selection
+              Padding(
+                padding: const EdgeInsets.only(left: 26, right: 26, top: 50),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    //One-on-one selection
+                    GestureDetector(
                       child: AnimatedContainer(
-                        height: 85.0,
+                        height: 85,
                         duration: Duration(milliseconds: 100),
                         curve: Curves.linear,
                         decoration: BoxDecoration(
-                          color: _currentBorderColorGroup,
+                          color: _currentBorderColorSolo,
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
@@ -194,13 +140,13 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                             Padding(
                               padding: const EdgeInsets.only(right: 8.0),
                               child: SvgPicture.asset(
-                                "assets/icons/generalIcons/group.svg",
-                                color: _currentTextColorGroup,
+                                'assets/icons/generalIcons/oneOnOne.svg',
+                                color: _currentTextColorSolo,
                               ),
                             ),
-                            Text('Group session',
+                            Text('One-on-one training',
                                 style: TextStyle(
-                                  color: _currentTextColorGroup,
+                                  color: _currentTextColorSolo,
                                   fontFamily: 'SFDisplay',
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
@@ -210,90 +156,129 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       ),
                       onTap: () => {
                         setState(() {
-                          _ButtonOnPressed(ClassType.Group);
+                          _ButtonOnPressed(ClassType.Solo);
                           HapticFeedback.mediumImpact();
-                          classTemplate.classType = ClassType.Group;
+                          classTemplate.classType = ClassType.Solo;
                           widget.isTypeSelected = true;
                         })
                       },
                     ),
-                  ),
 
-                  //Virtual selection
-                  GestureDetector(
-                    child: AnimatedContainer(
-                      height: 85,
-                      duration: Duration(milliseconds: 100),
-                      curve: Curves.linear,
-                      decoration: BoxDecoration(
-                        color: _currentBorderColorVirtual,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: SvgPicture.asset(
-                              "assets/icons/generalIcons/virtual.svg",
-                              color: _currentTextColorVirtual,
-                            ),
+                    //Group selection
+                    Padding(
+                      padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
+                      child: GestureDetector(
+                        child: AnimatedContainer(
+                          height: 85.0,
+                          duration: Duration(milliseconds: 100),
+                          curve: Curves.linear,
+                          decoration: BoxDecoration(
+                            color: _currentBorderColorGroup,
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          Text('Virtual program',
-                              style: TextStyle(
-                                color: _currentTextColorVirtual,
-                                fontFamily: 'SFDisplay',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ))
-                        ],
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: SvgPicture.asset(
+                                  "assets/icons/generalIcons/group.svg",
+                                  color: _currentTextColorGroup,
+                                ),
+                              ),
+                              Text('Group session',
+                                  style: TextStyle(
+                                    color: _currentTextColorGroup,
+                                    fontFamily: 'SFDisplay',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        onTap: () => {
+                          setState(() {
+                            _ButtonOnPressed(ClassType.Group);
+                            HapticFeedback.mediumImpact();
+                            classTemplate.classType = ClassType.Group;
+                            widget.isTypeSelected = true;
+                          })
+                        },
                       ),
                     ),
-                    onTap: () => {
-                      setState(() {
-                        _ButtonOnPressed(ClassType.Virtual);
-                        HapticFeedback.mediumImpact();
-                        classTemplate.classType = ClassType.Virtual;
-                        widget.isTypeSelected = true;
-                      })
-                    },
-                  ),
-                ],
+
+                    //Virtual selection
+                    GestureDetector(
+                      child: AnimatedContainer(
+                        height: 85,
+                        duration: Duration(milliseconds: 100),
+                        curve: Curves.linear,
+                        decoration: BoxDecoration(
+                          color: _currentBorderColorVirtual,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: SvgPicture.asset(
+                                "assets/icons/generalIcons/virtual.svg",
+                                color: _currentTextColorVirtual,
+                              ),
+                            ),
+                            Text('Virtual program',
+                                style: TextStyle(
+                                  color: _currentTextColorVirtual,
+                                  fontFamily: 'SFDisplay',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ))
+                          ],
+                        ),
+                      ),
+                      onTap: () => {
+                        setState(() {
+                          _ButtonOnPressed(ClassType.Virtual);
+                          HapticFeedback.selectionClick();
+                          classTemplate.classType = ClassType.Virtual;
+                          widget.isTypeSelected = true;
+                        })
+                      },
+                    ),
+                    //Bottom Navigation Bar
+                    GestureDetector(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 30,
+                            bottom: 46,
+                          ),
+                          child: FooterButton(
+                            buttonColor: strawberry,
+                            buttonText: 'Continue',
+                            textColor: snow,
+                          ),
+                        ),
+                        onTap: () => {
+                              print(widget.isTypeSelected),
+                              if (widget.isTypeSelected == false)
+                                {}
+                              else
+                                {
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      fullscreenDialog: true,
+                                      builder: (context) =>
+                                          CreateClassDescription(
+                                              classTemplate: classTemplate)))
+                                }
+                            }),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
-      //Bottom Navigation Bar
-      bottomNavigationBar: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 14,
-              bottom: 46,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 26.0,
-                right: 26.0,
-              ),
-              child: FooterButton(
-                buttonColor: strawberry,
-                buttonText: 'Continue',
-                textColor: snow,
-              ),
-            ),
+            ],
           ),
-          onTap: () => {
-                print(widget.isTypeSelected),
-                if (widget.isTypeSelected == false)
-                  {}
-                else
-                  {
-                    Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => CreateClassDescription(
-                            classTemplate: classTemplate)))
-                  }
-              }),
+        ],
+      ),
     );
   }
 }
@@ -307,7 +292,7 @@ Widget pageTitle() {
         right: 46.5,
       ),
       child: Container(
-          padding: EdgeInsets.only(top: 25),
+          padding: EdgeInsets.only(top: 40),
           decoration: BoxDecoration(color: snow),
           child: Text(
             'What type of class are you listing?',
