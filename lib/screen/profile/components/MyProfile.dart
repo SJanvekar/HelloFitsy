@@ -1,15 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/Categories.dart';
+import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
-import 'package:balance/sharedWidgets/reviewCard.dart';
+import 'package:balance/sharedWidgets/reviewCardPersonalProfile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,13 +23,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../../feModels/ClassModel.dart';
+import '../../../feModels/UserModel.dart';
 import '../../profile/components/createClassSchedule.dart';
 
 class PersonalProfile extends StatefulWidget {
-  const PersonalProfile({
+  PersonalProfile({
     Key? key,
+    required this.userInstance,
   }) : super(key: key);
 
+  User userInstance;
+
+  //User details:
+  // String profileImageUrl;
+  // String userName;
+
+  // String userFirstName;
+  // String userLastName;
+  // String userBio;
+  // String userType;
+  // String userInterests;
   @override
   State<PersonalProfile> createState() => _PersonalProfileState();
 }
@@ -35,69 +50,74 @@ class PersonalProfile extends StatefulWidget {
 List<Category> interests = categoriesList;
 List<Category> myInterestsFinal = Interests;
 List<Class> savedClassesList = classList;
+List decodedCategories = [];
+
+//HARD CODED - MUST CHANGE
 
 class _PersonalProfileState extends State<PersonalProfile> {
-  //User details:
-  String? profileImageUrl;
-  String userName = "";
-  String userFullName = "";
-  String userFirstName = "";
-  String userLastName = "";
-  String userBio = "";
-  String userType = "";
-
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
-  Color iconCircleColor = shark60;
-  Color iconColor = snow;
+  Color iconCircleColor = snow;
+  Color iconColor = jetBlack;
   late ScrollController _scrollController;
   Brightness statusBarTheme = Brightness.dark;
   bool isFollowing = false;
-
-  var userInterests = ['Flexibility', 'Boxing', 'Tennis', 'Soccer'];
+  bool isClickable = true;
 
 //----------
   @override
   void initState() {
     super.initState();
-    getUserDetails();
-
+    getSet2UserDetails();
+    checkInterests();
     _scrollController = ScrollController()
       ..addListener(() {
         setState(() {
           _textColor = _isSliverAppBarExpanded ? jetBlack : Colors.transparent;
-          iconCircleColor = _isSliverAppBarExpanded ? snow : shark60;
-          iconColor = _isSliverAppBarExpanded ? jetBlack : snow;
+          iconCircleColor = _isSliverAppBarExpanded ? snow : snow;
+          iconColor = _isSliverAppBarExpanded ? snow : jetBlack;
+          isClickable = _isSliverAppBarExpanded ? false : true;
           statusBarTheme =
               _isSliverAppBarExpanded ? Brightness.light : Brightness.dark;
         });
       });
   }
 
-//----------
+  //----------
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    userName = sharedPrefs.getString('userName') ?? '';
-    userFirstName = sharedPrefs.getString('firstName') ?? '';
-    userLastName = sharedPrefs.getString('lastName') ?? '';
-    userBio = sharedPrefs.getString('userBio') ?? '';
-    userType = sharedPrefs.getString('userType') ?? '';
-    userFullName = '$userFirstName $userLastName';
-    getSet2UserDetails();
-    checkInterests();
+    widget.userInstance.userName = sharedPrefs.getString('userName') ?? '';
+    widget.userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
+    widget.userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
+    widget.userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
+    String userType = sharedPrefs.getString('userType') ?? '';
+    // Trainer/Trainee assigning
+    if (userType == 'Trainee') {
+      widget.userInstance.userType = UserType.Trainee;
+    } else {
+      widget.userInstance.userType = UserType.Trainer;
+    }
 
-    setState(() {});
+    widget.userInstance.categories =
+        json.decode(sharedPrefs.getString('categories') ?? '');
+
+    getSet2UserDetails();
   }
 
   void getSet2UserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? '';
+    widget.userInstance.profileImageURL =
+        sharedPrefs.getString('profileImageURL') ?? '';
+
+    setState(() {});
   }
 
 //----------
   void checkInterests() {
+    myInterestsFinal.clear();
+
     for (var i = 0; i < interests.length; i++) {
-      if (userInterests.contains(interests[i].categoryName)) {
+      if (widget.userInstance.categories.contains(interests[i].categoryName)) {
         myInterestsFinal.add(interests[i]);
       }
     }
@@ -107,7 +127,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
   bool get _isSliverAppBarExpanded {
     return _scrollController.hasClients &&
         _scrollController.offset >
-            (MediaQuery.of(context).size.height * 0.37 - kToolbarHeight);
+            (MediaQuery.of(context).size.height * 0.381 - kToolbarHeight);
   }
 
 //----------
@@ -177,7 +197,9 @@ class _PersonalProfileState extends State<PersonalProfile> {
           Row(
             children: [
               Text(
-                userFullName,
+                widget.userInstance.firstName +
+                    ' ' +
+                    widget.userInstance.lastName,
                 style: TextStyle(
                     fontSize: 30,
                     fontFamily: 'SFDisplay',
@@ -196,7 +218,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
             ],
           ),
           Text(
-            '@$userName',
+            '@' + widget.userInstance.userName,
             style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w400,
@@ -270,37 +292,39 @@ class _PersonalProfileState extends State<PersonalProfile> {
           controller: _scrollController,
           slivers: [
             SliverAppBar(
-              leading: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 26.0,
-                    top: 11.5,
-                    bottom: 11.5,
-                  ),
-                  child: ClipOval(
-                      child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: 1,
-                      sigmaY: 1,
-                    ),
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(color: iconCircleColor),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
-                        child: SvgPicture.asset(
-                          'assets/icons/generalIcons/arrowLeft.svg',
-                          color: iconColor,
-                          height: 13,
-                          width: 6,
-                        ),
-                      ),
-                    ),
-                  )),
-                ),
-                onTap: () => {Navigator.of(context).pop()},
-              ),
+              //DEPRECATED - REMOVE IF NEVER NEEDED BEFORE RELEASE
+
+              // leading: GestureDetector(
+              //   child: Padding(
+              //     padding: const EdgeInsets.only(
+              //       left: 26.0,
+              //       top: 11.5,
+              //       bottom: 11.5,
+              //     ),
+              //     child: ClipOval(
+              //         child: BackdropFilter(
+              //       filter: ImageFilter.blur(
+              //         sigmaX: 1,
+              //         sigmaY: 1,
+              //       ),
+              //       child: Container(
+              //         height: 32,
+              //         width: 32,
+              //         decoration: BoxDecoration(color: iconCircleColor),
+              //         child: Padding(
+              //           padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
+              //           child: SvgPicture.asset(
+              //             'assets/icons/generalIcons/arrowLeft.svg',
+              //             color: iconColor,
+              //             height: 13,
+              //             width: 6,
+              //           ),
+              //         ),
+              //       ),
+              //     )),
+              //   ),
+              //   onTap: () => {Navigator.of(context).pop()},
+              // ),
               leadingWidth: 58,
               automaticallyImplyLeading: false,
               backgroundColor: snow,
@@ -314,12 +338,12 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 stretchModes: const [StretchMode.zoomBackground],
                 background: Stack(
                   children: [
-                    if (profileImageUrl != null)
+                    if (widget.userInstance.profileImageURL != null)
                       Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                profileImageUrl!,
+                                widget.userInstance.profileImageURL!,
                               ),
                               fit: BoxFit.cover),
                         ),
@@ -394,30 +418,555 @@ class _PersonalProfileState extends State<PersonalProfile> {
                 Padding(
                   padding: const EdgeInsets.only(
                       right: 26.0, top: 11.5, bottom: 11.5),
-                  child: ClipOval(
-                      child: BackdropFilter(
-                    filter: ImageFilter.blur(
-                      sigmaX: 1,
-                      sigmaY: 1,
-                    ),
-                    child: Container(
-                      height: 32,
-                      width: 32,
-                      decoration: BoxDecoration(color: iconCircleColor),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8, bottom: 8),
-                        child: SvgPicture.asset(
-                          'assets/icons/generalIcons/settings.svg',
-                          color: iconColor,
-                          height: 15,
-                          width: 15,
-                        ),
+                  child: ClipRect(
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(
+                        sigmaX: 2,
+                        sigmaY: 2,
                       ),
+                      child: GestureDetector(
+                          child: Container(
+                            height: 30,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color: iconCircleColor,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Center(
+                                child: Text(
+                              'Edit profile',
+                              style: TextStyle(
+                                color: iconColor,
+                                fontFamily: 'SFDisplay',
+                                fontWeight: FontWeight.w600,
+                              ),
+                            )),
+                          ),
+                          //Open edit profile modal sheet
+                          onTap: () {
+                            if (isClickable) {
+                              //Set the status bar theme to light (Black Header);
+                              setState(() {
+                                statusBarTheme = Brightness.light;
+                              });
+
+                              //FirstName
+                              final TextEditingController _firstNameController =
+                                  new TextEditingController();
+                              _firstNameController.text =
+                                  widget.userInstance.firstName;
+
+                              final TextEditingController _lastNameController =
+                                  new TextEditingController();
+                              _lastNameController.text =
+                                  widget.userInstance.lastName;
+
+                              final TextEditingController _userNameController =
+                                  new TextEditingController();
+                              _userNameController.text =
+                                  widget.userInstance.userName;
+
+                              final TextEditingController _bioController =
+                                  new TextEditingController();
+                              _bioController.text =
+                                  widget.userInstance.userBio!;
+
+                              //Cupertino Modal Pop-up - Profile Edit
+                              showCupertinoModalPopup(
+                                  semanticsDismissible: true,
+                                  barrierColor: jetBlack60,
+                                  context: context,
+                                  builder: (BuildContext builder) {
+                                    File? newProfileImage;
+                                    String? newProfileImageURL;
+                                    String? newFirstName;
+                                    String? newLastName;
+                                    String? newUserName;
+                                    String? newBio;
+
+                                    return StatefulBuilder(
+                                      builder: (BuildContext context,
+                                          StateSetter setEditProfileState) {
+                                        //Modal widgets + functions
+
+                                        //Pick Image Function
+                                        Future pickImage(
+                                            ImageSource source) async {
+                                          try {
+                                            var image = await ImagePicker()
+                                                .pickImage(
+                                                    source:
+                                                        ImageSource.gallery);
+                                            print(image?.path);
+                                            if (image == null) {
+                                              image = XFile(
+                                                  'assets/images/profilePictureDefault.png');
+                                              return;
+                                            }
+
+                                            setEditProfileState(() {
+                                              if (image != null) {
+                                                newProfileImage =
+                                                    File(image.path);
+                                              }
+                                            });
+                                          } on PlatformException catch (e) {
+                                            print('Failed to pick image $e');
+                                          }
+                                        }
+
+                                        Future uploadImage() async {
+                                          if (newProfileImage == null) return;
+
+                                          try {
+                                            //Storage Reference
+                                            final firebaseStorage =
+                                                FirebaseStorage.instance.ref();
+
+                                            //Create a reference to image
+                                            // print(profilePictureImage!.path);
+                                            final profilePictureRef =
+                                                firebaseStorage.child(
+                                                    newProfileImage!.path);
+
+                                            //Upload file. FILE MUST EXIST
+                                            await profilePictureRef
+                                                .putFile(newProfileImage!);
+
+                                            final imageURL =
+                                                await profilePictureRef
+                                                    .getDownloadURL();
+
+                                            newProfileImageURL = imageURL;
+                                          } catch (e) {
+                                            print("Error: $e");
+                                          }
+                                        }
+
+                                        //Textfield widgets
+                                        //Edit First Name
+                                        Widget editFirstName() {
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'First Name',
+                                                style: logInPageBodyText,
+                                              ),
+                                              TextField(
+                                                controller:
+                                                    _firstNameController,
+                                                maxLengthEnforcement:
+                                                    MaxLengthEnforcement.none,
+                                                autocorrect: true,
+                                                cursorColor: ocean,
+                                                maxLines: null,
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
+                                                textInputAction:
+                                                    TextInputAction.done,
+                                                textAlign: TextAlign.left,
+                                                style: const TextStyle(
+                                                    fontFamily: 'SFDisplay',
+                                                    color: jetBlack,
+                                                    fontSize: 16.5,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (val) {
+                                                  newFirstName = val;
+                                                },
+                                              ),
+                                              PageDivider(
+                                                  leftPadding: 0,
+                                                  rightPadding: 0)
+                                            ],
+                                          );
+                                        }
+
+                                        //Edit Last Name
+                                        Widget editLastName() {
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Last Name',
+                                                style: logInPageBodyText,
+                                              ),
+                                              TextField(
+                                                controller: _lastNameController,
+                                                maxLengthEnforcement:
+                                                    MaxLengthEnforcement.none,
+                                                autocorrect: true,
+                                                cursorColor: ocean,
+                                                maxLines: null,
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
+                                                textInputAction:
+                                                    TextInputAction.done,
+                                                textAlign: TextAlign.left,
+                                                style: const TextStyle(
+                                                    fontFamily: 'SFDisplay',
+                                                    color: jetBlack,
+                                                    fontSize: 16.5,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (val) {
+                                                  newLastName = val;
+                                                },
+                                              ),
+                                              PageDivider(
+                                                  leftPadding: 0,
+                                                  rightPadding: 0)
+                                            ],
+                                          );
+                                        }
+
+                                        //Edit UserName
+                                        Widget editUserName() {
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Username',
+                                                style: logInPageBodyText,
+                                              ),
+                                              TextField(
+                                                controller: _userNameController,
+                                                maxLengthEnforcement:
+                                                    MaxLengthEnforcement.none,
+                                                autocorrect: true,
+                                                cursorColor: ocean,
+                                                maxLines: null,
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
+                                                textInputAction:
+                                                    TextInputAction.done,
+                                                textAlign: TextAlign.left,
+                                                style: const TextStyle(
+                                                    fontFamily: 'SFDisplay',
+                                                    color: jetBlack,
+                                                    fontSize: 16.5,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (val) {
+                                                  newUserName = val;
+                                                },
+                                              ),
+                                              PageDivider(
+                                                  leftPadding: 0,
+                                                  rightPadding: 0)
+                                            ],
+                                          );
+                                        }
+
+                                        //Edit Bio
+                                        Widget editBio() {
+                                          return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                'Bio',
+                                                style: logInPageBodyText,
+                                              ),
+                                              TextField(
+                                                maxLengthEnforcement:
+                                                    MaxLengthEnforcement.none,
+                                                autocorrect: true,
+                                                cursorColor: ocean,
+                                                maxLines: null,
+                                                textCapitalization:
+                                                    TextCapitalization
+                                                        .sentences,
+                                                textInputAction:
+                                                    TextInputAction.newline,
+                                                textAlign: TextAlign.left,
+                                                style: const TextStyle(
+                                                    fontFamily: 'SFDisplay',
+                                                    color: jetBlack,
+                                                    fontSize: 16.5,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                ),
+                                                onChanged: (val) {
+                                                  newBio = val;
+                                                },
+                                              ),
+                                              PageDivider(
+                                                  leftPadding: 0,
+                                                  rightPadding: 0)
+                                            ],
+                                          );
+                                        }
+
+                                        return GestureDetector(
+                                          child: Scaffold(
+                                            backgroundColor: snow,
+                                            appBar: AppBar(
+                                              toolbarHeight: 80,
+                                              centerTitle: false,
+                                              elevation: 0,
+                                              backgroundColor: snow,
+                                              automaticallyImplyLeading: false,
+                                              title: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      statusBarTheme =
+                                                          Brightness.dark;
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      setState(() {});
+                                                    },
+                                                    child: Text("Cancel",
+                                                        style:
+                                                            logInPageNavigationButtons),
+                                                  ),
+                                                  Text(
+                                                    'Edit Profile',
+                                                    style: sectionTitles,
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      //TODO: Wrap next async in then statement, see if that fixes async concurrency issue
+                                                      statusBarTheme =
+                                                          Brightness.dark;
+                                                      Future.delayed(
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  500), () {
+                                                        uploadImage();
+                                                        newProfileImageURL ??=
+                                                            widget.userInstance
+                                                                .profileImageURL;
+                                                        newFirstName ??= widget
+                                                            .userInstance
+                                                            .firstName;
+                                                        newLastName ??= widget
+                                                            .userInstance
+                                                            .lastName;
+                                                        newUserName ??= widget
+                                                            .userInstance
+                                                            .userName;
+                                                        newBio ??= widget
+                                                            .userInstance
+                                                            .userBio;
+                                                        print(
+                                                            newProfileImageURL);
+                                                        UserRequests()
+                                                            .updateUserInformation(
+                                                          newProfileImageURL,
+                                                          newUserName,
+                                                          newFirstName,
+                                                          newLastName,
+                                                          newUserName,
+                                                          newBio,
+                                                        )
+                                                            .then((val) async {
+                                                          if (val.data[
+                                                              'success']) {
+                                                            final sharedPrefs =
+                                                                await SharedPreferences
+                                                                    .getInstance();
+                                                            print(
+                                                                'successful update user');
+                                                            sharedPrefs.setString(
+                                                                'userName',
+                                                                newUserName!);
+                                                            sharedPrefs.setString(
+                                                                'firstName',
+                                                                newFirstName!);
+                                                            sharedPrefs.setString(
+                                                                'lastName',
+                                                                newLastName!);
+                                                            sharedPrefs
+                                                                .setString(
+                                                                    'userBio',
+                                                                    newBio!);
+                                                          } else {
+                                                            if (val.data[
+                                                                    'errorCode'] ==
+                                                                duplicateKeycode) {
+                                                              print(
+                                                                  'Unable to edit info, duplicate username');
+                                                            }
+                                                          }
+                                                        });
+                                                      });
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      setState(() {});
+                                                    },
+                                                    child: Text("Done",
+                                                        style: doneTextButton),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            body: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 26.0, right: 26.0),
+                                              child: Container(
+                                                height: MediaQuery.of(context)
+                                                    .copyWith()
+                                                    .size
+                                                    .height,
+                                                decoration: BoxDecoration(
+                                                  color: snow,
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                child: CustomScrollView(
+                                                  slivers: [
+                                                    MultiSliver(children: [
+                                                      Center(
+                                                          child: Stack(
+                                                        children: [
+                                                          if (newProfileImage !=
+                                                              null)
+                                                            ClipOval(
+                                                                child:
+                                                                    Image.file(
+                                                              newProfileImage!,
+                                                              width: 180,
+                                                              height: 180,
+                                                              fit: BoxFit.cover,
+                                                            ))
+                                                          else if (widget
+                                                                      .userInstance
+                                                                      .profileImageURL !=
+                                                                  null &&
+                                                              newProfileImage ==
+                                                                  null)
+                                                            ClipOval(
+                                                                child: Image(
+                                                              image: NetworkImage(widget
+                                                                  .userInstance
+                                                                  .profileImageURL!),
+                                                              width: 180,
+                                                              height: 180,
+                                                              fit: BoxFit.cover,
+                                                            ))
+                                                          else
+                                                            ClipOval(
+                                                                child:
+                                                                    Image.asset(
+                                                              'assets/images/profilePictureDefault.png',
+                                                              width: 180,
+                                                              height: 180,
+                                                              fit: BoxFit.cover,
+                                                            ))
+                                                        ],
+                                                      )),
+                                                      Padding(
+                                                        padding: EdgeInsets.only(
+                                                            top: 15.0,
+                                                            left: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.2,
+                                                            right: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.2),
+                                                        child: GestureDetector(
+                                                          child: BodyButton(
+                                                            buttonColor:
+                                                                strawberry,
+                                                            textColor: snow,
+                                                            buttonText:
+                                                                'Upload new picture',
+                                                          ),
+                                                          onTap: () {
+                                                            pickImage(
+                                                                ImageSource
+                                                                    .gallery);
+                                                          },
+                                                        ),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 40.0),
+                                                        child: editFirstName(),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 25.0),
+                                                        child: editLastName(),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 25.0),
+                                                        child: editUserName(),
+                                                      ),
+                                                      Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 25.0),
+                                                        child: editBio(),
+                                                      ),
+                                                      SizedBox(height: 80)
+                                                    ])
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            FocusScopeNode currentFocus =
+                                                FocusScope.of(context);
+
+                                            if (!currentFocus.hasPrimaryFocus) {
+                                              currentFocus.unfocus();
+                                            }
+                                          },
+                                        );
+                                      },
+                                    );
+                                  });
+                            }
+                            ;
+                          }),
                     ),
-                  )),
+                  ),
                 ),
               ],
-              title: Text(userFullName,
+              title: Text(
+                  widget.userInstance.firstName +
+                      ' ' +
+                      widget.userInstance.lastName,
                   style: TextStyle(
                       color: _textColor,
                       fontFamily: 'SFDisplay',
@@ -425,445 +974,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       fontSize: 16.0)),
             ),
             MultiSliver(children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: GestureDetector(
-                  child: editProfileButton(),
-
-                  //Open edit profile modal sheet
-                  onTap: () {
-                    //Set the status bar theme to light (Black Header);
-                    setState(() {
-                      statusBarTheme = Brightness.light;
-                    });
-
-                    //FirstName
-                    final TextEditingController firstNameController =
-                        TextEditingController();
-                    firstNameController.text = userFirstName;
-
-                    final TextEditingController lastNameController =
-                        TextEditingController();
-                    lastNameController.text = userLastName;
-
-                    final TextEditingController userNameController =
-                        TextEditingController();
-                    userNameController.text = userName;
-
-                    final TextEditingController bioController =
-                        TextEditingController();
-                    bioController.text = userBio;
-
-                    //Cupertino Modal Pop-up - Profile Edit
-                    showCupertinoModalPopup(
-                        semanticsDismissible: true,
-                        barrierColor: jetBlack60,
-                        context: context,
-                        builder: (BuildContext builder) {
-                          File? newProfileImage;
-                          String? newProfileImageURL;
-                          String? newFirstName;
-                          String? newLastName;
-                          String? newUserName;
-                          String? newBio;
-
-                          return StatefulBuilder(
-                            builder: (BuildContext context,
-                                StateSetter setEditProfileState) {
-                              //Modal widgets + functions
-
-                              //Pick Image Function
-                              Future pickImage(ImageSource source) async {
-                                try {
-                                  var image = await ImagePicker()
-                                      .pickImage(source: ImageSource.gallery);
-                                  print(image?.path);
-                                  if (image == null) {
-                                    image = XFile(
-                                        'assets/images/profilePictureDefault.png');
-                                    return;
-                                  }
-
-                                  setEditProfileState(() {
-                                    if (image != null) {
-                                      newProfileImage = File(image.path);
-                                    }
-                                  });
-                                } on PlatformException catch (e) {
-                                  print('Failed to pick image $e');
-                                }
-                              }
-
-                              Future uploadImage() async {
-                                if (newProfileImage == null) return;
-
-                                try {
-                                  //Storage Reference
-                                  final firebaseStorage =
-                                      FirebaseStorage.instance.ref();
-
-                                  //Create a reference to image
-                                  // print(profilePictureImage!.path);
-                                  final profilePictureRef = firebaseStorage
-                                      .child(newProfileImage!.path);
-
-                                  //Upload file. FILE MUST EXIST
-                                  await profilePictureRef
-                                      .putFile(newProfileImage!);
-
-                                  final imageURL =
-                                      await profilePictureRef.getDownloadURL();
-
-                                  newProfileImageURL = imageURL;
-                                } catch (e) {
-                                  print("Error: $e");
-                                }
-                              }
-
-                              //Textfield widgets
-                              //Edit First Name
-                              Widget editFirstName() {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'First Name',
-                                      style: logInPageBodyText,
-                                    ),
-                                    TextField(
-                                      controller: firstNameController,
-                                      maxLengthEnforcement:
-                                          MaxLengthEnforcement.none,
-                                      autocorrect: true,
-                                      cursorColor: ocean,
-                                      maxLines: null,
-                                      textCapitalization:
-                                          TextCapitalization.sentences,
-                                      textInputAction: TextInputAction.done,
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontFamily: 'SFDisplay',
-                                          color: jetBlack,
-                                          fontSize: 16.5,
-                                          fontWeight: FontWeight.w500),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      onChanged: (val) {
-                                        newFirstName = val;
-                                      },
-                                    ),
-                                    PageDivider(leftPadding: 0, rightPadding: 0)
-                                  ],
-                                );
-                              }
-
-                              //Edit Last Name
-                              Widget editLastName() {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Last Name',
-                                      style: logInPageBodyText,
-                                    ),
-                                    TextField(
-                                      controller: lastNameController,
-                                      maxLengthEnforcement:
-                                          MaxLengthEnforcement.none,
-                                      autocorrect: true,
-                                      cursorColor: ocean,
-                                      maxLines: null,
-                                      textCapitalization:
-                                          TextCapitalization.sentences,
-                                      textInputAction: TextInputAction.done,
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontFamily: 'SFDisplay',
-                                          color: jetBlack,
-                                          fontSize: 16.5,
-                                          fontWeight: FontWeight.w500),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      onChanged: (val) {
-                                        newLastName = val;
-                                      },
-                                    ),
-                                    PageDivider(leftPadding: 0, rightPadding: 0)
-                                  ],
-                                );
-                              }
-
-                              //Edit UserName
-                              Widget editUserName() {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Username',
-                                      style: logInPageBodyText,
-                                    ),
-                                    TextField(
-                                      controller: userNameController,
-                                      maxLengthEnforcement:
-                                          MaxLengthEnforcement.none,
-                                      autocorrect: true,
-                                      cursorColor: ocean,
-                                      maxLines: null,
-                                      textCapitalization:
-                                          TextCapitalization.sentences,
-                                      textInputAction: TextInputAction.done,
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontFamily: 'SFDisplay',
-                                          color: jetBlack,
-                                          fontSize: 16.5,
-                                          fontWeight: FontWeight.w500),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      onChanged: (val) {
-                                        newUserName = val;
-                                      },
-                                    ),
-                                    PageDivider(leftPadding: 0, rightPadding: 0)
-                                  ],
-                                );
-                              }
-
-                              //Edit Bio
-                              Widget editBio() {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Bio',
-                                      style: logInPageBodyText,
-                                    ),
-                                    TextField(
-                                      maxLengthEnforcement:
-                                          MaxLengthEnforcement.none,
-                                      autocorrect: true,
-                                      cursorColor: ocean,
-                                      maxLines: null,
-                                      textCapitalization:
-                                          TextCapitalization.sentences,
-                                      textInputAction: TextInputAction.newline,
-                                      textAlign: TextAlign.left,
-                                      style: const TextStyle(
-                                          fontFamily: 'SFDisplay',
-                                          color: jetBlack,
-                                          fontSize: 16.5,
-                                          fontWeight: FontWeight.w500),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                      ),
-                                      onChanged: (val) {
-                                        newBio = val;
-                                      },
-                                    ),
-                                    PageDivider(leftPadding: 0, rightPadding: 0)
-                                  ],
-                                );
-                              }
-
-                              return GestureDetector(
-                                child: Scaffold(
-                                  backgroundColor: snow,
-                                  appBar: AppBar(
-                                    toolbarHeight: 80,
-                                    centerTitle: false,
-                                    elevation: 0,
-                                    backgroundColor: snow,
-                                    automaticallyImplyLeading: false,
-                                    title: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        TextButton(
-                                          onPressed: () {
-                                            print("Cancel");
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text("Cancel",
-                                              style:
-                                                  logInPageNavigationButtons),
-                                        ),
-                                        Text(
-                                          'Edit Profile',
-                                          style: sectionTitles,
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            //TODO: Wrap next async in then statement, see if that fixes async concurrency issue
-                                            uploadImage();
-                                            newProfileImageURL ??=
-                                                profileImageUrl;
-                                            newFirstName ??= userFirstName;
-                                            newLastName ??= userLastName;
-                                            newUserName ??= userName;
-                                            newBio ??= userBio;
-                                            print(newProfileImageURL);
-                                            UserRequests()
-                                                .updateUserInformation(
-                                                    newProfileImageURL,
-                                                    userName,
-                                                    newFirstName,
-                                                    newLastName,
-                                                    newUserName,
-                                                    newBio)
-                                                .then((val) async {
-                                              if (val.data['success']) {
-                                                final sharedPrefs =
-                                                    await SharedPreferences
-                                                        .getInstance();
-                                                print('successful update user');
-                                                sharedPrefs.setString(
-                                                    'userName', newUserName!);
-                                                sharedPrefs.setString(
-                                                    'firstName', newFirstName!);
-                                                sharedPrefs.setString(
-                                                    'lastName', newLastName!);
-                                                sharedPrefs.setString(
-                                                    'userBio', newBio!);
-                                              } else {
-                                                if (val.data['errorCode'] ==
-                                                    duplicateKeycode) {
-                                                  print(
-                                                      'Unable to edit info, duplicate username');
-                                                }
-                                              }
-                                            });
-                                            print("Save");
-                                            Navigator.of(context).pop();
-                                            getUserDetails();
-                                            getSet2UserDetails();
-                                            setState(() {});
-                                          },
-                                          child: Text("Done",
-                                              style: doneTextButton),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  body: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 26.0, right: 26.0),
-                                    child: Container(
-                                      height: MediaQuery.of(context)
-                                          .copyWith()
-                                          .size
-                                          .height,
-                                      decoration: BoxDecoration(
-                                        color: snow,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: CustomScrollView(
-                                        slivers: [
-                                          MultiSliver(children: [
-                                            Center(
-                                                child: Stack(
-                                              children: [
-                                                if (newProfileImage != null)
-                                                  ClipOval(
-                                                      child: Image.file(
-                                                    newProfileImage!,
-                                                    width: 180,
-                                                    height: 180,
-                                                    fit: BoxFit.cover,
-                                                  ))
-                                                else if (profileImageUrl !=
-                                                        null &&
-                                                    newProfileImage == null)
-                                                  ClipOval(
-                                                      child: Image(
-                                                    image: NetworkImage(
-                                                        profileImageUrl!),
-                                                    width: 180,
-                                                    height: 180,
-                                                    fit: BoxFit.cover,
-                                                  ))
-                                                else
-                                                  ClipOval(
-                                                      child: Image.asset(
-                                                    'assets/images/profilePictureDefault.png',
-                                                    width: 180,
-                                                    height: 180,
-                                                    fit: BoxFit.cover,
-                                                  ))
-                                              ],
-                                            )),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: 15.0,
-                                                  left: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.2,
-                                                  right: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.2),
-                                              child: GestureDetector(
-                                                child: BodyButton(
-                                                  buttonColor: strawberry,
-                                                  textColor: snow,
-                                                  buttonText:
-                                                      'Upload new picture',
-                                                ),
-                                                onTap: () {
-                                                  pickImage(
-                                                      ImageSource.gallery);
-                                                },
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 40.0),
-                                              child: editFirstName(),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 25.0),
-                                              child: editLastName(),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 25.0),
-                                              child: editUserName(),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 25.0),
-                                              child: editBio(),
-                                            ),
-                                            SizedBox(height: 80)
-                                          ])
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                onTap: () {
-                                  FocusScopeNode currentFocus =
-                                      FocusScope.of(context);
-
-                                  if (!currentFocus.hasPrimaryFocus) {
-                                    currentFocus.unfocus();
-                                  }
-                                },
-                              );
-                            },
-                          );
-                        });
-                  },
-                ),
-              ),
               Padding(
                 padding:
                     const EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
@@ -887,55 +997,56 @@ class _PersonalProfileState extends State<PersonalProfile> {
               Padding(
                 padding:
                     const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
-                child: Text(userBio, style: profileBodyTextFont),
+                child: Text(widget.userInstance.userBio!,
+                    style: profileBodyTextFont),
               ),
             ]),
 
-            //Your Schedule
-            MultiSliver(children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Your Schedule",
-                      style: sectionTitles,
-                    ),
-                    GestureDetector(
-                      child: Text(
-                        'Edit',
-                        style: TextStyle(
-                          color: ocean,
-                          fontFamily: 'SFDisplay',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ScheduleCalendar()));
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 26.0, right: 26.0),
-                child: TableCalendar(
-                  firstDay: DateTime.now(),
-                  lastDay: DateTime.now(),
-                  focusedDay: DateTime.now(),
-                  calendarFormat: CalendarFormat.week,
-                  calendarStyle: calendarStyle,
-                  headerVisible: false,
-                  startingDayOfWeek: StartingDayOfWeek.sunday,
-                  calendarBuilders: calendarBuilder,
-                  daysOfWeekStyle: calendarDaysOfWeek,
-                ),
-              ),
-            ]),
+            // //Your Schedule
+            // MultiSliver(children: [
+            //   Padding(
+            //     padding: EdgeInsets.only(
+            //         top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Text(
+            //           "Your Schedule",
+            //           style: sectionTitles,
+            //         ),
+            //         GestureDetector(
+            //           child: Text(
+            //             'Edit',
+            //             style: TextStyle(
+            //               color: ocean,
+            //               fontFamily: 'SFDisplay',
+            //               fontSize: 15,
+            //               fontWeight: FontWeight.w600,
+            //             ),
+            //           ),
+            //           onTap: () {
+            //             Navigator.of(context).push(MaterialPageRoute(
+            //                 builder: (context) => ScheduleCalendar()));
+            //           },
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            //   Padding(
+            //     padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+            //     child: TableCalendar(
+            //       firstDay: DateTime.now(),
+            //       lastDay: DateTime.now(),
+            //       focusedDay: DateTime.now(),
+            //       calendarFormat: CalendarFormat.week,
+            //       calendarStyle: calendarStyle,
+            //       headerVisible: false,
+            //       startingDayOfWeek: StartingDayOfWeek.sunday,
+            //       calendarBuilders: calendarBuilder,
+            //       daysOfWeekStyle: calendarDaysOfWeek,
+            //     ),
+            //   ),
+            // ]),
 
             //Your Interests
             MultiSliver(children: [
@@ -1016,12 +1127,18 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         textAlign: TextAlign.center,
                         style: emptyListDisclaimerText,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: BodyButton(
-                            buttonColor: strawberry,
-                            textColor: snow,
-                            buttonText: 'Explore classes'),
+                      GestureDetector(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: BodyButton(
+                              buttonColor: strawberry,
+                              textColor: snow,
+                              buttonText: 'Explore classes'),
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => Search()));
+                        },
                       )
                     ],
                   ),
@@ -1140,6 +1257,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                   style: sectionTitles,
                 ),
               ),
+
+              //HARD CODED - MUST CHANGE
               Padding(
                 padding: const EdgeInsets.only(left: 26.0, right: 26.0),
                 child: ReviewCard(),

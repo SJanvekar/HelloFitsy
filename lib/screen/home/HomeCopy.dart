@@ -122,23 +122,6 @@ class _HomeTestState extends State<HomeTest> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            // Profile
-            leading: GestureDetector(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 26.0),
-                  child: CircleAvatar(
-                    backgroundColor: bone,
-                    backgroundImage: NetworkImage(profileImageUrl ?? ''),
-                  ),
-                ),
-              ),
-              onTap: () => {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PersonalProfile(),
-                ))
-              },
-            ),
 
             // Typeface
             title: Image.asset(
@@ -149,32 +132,33 @@ class _HomeTestState extends State<HomeTest> {
             //Notifications & Chat & Create Class
             actions: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    child: SvgPicture.asset(
-                      'assets/icons/generalIcons/create.svg',
-                      height: 20,
-                      width: 20,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              child: CreateClassSelectType(
-                                isTypeSelected: false,
-                                classTemplate: classTemplate,
-                              ),
-                              type: PageTransitionType.fade,
-                              isIos: false,
-                              duration: Duration(milliseconds: 0),
-                              reverseDuration: Duration(milliseconds: 0)));
-                    },
-                  ),
+                  // GestureDetector(
+                  //   child: SvgPicture.asset(
+                  //     'assets/icons/generalIcons/create.svg',
+                  //     height: 20,
+                  //     width: 20,
+                  //   ),
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         PageTransition(
+                  //             child: CreateClassSelectType(
+                  //               isTypeSelected: false,
+                  //               classTemplate: classTemplate,
+                  //             ),
+                  //             type: PageTransitionType.fade,
+                  //             isIos: false,
+                  //             duration: Duration(milliseconds: 0),
+                  //             reverseDuration: Duration(milliseconds: 0)));
+                  //   },
+                  // ),
                   GestureDetector(
                     child: Padding(
                       padding: const EdgeInsets.only(
                         left: 25.0,
-                        right: 25.0,
+                        right: 35.0,
                       ),
                       child: SvgPicture.asset(
                         'assets/icons/generalIcons/notifications.svg',
@@ -219,39 +203,39 @@ class _HomeTestState extends State<HomeTest> {
             ],
           ),
 
-          // Search Bar Sliver
-          SliverPersistentHeader(
-            floating: true,
-            delegate: _SliverSearchBarDelegate(GestureDetector(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Hero(
-                      tag: 'SearchBar',
-                      child: FitsySearchBar(
-                        isAutoFocusTrue: false,
-                        searchBarWidth: searchBarWidth,
-                        searchHintText: 'Search',
-                        callback: null,
-                      )),
-                  Container(
-                      height: 45,
-                      width: searchBarWidth,
-                      color: Colors.transparent)
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: Search(),
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                        reverseDuration: Duration(milliseconds: 0)));
-              },
-            )),
-            pinned: false,
-          ),
+          // // Search Bar Sliver
+          // SliverPersistentHeader(
+          //   floating: true,
+          //   delegate: _SliverSearchBarDelegate(GestureDetector(
+          //     child: Stack(
+          //       alignment: Alignment.center,
+          //       children: [
+          //         Hero(
+          //             tag: 'SearchBar',
+          //             child: FitsySearchBar(
+          //               isAutoFocusTrue: false,
+          //               searchBarWidth: searchBarWidth,
+          //               searchHintText: 'Search',
+          //               callback: null,
+          //             )),
+          //         Container(
+          //             height: 45,
+          //             width: searchBarWidth,
+          //             color: Colors.transparent)
+          //       ],
+          //     ),
+          //     onTap: () {
+          //       Navigator.push(
+          //           context,
+          //           PageTransition(
+          //               child: Search(),
+          //               type: PageTransitionType.fade,
+          //               duration: Duration(milliseconds: 0),
+          //               reverseDuration: Duration(milliseconds: 0)));
+          //     },
+          //   )),
+          //   pinned: false,
+          // ),
 
           MultiSliver(children: [
             Padding(

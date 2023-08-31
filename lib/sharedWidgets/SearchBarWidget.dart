@@ -11,12 +11,11 @@ class FitsySearchBar extends StatefulWidget {
   FitsySearchBar(
       {Key? key,
       required this.isAutoFocusTrue,
-      required this.searchBarWidth,
       required this.searchHintText,
       required this.callback})
       : super(key: key);
   bool isAutoFocusTrue;
-  double searchBarWidth;
+
   String searchHintText;
 
   @override
@@ -52,11 +51,13 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width - 52;
+
     return Material(
       color: Colors.transparent,
       child: SizedBox(
-        width: widget.searchBarWidth,
         height: 45,
+        width: width,
         child: TextField(
           onChanged: (val) {
             setState(() => onStoppedTyping.cancel());
