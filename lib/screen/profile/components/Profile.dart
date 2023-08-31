@@ -77,10 +77,7 @@ class _UserProfileState extends State<UserProfile> {
     final sharedPrefs = await SharedPreferences.getInstance();
     Following newFollowing = Following(
         followingUsername: widget.userName,
-        username: sharedPrefs.getString('userName') ?? '',
-        followingFirstName: widget.userFirstName,
-        followingLastName: widget.userFirstName,
-        followingProfileImageURL: widget.profileImageURL);
+        username: sharedPrefs.getString('userName') ?? '');
     FollowingRequests().addFollowing(newFollowing).then((val) async {
       if (val.data['success']) {
         print('successful add following');
@@ -94,11 +91,7 @@ class _UserProfileState extends State<UserProfile> {
     final sharedPrefs = await SharedPreferences.getInstance();
     Follower newFollower = Follower(
         followerUsername: sharedPrefs.getString('userName') ?? '',
-        username: widget.userName,
-        followerFirstName: sharedPrefs.getString('firstName') ?? '',
-        followerLastName: sharedPrefs.getString('lastName') ?? '',
-        followerProfileImageURL:
-            sharedPrefs.getString('profileImageURL') ?? '');
+        username: widget.userName);
     FollowerRequests().addFollower(newFollower).then((val) async {
       if (val.data['success']) {
         print('successful add follower');
@@ -744,22 +737,7 @@ class _UserProfileState extends State<UserProfile> {
                     itemBuilder: (context, index) {
                       final trainerClassInfo = trainerClasses[index];
                       return ProfileClassCard(
-                        classTrainer: trainerClassInfo.classTrainer,
-                        className: trainerClassInfo.className,
-                        classType: trainerClassInfo.classType,
-                        classLocationName: trainerClassInfo.classLocationName,
-                        classPrice: trainerClassInfo.classPrice,
-                        classImage: trainerClassInfo.classImageUrl,
-                        trainerImageUrl: trainerClassInfo.trainerImageUrl,
-                        classDescription: trainerClassInfo.classDescription,
-                        classRating: trainerClassInfo.classOverallRating,
-                        classReviews: trainerClassInfo.classReviewsAmount,
-                        trainerFirstName: trainerClassInfo.trainerFirstName,
-                        trainerLastName: trainerClassInfo.trainerLastName,
-                        classWhatToExpect: trainerClassInfo.classWhatToExpect,
-                        classWhatYouWillNeed:
-                            trainerClassInfo.classUserRequirements,
-                        classTimes: [],
+                        classItem: trainerClassInfo,
                       );
                     },
                   ),

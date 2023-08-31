@@ -12,9 +12,6 @@ class FollowingRequests {
           data: {
             "FollowingUserName": followingModel.followingUsername,
             "Username": followingModel.username,
-            "FollowingFirstName": followingModel.followingFirstName,
-            "FollowingLastName": followingModel.followingLastName,
-            "FollowingProfileImageURL": followingModel.followingProfileImageURL,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
