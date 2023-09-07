@@ -109,8 +109,6 @@ class _HomeClassItem extends State<HomeClassItem> {
 
   void getIsLiked() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    print(widget.classItem.classID);
-    print(sharedPrefs.getString('userName') ?? "");
     ClassLikedRequests()
         .isLiked(
             sharedPrefs.getString('userName') ?? "", widget.classItem.classID)

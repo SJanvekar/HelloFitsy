@@ -86,6 +86,7 @@ class _HomeTestState extends State<HomeTest> {
       } else {
         print('error get class feed: ${val.data['msg']}');
       }
+      setState(() {});
     });
   }
 

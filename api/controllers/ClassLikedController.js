@@ -53,11 +53,10 @@ var functions = {
         }
         else {
             ClassLiked.findOne({Username: req.query.UserName, ClassID: mongoose.Types.ObjectId(req.query.ClassID)}, function (err, response) {
-                if (err) {
+                if (err && err.code != 11000) {
                     console.log(err)
-                    return res.json({success: false, msg: err})
+                    return res.json({success: false, msg: err, errorCode: err.code})
                 } else {
-                    console.log(response)
                     return res.json({success: true, result: !!response})
                 }
             })
