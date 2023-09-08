@@ -40,7 +40,7 @@ var functions = {
         ClassLiked.find({Username: req.query.UserName}, function (err, response) {
             if (err) {
                 console.log(err)
-                return res.json({success: false, body: err})
+                return res.json({success: false, msg: err})
             } else {
                 return res.json({success: true, 
                         ClassHistory: response

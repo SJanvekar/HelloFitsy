@@ -12,9 +12,20 @@ class FollowerRequests {
           data: {
             "FollowerUserName": followerModel.followerUsername,
             "Username": followerModel.username,
-            "FollowerFirstName": followerModel.followerFirstName,
-            "FollowerLastName": followerModel.followerLastName,
-            "FollowerProfileImageURL": followerModel.followerProfileImageURL,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  //Remove Follower
+  removeFollower(String followerUsername, String username) async {
+    try {
+      return await dio.get('$urlDomain/removeFollower',
+          data: {
+            "FollowerUserName": followerUsername,
+            "Username": username,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

@@ -2,6 +2,7 @@ import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
@@ -17,7 +18,6 @@ import '../../sharedWidgets/bodyButton.dart';
 import '../../sharedWidgets/searchBarWidget.dart';
 import '../createClass/CreateClassStep1SelectType.dart';
 import 'components/Search.dart';
-import 'dart:convert';
 
 class HomeTest extends StatefulWidget {
   HomeTest({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _HomeTestState extends State<HomeTest> {
   void initState() {
     super.initState();
     getUserInfo();
-    // getUserFollowing();
+    getUserFollowing();
 
     setState(() {});
   }
@@ -61,32 +61,32 @@ class _HomeTestState extends State<HomeTest> {
         .then((val) async {
       if (val.data['success']) {
         print('successful get following list');
-        getClassFeed(val.data['following']);
-
+        getClassFeed([
+          for (dynamic document in (val.data['following'] as List<dynamic>))
+            Following.fromJson(document).followingUsername
+        ]);
         isLoading = false;
       } else {
         //Remove print statement in production
         print('Empty Class List');
         isLoading = false;
-        return;
       }
     });
   }
 
-  void getClassFeed(List<dynamic> followingList) async {
-    ClassRequests().getClass(followingList).then((val) async {
+  void getClassFeed(List<String> followingUsernames) async {
+    ClassRequests().getClass(followingUsernames).then((val) async {
       //get logged in user's following list
-
       if (val.data['success']) {
         print('successful get class feed');
-        //Response represents a list of classes
-        List<dynamic> receivedJSON = val.data['classArray'];
         //TODO: Theoretically, you should be able to foreach and get list of classes
         //Hardcoded first item for now, since we're only getting one class
-        allClasses.add(Class.fromJson(receivedJSON[0]));
+        allClasses
+            .add(Class.fromJson((val.data['classArray'] as List<dynamic>)[0]));
       } else {
-        print('error get class feed');
+        print('error get class feed: ${val.data['msg']}');
       }
+      setState(() {});
     });
   }
 
@@ -123,23 +123,6 @@ class _HomeTestState extends State<HomeTest> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            // Profile
-            leading: GestureDetector(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 26.0),
-                  child: CircleAvatar(
-                    backgroundColor: bone,
-                    backgroundImage: NetworkImage(profileImageUrl ?? ''),
-                  ),
-                ),
-              ),
-              onTap: () => {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => PersonalProfile(),
-                ))
-              },
-            ),
 
             // Typeface
             title: Image.asset(
@@ -150,32 +133,33 @@ class _HomeTestState extends State<HomeTest> {
             //Notifications & Chat & Create Class
             actions: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    child: SvgPicture.asset(
-                      'assets/icons/generalIcons/create.svg',
-                      height: 20,
-                      width: 20,
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              child: CreateClassSelectType(
-                                isTypeSelected: false,
-                                classTemplate: classTemplate,
-                              ),
-                              type: PageTransitionType.fade,
-                              isIos: false,
-                              duration: Duration(milliseconds: 0),
-                              reverseDuration: Duration(milliseconds: 0)));
-                    },
-                  ),
+                  // GestureDetector(
+                  //   child: SvgPicture.asset(
+                  //     'assets/icons/generalIcons/create.svg',
+                  //     height: 20,
+                  //     width: 20,
+                  //   ),
+                  //   onTap: () {
+                  //     Navigator.push(
+                  //         context,
+                  //         PageTransition(
+                  //             child: CreateClassSelectType(
+                  //               isTypeSelected: false,
+                  //               classTemplate: classTemplate,
+                  //             ),
+                  //             type: PageTransitionType.fade,
+                  //             isIos: false,
+                  //             duration: Duration(milliseconds: 0),
+                  //             reverseDuration: Duration(milliseconds: 0)));
+                  //   },
+                  // ),
                   GestureDetector(
                     child: Padding(
                       padding: const EdgeInsets.only(
                         left: 25.0,
-                        right: 25.0,
+                        right: 35.0,
                       ),
                       child: SvgPicture.asset(
                         'assets/icons/generalIcons/notifications.svg',
@@ -220,39 +204,39 @@ class _HomeTestState extends State<HomeTest> {
             ],
           ),
 
-          // Search Bar Sliver
-          SliverPersistentHeader(
-            floating: true,
-            delegate: _SliverSearchBarDelegate(GestureDetector(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Hero(
-                      tag: 'SearchBar',
-                      child: FitsySearchBar(
-                        isAutoFocusTrue: false,
-                        searchBarWidth: searchBarWidth,
-                        searchHintText: 'Search',
-                        callback: null,
-                      )),
-                  Container(
-                      height: 45,
-                      width: searchBarWidth,
-                      color: Colors.transparent)
-                ],
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    PageTransition(
-                        child: Search(),
-                        type: PageTransitionType.fade,
-                        duration: Duration(milliseconds: 0),
-                        reverseDuration: Duration(milliseconds: 0)));
-              },
-            )),
-            pinned: false,
-          ),
+          // // Search Bar Sliver
+          // SliverPersistentHeader(
+          //   floating: true,
+          //   delegate: _SliverSearchBarDelegate(GestureDetector(
+          //     child: Stack(
+          //       alignment: Alignment.center,
+          //       children: [
+          //         Hero(
+          //             tag: 'SearchBar',
+          //             child: FitsySearchBar(
+          //               isAutoFocusTrue: false,
+          //               searchBarWidth: searchBarWidth,
+          //               searchHintText: 'Search',
+          //               callback: null,
+          //             )),
+          //         Container(
+          //             height: 45,
+          //             width: searchBarWidth,
+          //             color: Colors.transparent)
+          //       ],
+          //     ),
+          //     onTap: () {
+          //       Navigator.push(
+          //           context,
+          //           PageTransition(
+          //               child: Search(),
+          //               type: PageTransitionType.fade,
+          //               duration: Duration(milliseconds: 0),
+          //               reverseDuration: Duration(milliseconds: 0)));
+          //     },
+          //   )),
+          //   pinned: false,
+          // ),
 
           MultiSliver(children: [
             Padding(
@@ -431,21 +415,7 @@ class _HomeTestState extends State<HomeTest> {
                 (BuildContext context, int index) {
                   final classItem = allClasses[index];
                   return HomeClassItem(
-                    classTrainer: classItem.classTrainer,
-                    className: classItem.className,
-                    classType: classItem.classType,
-                    classLocationName: classItem.classLocationName,
-                    classPrice: classItem.classPrice,
-                    classLiked: classItem.classLiked,
-                    classImage: classItem.classImageUrl,
-                    trainerImageUrl: classItem.trainerImageUrl,
-                    classDescription: classItem.classDescription,
-                    classRating: classItem.classOverallRating,
-                    classReviews: classItem.classReviewsAmount,
-                    trainerFirstName: classItem.trainerFirstName,
-                    trainerLastName: classItem.trainerLastName,
-                    classWhatToExpect: classItem.classWhatToExpect,
-                    classWhatYouWillNeed: classItem.classUserRequirements,
+                    classItem: classItem,
                   );
                 },
                 childCount: allClasses.length,

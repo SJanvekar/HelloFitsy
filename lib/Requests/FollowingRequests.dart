@@ -12,9 +12,34 @@ class FollowingRequests {
           data: {
             "FollowingUserName": followingModel.followingUsername,
             "Username": followingModel.username,
-            "FollowingFirstName": followingModel.followingFirstName,
-            "FollowingLastName": followingModel.followingLastName,
-            "FollowingProfileImageURL": followingModel.followingProfileImageURL,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  //Remove Following
+  removeFollowing(String followingUsername, String username) async {
+    try {
+      return await dio.get('$urlDomain/removeFollowing',
+          data: {
+            "FollowingUserName": followingUsername,
+            "Username": username,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  //Remove Following
+  isFollowing(String followingUsername, String username) async {
+    try {
+      return await dio.get('$urlDomain/isFollowing',
+          data: {
+            "FollowingUserName": followingUsername,
+            "Username": username,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

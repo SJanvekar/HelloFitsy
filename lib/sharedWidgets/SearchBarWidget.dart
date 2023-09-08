@@ -11,12 +11,11 @@ class FitsySearchBar extends StatefulWidget {
   FitsySearchBar(
       {Key? key,
       required this.isAutoFocusTrue,
-      required this.searchBarWidth,
       required this.searchHintText,
       required this.callback})
       : super(key: key);
   bool isAutoFocusTrue;
-  double searchBarWidth;
+
   String searchHintText;
 
   @override
@@ -35,6 +34,7 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
     if (val.isNotEmpty) {
       UserRequests().searchTrainers(val).then((val) async {
         if (val.data['success']) {
+          print(val.data['searchResults']);
           List<dynamic> receivedJSON = val.data['searchResults'];
           receivedJSON.forEach((user) {
             searchResults.add(User.fromJson(user));
@@ -51,11 +51,13 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
 
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width - 52;
+
     return Material(
       color: Colors.transparent,
       child: SizedBox(
-        width: widget.searchBarWidth,
         height: 45,
+        width: width,
         child: TextField(
           onChanged: (val) {
             setState(() => onStoppedTyping.cancel());

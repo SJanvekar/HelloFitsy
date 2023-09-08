@@ -6,40 +6,9 @@ import '../../../constants.dart';
 import '../../home/components/ClassCardOpen.dart';
 
 class ScheduledClassTile extends StatelessWidget {
-  ScheduledClassTile({
-    Key? key,
-    required this.classImageUrl,
-    required this.classTitle,
-    required this.classTrainer,
-    required this.classTrainerImageUrl,
-    required this.classTrainerFirstName,
-    required this.classTrainerLastName,
-    required this.classType,
-    required this.classLocationName,
-    required this.classPrice,
-    required this.classLiked,
-    required this.classRating,
-    required this.classReviews,
-    required this.classDescription,
-    required this.classWhatToExpect,
-    required this.classWhatYouWillNeed,
-  }) : super(key: key);
+  ScheduledClassTile({Key? key, required this.classItem}) : super(key: key);
 
-  String classImageUrl;
-  String classTitle;
-  String classTrainer;
-  String classTrainerImageUrl;
-  String classTrainerFirstName;
-  String classTrainerLastName;
-  ClassType classType;
-  String classLocationName;
-  double classPrice;
-  bool classLiked;
-  double classRating;
-  int classReviews;
-  String classDescription;
-  String classWhatToExpect;
-  String classWhatYouWillNeed;
+  Class classItem;
 
 //------Widgets------
 
@@ -143,23 +112,7 @@ class ScheduledClassTile extends StatelessWidget {
             Navigator.push(
                 context,
                 PageTransition(
-                    child: ClassCardOpen(
-                      classTrainer: classTrainer,
-                      trainerFirstName: classTrainerFirstName,
-                      trainerLastName: classTrainerLastName,
-                      className: classTitle,
-                      classType: classType,
-                      classLocationName: classLocationName,
-                      classPrice: classPrice,
-                      classLiked: classLiked,
-                      classImage: classImageUrl,
-                      trainerImageUrl: classTrainerImageUrl,
-                      classRating: classRating,
-                      classReviews: classReviews,
-                      classDescription: classDescription,
-                      classWhatToExpect: classWhatToExpect,
-                      classWhatYouWillNeed: classWhatYouWillNeed,
-                    ),
+                    child: ClassCardOpen(classItem: classItem),
                     type: PageTransitionType.fade,
                     duration: Duration(milliseconds: 0),
                     reverseDuration: Duration(milliseconds: 0)))
@@ -172,7 +125,8 @@ class ScheduledClassTile extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
-                  image: NetworkImage(classImageUrl), fit: BoxFit.cover),
+                  image: NetworkImage(classItem.classImageUrl),
+                  fit: BoxFit.cover),
             ),
           ),
 
@@ -187,7 +141,7 @@ class ScheduledClassTile extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 3.0),
                 child: Text(
-                  classTitle,
+                  classItem.className,
                   style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,

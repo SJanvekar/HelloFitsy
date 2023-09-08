@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:balance/constants.dart';
 import 'package:dio/dio.dart';
 import '../feModels/ClassModel.dart';
@@ -19,13 +20,14 @@ class ClassRequests {
             "ClassLocationName": classModel.classLocationName,
             "ClassLatitude": classModel.classLatitude,
             "ClassLongitude": classModel.classLongitude,
-            "ClassRating": classModel.classOverallRating,
-            "ClassReview": classModel.classReviewsAmount,
+            "ClassOverallRating": classModel.classOverallRating,
+            "ClassReviewsAmount": classModel.classReviewsAmount,
             "ClassPrice": classModel.classPrice,
             "ClassTrainer": classModel.classTrainer,
-            "ClassLiked": classModel.classLiked,
-            "ClassTimes": classModel.classTimes,
             "Categories": classModel.classCategories,
+            "TrainerImageUrl": classModel.trainerImageUrl,
+            "TrainerFirstName": classModel.trainerFirstName,
+            "TrainerLastName": classModel.trainerLastName,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -33,12 +35,13 @@ class ClassRequests {
     }
   }
 
-  getClass(List<dynamic> classTrainer) async {
+  getClass(List<String> classTrainer) async {
+    final encodedArray = Uri.encodeComponent(jsonEncode(classTrainer));
     try {
       return await dio.get(
         '$urlDomain/getClasses',
         queryParameters: {
-          "ClassTrainer": classTrainer,
+          "ClassTrainer": encodedArray,
         },
       );
     } on DioError catch (e) {

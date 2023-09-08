@@ -11,7 +11,6 @@ var functions = {
         }
         else{
             var newClass = Class({
-                ClassID: req.body.ClassID,
                 ClassName: req.body.ClassName,
                 ClassImageUrl: req.body.ClassImageUrl,
                 ClassDescription: req.body.ClassDescription,
@@ -25,8 +24,6 @@ var functions = {
                 ClassReviewsAmount: req.body.ClassReviewsAmount,
                 ClassPrice: req.body.ClassPrice,
                 ClassTrainer: req.body.ClassTrainer,
-                ClassLiked: req.body.ClassLiked,
-                ClassTimes: req.body.ClassTimes,
                 Categories: req.body.Categories,
                 TrainerImageUrl: req.body.TrainerImageUrl,
                 TrainerFirstName: req.body.TrainerFirstName,
@@ -43,7 +40,7 @@ var functions = {
         }
     },
 
-    // Get Class Information
+    // Get Class Information, can handle arrays
     getClasses: function (req, res) {
         const classPromiseAsync = (responseJSON) => {
             return new Promise((resolve, reject) => {
@@ -58,46 +55,26 @@ var functions = {
             })
         }
         if  ((!req.query.ClassTrainer)) { //TODO: Check aganist empty and null query parameters, also apply to similar checks
-            res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
+            return res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
         }
-        Class.find({ClassTrainer: {$in:req.query.ClassTrainer}}, function (err, classArray) {
+        const decodedArray = JSON.parse(decodeURIComponent(req.query.ClassTrainer))
+        Class.find({ClassTrainer: {$all:decodedArray}}, function (err, classArray) {
             if (err) {
                 console.log(err)
-                return res.json({success: false, body: err})
+                return res.json({success: false, msg: "Failed to find class: " + err})
             } else {
-                return classPromiseAsync(classArray).then(parsedResponse => 
+                return classPromiseAsync(classArray).then( function (parsedResponse) {
                     //RESPONSE string is an array of classes
-                    res.json({success: true, 
-                        classArray: parsedResponse,
-                    }))
+                    if (parsedResponse instanceof Error) {
+                        return res.json({success: false, msg: "Failed to convert response to JSON:" + err})
+                    } else {
+                        res.json({success: true, 
+                            classArray: parsedResponse,
+                        })
+                    }
+                })
             }
         })
-    },
-
-    testing: function (req, res){
-        if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
-            res.json({success: false, msg: 'Enter all fields'})
-        }
-        else{
-            var newUser = User({
-                UserID: req.body.UserID,
-                UserType: req.body.UserType,
-                FirstName: req.body.FirstName,
-                LastName: req.body.LastName,
-                Username: req.body.Username,
-                UserEmail: req.body.UserEmail,
-                Password: req.body.Password
-
-            });
-            newUser.save(function (err, newUser){
-                if(err){
-                    res.json({success: false, msg: 'Failed to save'})
-                }
-                else {
-                    res.json({success: true, msg: 'Successfully saved'})
-                }
-            })
-        }
     },
 }
 

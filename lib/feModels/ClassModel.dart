@@ -1,18 +1,25 @@
 import 'dart:io';
+import 'dart:convert' as convert;
 
+// ignore: constant_identifier_names
+enum RecurrenceType { None, Daily, Weekly, BiWeekly, Monthly, Yearly }
+
+// ignore: constant_identifier_names
 enum ClassType { Solo, Group, Virtual }
 
 class Schedule {
   DateTime startDate;
   DateTime endDate;
+  RecurrenceType recurrence;
 
-  Schedule({
-    required this.startDate,
-    required this.endDate,
-  });
+  Schedule(
+      {required this.startDate,
+      required this.endDate,
+      required this.recurrence});
 }
 
 class Class {
+  late String classID;
   String classImageUrl;
   String className;
   double classPrice;
@@ -28,7 +35,6 @@ class Class {
   String classTrainer;
   String trainerFirstName;
   String trainerLastName;
-  bool classLiked;
   late List<Schedule> classTimes;
   String trainerImageUrl;
   late List<String> classCategories;
@@ -49,9 +55,6 @@ class Class {
 
     //Good after this point
     required this.classPrice,
-    required this.classLiked,
-
-    //May need to rework this based on new workflow
     required this.classTimes,
 
     //Trainer Info
@@ -64,25 +67,27 @@ class Class {
 
   //JSON parsers are required to parse arrays of JSON
   Class.fromJson(Map<String, dynamic> json)
-      : className = json['ClassName'],
+      : classID = json['_id'],
+        className = json['ClassName'],
         classImageUrl = json['ClassImageUrl'],
         classDescription = json['ClassDescription'],
         classWhatToExpect = json['ClassWhatToExpect'],
         classUserRequirements = json['ClassUserRequirements'],
         classType = stringToClassType(json['ClassType'][0]),
         classLocationName = json['ClassLocationName'],
-        classLatitude = json['ClassLatitude'],
-        classLongitude = json['ClassLongitude'],
+        classLatitude = json['ClassLatitude'].toDouble(),
+        classLongitude = json['ClassLongitude'].toDouble(),
         classOverallRating = json['ClassOverallRating'].toDouble(),
         classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
+        classCategories = List<String>.from(json['Categories']),
         classTrainer = json['ClassTrainer'],
-        classLiked = json['ClassLiked'],
         trainerImageUrl = json['TrainerImageUrl'],
         trainerFirstName = json['TrainerFirstName'],
         trainerLastName = json['TrainerLastName'];
 
   Map<String, dynamic> toJson() => {
+        '_id': classID,
         'ClassName': className,
         'ClassImageUrl': classImageUrl,
         'ClassDescription': classDescription,
@@ -96,7 +101,6 @@ class Class {
         'ClassReview': classReviewsAmount,
         'ClassPrice': classPrice,
         'ClassTrainer': classTrainer,
-        'ClassLiked': classLiked,
         'TrainerImageUrl': trainerImageUrl,
         'TrainerFirstName': trainerFirstName,
         'TrainerLastName': trainerLastName

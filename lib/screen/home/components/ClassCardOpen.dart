@@ -1,22 +1,26 @@
 // ignore_for_file: file_names, prefer_const_constructors
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:balance/Requests/ClassLikedRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/moreClassInfoModal.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
-import 'package:balance/sharedWidgets/reviewCard.dart';
+import 'package:balance/sharedWidgets/reviewCardPublic.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../feModels/ClassModel.dart';
 import '../../../sharedWidgets/classMoreActions.dart';
@@ -24,42 +28,9 @@ import '../../../sharedWidgets/classMoreActions.dart';
 final oCcy = new NumberFormat("#,##0", "en_US");
 
 class ClassCardOpen extends StatefulWidget {
-  ClassCardOpen({
-    Key? key,
-    required this.classTrainer,
-    required this.trainerFirstName,
-    required this.trainerLastName,
-    required this.className,
-    required this.classType,
-    required this.classLocationName,
-    required this.classPrice,
-    required this.classLiked,
-    required this.classImage,
-    required this.trainerImageUrl,
-    required this.classRating,
-    required this.classReviews,
-    required this.classDescription,
-    required this.classWhatToExpect,
-    required this.classWhatYouWillNeed,
-  }) : super(key: key);
+  ClassCardOpen({Key? key, required this.classItem}) : super(key: key);
 
-  String classTrainer;
-  String trainerFirstName;
-  String trainerLastName;
-  String className;
-  ClassType classType;
-  String classLocationName;
-  double classPrice;
-  bool classLiked;
-  String classImage;
-  String trainerImageUrl;
-  double classRating;
-  int classReviews;
-  String classDescription;
-  String classWhatToExpect;
-  String classWhatYouWillNeed;
-  //This is a initalizer to test the highly rated badge on a class, this will need to be updated with actual values from the backend.
-  double classRatingTemp = 4.8;
+  Class classItem;
 
   @override
   State<ClassCardOpen> createState() => _ClassCardOpenState();
@@ -70,8 +41,47 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   Color iconColor = snow;
   late ScrollController _scrollController;
   Brightness statusBarTheme = Brightness.dark;
-
+  bool classLiked = false;
   //Get Trainer Details
+
+  void getIsLiked() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    print(widget.classItem.classID);
+    print(sharedPrefs.getString('userName') ?? "");
+    ClassLikedRequests()
+        .isLiked(
+            sharedPrefs.getString('userName') ?? "", widget.classItem.classID)
+        .then((val) async {
+      if (val.data['success']) {
+        classLiked = val.data['result'];
+      } else {
+        //Remove print statement in production
+        print('error getting class liked: ${val.data['result']}');
+      }
+      setState(() {});
+    });
+  }
+
+  void handleLikedPress() async {
+    setState(() {});
+    EasyDebounce.debounce('likedDebouncer', const Duration(milliseconds: 500),
+        () => changeLikedStatus());
+  }
+
+  void changeLikedStatus() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    ClassLikedRequests()
+        .addOrRemoveClassLiked(sharedPrefs.getString('userName') ?? "",
+            widget.classItem.classID, classLiked)
+        .then((val) async {
+      if (val.data['success']) {
+        print('classLiked is ${val.data['liked']}');
+      } else {
+        //Remove print statement in production
+        print('error ${classLiked ? "adding" : "removing"} class liked');
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -87,6 +97,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               _isSliverAppBarExpanded ? Brightness.light : Brightness.dark;
         });
       });
+    getIsLiked();
   }
 
   //----------Functions-----------//
@@ -105,14 +116,14 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           UserProfileComponentDark(
-            imageURL: widget.trainerImageUrl,
+            imageURL: widget.classItem.trainerImageUrl,
             profileImageRadius: 25,
             userFullName:
-                '${widget.trainerFirstName} ${widget.trainerLastName}',
+                '${widget.classItem.trainerFirstName} ${widget.classItem.trainerLastName}',
             userFullNameFontSize: 16,
-            userName: widget.classTrainer,
+            userName: widget.classItem.classTrainer,
             userNameFontSize: 13,
-            userFirstName: widget.trainerFirstName,
+            userFirstName: widget.classItem.trainerFirstName,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 26),
@@ -164,7 +175,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                       Padding(
                         padding: const EdgeInsets.only(right: 20.0),
                         child: AutoSizeText(
-                          widget.className,
+                          widget.classItem.className,
                           minFontSize: 22,
                           style: TextStyle(
                             fontSize: 22,
@@ -201,7 +212,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                 ),
               )),
           Text(
-            widget.classLocationName,
+            widget.classItem.classLocationName,
             style: TextStyle(
                 color: jetBlack,
                 fontSize: 14,
@@ -229,7 +240,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           padding: const EdgeInsets.only(left: 2.0),
           child: Center(
             child: Text(
-              '${widget.classRating}',
+              '${widget.classItem.classOverallRating}',
               style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
@@ -248,7 +259,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.classDescription,
+          widget.classItem.classDescription,
           overflow: TextOverflow.ellipsis,
           maxLines: 9,
           style: TextStyle(
@@ -268,7 +279,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.classWhatToExpect,
+          widget.classItem.classWhatToExpect,
           overflow: TextOverflow.ellipsis,
           maxLines: 9,
           style: TextStyle(
@@ -287,7 +298,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.classWhatYouWillNeed,
+          widget.classItem.classUserRequirements,
           overflow: TextOverflow.ellipsis,
           maxLines: 6,
           style: TextStyle(
@@ -369,13 +380,13 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         UserProfileComponentLight(
-          imageURL: widget.trainerImageUrl,
+          imageURL: widget.classItem.trainerImageUrl,
           profileImageRadius: 25,
-          userLastName: widget.trainerLastName,
+          userLastName: widget.classItem.trainerLastName,
           userFullNameFontSize: 16,
-          userName: widget.classTrainer,
+          userName: widget.classItem.classTrainer,
           userNameFontSize: 13,
-          userFirstName: widget.trainerFirstName,
+          userFirstName: widget.classItem.trainerFirstName,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 15.0),
@@ -458,7 +469,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: NetworkImage(
-                          widget.classImage,
+                          widget.classItem.classImageUrl,
                         ),
                         fit: BoxFit.cover),
                   ),
@@ -536,20 +547,21 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 2, bottom: 2),
                       child: Icon(
-                        widget.classLiked
+                        classLiked
                             ? Icons.favorite_rounded
                             : Icons.favorite_outline_rounded,
-                        color: widget.classLiked ? strawberry : iconColor,
+                        color: classLiked ? strawberry : iconColor,
                         size: 20,
                       ),
                     ),
                   ),
                 )),
-                onTap: () => {
+                onTap: () {
                   setState(() {
-                    widget.classLiked = !widget.classLiked;
+                    classLiked = !classLiked;
                     HapticFeedback.mediumImpact();
-                  })
+                  });
+                  handleLikedPress();
                 },
               ),
             ),
@@ -587,8 +599,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             //Highly Rated Badge
             //Row is added to reduce the size of the highly rated badge
             child: Row(
+              //HARD CODED - MUST CHANGE replace with classOverallRating
               children: [
-                if (widget.classRatingTemp > 4.7) highlyRatedClassBadge(),
+                if (5.0 > 4.7) highlyRatedClassBadge(),
               ],
             ),
           ),
@@ -633,7 +646,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         context: context,
                         builder: (BuildContext context) {
                           return moreClassInfo(
-                              inputText: widget.classDescription);
+                              inputText: widget.classItem.classDescription);
                         })
                   },
                 )
@@ -677,7 +690,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         context: context,
                         builder: (BuildContext context) {
                           return moreClassInfo(
-                              inputText: widget.classWhatToExpect);
+                              inputText: widget.classItem.classWhatToExpect);
                         })
                   },
                 )
@@ -722,7 +735,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         context: context,
                         builder: (BuildContext context) {
                           return moreClassInfo(
-                              inputText: widget.classWhatYouWillNeed);
+                              inputText:
+                                  widget.classItem.classUserRequirements);
                         })
                   },
                 )
@@ -823,8 +837,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         context: context,
                         builder: (BuildContext builder) {
                           return PurchaseClassSelectDates(
-                            classImageUrl: widget.classImage,
-                            className: widget.className,
+                            classImageUrl: widget.classItem.classImageUrl,
+                            className: widget.classItem.className,
                           );
                         });
                   });

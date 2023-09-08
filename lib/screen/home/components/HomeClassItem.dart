@@ -1,52 +1,26 @@
+import 'dart:convert';
+
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:balance/Requests/ClassLikedRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/ClassCardOpen.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../sharedWidgets/userProfileComponentLight.dart';
 import 'package:balance/feModels/ClassModel.dart';
 
 final oCcy = new NumberFormat("#,##0", "en_US");
 
 class HomeClassItem extends StatefulWidget {
-  HomeClassItem({
-    Key? key,
-    required this.classTrainer,
-    required this.trainerFirstName,
-    required this.trainerLastName,
-    required this.classType,
-    required this.className,
-    required this.classDescription,
-    required this.classWhatToExpect,
-    required this.classWhatYouWillNeed,
-    required this.classLocationName,
-    required this.classPrice,
-    required this.classLiked,
-    required this.classImage,
-    required this.trainerImageUrl,
-    required this.classRating,
-    required this.classReviews,
-  }) : super(key: key);
+  HomeClassItem({Key? key, required this.classItem}) : super(key: key);
 
-  String classTrainer;
-  String trainerFirstName;
-  String trainerLastName;
-  ClassType classType;
-  String className;
-  String classDescription;
-  String classWhatToExpect;
-  String classWhatYouWillNeed;
-  String classLocationName;
-  double classPrice;
-  bool classLiked;
-  String classImage;
-  String trainerImageUrl;
-  double classRating;
-  int classReviews;
+  Class classItem;
 
   //------Functions------//
 
@@ -131,6 +105,51 @@ Widget highlyRatedBadge() {
 }
 
 class _HomeClassItem extends State<HomeClassItem> {
+  bool classLiked = false;
+
+  void getIsLiked() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    ClassLikedRequests()
+        .isLiked(
+            sharedPrefs.getString('userName') ?? "", widget.classItem.classID)
+        .then((val) async {
+      if (val.data['success']) {
+        classLiked = val.data['result'];
+      } else {
+        //Remove print statement in production
+        print('error getting class liked: ${val.data['result']}');
+      }
+      setState(() {});
+    });
+  }
+
+  void handleLikedPress() async {
+    setState(() {});
+    EasyDebounce.debounce('likedDebouncer', const Duration(milliseconds: 500),
+        () => changeLikedStatus());
+  }
+
+  void changeLikedStatus() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    ClassLikedRequests()
+        .addOrRemoveClassLiked(sharedPrefs.getString('userName') ?? "",
+            widget.classItem.classID, classLiked)
+        .then((val) async {
+      if (val.data['success']) {
+        print('classLiked is ${val.data['liked']}');
+      } else {
+        //Remove print statement in production
+        print('error ${classLiked ? "adding" : "removing"} class liked');
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getIsLiked();
+  }
+
   Widget closedContainer(titleBoxWidth) {
     return Stack(
       children: [
@@ -138,7 +157,7 @@ class _HomeClassItem extends State<HomeClassItem> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(
-                    widget.classImage,
+                    widget.classItem.classImageUrl,
                   ),
                   fit: BoxFit.cover),
               borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -174,19 +193,20 @@ class _HomeClassItem extends State<HomeClassItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               classReviews(),
-              classTitle(widget.className, titleBoxWidth),
+              classTitle(widget.classItem.className, titleBoxWidth),
               Padding(
                 padding: const EdgeInsets.only(bottom: 5.0),
-                child: classSubHeader(widget.classLocationName),
+                child: classSubHeader(widget.classItem.classLocationName),
               ),
-              classPrice(widget.classPrice)
+              classPrice(widget.classItem.classPrice)
             ],
           ),
         ),
 
         //Highly Rated Badge
         //Only shows the highly rated badge if the class is rated higher than 4.7/5 stars
-        if (widget.classRatingTemp > 4.7) Positioned(child: highlyRatedBadge()),
+        //HARD CODED - MUST CHANGE replace with classOverallRating
+        if (5.0 > 4.7) Positioned(child: highlyRatedBadge()),
 
         //Like Class
         Positioned(
@@ -196,10 +216,10 @@ class _HomeClassItem extends State<HomeClassItem> {
             child: Column(
               children: [
                 Icon(
-                  widget.classLiked
+                  classLiked
                       ? Icons.favorite_rounded
                       : Icons.favorite_outline_rounded,
-                  color: widget.classLiked ? strawberry : snow,
+                  color: classLiked ? strawberry : snow,
                   size: 26,
                   shadows: <Shadow>[
                     Shadow(
@@ -219,9 +239,10 @@ class _HomeClassItem extends State<HomeClassItem> {
             ),
             onTap: () {
               setState(() {
-                widget.classLiked = !widget.classLiked;
+                classLiked = !classLiked;
                 HapticFeedback.mediumImpact();
               });
+              handleLikedPress();
             },
           ),
         ),
@@ -245,13 +266,13 @@ class _HomeClassItem extends State<HomeClassItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               UserProfileComponentLight(
-                  userLastName: widget.trainerLastName,
-                  userName: widget.classTrainer,
-                  imageURL: widget.trainerImageUrl,
+                  userLastName: widget.classItem.trainerLastName,
+                  userName: widget.classItem.classTrainer,
+                  imageURL: widget.classItem.trainerImageUrl,
                   profileImageRadius: 22.5,
                   userFullNameFontSize: 15,
                   userNameFontSize: 14,
-                  userFirstName: widget.trainerFirstName),
+                  userFirstName: widget.classItem.trainerFirstName),
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: GestureDetector(
@@ -297,21 +318,7 @@ class _HomeClassItem extends State<HomeClassItem> {
               openElevation: 0,
               closedElevation: 0,
               openBuilder: (BuildContext context, _) => ClassCardOpen(
-                classImage: widget.classImage,
-                classLiked: widget.classLiked,
-                classLocationName: widget.classLocationName,
-                classType: widget.classType,
-                className: widget.className,
-                classPrice: widget.classPrice,
-                classTrainer: widget.classTrainer,
-                trainerFirstName: widget.trainerFirstName,
-                trainerLastName: widget.trainerLastName,
-                trainerImageUrl: widget.trainerImageUrl,
-                classRating: widget.classRating,
-                classReviews: widget.classReviews,
-                classDescription: widget.classDescription,
-                classWhatToExpect: widget.classWhatToExpect,
-                classWhatYouWillNeed: widget.classWhatYouWillNeed,
+                classItem: widget.classItem,
               ),
               closedBuilder: (BuildContext context, VoidCallback openClass) =>
                   GestureDetector(

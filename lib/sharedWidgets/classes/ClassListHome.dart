@@ -29,21 +29,7 @@ class _ClassListHomeState extends State<ClassListHome> {
               itemBuilder: (context, index) {
                 final classItem = classList[index];
                 return HomeClassItem(
-                  classTrainer: classItem.classTrainer,
-                  className: classItem.className,
-                  classType: classItem.classType,
-                  classLocationName: classItem.classLocationName,
-                  classPrice: classItem.classPrice,
-                  classLiked: classItem.classLiked,
-                  classImage: classItem.classImageUrl,
-                  classDescription: classItem.classDescription,
-                  classWhatToExpect: classItem.classWhatToExpect,
-                  classWhatYouWillNeed: classItem.classUserRequirements,
-                  classRating: classItem.classOverallRating,
-                  classReviews: classItem.classReviewsAmount,
-                  trainerImageUrl: classItem.trainerImageUrl,
-                  trainerFirstName: classItem.trainerFirstName,
-                  trainerLastName: classItem.trainerLastName,
+                  classItem: classItem,
                 );
               })
         ],

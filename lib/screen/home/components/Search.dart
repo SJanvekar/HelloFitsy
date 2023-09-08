@@ -36,7 +36,6 @@ class _Search extends State<Search> {
     List<Class> allClasses = classList;
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
-    var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2) - 50;
 
     return GestureDetector(
       child: Scaffold(
@@ -89,44 +88,44 @@ class _Search extends State<Search> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 26.0),
+                            padding:
+                                const EdgeInsets.only(left: 26.0, right: 26.0),
                             child: Hero(
                               tag: 'SearchBar',
                               child: FitsySearchBar(
                                 isAutoFocusTrue: true,
-                                searchBarWidth: searchBarWidth,
                                 searchHintText: 'Search trainers or classes',
                                 callback: retrieveSearchResult,
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15.0),
-                            child: GestureDetector(
-                              child: SizedBox(
-                                width: 50,
-                                child: Text('Cancel',
-                                    style: TextStyle(
-                                      color: jetBlack80,
-                                      fontFamily: 'SFDisplay',
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 15.0,
-                                    )),
-                              ),
-                              onTap: () {
-                                Navigator.pop(
-                                  context,
-                                  PageTransition(
-                                      child: Home(),
-                                      type: PageTransitionType.fade,
-                                      isIos: true,
-                                      reverseDuration:
-                                          Duration(milliseconds: 0),
-                                      duration: Duration(milliseconds: 0)),
-                                );
-                              },
-                            ),
-                          )
+                          // Padding(
+                          //   padding: const EdgeInsets.only(right: 15.0),
+                          //   child: GestureDetector(
+                          //     child: SizedBox(
+                          //       width: 50,
+                          //       child: Text('Cancel',
+                          //           style: TextStyle(
+                          //             color: jetBlack80,
+                          //             fontFamily: 'SFDisplay',
+                          //             fontWeight: FontWeight.w600,
+                          //             fontSize: 15.0,
+                          //           )),
+                          //     ),
+                          //     onTap: () {
+                          //       Navigator.pop(
+                          //         context,
+                          //         PageTransition(
+                          //             child: Home(),
+                          //             type: PageTransitionType.fade,
+                          //             isIos: true,
+                          //             reverseDuration:
+                          //                 Duration(milliseconds: 0),
+                          //             duration: Duration(milliseconds: 0)),
+                          //       );
+                          //     },
+                          //   ),
+                          // )
                         ],
                       ),
                     ],
@@ -271,24 +270,7 @@ class _Search extends State<Search> {
                                 //This will need to be replaced with a list of classes received from the search.
                                 final classItem = allClasses[index];
                                 return HomeClassItem(
-                                  classTrainer: classItem.classTrainer,
-                                  className: classItem.className,
-                                  classType: classItem.classType,
-                                  classLocationName:
-                                      classItem.classLocationName,
-                                  classPrice: classItem.classPrice,
-                                  classLiked: classItem.classLiked,
-                                  classImage: classItem.classImageUrl,
-                                  trainerImageUrl: classItem.trainerImageUrl,
-                                  classDescription: classItem.classDescription,
-                                  classRating: classItem.classOverallRating,
-                                  classReviews: classItem.classReviewsAmount,
-                                  trainerFirstName: classItem.trainerFirstName,
-                                  trainerLastName: classItem.trainerLastName,
-                                  classWhatToExpect:
-                                      classItem.classWhatToExpect,
-                                  classWhatYouWillNeed:
-                                      classItem.classUserRequirements,
+                                  classItem: classItem,
                                 );
                               },
                               childCount: allClasses.length,

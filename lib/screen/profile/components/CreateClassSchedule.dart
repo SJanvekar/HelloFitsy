@@ -168,9 +168,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         return DateFormat('MMM yyyy').format(date).toString();
       },
       titleTextStyle: TextStyle(
-          fontWeight: FontWeight.w700,
-          fontSize: 22.0,
-          color: jetBlack,
+          fontWeight: FontWeight.w600,
+          fontSize: 18.0,
+          color: jetBlack80,
           fontFamily: 'SFDisplay'));
 
   var calendarBuilder = CalendarBuilders(
@@ -718,144 +718,145 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   @override
   Widget build(BuildContext context) {
+    var paddingTop = MediaQuery.of(context).size.height * 0.028;
+    var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
+    var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2) - 50;
     void doNothing(BuildContext context) {}
     return Scaffold(
-      backgroundColor: snow,
+        backgroundColor: snow,
 
-      //AppBar
-      appBar: AppBar(
-          toolbarHeight: 80,
-          centerTitle: false,
+        //AppBar
+        appBar: AppBar(
+          toolbarHeight: 5,
           elevation: 0,
           backgroundColor: snow,
-          automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 0,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    print("Back");
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Back", style: logInPageNavigationButtons),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 26.0),
-              child: GestureDetector(
-                child: SvgPicture.asset(
-                  'assets/icons/generalIcons/create.svg',
-                  color: jetBlack,
-                  height: 22,
-                  width: 22,
-                ),
-                onTap: () {
-                  recurranceType = 'None';
-                  startTime = DateTime.now();
-                  endTime = DateTime.now().add(Duration(hours: 1));
-                  displayClassAndTimePicker();
-                },
-              ),
-            )
-          ]),
+        ),
 
-      //Body
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 25, right: 25, top: 10),
-                  child: TableCalendar(
-                    firstDay: DateTime.now(),
-                    lastDay: DateTime.utc(2075, 12, 31),
-                    focusedDay: _focusedDay,
-                    calendarFormat: CalendarFormat.month,
-                    calendarStyle: calendarStyle,
-                    headerStyle: headerStyle,
-                    startingDayOfWeek: StartingDayOfWeek.sunday,
-                    calendarBuilders: calendarBuilder,
-                    selectedDayPredicate: (day) {
-                      return _selectedDays.contains(day);
-                    },
-                    onDaySelected: _onDaySelected,
-                    daysOfWeekStyle: calendarDaysOfWeek,
+        //Body
+        body: CustomScrollView(
+          slivers: [
+            //AppBar Sliver
+            SliverAppBar(
+                floating: true,
+                pinned: false,
+                toolbarHeight: appHeaderSize,
+                elevation: 0,
+                backgroundColor: snow,
+                automaticallyImplyLeading: false,
+                stretch: true,
+
+                //Title
+                flexibleSpace: Padding(
+                  padding: EdgeInsets.only(
+                    left: 26,
+                    top: paddingTop,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Class schedule', style: pageTitles),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 250,
-                child: ListView.builder(
-                    primary: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    padding: EdgeInsets.only(top: 20, left: 26.0, right: 26.0),
-                    itemCount: scheduledClassesList.length,
-                    itemBuilder: (context, index) {
-                      final scheduledClass = scheduledClassesList[index];
-                      return GestureDetector(
-                        child: Slidable(
-                          endActionPane:
-                              ActionPane(motion: ScrollMotion(), children: [
-                            SlidableAction(
-                              // An action can be bigger than the others.
-                              flex: 2,
-                              onPressed: doNothing,
-                              backgroundColor: bone,
-                              foregroundColor: jetBlack,
-                              icon: Icons.edit,
-                              label: 'Edit',
-                            ),
-                            SlidableAction(
-                              flex: 2,
-                              onPressed: doNothing,
-                              backgroundColor: strawberry,
-                              foregroundColor: snow,
-                              icon: Icons.delete,
-                              label: 'Delete',
-                              borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20)),
-                            ),
-                          ]),
-                          child: ScheduledClassTile(
-                            classImageUrl: scheduledClass.classImageUrl,
-                            classTitle: scheduledClass.className,
-                            classTrainer: scheduledClass.trainerFirstName,
-                            classTrainerImageUrl:
-                                scheduledClass.trainerImageUrl,
-                            classDescription: scheduledClass.classDescription,
-                            classLiked: scheduledClass.classLiked,
-                            classLocationName: scheduledClass.classLocationName,
-                            classPrice: scheduledClass.classPrice,
-                            classRating: scheduledClass.classOverallRating,
-                            classReviews: scheduledClass.classReviewsAmount,
-                            classTrainerFirstName:
-                                scheduledClass.trainerFirstName,
-                            classTrainerLastName:
-                                scheduledClass.trainerLastName,
-                            classType: scheduledClass.classType,
-                            classWhatToExpect: scheduledClass.classWhatToExpect,
-                            classWhatYouWillNeed:
-                                scheduledClass.classUserRequirements,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 26.0),
+                    child: GestureDetector(
+                      child: SvgPicture.asset(
+                        'assets/icons/generalIcons/create.svg',
+                        color: jetBlack,
+                        height: 22,
+                        width: 22,
+                      ),
+                      onTap: () {
+                        recurranceType = 'None';
+                        startTime = DateTime.now();
+                        endTime = DateTime.now().add(Duration(hours: 1));
+                        displayClassAndTimePicker();
+                      },
+                    ),
+                  )
+                ]),
+            MultiSliver(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding:
+                              EdgeInsets.only(left: 25, right: 25, top: 10),
+                          child: TableCalendar(
+                            firstDay: DateTime.now(),
+                            lastDay: DateTime.utc(2075, 12, 31),
+                            focusedDay: _focusedDay,
+                            calendarFormat: CalendarFormat.month,
+                            calendarStyle: calendarStyle,
+                            headerStyle: headerStyle,
+                            startingDayOfWeek: StartingDayOfWeek.sunday,
+                            calendarBuilders: calendarBuilder,
+                            selectedDayPredicate: (day) {
+                              return _selectedDays.contains(day);
+                            },
+                            onDaySelected: _onDaySelected,
+                            daysOfWeekStyle: calendarDaysOfWeek,
                           ),
                         ),
-                      );
-                    }),
+                      ),
+                      SizedBox(
+                        height: 250,
+                        child: ListView.builder(
+                            primary: false,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            padding: EdgeInsets.only(
+                                top: 20, left: 26.0, right: 26.0),
+                            itemCount: scheduledClassesList.length,
+                            itemBuilder: (context, index) {
+                              final scheduledClass =
+                                  scheduledClassesList[index];
+                              return GestureDetector(
+                                child: Slidable(
+                                  endActionPane: ActionPane(
+                                      motion: ScrollMotion(),
+                                      children: [
+                                        SlidableAction(
+                                          // An action can be bigger than the others.
+                                          flex: 2,
+                                          onPressed: doNothing,
+                                          backgroundColor: bone,
+                                          foregroundColor: jetBlack,
+                                          icon: Icons.edit,
+                                          label: 'Edit',
+                                        ),
+                                        SlidableAction(
+                                          flex: 2,
+                                          onPressed: doNothing,
+                                          backgroundColor: strawberry,
+                                          foregroundColor: snow,
+                                          icon: Icons.delete,
+                                          label: 'Delete',
+                                          borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(20),
+                                              bottomRight: Radius.circular(20)),
+                                        ),
+                                      ]),
+                                  child: ScheduledClassTile(
+                                    classItem: scheduledClass,
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    ],
+                  )
+                ],
               ),
-            ],
-          )
-        ],
-      ),
-    );
+            ])
+          ],
+        ));
   }
 
   Widget selectTime() {
@@ -1029,6 +1030,8 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
   }
 
   @override
+  //HARD CODED - MUST CHANGE
+  //HARD CODED RECURRANCE TYPES
   Widget build(BuildContext context) {
     return Material(
       borderRadius: BorderRadius.circular(20),

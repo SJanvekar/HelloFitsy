@@ -109,7 +109,7 @@ var functions = {
             User.findOne({Auth: decodedtoken._id}, function (err, user) {
                 if (err) {
                     console.log(err)
-                    return res.json({success: false, body: err})
+                    return res.json({success: false, msg: err})
                 } else {
                     return userPromiseAsync(user).then(parsedResponse => 
                         res.json({success: true, 
@@ -132,7 +132,6 @@ var functions = {
     },
 
     // Get User Following list
-
     getUserFollowing: function (req, res) {
         if ((!req.query.Username)) {
             res.json({success: false, msg: 'Missing query parameter Username'});
@@ -140,7 +139,7 @@ var functions = {
         User.findOne({Username: req.query.Username}, 'Following', function (err, response) {
             if (err) {
                 console.log(err)
-                return res.json({success: false, body: err})
+                return res.json({success: false, msg: err})
             } else {
                 return res.json({success: true, 
                         following: response.Following

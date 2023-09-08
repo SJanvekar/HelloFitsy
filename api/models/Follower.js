@@ -3,11 +3,10 @@ var Schema = mongoose.Schema;
 
 var UserFollowerSchema = new Schema({
 
-    //Follower Username
+    //User perspective of their followers Username
     FollowerUsername: {
         type: String,
         required: true,
-        unique: true,
         lowercase: true,
         index: true
     },
@@ -19,31 +18,6 @@ var UserFollowerSchema = new Schema({
         unique: true,
         lowercase: true,
         index: true
-    },
-
-    //Follower account Profile Image URL
-    FollowerProfileImageURL: {
-        type: String,
-        required: false
-
-    },
-    
-    //Follower account First Name
-    FollowerFirstName: {
-        type: String,
-        required: true
-    },
-
-    //Follower account Last Name
-    FollowerLastName: {
-        type: String,
-        required: true
-    },
-
-    //Follower account User Bio
-    FollowerUserBio: {
-        type: String,
-        required: false
     },
 })
 

@@ -13,6 +13,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../../../Main.dart';
+
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
 
@@ -44,11 +46,12 @@ void onSubmitSignInField(context) {
           sharedPrefs.setString('firstName', val.data['firstName']);
           sharedPrefs.setString('lastName', val.data['lastName']);
           sharedPrefs.setString('categories', encodedCategories);
+          sharedPrefs.setString('user', json.encode(val.data));
         } else {
           print('Failed get user info');
         }
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeTest()));
+            .push(MaterialPageRoute(builder: (context) => MainPage()));
       });
     } else {
       return ScaffoldMessenger.of(context).showSnackBar(SnackBar(

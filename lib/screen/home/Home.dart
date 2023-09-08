@@ -1,17 +1,10 @@
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/components/FollowingFeed.dart';
-import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
 import 'package:balance/screen/home/components/UpcomingClassesFeed.dart';
-import 'package:balance/screen/profileSidebar/sidebar.dart';
-import 'package:balance/sharedWidgets/classes/classListHome.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:page_transition/page_transition.dart';
-
-import '../../testScreens/searchTestVersion1.dart';
 import 'components/Search.dart';
 
 class Home extends StatelessWidget {
@@ -23,10 +16,6 @@ class Home extends StatelessWidget {
     return GestureDetector(
       child: Scaffold(
         backgroundColor: snow,
-
-        //Profile SideBar
-        drawer: SideBar(),
-        drawerEdgeDragWidth: MediaQuery.of(context).size.width,
 
         //Appbar (White top, this should be consitent on every page.)
         appBar: AppBar(
@@ -115,7 +104,6 @@ class Home extends StatelessWidget {
                             tag: 'SearchBar',
                             child: FitsySearchBar(
                               isAutoFocusTrue: false,
-                              searchBarWidth: searchBarWidth,
                               searchHintText: 'Search',
                               callback: null,
                             )),

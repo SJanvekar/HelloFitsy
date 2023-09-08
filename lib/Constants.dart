@@ -115,7 +115,7 @@ const disclaimerTitle = TextStyle(
 const pageTitles = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 26,
+  fontSize: 24,
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
@@ -285,6 +285,11 @@ const buttonText2snow = TextStyle(
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
+const BodyTextFontBold80 = TextStyle(
+    color: jetBlack80,
+    fontFamily: 'SFDisplay',
+    fontSize: 14.5,
+    fontWeight: FontWeight.w600);
 
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(

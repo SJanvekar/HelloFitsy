@@ -6,14 +6,13 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 
 class UpcomingClassesItem extends StatelessWidget {
   UpcomingClassesItem({Key? key}) : super(key: key);
 
+  //HARD CODED - MUST CHANGE
   DateTime now = DateTime.now();
-  String dayNow = DateFormat.d().format(DateTime.now());
-  String monthNow = DateFormat.MMM().format(DateTime.now());
-  String timeNow = DateFormat.jm().format(DateTime.now());
 
   @override
   Widget build(BuildContext context) {
@@ -29,54 +28,12 @@ class UpcomingClassesItem extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 12, bottom: 12),
+            padding: const EdgeInsets.only(left: 15, top: 12, bottom: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    //Day + Month
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            dayNow,
-                            style: TextStyle(
-                                color: jetBlack60,
-                                fontFamily: 'SFRounded',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Text(
-                            monthNow,
-                            style: TextStyle(
-                                color: jetBlack60,
-                                fontFamily: 'SFRounded',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    //Divider
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 15.0,
-                        right: 15.0,
-                      ),
-                      child: Container(
-                        width: 2,
-                        decoration: BoxDecoration(
-                          color: shark60,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                    ),
-
                     //Class Details
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
@@ -84,22 +41,23 @@ class UpcomingClassesItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          //Class Time
+                          //Class Time //HARD CODED - MUST CHANGE
                           Padding(
                             padding: const EdgeInsets.only(bottom: 3.0),
                             child: Text(
-                              timeNow,
+                              Jiffy.parse(now.toString())
+                                  .format(pattern: "MMM do, yyy "),
                               style: TextStyle(
                                   fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: jetBlack60,
+                                  fontWeight: FontWeight.w600,
+                                  color: jetBlack80,
                                   fontFamily: 'SFRounded'),
                             ),
                           ),
 
-                          //Class Title
+                          //Class Title //HARD CODED - MUST CHANGE
                           SizedBox(
-                            width: 210,
+                            width: 250,
                             child: Padding(
                               padding: const EdgeInsets.only(bottom: 3.0),
                               child: Text(
@@ -114,7 +72,7 @@ class UpcomingClassesItem extends StatelessWidget {
                             ),
                           ),
 
-                          //Class Trainer
+                          //Class Trainer //HARD CODED - MUST CHANGE
                           Row(
                             children: [
                               Text(
@@ -143,12 +101,20 @@ class UpcomingClassesItem extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 15.0),
-                  child: SvgPicture.asset(
-                    'assets/icons/generalIcons/arrowRight.svg',
-                    color: shark,
-                    height: 18,
-                  ),
-                )
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          Jiffy.parse(now.toString()).format(pattern: "h:mm a"),
+                          style: classStartTime,
+                        ),
+                        Text(
+                          Jiffy.parse(now.toString()).format(pattern: "h:mm a"),
+                          style: classEndTime,
+                        ),
+                      ]),
+                ),
               ],
             ),
           ),
