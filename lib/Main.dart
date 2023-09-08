@@ -49,7 +49,7 @@ class FITSY extends StatelessWidget {
         ),
         //Place comment on what the changes were if changed for testing purposes
         //Example:
-        //Login(); -> UserProfile();
+        //SignIn(); -> RatingPopup();
 
         home: SignIn());
   }
