@@ -260,10 +260,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                           ),
                         ),
                         onTap: () => {
-                              print(widget.isTypeSelected),
-                              if (widget.isTypeSelected == false)
-                                {}
-                              else
+                              if (widget.isTypeSelected == true)
                                 {
                                   Navigator.of(context).push(CupertinoPageRoute(
                                       fullscreenDialog: true,
