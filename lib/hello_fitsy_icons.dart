@@ -21,8 +21,19 @@ class HelloFitsy {
   static const _kFontFam = 'HelloFitsy';
   static const String? _kFontPkg = null;
 
-  static const IconData search = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData home = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData user = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData calendar = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData addimage = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData apple = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData chat = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrowleft = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrowright = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData exit = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData search = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData group = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData user = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData star = IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData trainer = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData settings = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData virtual = IconData(0xe816, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData home = IconData(0xe817, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData calendar = IconData(0xe818, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
