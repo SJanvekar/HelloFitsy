@@ -13,9 +13,6 @@ var functions = {
             var newFollowing = Following({
                 FollowingUsername: req.body.FollowingUserName,
                 Username: req.body.Username,
-                FollowingFirstName: req.body.FollowingFirstName,
-                FollowingLastName: req.body.FollowingLastName,
-                FollowingProfileImageURL: req.body.FollowingProfileImageURL,
             });
             newFollowing.save(function (err, newFollowing){
                 if (err) {
@@ -84,7 +81,7 @@ var functions = {
                 return res.json({success: false, msg: err})
             } else {
                 return res.json({success: true, 
-                        Following: response
+                        following: response
                     })
             }
         })

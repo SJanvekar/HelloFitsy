@@ -19,31 +19,6 @@ var UserFollowerSchema = new Schema({
         lowercase: true,
         index: true
     },
-
-    //Follower account Profile Image URL
-    FollowerProfileImageURL: {
-        type: String,
-        required: false
-
-    },
-    
-    //Follower account First Name
-    FollowerFirstName: {
-        type: String,
-        required: true
-    },
-
-    //Follower account Last Name
-    FollowerLastName: {
-        type: String,
-        required: true
-    },
-
-    //Follower account User Bio
-    FollowerUserBio: {
-        type: String,
-        required: false
-    },
 })
 
 module.exports = mongoose.model('Follower', UserFollowerSchema)

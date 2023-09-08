@@ -27,7 +27,7 @@ var ClassPurchasedSchema = new Schema({
     },
 
     //Class ID
-    Class: {
+    ClassID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Class',
         required: true,
