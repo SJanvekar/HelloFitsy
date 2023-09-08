@@ -270,23 +270,7 @@ class _Search extends State<Search> {
                                 //This will need to be replaced with a list of classes received from the search.
                                 final classItem = allClasses[index];
                                 return HomeClassItem(
-                                  classTrainer: classItem.classTrainer,
-                                  className: classItem.className,
-                                  classType: classItem.classType,
-                                  classLocationName:
-                                      classItem.classLocationName,
-                                  classPrice: classItem.classPrice,
-                                  classImage: classItem.classImageUrl,
-                                  trainerImageUrl: classItem.trainerImageUrl,
-                                  classDescription: classItem.classDescription,
-                                  classRating: classItem.classOverallRating,
-                                  classReviews: classItem.classReviewsAmount,
-                                  trainerFirstName: classItem.trainerFirstName,
-                                  trainerLastName: classItem.trainerLastName,
-                                  classWhatToExpect:
-                                      classItem.classWhatToExpect,
-                                  classWhatYouWillNeed:
-                                      classItem.classUserRequirements,
+                                  classItem: classItem,
                                 );
                               },
                               childCount: allClasses.length,

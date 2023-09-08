@@ -12,61 +12,13 @@ var ClassHistorySchema = new Schema({
         index: true
     },
 
-    //Class Name
-    ClassName: {
-        type: String,
-        required: true
-    },
-
-    //Class Image
-    ClassImageUrl: {
-        type: String,
-        required: true
-    },
-
-    //Class Type
-    ClassType: {
-        type: [{
-
-        type: String,
-            enum: ['Solo', 'Group', 'Virtual']
-            }],
-
-        default: ['Solo'],
+    //Class ID
+    ClassID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Class',
         required: true,
-    },
-
-    //Class Location
-    ClassLocation: {
-        type: String,
-        required: true
-
-    },
-
-    //Class Trainer
-    ClassTrainer: {
-        type: String,
-        required: true,
-        required: true,
-    },
-
-    //Trainer Profile Image URL
-    TrainerImageUrl: {
-        type: String,
-        required: false
-    },
-    
-    //Trainer First Name
-    TrainerFirstName: {
-        type: String,
-        required: true
-    },
-
-    //Last Name
-    TrainerLastName: {
-        type: String,
-        required: true
-    },
+        unique: true,
+    }
 })
 
 module.exports = mongoose.model('Class History', ClassHistorySchema)

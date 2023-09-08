@@ -2,7 +2,7 @@ import 'package:balance/feModels/ClassReviewModel.dart';
 import 'package:dio/dio.dart';
 import 'package:balance/constants.dart';
 
-class ClassLikedRequests {
+class ClassReviewRequests {
   Dio dio = new Dio();
 
   //Create Class Review

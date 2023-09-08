@@ -26,6 +26,8 @@ router.get('/dashboard', (req, res) =>{
   //Class Liked routes
     //Get current user's liked classes
     router.get('/getClassLikedList', classLikedController.getClassLikedList)
+    //Get boolean if current user liked class
+    router.get('/isLiked', classLikedController.isLiked)
 
   //Class Schedule routes
     //Get information for a class schedule
@@ -62,12 +64,14 @@ router.get('/dashboard', (req, res) =>{
     router.post('/addclass', classController.addNewClass)
 
   //Class History routes
-    //Get current user's class history
-    router.get('/getClassHistoryList', classHistoryController.getClassHistoryList)
-
-  //Class Liked routes
     //Add Class History
     router.post('/addClassHistory', classHistoryController.addClassHistory)
+
+  //Class Liked routes
+    //Add Class Liked
+    router.post('/addClassLiked', classLikedController.addClassLiked)
+    //Remove Class Liked
+    router.post('/removeClassLiked', classLikedController.removeClassLiked)
 
   //Class Schedule routes
     router.post('/addClassSchedule', classPurchasedController.addNewClassPurchased)

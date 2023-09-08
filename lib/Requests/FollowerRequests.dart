@@ -12,9 +12,6 @@ class FollowerRequests {
           data: {
             "FollowerUserName": followerModel.followerUsername,
             "Username": followerModel.username,
-            "FollowerFirstName": followerModel.followerFirstName,
-            "FollowerLastName": followerModel.followerLastName,
-            "FollowerProfileImageURL": followerModel.followerProfileImageURL,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

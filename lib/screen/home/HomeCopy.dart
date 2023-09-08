@@ -2,6 +2,7 @@ import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
 import 'package:balance/screen/profile/components/myProfile.dart';
@@ -17,7 +18,6 @@ import '../../sharedWidgets/bodyButton.dart';
 import '../../sharedWidgets/searchBarWidget.dart';
 import '../createClass/CreateClassStep1SelectType.dart';
 import 'components/Search.dart';
-import 'dart:convert';
 
 class HomeTest extends StatefulWidget {
   HomeTest({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class _HomeTestState extends State<HomeTest> {
   void initState() {
     super.initState();
     getUserInfo();
-    // getUserFollowing();
+    getUserFollowing();
 
     setState(() {});
   }
@@ -61,32 +61,32 @@ class _HomeTestState extends State<HomeTest> {
         .then((val) async {
       if (val.data['success']) {
         print('successful get following list');
-        getClassFeed(val.data['following']);
-
+        getClassFeed([
+          for (dynamic document in (val.data['following'] as List<dynamic>))
+            Following.fromJson(document).followingUsername
+        ]);
         isLoading = false;
       } else {
         //Remove print statement in production
         print('Empty Class List');
         isLoading = false;
-        return;
       }
     });
   }
 
-  void getClassFeed(List<dynamic> followingList) async {
-    ClassRequests().getClass(followingList).then((val) async {
+  void getClassFeed(List<String> followingUsernames) async {
+    ClassRequests().getClass(followingUsernames).then((val) async {
       //get logged in user's following list
-
       if (val.data['success']) {
         print('successful get class feed');
-        //Response represents a list of classes
-        List<dynamic> receivedJSON = val.data['classArray'];
         //TODO: Theoretically, you should be able to foreach and get list of classes
         //Hardcoded first item for now, since we're only getting one class
-        allClasses.add(Class.fromJson(receivedJSON[0]));
+        allClasses
+            .add(Class.fromJson((val.data['classArray'] as List<dynamic>)[0]));
       } else {
-        print('error get class feed');
+        print('error get class feed: ${val.data['msg']}');
       }
+      setState(() {});
     });
   }
 
@@ -415,20 +415,7 @@ class _HomeTestState extends State<HomeTest> {
                 (BuildContext context, int index) {
                   final classItem = allClasses[index];
                   return HomeClassItem(
-                    classTrainer: classItem.classTrainer,
-                    className: classItem.className,
-                    classType: classItem.classType,
-                    classLocationName: classItem.classLocationName,
-                    classPrice: classItem.classPrice,
-                    classImage: classItem.classImageUrl,
-                    trainerImageUrl: classItem.trainerImageUrl,
-                    classDescription: classItem.classDescription,
-                    classRating: classItem.classOverallRating,
-                    classReviews: classItem.classReviewsAmount,
-                    trainerFirstName: classItem.trainerFirstName,
-                    trainerLastName: classItem.trainerLastName,
-                    classWhatToExpect: classItem.classWhatToExpect,
-                    classWhatYouWillNeed: classItem.classUserRequirements,
+                    classItem: classItem,
                   );
                 },
                 childCount: allClasses.length,
