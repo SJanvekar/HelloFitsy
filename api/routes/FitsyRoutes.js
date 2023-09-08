@@ -6,8 +6,8 @@ const classLikedController = require('../controllers/ClassLikedController.js')
 const classPurchasedController = require('../controllers/ClassPurchasedController.js')
 const followerController = require('../controllers/FollowerController.js')
 const followingController = require('../controllers/FollowingController.js')
+const stripeController = require('../controllers/StripeController.js')
 const userController = require('../controllers/UserController.js')
-
 
 router.get('/dashboard', (req, res) =>{
   res.send('Dashboard')
@@ -47,11 +47,19 @@ router.get('/dashboard', (req, res) =>{
     //Is current user following account
     router.get('/isFollowing', followingController.isFollowing)
 
+  //Stripe routes
+    //Create Express account and 
+    router.get('/createStripeAccount', stripeController.createNewStripeAccount)
+
+    //Create Stripe account link
+    router.get('/createStripeAccountLink', stripeController.createStripeAccountLink)
+
   //User routes
     //Get information for a new user
     router.get('/getinfo', userController.getinfo)
     //Search trainers
     router.get('/searchTrainers', userController.searchTrainers)
+    
 
   router.get('/', (req, res) =>{
     res.send('I am up and running! -- Welcome to Fitsy')

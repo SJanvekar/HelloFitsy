@@ -8,11 +8,17 @@ const routes = require( './api/routes/fitsyRoutes')
 const config = require('config')
 connectDB()
 const app = express()
+const dotenv = require('dotenv');
+dotenv.config();
 
 if(process.env.NODE_ENV === 'development'){
   app.use(morgan('dev'))
 }
 
+const stripe = require('stripe')('process.env.STRIPE_SECRET');
+const account = await stripe.accounts.create({
+  type: 'express',
+});
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false}))
