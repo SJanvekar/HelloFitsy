@@ -13,41 +13,9 @@ import 'package:balance/feModels/ClassModel.dart';
 final oCcy = new NumberFormat("#,##0", "en_US");
 
 class ProfileClassCard extends StatefulWidget {
-  ProfileClassCard({
-    Key? key,
-    required this.classTrainer,
-    required this.trainerFirstName,
-    required this.trainerLastName,
-    required this.classType,
-    required this.className,
-    required this.classDescription,
-    required this.classWhatToExpect,
-    required this.classWhatYouWillNeed,
-    required this.classLocationName,
-    required this.classPrice,
-    required this.classImage,
-    required this.trainerImageUrl,
-    required this.classRating,
-    required this.classReviews,
-    required List classTimes,
-  }) : super(key: key);
+  ProfileClassCard({Key? key, required this.classItem}) : super(key: key);
 
-  String classTrainer;
-  String trainerFirstName;
-  String trainerLastName;
-  ClassType classType;
-  String className;
-  String classDescription;
-  String classWhatToExpect;
-  String classWhatYouWillNeed;
-  String classLocationName;
-  double classPrice;
-  //HARD CODED - MUST CHANGE
-  bool classLiked = false;
-  String classImage;
-  String trainerImageUrl;
-  double classRating;
-  int classReviews;
+  Class classItem;
 
   var classTypeIconPath = 'assets/icons/generalIcons/classOneOnOne.svg';
 
@@ -78,6 +46,7 @@ class ProfileClassCard extends StatefulWidget {
 }
 
 class _ProfileClassCard extends State<ProfileClassCard> {
+  bool classLiked = false;
   @override
   Widget build(BuildContext context) {
     var iconDistance = MediaQuery.of(context).size.width - (26 * 2) - 45;
@@ -98,21 +67,7 @@ class _ProfileClassCard extends State<ProfileClassCard> {
         openColor: Colors.transparent,
         closedColor: Colors.transparent,
         openBuilder: (BuildContext context, _) => ClassCardOpen(
-          classImage: widget.classImage,
-          classLiked: widget.classLiked,
-          classLocationName: widget.classLocationName,
-          classType: widget.classType,
-          className: widget.className,
-          classPrice: widget.classPrice,
-          classTrainer: widget.classTrainer,
-          trainerFirstName: widget.trainerFirstName,
-          trainerLastName: widget.trainerLastName,
-          trainerImageUrl: widget.trainerImageUrl,
-          classRating: widget.classRating,
-          classReviews: widget.classReviews,
-          classDescription: widget.classDescription,
-          classWhatToExpect: widget.classWhatToExpect,
-          classWhatYouWillNeed: widget.classWhatYouWillNeed,
+          classItem: widget.classItem,
         ),
         closedBuilder: (BuildContext context, VoidCallback openClass) =>
             GestureDetector(
@@ -141,7 +96,7 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                             ]),
                         image: DecorationImage(
                             image: NetworkImage(
-                              widget.classImage,
+                              widget.classItem.classImageUrl,
                             ),
                             fit: BoxFit.cover),
                         borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -176,12 +131,13 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        classTitle(widget.className, titleBoxWidth),
+                        classTitle(widget.classItem.className, titleBoxWidth),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 2.0),
-                          child: classSubHeader(widget.classLocationName),
+                          child: classSubHeader(
+                              widget.classItem.classLocationName),
                         ),
-                        classPrice(widget.classPrice)
+                        classPrice(widget.classItem.classPrice)
                       ],
                     ),
                   ),
@@ -192,16 +148,16 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                       children: [
                         GestureDetector(
                           child: SvgPicture.asset(
-                            widget.classLiked
+                            classLiked
                                 ? 'assets/icons/generalIcons/favouriteFill.svg'
                                 : 'assets/icons/generalIcons/favouriteEmpty.svg',
-                            color: widget.classLiked ? strawberry : snow,
+                            color: classLiked ? strawberry : snow,
                             height: 18,
                             width: 18,
                           ),
                           onTap: () {
                             setState(() {
-                              widget.classLiked = !widget.classLiked;
+                              classLiked = !classLiked;
                               HapticFeedback.mediumImpact();
                             });
                           },

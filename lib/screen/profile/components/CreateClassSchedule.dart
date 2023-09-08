@@ -844,30 +844,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                         ),
                                       ]),
                                   child: ScheduledClassTile(
-                                    classImageUrl: scheduledClass.classImageUrl,
-                                    classTitle: scheduledClass.className,
-                                    classTrainer:
-                                        scheduledClass.trainerFirstName,
-                                    classTrainerImageUrl:
-                                        scheduledClass.trainerImageUrl,
-                                    classDescription:
-                                        scheduledClass.classDescription,
-                                    classLocationName:
-                                        scheduledClass.classLocationName,
-                                    classPrice: scheduledClass.classPrice,
-                                    classRating:
-                                        scheduledClass.classOverallRating,
-                                    classReviews:
-                                        scheduledClass.classReviewsAmount,
-                                    classTrainerFirstName:
-                                        scheduledClass.trainerFirstName,
-                                    classTrainerLastName:
-                                        scheduledClass.trainerLastName,
-                                    classType: scheduledClass.classType,
-                                    classWhatToExpect:
-                                        scheduledClass.classWhatToExpect,
-                                    classWhatYouWillNeed:
-                                        scheduledClass.classUserRequirements,
+                                    classItem: scheduledClass,
                                   ),
                                 ),
                               );

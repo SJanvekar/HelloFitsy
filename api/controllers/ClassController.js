@@ -20,6 +20,7 @@ var functions = {
                 ClassLocationName: req.body.ClassLocationName,
                 ClassLatitude: req.body.ClassLatitude,
                 ClassLongitude: req.body.ClassLongitude,
+                ClassOverallRating: req.body.ClassOverallRating,
                 ClassReviewsAmount: req.body.ClassReviewsAmount,
                 ClassPrice: req.body.ClassPrice,
                 ClassTrainer: req.body.ClassTrainer,
@@ -39,7 +40,7 @@ var functions = {
         }
     },
 
-    // Get Class Information
+    // Get Class Information, can handle arrays
     getClasses: function (req, res) {
         const classPromiseAsync = (responseJSON) => {
             return new Promise((resolve, reject) => {
@@ -54,18 +55,24 @@ var functions = {
             })
         }
         if  ((!req.query.ClassTrainer)) { //TODO: Check aganist empty and null query parameters, also apply to similar checks
-            res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
+            return res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
         }
-        Class.find({ClassTrainer: {$in:req.query.ClassTrainer}}, function (err, classArray) {
+        const decodedArray = JSON.parse(decodeURIComponent(req.query.ClassTrainer))
+        Class.find({ClassTrainer: {$all:decodedArray}}, function (err, classArray) {
             if (err) {
                 console.log(err)
-                return res.json({success: false, msg: err})
+                return res.json({success: false, msg: "Failed to find class: " + err})
             } else {
-                return classPromiseAsync(classArray).then(parsedResponse => 
+                return classPromiseAsync(classArray).then( function (parsedResponse) {
                     //RESPONSE string is an array of classes
-                    res.json({success: true, 
-                        classArray: parsedResponse,
-                    }))
+                    if (parsedResponse instanceof Error) {
+                        return res.json({success: false, msg: "Failed to convert response to JSON:" + err})
+                    } else {
+                        res.json({success: true, 
+                            classArray: parsedResponse,
+                        })
+                    }
+                })
             }
         })
     },

@@ -13,9 +13,6 @@ var functions = {
             var newFollower = Follower({
                 FollowerUsername: req.body.FollowerUserName,
                 Username: req.body.Username,
-                FollowerFirstName: req.body.FollowerFirstName,
-                FollowerLastName: req.body.FollowerLastName,
-                FollowerProfileImageURL: req.body.FollowerProfileImageURL,
             });
             newFollower.save(function (err, newFollower){
                 if (err) {

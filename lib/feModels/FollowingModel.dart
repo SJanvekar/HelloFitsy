@@ -1,16 +1,13 @@
 class Following {
   String followingUsername;
   String username;
-  String followingFirstName;
-  String followingLastName;
-  late String followingProfileImageURL;
-  late String? followingUserBio;
 
-  Following({
-    required this.followingUsername,
-    required this.username,
-    required this.followingFirstName,
-    required this.followingLastName,
-    required this.followingProfileImageURL,
-  });
+  Following({required this.followingUsername, required this.username});
+
+  Following.fromJson(Map<String, dynamic> json)
+      : followingUsername = json['FollowingUsername'],
+        username = json['Username'];
+
+  Map<String, dynamic> toJson() =>
+      {'FollowingUsername': followingUsername, 'Username': username};
 }
