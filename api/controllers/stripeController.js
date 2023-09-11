@@ -4,10 +4,11 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET);
 
 
 var functions = {
-  createStripeAccountLink: async function (req, res, userStripeAccount){
+
+  createStripeAccountLink: async function (req, res){
     const accountLink = await stripe.accountLinks.create({
-      account: userStripeAccount,
-      refresh_url: 'http://localhost:8888/createStripeAccountLink',
+      account: req.params.account,
+      refresh_url: 'http://localhost:8888/createStripeAccountLink/{{account}}',
       return_url: 'http://localhost:8888',
       type: 'account_onboarding',
     });
@@ -28,7 +29,7 @@ var functions = {
      }
     else {
       res.json({success: true, msg: 'Successfully created Stripe Account'})
-      
+      createStripeAccountLink(req,res,account)
   }
   },
 

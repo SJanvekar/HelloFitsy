@@ -52,7 +52,7 @@ router.get('/dashboard', (req, res) =>{
     router.get('/createStripeAccount', stripeController.createNewStripeAccount)
 
     //Create Stripe account link
-    router.get('/createStripeAccountLink', stripeController.createStripeAccountLink)
+    router.get('/createStripeAccountLink/:account', stripeController.createStripeAccountLink)
 
   //User routes
     //Get information for a new user
