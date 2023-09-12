@@ -3,8 +3,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
+import 'package:balance/Constants.dart';
 import 'package:balance/Requests/UserRequests.dart';
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
 import 'package:balance/feModels/Categories.dart';
 import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
@@ -65,7 +66,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
   @override
   void initState() {
     super.initState();
-    print(widget.userInstance.lastName);
     getSet2UserDetails();
     checkInterests();
     _scrollController = ScrollController()
@@ -278,39 +278,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
           controller: _scrollController,
           slivers: [
             SliverAppBar(
-              //DEPRECATED - REMOVE IF NEVER NEEDED BEFORE RELEASE
-
-              // leading: GestureDetector(
-              //   child: Padding(
-              //     padding: const EdgeInsets.only(
-              //       left: 26.0,
-              //       top: 11.5,
-              //       bottom: 11.5,
-              //     ),
-              //     child: ClipOval(
-              //         child: BackdropFilter(
-              //       filter: ImageFilter.blur(
-              //         sigmaX: 1,
-              //         sigmaY: 1,
-              //       ),
-              //       child: Container(
-              //         height: 32,
-              //         width: 32,
-              //         decoration: BoxDecoration(color: iconCircleColor),
-              //         child: Padding(
-              //           padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
-              //           child: SvgPicture.asset(
-              //             'assets/icons/generalIcons/arrowLeft.svg',
-              //             color: iconColor,
-              //             height: 13,
-              //             width: 6,
-              //           ),
-              //         ),
-              //       ),
-              //     )),
-              //   ),
-              //   onTap: () => {Navigator.of(context).pop()},
-              // ),
               leadingWidth: 58,
               automaticallyImplyLeading: false,
               backgroundColor: snow,
@@ -724,6 +691,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                         .spaceBetween,
                                                 children: [
                                                   TextButton(
+                                                    style:
+                                                        textButtonStyleNoSplash,
                                                     onPressed: () {
                                                       statusBarTheme =
                                                           Brightness.dark;
@@ -740,6 +709,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                     style: sectionTitles,
                                                   ),
                                                   TextButton(
+                                                    style:
+                                                        textButtonStyleNoSplash,
                                                     onPressed: () {
                                                       //TODO: Wrap next async in then statement, see if that fixes async concurrency issue
                                                       statusBarTheme =
@@ -829,9 +800,13 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                           }
                                                         });
                                                       });
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      setState(() {});
+                                                      Future.delayed(
+                                                          Duration(
+                                                              milliseconds:
+                                                                  550), () {
+                                                        Navigator.pop(context);
+                                                        setState(() {});
+                                                      });
                                                     },
                                                     child: Text("Done",
                                                         style: doneTextButton),

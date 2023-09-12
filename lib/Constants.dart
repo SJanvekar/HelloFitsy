@@ -297,3 +297,10 @@ const profileBodyTextFont = TextStyle(
     fontFamily: 'SFDisplay',
     fontSize: 14.5,
     fontWeight: FontWeight.w400);
+
+//TEXT BUTTON STYLES
+
+//NO SPLASH
+var textButtonStyleNoSplash = ButtonStyle(
+  overlayColor: MaterialStateProperty.all(Colors.transparent),
+);
