@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:balance/Authentication/authService.dart';
+import 'package:balance/Main.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/screen/home/HomeCopy.dart';
@@ -10,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../feModels/Categories.dart';
@@ -166,17 +170,7 @@ class _CategorySelectionState extends State<CategorySelection> {
                   {selectedCategories.remove(allCategories[i].categoryName)}
               },
             userTemplate.categories = selectedCategories,
-            if (userTemplate.userType == UserType.Trainee)
-              {
-                sendUserModel(),
-              }
-            else
-              {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SetUpTrainerStripeAccount(
-                        authTemplate: authTemplate,
-                        userTemplate: userTemplate)))
-              }
+            sendUserModel(),
           },
         ),
       ),
@@ -190,11 +184,22 @@ class _CategorySelectionState extends State<CategorySelection> {
     userTemplate.following = <String>[];
 
     //Auth Service Call
-    AuthService().signUp(authTemplate, userTemplate).then((val) {
+    AuthService().signUp(authTemplate, userTemplate).then((val) async {
       if (val.data['success']) {
         print('Successful user add');
+
+        //Assign all userTemplate information to shared preferences for MainPage
+        final sharedPrefs = await SharedPreferences.getInstance();
+        final String encodedCategories = jsonEncode(userTemplate.categories);
+        sharedPrefs.setString('userType', userTemplate.userType.toString());
+        sharedPrefs.setString('profileImageURL', userTemplate.profileImageURL);
+        sharedPrefs.setString('userName', userTemplate.userName);
+        sharedPrefs.setString('firstName', userTemplate.firstName);
+        sharedPrefs.setString('lastName', userTemplate.lastName);
+        sharedPrefs.setString('categories', encodedCategories);
+
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeTest()));
+            .push(MaterialPageRoute(builder: (context) => MainPage()));
       } else {
         print("Sign up error: ${val.data['msg']}");
       }

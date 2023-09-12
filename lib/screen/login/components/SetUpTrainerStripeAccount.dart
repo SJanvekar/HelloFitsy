@@ -1,29 +1,16 @@
-import 'dart:io';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/AuthModel.dart';
-import 'package:balance/screen/login/components/CategorySelection.dart';
-import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-
-import '../../../Authentication/AuthService.dart';
 import '../../../feModels/UserModel.dart';
-import '../../home/HomeCopy.dart';
 
 // var image = AssetImage('assets/images/profilePictureDefault.png');
 var image;
 
 class SetUpTrainerStripeAccount extends StatefulWidget {
-  SetUpTrainerStripeAccount(
-      {Key? key, required this.authTemplate, required this.userTemplate})
+  SetUpTrainerStripeAccount({Key? key, required this.userInstance})
       : super(key: key);
 
-  final Auth authTemplate;
-  final User userTemplate;
+  final User userInstance;
 
   @override
   State<SetUpTrainerStripeAccount> createState() =>
@@ -31,104 +18,33 @@ class SetUpTrainerStripeAccount extends StatefulWidget {
 }
 
 class _SetUpTrainerStripeAccountState extends State<SetUpTrainerStripeAccount> {
-  File? profilePictureImage;
-
-  //Send Trainer User Model
-
-  void sendUserModel() {
-    userTemplate.likedClasses = <String>[];
-    userTemplate.classHistory = <String>[];
-    userTemplate.followers = <String>[];
-    userTemplate.following = <String>[];
-
-    //Auth Service Call
-    AuthService().signUp(authTemplate, userTemplate).then((val) {
-      if (val.data['success']) {
-        print('Successful user add');
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeTest()));
-      } else {
-        print("Sign up error: ${val.data}");
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    var topPadding;
-
-    return Scaffold(
-      backgroundColor: snow,
-      appBar: AppBar(
-        toolbarHeight: 50,
-        centerTitle: false,
-        elevation: 0,
-        backgroundColor: snow,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back to Personal Info");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => PersonalInfo()));
-                },
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 0,
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          print("Back");
-                          Navigator.of(context).pop(CupertinoPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => PersonalInfo()));
-                        },
-                        child: Text("Back", style: logInPageNavigationButtons),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: Image.asset(
+              'assets/images/getPaid.png',
+              height: 100,
             ),
-          ],
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
+          ),
+          pageTitle(),
+          pageText(),
+          Padding(
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.15),
-              child: pageTitle(),
-            ),
-            pageText(),
-            Padding(
-              padding: const EdgeInsets.only(top: 30.0, bottom: 50),
-              child: Image.asset(
-                'assets/images/getPaid.png',
-                height: 135,
+                top: 20,
+                bottom: 20,
               ),
-            ),
-            Padding(
-                padding: EdgeInsets.only(
-                  left: 52,
-                  right: 52,
-                  bottom: 20,
-                ),
-                child: connectWithStripe()),
-            skip()
-          ],
-        ),
+              child: connectWithStripe()),
+          GestureDetector(
+            child: Text('I\'ll do this later', style: buttonText3Jetblack40),
+            onTap: () => Navigator.of(context).pop(),
+          ),
+        ],
       ),
     );
   }
@@ -137,11 +53,10 @@ class _SetUpTrainerStripeAccountState extends State<SetUpTrainerStripeAccount> {
 Widget pageTitle() {
   return Center(
     child: Container(
-        padding: EdgeInsets.only(top: 20),
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Get paid with Fitsy',
-          style: logInPageTitle,
+          style: sectionTitles,
         )),
   );
 }
@@ -150,13 +65,11 @@ Widget pageText() {
   return Padding(
     padding: const EdgeInsets.only(
       top: 5,
-      left: 26.0,
-      right: 26.0,
     ),
     child: RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-        style: logInPageBodyText,
+        style: popUpMenuText,
         children: [
           TextSpan(
             text:
@@ -173,21 +86,15 @@ Widget connectWithStripe() {
       decoration: BoxDecoration(
           color: strawberry, borderRadius: BorderRadius.circular(20)),
       child: const Padding(
-        padding: EdgeInsets.all(15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              'Set up my payment account',
-              style: buttonText2snow,
-            ),
-            Icon(
-              Icons.keyboard_arrow_right_rounded,
-              size: 20,
-              color: snow,
-            )
-          ],
+        padding: EdgeInsets.only(
+          left: 50.0,
+          right: 50.0,
+          top: 10,
+          bottom: 10,
+        ),
+        child: Text(
+          'Set up account',
+          style: buttonText2snow,
         ),
       ));
 }

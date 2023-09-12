@@ -1,11 +1,8 @@
 import 'package:balance/Requests/ClassRequests.dart';
-import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
-import 'package:balance/screen/profile/components/myProfile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,13 +11,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../feModels/ClassModel.dart';
+import '../../feModels/UserModel.dart';
 import '../../sharedWidgets/bodyButton.dart';
-import '../../sharedWidgets/searchBarWidget.dart';
-import '../createClass/CreateClassStep1SelectType.dart';
 import 'components/Search.dart';
 
 class HomeTest extends StatefulWidget {
-  HomeTest({Key? key}) : super(key: key);
+  HomeTest({Key? key, required this.userInstance}) : super(key: key);
+
+  User userInstance;
 
   @override
   State<HomeTest> createState() => _HomeTestState();
@@ -31,8 +29,6 @@ class _HomeTestState extends State<HomeTest> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   String profileImageUrl = "";
   List<Class> allClasses = [];
-  String username = "";
-  String userFirstName = "";
 
   //Update this to true once the app is launched
   bool isLoading = false;
@@ -41,19 +37,13 @@ class _HomeTestState extends State<HomeTest> {
   @override
   void initState() {
     super.initState();
-    getUserInfo();
     getUserFollowing();
-
-    setState(() {});
+    setState(() {
+      print('I just set home state');
+    });
   }
 
-  void getUserInfo() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    userFirstName = sharedPrefs.getString('firstName') ?? "";
-    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? "";
-    setState(() {});
-  }
-
+  //Function - Get Following List
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     FollowingRequests()
@@ -61,10 +51,10 @@ class _HomeTestState extends State<HomeTest> {
         .then((val) async {
       if (val.data['success']) {
         print('successful get following list');
-        getClassFeed([
-          for (dynamic document in (val.data['following'] as List<dynamic>))
-            Following.fromJson(document).followingUsername
-        ]);
+        // getClassFeed([
+        //   for (dynamic document in (val.data['following'] as List<dynamic>))
+        //     Following.fromJson(document).followingUsername
+        // ]);
         isLoading = false;
       } else {
         //Remove print statement in production
@@ -243,8 +233,8 @@ class _HomeTestState extends State<HomeTest> {
               padding:
                   const EdgeInsets.only(left: 26.0, right: 26.0, top: 15.0),
               child: Text(
-                'Hi, ${userFirstName}',
-                style: TextStyle(
+                'Hi, ${widget.userInstance.firstName}',
+                style: const TextStyle(
                   color: jetBlack,
                   fontFamily: 'SFDisplay',
                   fontSize: 24,
@@ -252,8 +242,8 @@ class _HomeTestState extends State<HomeTest> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0, right: 26.0, top: 2.0),
+            const Padding(
+              padding: EdgeInsets.only(left: 26.0, right: 26.0, top: 2.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

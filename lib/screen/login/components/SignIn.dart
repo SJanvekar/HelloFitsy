@@ -430,8 +430,9 @@ class _SignInState extends State<SignIn> {
                         },
                       ),
                     ),
-                    orDivider(),
-                    signInPartners(),
+                    // orDivider(),
+                    // signInPartners(),
+
                     //Sign Up if you don't have an account
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),

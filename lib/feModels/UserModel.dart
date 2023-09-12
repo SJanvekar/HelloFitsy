@@ -16,6 +16,7 @@ class User {
   late List<String> classHistory;
   late List<String> following;
   late List<String> followers;
+  late String stripeAccountID;
 
   User({
     required this.isActive,

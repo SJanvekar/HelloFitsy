@@ -69,6 +69,13 @@ var UserSchema = new Schema({
         type: String,
         required: false,
     }],
+
+    //Stripe Account ID
+    StripeAccountID: {
+        type: String,
+        required: false
+    },
+    
 })
 
 module.exports = mongoose.model('User', UserSchema)

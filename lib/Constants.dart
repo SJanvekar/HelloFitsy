@@ -199,8 +199,8 @@ const settingsDefaultSelectionText = TextStyle(
 
 const popUpMenuText = TextStyle(
     fontFamily: 'SFDisplay',
-    color: jetBlack80,
-    fontSize: 17,
+    color: jetBlack60,
+    fontSize: 15,
     fontWeight: FontWeight.w500,
     decoration: TextDecoration.none);
 

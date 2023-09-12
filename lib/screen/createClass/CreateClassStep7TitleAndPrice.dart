@@ -2,6 +2,7 @@
 import 'dart:ffi';
 
 import 'package:balance/Authentication/authService.dart';
+import 'package:balance/Main.dart';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
@@ -84,7 +85,7 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
               childCurrent: CreateClassTitleAndPrice(
                 classTemplate: classTemplate,
               ),
-              child: HomeTest()));
+              child: MainPage()));
         } else {
           print("Creating class failed: ${val.data['msg']}");
         }

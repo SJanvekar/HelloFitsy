@@ -4,7 +4,7 @@ const cors = require('cors')
 const connectDB = require('./config/Public/db')
 const passport = require('passport')
 const bodyParser = require('body-parser')
-const routes = require( './api/routes/fitsyRoutes')
+const routes = require( './api/routes/FitsyRoutes')
 const config = require('config')
 connectDB()
 const app = express()
@@ -14,11 +14,6 @@ dotenv.config();
 if(process.env.NODE_ENV === 'development'){
   app.use(morgan('dev'))
 }
-
-const stripe = require('stripe')('process.env.STRIPE_SECRET');
-const account = await stripe.accounts.create({
-  type: 'express',
-});
 
 app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false}))

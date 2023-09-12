@@ -35,6 +35,7 @@ var functions = {
                     ClassHistory: req.body.ClassHistory,
                     Following: req.body.Following,
                     Followers: req.body.Followers,
+                    StripeAccountID: req.body.StripeAccountID
                 });
                 newUser.save(function (err) {
                     if (err) { //TODO: Maybe delete auth object when error occurs
@@ -123,7 +124,9 @@ var functions = {
                             likedClasses: parsedResponse.LikedClasses,
                             classHistory: parsedResponse.ClassHistory,
                             following: parsedResponse.Following,
-                            followers: parsedResponse.Followers}))
+                            followers: parsedResponse.Followers,
+                            stripeAccountID: parsedResponse.StripeAccountID,
+                        }))
                 }
             })
         } else {

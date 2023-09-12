@@ -18,13 +18,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import 'package:table_calendar/table_calendar.dart';
 import '../../../feModels/ClassModel.dart';
 import '../../../feModels/UserModel.dart';
-import '../../profile/components/createClassSchedule.dart';
 
 class PersonalProfile extends StatefulWidget {
   PersonalProfile({
@@ -68,6 +65,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
   @override
   void initState() {
     super.initState();
+    print(widget.userInstance.lastName);
     getSet2UserDetails();
     checkInterests();
     _scrollController = ScrollController()
@@ -766,8 +764,6 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                         newBio ??= widget
                                                             .userInstance
                                                             .userBio;
-                                                        print(
-                                                            newProfileImageURL);
                                                         UserRequests()
                                                             .updateUserInformation(
                                                           newProfileImageURL,
@@ -783,21 +779,46 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                             final sharedPrefs =
                                                                 await SharedPreferences
                                                                     .getInstance();
-                                                            print(
-                                                                'successful update user');
+                                                            //Username - Set shared preferences & userInstance variables
                                                             sharedPrefs.setString(
                                                                 'userName',
                                                                 newUserName!);
+                                                            widget.userInstance
+                                                                    .userName =
+                                                                newUserName!;
+
+                                                            //Firstname - Set shared preferences & userInstance variables
                                                             sharedPrefs.setString(
                                                                 'firstName',
                                                                 newFirstName!);
+                                                            widget.userInstance
+                                                                    .firstName =
+                                                                newFirstName!;
+
+                                                            //Lastname - Set shared preferences & userInstance variables
                                                             sharedPrefs.setString(
                                                                 'lastName',
                                                                 newLastName!);
+                                                            widget.userInstance
+                                                                    .lastName =
+                                                                newLastName!;
+
+                                                            //UserBio - Set shared preferences & userInstance variables
                                                             sharedPrefs
                                                                 .setString(
                                                                     'userBio',
                                                                     newBio!);
+                                                            widget.userInstance
+                                                                    .userBio =
+                                                                newBio!;
+
+                                                            //Profile Image URL - Set shared preferences & userInstance variables
+                                                            sharedPrefs.setString(
+                                                                'profileImageURL',
+                                                                newProfileImageURL!);
+                                                            widget.userInstance
+                                                                    .profileImageURL ==
+                                                                newProfileImageURL;
                                                           } else {
                                                             if (val.data[
                                                                     'errorCode'] ==
