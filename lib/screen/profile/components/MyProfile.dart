@@ -11,6 +11,7 @@ import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
+import 'package:balance/sharedWidgets/noticeDisclaimer.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCardPersonalProfile.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -35,12 +36,12 @@ class PersonalProfile extends StatefulWidget {
   //User details:
   // String profileImageUrl;
   // String userName;
-
   // String userFirstName;
   // String userLastName;
   // String userBio;
   // String userType;
   // String userInterests;
+
   @override
   State<PersonalProfile> createState() => _PersonalProfileState();
 }
@@ -957,10 +958,28 @@ class _PersonalProfileState extends State<PersonalProfile> {
                       fontWeight: FontWeight.w600,
                       fontSize: 16.0)),
             ),
+            //Notice to set up Stripe (If not already set up)
+            if (widget.userInstance.userType == UserType.Trainer &&
+                widget.userInstance.stripeAccountID.isEmpty)
+              MultiSliver(children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: GestureDetector(
+                    child: NoticeDisclaimer(
+                        textBoxSize: 260.0,
+                        disclaimerText:
+                            'Set up your payment account so you can start getting paid for your classes',
+                        buttonText: 'Start',
+                        buttonLeftRightPadding: 30.0),
+                    onTap: () {},
+                  ),
+                )
+              ]),
+
             MultiSliver(children: [
               Padding(
                 padding:
-                    const EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
+                    const EdgeInsets.only(top: 15.0, left: 26.0, right: 26.0),
                 child: Text(
                   'About me',
                   style: sectionTitles,
