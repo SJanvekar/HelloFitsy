@@ -1,39 +1,54 @@
 const dotenv = require('dotenv');
 dotenv.config();
-// const stripe = require('stripe')(process.env.STRIPE_SECRET);
+
+//Get Stripe Key & intialize stripe variable
+const StripeKey = process.env.STRIPE_SECRET
+const fitsyStripe = require('stripe')(StripeKey);
 
 
 var functions = {
 
-  createStripeAccountLink: async function (req, res){
-    const accountLink = await stripe.accountLinks.create({
-      account: req.params.account,
-      refresh_url: 'http://localhost:8888/createStripeAccountLink/{{account}}',
+// Create Stripe Account Link
+createStripeAccountLink: async function (req, res) {
+  // Check if the 'account' parameter is present in the request body
+
+  if (!req.body.account) {
+    return res.status(400).json({ success: false, msg: 'Missing account parameter in the request body ' + req.body.account});
+
+  }
+
+  try {
+  
+    const accountLink = await fitsyStripe.accountLinks.create({
+      account: req.body.account,
+      refresh_url: 'http://localhost:8888/createStripeAccountLink',
       return_url: 'http://localhost:8888',
-      type: 'account_onboarding',
+      type: 'account_onboarding',   
     });
-    if(err) {
-      res.json({success: false, msg: err})
-     }
-    else {
-      res.json({success: true, msg: 'Successfully created Stripe Account Link'})
-  }
-  },
 
-    createNewStripeAccount: async function (req, res){
-    const account = await stripe.accounts.create({
-      type: 'express',
-    });
-    if(err) {
-      res.json({success: false, msg: err})
-     }
-    else {
-      res.json({success: true, msg: 'Successfully created Stripe Account'})
-      createStripeAccountLink(req,res,account)
-  }
-  },
+    res.json({ success: true, msg: 'Successfully created Stripe Account Link', url: accountLink.url });
+    
 
-    //Create Stripe Account Link
+  } catch (err) {
+    res.status(500).json({ success: false, msg: 'Error creating Stripe Account Link', error: err.message });
+  }
+},
+  
+  //Create new Stripe Connected Account
+  createNewStripeAccount: async function (req, res){
+    try {
+      const account = await fitsyStripe.accounts.create({
+        type: 'express',
+      });
+  
+      res.json({ success: true, msg: 'Successfully created Stripe Account', id: account.id });
+    } catch (err) {
+      res.status(500).json({ success: false, msg: 'Error creating Stripe Account', error: err.message });
+    }
+  }
+
+  //Retrieve Account Details Submitted
+  //IMPLEMENT THIS  
     
 }
 

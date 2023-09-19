@@ -10,7 +10,7 @@ import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep3WhatToExpect.dart';
-import 'package:balance/screen/home/HomeCopy.dart';
+import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';

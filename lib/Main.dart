@@ -4,9 +4,9 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
-import 'package:balance/screen/home/HomeCopy.dart';
+import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/home/components/Search.dart';
-import 'package:balance/screen/login/components/SetUpTrainerStripeAccount.dart';
+import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/CreateClassSchedule.dart';
@@ -36,7 +36,7 @@ void main() async {
 final router = GoRouter(
   routes: [
     GoRoute(
-      path: '/',
+      path: '/home',
       builder: (_, __) => FITSY(),
       routes: [
         GoRoute(
@@ -105,7 +105,7 @@ class _MainPageState extends State<MainPage>
     // ]);
 
     //Add Home
-    _widgetOptions.add(HomeTest(
+    _widgetOptions.add(Home(
       userInstance: userInstance,
     ));
 
@@ -182,6 +182,7 @@ class _MainPageState extends State<MainPage>
   //Function - Show Alert Dialog
   void showAlert(BuildContext context) {
     showDialog(
+        barrierDismissible: true,
         context: context,
         builder: (context) => Center(
               child: Material(

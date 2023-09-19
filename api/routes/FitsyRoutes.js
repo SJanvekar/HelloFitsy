@@ -47,13 +47,6 @@ router.get('/dashboard', (req, res) =>{
     //Is current user following account
     router.get('/isFollowing', followingController.isFollowing)
 
-  //Stripe routes
-    //Create Express account and 
-    // router.get('/createStripeAccount', stripeController.createNewStripeAccount)
-
-    //Create Stripe account link
-    // router.get('/createStripeAccountLink/:account', stripeController.createStripeAccountLink)
-
   //User routes
     //Get information for a new user
     router.get('/getinfo', userController.getinfo)
@@ -92,6 +85,13 @@ router.get('/dashboard', (req, res) =>{
     //Add New Following
     router.post('/addFollowing', followingController.addFollowing)
 
+  //Stripe routes
+    // Create Express account
+    router.post('/createStripeAccount', stripeController.createNewStripeAccount)
+
+    // Create Stripe account link
+    router.post('/createStripeAccountLink', stripeController.createStripeAccountLink)
+
   //User routes
     //Add New User
     router.post('/adduser', userController.addNew)
@@ -99,5 +99,7 @@ router.get('/dashboard', (req, res) =>{
     router.post('/authenticate', userController.authenticate)
     //Update user information
     router.post('/updateUserInfo', userController.updateUserinfo)
+
+  
 
 module.exports = router

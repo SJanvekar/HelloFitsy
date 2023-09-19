@@ -30,7 +30,7 @@ class NoticeDisclaimer extends StatelessWidget {
           width: width,
           decoration: BoxDecoration(
             color: strawberry.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 15, top: 12, bottom: 12),

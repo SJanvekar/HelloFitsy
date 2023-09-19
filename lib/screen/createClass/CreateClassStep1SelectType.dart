@@ -106,8 +106,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
             child: GestureDetector(
               child: Text("Cancel", style: logInPageNavigationButtons),
               onTap: () {
-                Navigator.of(context).pop(CupertinoPageRoute(
-                    fullscreenDialog: true, builder: (context) => Home()));
+                Navigator.of(context).pop();
               },
             ),
           ),
