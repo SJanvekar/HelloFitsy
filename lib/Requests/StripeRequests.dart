@@ -26,4 +26,17 @@ class StripeRequests {
       print("Stripe Account Link Error: ${e}");
     }
   }
+
+  //Retrieve account information
+  retrieveStripeAccount(stripeAccountID) async {
+    try {
+      return await dio.get('$urlDomain/retrieveStripeAccountDetails',
+          data: {
+            stripeAccountID,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } catch (e) {
+      print("Stripe Account Retrival Error: ${e}");
+    }
+  }
 }

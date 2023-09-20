@@ -5,7 +5,6 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:balance/Constants.dart';
 import 'package:balance/Requests/UserRequests.dart';
-import 'package:balance/Constants.dart';
 import 'package:balance/feModels/Categories.dart';
 import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
@@ -24,6 +23,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../../feModels/ClassModel.dart';
 import '../../../feModels/UserModel.dart';
+import '../../../sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 
 class PersonalProfile extends StatefulWidget {
   PersonalProfile({
@@ -297,7 +297,7 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                widget.userInstance.profileImageURL!,
+                                widget.userInstance.profileImageURL ?? '',
                               ),
                               fit: BoxFit.cover),
                         ),
@@ -971,7 +971,12 @@ class _PersonalProfileState extends State<PersonalProfile> {
                             'Set up your payment account so you can start getting paid for your classes',
                         buttonText: 'Start',
                         buttonLeftRightPadding: 30.0),
-                    onTap: () {},
+                    onTap: () {
+                      Future.delayed(Duration(milliseconds: 50), () {
+                        HapticFeedback.mediumImpact;
+                        StripeLogic().stripeSetUp(widget.userInstance);
+                      });
+                    },
                   ),
                 )
               ]),

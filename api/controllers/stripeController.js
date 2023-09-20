@@ -45,10 +45,20 @@ createStripeAccountLink: async function (req, res) {
     } catch (err) {
       res.status(500).json({ success: false, msg: 'Error creating Stripe Account', error: err.message });
     }
-  }
+  },
 
-  //Retrieve Account Details Submitted
-  //IMPLEMENT THIS  
+  //Retrieve Account Details
+  retrieveStripeAccountDetails: async function (req, res){
+    try {
+      const account = await fitsyStripe.accounts.retrieve({
+        accountID
+      });
+  
+      res.json({ success: true, msg: 'Successfully retrieved Stripe Account', details_submitted: account.details_submitted});
+    } catch (err) {
+      res.status(500).json({ success: false, msg: 'Error retrieving Stripe Account', error: err.message });
+    }
+  }
     
 }
 

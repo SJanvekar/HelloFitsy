@@ -46,14 +46,14 @@ void onSubmitSignInField(context) {
           sharedPrefs.setString('firstName', val.data['firstName']);
           sharedPrefs.setString('lastName', val.data['lastName']);
           sharedPrefs.setString('categories', encodedCategories);
+
           // Check this and figure out how to make it work
           // sharedPrefs.setString('user', json.encode(val.data));
 
           // Check if stripeAccountID is not null (AccountID exists for Stripe)
-          if (val.data['stripeAccountID'] != null) {
-            sharedPrefs.setString(
-                'stripeAccountID', val.data['stripeAccountID']);
-          }
+
+          sharedPrefs.setString(
+              'stripeAccountID', val.data['stripeAccountID'] ?? '');
         } else {
           print('Failed get user info');
         }
@@ -282,14 +282,6 @@ Widget signInPartners() {
   );
 }
 
-//'Already have an account?',
-// style: TextStyle(
-//   fontFamily: 'SFDisplay',
-//   color: jetBlack40,
-//   fontSize: 13,
-//   fontWeight: FontWeight.w600,
-// ),
-
 //Sign In Typeface
 Widget typeFace(topPadding) {
   return Padding(
@@ -322,28 +314,6 @@ class _SignInState extends State<SignIn> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            // title: Padding(
-            //   padding: const EdgeInsets.only(
-            //     left: 0,
-            //     right: 158,
-            //   ),
-            //   child: TextButton(
-            //     style: ButtonStyle(
-            //       overlayColor: MaterialStateProperty.resolveWith<Color>(
-            //           (Set<MaterialState> states) {
-            //         if (states.contains(MaterialState.pressed)) {
-            //           return Colors.transparent;
-            //         }
-            //         return snow;
-            //       }),
-            //     ),
-            //     onPressed: () {
-            //       print("Personal Information Pressed");
-            //       Navigator.of(context).pop();
-            //     },
-            //     child: Text("Cancel", style: logInPageNavigationButtons),
-            //   ),
-            // ),
           ),
           body: SingleChildScrollView(
             child: Center(
@@ -437,8 +407,10 @@ class _SignInState extends State<SignIn> {
                         },
                       ),
                     ),
-                    // orDivider(),
-                    // signInPartners(),
+                    orDivider(),
+
+                    //Sign in partners widget
+                    signInPartners(),
 
                     //Sign Up if you don't have an account
                     Padding(

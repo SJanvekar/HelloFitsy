@@ -47,11 +47,15 @@ router.get('/dashboard', (req, res) =>{
     //Is current user following account
     router.get('/isFollowing', followingController.isFollowing)
 
+  //Stripe Routes
+    router.get('/retrieveStripeAccountDetails', stripeController.retrieveStripeAccountDetails)  
+
   //User routes
     //Get information for a new user
     router.get('/getinfo', userController.getinfo)
     //Search trainers
     router.get('/searchTrainers', userController.searchTrainers)
+  
     
 
   router.get('/', (req, res) =>{
@@ -99,6 +103,8 @@ router.get('/dashboard', (req, res) =>{
     router.post('/authenticate', userController.authenticate)
     //Update user information
     router.post('/updateUserInfo', userController.updateUserinfo)
+    //Update user stripe account ID
+    router.post('/updateUserStripeAccountID', userController.updateUserStripeAccountID)
 
   
 

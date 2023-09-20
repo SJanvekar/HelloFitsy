@@ -1,4 +1,7 @@
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/screen/login/components/SignIn.dart';
+import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,9 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../feModels/UserModel.dart';
 import '../../../Requests/StripeRequests.dart';
-
-// var image = AssetImage('assets/images/profilePictureDefault.png');
-var image;
 
 class SetUpTrainerStripeAccount extends StatefulWidget {
   SetUpTrainerStripeAccount({Key? key, required this.userInstance})
@@ -20,46 +20,6 @@ class SetUpTrainerStripeAccount extends StatefulWidget {
   @override
   State<SetUpTrainerStripeAccount> createState() =>
       _SetUpTrainerStripeAccountState();
-}
-
-void stripeSetUp() {
-  StripeRequests().createStripeAccount().then((val) async {
-    if (val?.data['success'] ?? false) {
-      print('Stripe Account Creation was Successful!');
-      print(val.data['id']);
-
-      //Initialize Shared Prefs instance
-      final sharedPrefs = await SharedPreferences.getInstance();
-
-      //Assign the accountID to the sharedPrefs variable stripeAccountID
-      sharedPrefs.setString('stripeAccountID', val.data['id']);
-      //Store account ID
-      String accountID = val.data['id'];
-
-      //Wait 50ms - Avoid async issues
-      Future.delayed(const Duration(milliseconds: 50), () {
-        //Create Account Link (Request)
-        StripeRequests().createStripeAccountLink(accountID).then((val) async {
-          if (val?.data['success'] ?? false) {
-            print('Stripe Account Creation was Successful!');
-            print(val.data['url']);
-
-            //Store accountLinkURL from response
-            final accountLinkURL = Uri.parse(val.data['url']);
-
-            //Check if Url can be launched and launch url
-            if (await canLaunchUrl(accountLinkURL)) {
-              await launchUrl(accountLinkURL);
-            } else {
-              print('invalid url, cannot launch');
-            }
-          } else {
-            print(val?.data);
-          }
-        });
-      });
-    }
-  });
 }
 
 class _SetUpTrainerStripeAccountState extends State<SetUpTrainerStripeAccount> {
@@ -86,36 +46,43 @@ class _SetUpTrainerStripeAccountState extends State<SetUpTrainerStripeAccount> {
                       thirdRingColor: bone,
                       size: 100,
                     )),
-          if (isEnabled == true) pageTitle(),
-          if (isEnabled == true) pageText(),
           if (isEnabled == true)
-            Padding(
-              padding: EdgeInsets.only(
-                top: 20,
-                bottom: 20,
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  pageTitle(),
+                  pageText(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 20,
+                      bottom: 20,
+                    ),
+                    child: GestureDetector(
+                      child: connectWithStripe(),
+                      onTap: () {
+                        if (isEnabled) {
+                          Future.delayed(Duration(milliseconds: 50), () {
+                            HapticFeedback.mediumImpact;
+                            setState(() {
+                              //Set isEnabled to false
+                              isEnabled = !isEnabled;
+                            });
+                            StripeLogic().stripeSetUp(widget.userInstance);
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                  GestureDetector(
+                    child: const Text('I\'ll do this later',
+                        style: buttonText3Jetblack40),
+                    onTap: () => Navigator.of(context).pop(),
+                  ),
+                ],
               ),
-              child: GestureDetector(
-                child: connectWithStripe(),
-                onTap: () {
-                  if (isEnabled) {
-                    Future.delayed(Duration(milliseconds: 100), () {
-                      HapticFeedback.mediumImpact;
-                      setState(() {
-                        //Set isEnabled to false
-                        isEnabled = !isEnabled;
-                      });
-                      stripeSetUp();
-                    });
-                  }
-                },
-              ),
-            ),
-          if (isEnabled == true)
-            GestureDetector(
-              child: const Text('I\'ll do this later',
-                  style: buttonText3Jetblack40),
-              onTap: () => Navigator.of(context).pop(),
-            ),
+            )
         ],
       ),
     );

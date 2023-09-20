@@ -36,7 +36,7 @@ void main() async {
 final router = GoRouter(
   routes: [
     GoRoute(
-      path: '/home',
+      path: '/',
       builder: (_, __) => FITSY(),
       routes: [
         GoRoute(

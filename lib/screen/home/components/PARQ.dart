@@ -1,14 +1,10 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
-import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/flutter_survey.dart';
-import 'package:sliver_tools/sliver_tools.dart';
-import 'HomeClassItem.dart';
 
 class ParQuestionnaire extends StatefulWidget {
   ParQuestionnaire({Key? key}) : super(key: key);
@@ -179,133 +175,8 @@ class _ParQuestionnaire extends State<ParQuestionnaire> {
             )
           ],
         ),
-
-        // CustomScrollView(
-        //   slivers: [
-        //     //AppBar Sliver
-        //     SliverAppBar(
-        //       floating: true,
-        //       pinned: false,
-        //       toolbarHeight: 170,
-        //       elevation: 0,
-        //       backgroundColor: snow,
-        //       automaticallyImplyLeading: false,
-        //       stretch: true,
-
-        //       //Title
-        //       flexibleSpace: Padding(
-        //         padding: EdgeInsets.only(left: 26, top: 30),
-        //         child: Column(
-        //           mainAxisAlignment: MainAxisAlignment.start,
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             Padding(
-        //               padding: const EdgeInsets.only(bottom: 10.0),
-        //               child: Row(
-        //                 children: [
-        //                   Icon(
-        //                     HelloFitsy.arrowleft,
-        //                     size: 13,
-        //                     color: jetBlack80,
-        //                   ),
-        //                   GestureDetector(
-        //                     child: Text(
-        //                       'Home',
-        //                       style: logInPageNavigationButtons,
-        //                     ),
-        //                     onTap: () {
-        //                       Navigator.of(context).pop();
-        //                     },
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //             Image.asset(
-        //               'assets/images/Typeface.png',
-        //               height: 44,
-        //             ),
-        //             Text('Phyiscal Activity Readiness Questionnaire',
-        //                 style: pageTitles),
-        //           ],
-        //         ),
-        //       ),
-        //     ),
-        //     SliverToBoxAdapter(
-        //         child: SingleChildScrollView(
-        //             child: Form(
-        //                 key: _formKey,
-        //                 child: Column(children: [
-        //                   Padding(
-        //                     padding: const EdgeInsets.all(16.0),
-        //                     child: Survey(
-        //                       onNext: (questionResults) {
-        //                         setState(() {
-        //                           _questionResults = questionResults;
-        //                         });
-        //                       },
-        //                       initialData: _initialData,
-        //                     ),
-        //                   ),
-        //                 ]))))
-        //   ],
-        // )
       ),
       onTap: () => {FocusScope.of(context).requestFocus(new FocusNode())},
     );
-  }
-}
-
-//Tab Bar Sliver Delegate
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate(this._TabBar);
-
-  final TabBar _TabBar;
-
-  @override
-  double get minExtent => 100;
-  @override
-  double get maxExtent => 100;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Container(
-        child: _TabBar,
-        decoration: BoxDecoration(
-          color: snow,
-        ));
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return false;
-  }
-}
-
-//ParQuestionnaire Bar Sliver Delegate
-class _SliverAppBarDelegateParQuestionnaireBar
-    extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegateParQuestionnaireBar(this._ParQuestionnaireBar);
-
-  final Widget _ParQuestionnaireBar;
-
-  @override
-  double get minExtent => 60;
-  @override
-  double get maxExtent => 60;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return new Container(
-        child: _ParQuestionnaireBar,
-        decoration: BoxDecoration(
-          color: snow,
-        ));
-  }
-
-  @override
-  bool shouldRebuild(_SliverAppBarDelegateParQuestionnaireBar oldDelegate) {
-    return false;
   }
 }
