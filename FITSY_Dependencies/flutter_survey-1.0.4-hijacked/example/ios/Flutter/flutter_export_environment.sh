@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/salman/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/salman/Desktop/fitsy.nosync/hellofitsy/flutter_survey-1.0.4-hijacked/example"
+export "FLUTTER_APPLICATION_PATH=/Users/salman/Desktop/fitsy.nosync/hellofitsy/FITSY_Dependencies/flutter_survey-1.0.4-hijacked/example"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

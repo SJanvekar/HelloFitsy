@@ -50,13 +50,15 @@ createStripeAccountLink: async function (req, res) {
   //Retrieve Account Details
   retrieveStripeAccountDetails: async function (req, res){
     try {
-      const account = await fitsyStripe.accounts.retrieve({
-        accountID
-      });
+      const accountID = req.query.accountID; // Retrieve the account ID from the request query parameters
   
-      res.json({ success: true, msg: 'Successfully retrieved Stripe Account', details_submitted: account.details_submitted});
-    } catch (err) {
-      res.status(500).json({ success: false, msg: 'Error retrieving Stripe Account', error: err.message });
+      const account = await fitsyStripe.accounts.retrieve(accountID);
+  
+      // Respond with the Stripe account details
+      res.status(200).json({success: true, account: account});
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, error: 'Error retrieving Stripe account details' });
     }
   }
     

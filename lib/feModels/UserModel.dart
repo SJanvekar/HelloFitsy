@@ -10,13 +10,14 @@ class User {
   String userName;
   late String? userBio;
   late List<String> categories;
+  late String stripeAccountID;
+  late bool isStripeDetailsSubmitted = false;
 
   //TODO: Delete below when done with listSchemaChanges branch
   late List<String> likedClasses;
   late List<String> classHistory;
   late List<String> following;
   late List<String> followers;
-  late String stripeAccountID;
 
   User({
     required this.isActive,

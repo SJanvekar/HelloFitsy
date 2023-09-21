@@ -31,8 +31,8 @@ class StripeRequests {
   retrieveStripeAccount(stripeAccountID) async {
     try {
       return await dio.get('$urlDomain/retrieveStripeAccountDetails',
-          data: {
-            stripeAccountID,
+          queryParameters: {
+            'accountID': stripeAccountID,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } catch (e) {

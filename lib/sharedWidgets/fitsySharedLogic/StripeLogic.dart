@@ -6,21 +6,21 @@ import '../../Requests/UserRequests.dart';
 import '../../feModels/UserModel.dart';
 
 class StripeLogic {
-  //Set Up Express Account
+  //Set Up Express Account + generate account url
   stripeSetUp(User userInstance) {
-    StripeRequests().createStripeAccount().then((val) async {
-      if (val.data['success']) {
-        //Initialize Shared Prefs instance
-        final sharedPrefs = await SharedPreferences.getInstance();
+    //If a user account does not exist -- run the logic to create a new account and update on the userInstance/SharedPref level
+    if (userInstance.stripeAccountID.isEmpty) {
+      StripeRequests().createStripeAccount().then((val) async {
+        if (val.data['success']) {
+          //Initialize Shared Prefs instance
+          final sharedPrefs = await SharedPreferences.getInstance();
 
-        //Assign the accountID to the sharedPrefs variable stripeAccountID
-        sharedPrefs.setString('stripeAccountID', val.data['id']);
+          //Assign the accountID to the sharedPrefs variable stripeAccountID
+          sharedPrefs.setString('stripeAccountID', val.data['id']);
 
-        //Store account ID
-        String accountID = val.data['id'];
+          //Store account ID
+          String accountID = val.data['id'];
 
-        //Wait 50ms - Avoid async issues
-        Future.delayed(const Duration(milliseconds: 0), () {
           //Update the AccountID on the user level in the database
           UserRequests()
               .updateUserStripeAccountID(
@@ -29,30 +29,36 @@ class StripeLogic {
           )
               .then((val) {
             if (val.data['success']) {
-              print('Stripe Account update was successful');
+              //Update userInstance.StripeAccountID with accountID if successful
+              userInstance.stripeAccountID = accountID;
             }
           });
+        }
+      });
+    }
 
-          //Create Account Link (Request)
-          StripeRequests().createStripeAccountLink(accountID).then((val) async {
-            if (val.data['success']) {
-              print('Stripe account link creation was successful!');
+    //Wait 50ms - Avoid async issues with previous function if run (Create account)
+    Future.delayed(const Duration(milliseconds: 0), () {
+      //Create Account Link (Request)
+      StripeRequests()
+          .createStripeAccountLink(userInstance.stripeAccountID)
+          .then((val) async {
+        if (val.data['success']) {
+          print('Stripe account link creation was successful!');
 
-              //Store accountLinkURL from response
-              final accountLinkURL = Uri.parse(val.data['url']);
+          //Store accountLinkURL from response
+          final accountLinkURL = Uri.parse(val.data['url']);
 
-              //Check if Url can be launched and launch url
-              if (await canLaunchUrl(accountLinkURL)) {
-                await launchUrl(accountLinkURL);
-              } else {
-                print('invalid url, cannot launch');
-              }
-            } else {
-              print(val?.data);
-            }
-          });
-        });
-      }
+          //Check if Url can be launched and launch url
+          if (await canLaunchUrl(accountLinkURL)) {
+            await launchUrl(accountLinkURL);
+          } else {
+            print('invalid url, cannot launch');
+          }
+        } else {
+          print(val?.data);
+        }
+      });
     });
   }
 
@@ -64,14 +70,19 @@ class StripeLogic {
         .retrieveStripeAccount(userInstance.stripeAccountID)
         .then((val) async {
       if (val.data['success']) {
-        bool isStripeDetailsSubmitted = val.data['details_submitted'];
+        final accountDetails = val.data['account'];
+        // Check if 'details_submitted' exists in the response
+        if (accountDetails != null &&
+            accountDetails.containsKey('details_submitted')) {
+          final isStripeDetailsSubmitted = accountDetails['details_submitted'];
+          //Initialize Shared Prefs instance
+          final sharedPrefs = await SharedPreferences.getInstance();
 
-        //Initialize Shared Prefs instance
-        final sharedPrefs = await SharedPreferences.getInstance();
-
-        //Assign the accountID to the sharedPrefs variable stripeAccountID
-        sharedPrefs.setString(
-            'isStripeDetailsSubmitted', '$isStripeDetailsSubmitted');
+          //Assign the accountID to the sharedPrefs variable stripeAccountID
+          sharedPrefs.setString(
+              'isStripeDetailsSubmitted', '$isStripeDetailsSubmitted');
+          userInstance.isStripeDetailsSubmitted = isStripeDetailsSubmitted;
+        }
       }
     });
   }

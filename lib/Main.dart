@@ -11,6 +11,7 @@ import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
+import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -126,7 +127,9 @@ class _MainPageState extends State<MainPage>
     });
     controller.forward();
     getUserDetails();
-    setState(() {});
+    setState(() {
+      print('main set');
+    });
   }
 
   //----------
@@ -153,6 +156,9 @@ class _MainPageState extends State<MainPage>
       userInstance.userType = UserType.Trainer;
     }
 
+    //Call function checkStripeAccountID -- This will check if the Stripe account has been set up yet
+    checkStripeAccountID();
+
     //---------Dynamically fill the widget options on MainPage--------------------//
 
     // Add Create Class if user is a trainer
@@ -173,10 +179,9 @@ class _MainPageState extends State<MainPage>
       userInstance: userInstance,
     ));
 
-    setState(() {});
-
-    //Call function checkStripeAccountID -- This will check if the Stripe account has been set up yet
-    checkStripeAccountID();
+    setState(() {
+      print('main set state 2');
+    });
   }
 
   //Function - Show Alert Dialog
@@ -212,10 +217,14 @@ class _MainPageState extends State<MainPage>
   void checkStripeAccountID() {
     if (userInstance.userType == UserType.Trainer &&
         userInstance.stripeAccountID.isEmpty) {
-      //This should run
-
       Future.delayed(Duration(milliseconds: 0), () => showAlert(context));
-      setState(() {});
+    }
+
+    //Else if the account is not empty for the trainer retrieve if details are submitted
+    else if (userInstance.userType == UserType.Trainer &&
+        userInstance.stripeAccountID.isNotEmpty) {
+      print(userInstance.stripeAccountID);
+      StripeLogic().stripeDetailsSubmitted(userInstance);
     }
   }
 

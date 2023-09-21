@@ -9,12 +9,14 @@ class NoticeDisclaimer extends StatelessWidget {
   NoticeDisclaimer(
       {Key? key,
       required this.textBoxSize,
+      required this.disclaimerTitle,
       required this.disclaimerText,
       required this.buttonText,
       required this.buttonLeftRightPadding})
       : super(key: key);
 
   double textBoxSize;
+  String disclaimerTitle;
   String disclaimerText;
   String buttonText;
   double buttonLeftRightPadding;
@@ -31,8 +33,8 @@ class NoticeDisclaimer extends StatelessWidget {
             boxShadow: <BoxShadow>[
               BoxShadow(
                 offset: Offset(0, 0),
-                blurRadius: 10,
-                color: jetBlack.withOpacity(0.3),
+                blurRadius: 8,
+                color: jetBlack.withOpacity(0.4),
               ),
             ],
             borderRadius: BorderRadius.circular(15),
@@ -61,7 +63,7 @@ class NoticeDisclaimer extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(bottom: 3.0),
                               child: Text(
-                                'Notice',
+                                disclaimerTitle,
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.w600,

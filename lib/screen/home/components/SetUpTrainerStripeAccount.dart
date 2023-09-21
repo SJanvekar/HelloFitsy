@@ -123,21 +123,20 @@ class _SetUpTrainerStripeAccountState extends State<SetUpTrainerStripeAccount> {
     return Container(
         decoration: BoxDecoration(
             color: buttonColorEnabled, borderRadius: BorderRadius.circular(20)),
-        child: const Padding(
-          padding: EdgeInsets.only(
-            left: 50.0,
-            right: 50.0,
-            top: 10,
-            bottom: 10,
-          ),
-          child: Text(
-            'Set up account',
-            style: buttonText2snow,
-          ),
-        ));
+        child: Padding(
+            padding: const EdgeInsets.only(
+              left: 50.0,
+              right: 50.0,
+              top: 10,
+              bottom: 10,
+            ),
+            child: const Text(
+              'Set up account',
+              style: buttonText2snow,
+            )));
   }
 
   Widget skip() {
-    return Text('I\'ll do this later', style: buttonText3Jetblack40);
+    return const Text('I\'ll do this later', style: buttonText3Jetblack40);
   }
 }

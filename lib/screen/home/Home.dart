@@ -5,6 +5,7 @@ import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/PARQ.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
+import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:balance/sharedWidgets/noticeDisclaimer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,6 +35,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   List<Class> allClasses = [];
   late AnimationController controller;
   late Animation<Offset> offset;
+  late Animation<Offset> offset2;
 
   //Update this to true once the app is launched
   bool isLoading = false;
@@ -42,8 +44,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    print(widget.userInstance.isStripeDetailsSubmitted);
     getUserFollowing();
-    Future.delayed(Duration(milliseconds: 100), () {
+    Future.delayed(Duration(milliseconds: 150), () {
       setState(() {});
     });
 
@@ -55,16 +58,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     offset = Tween<Offset>(begin: Offset(0.0, 10.0), end: Offset.zero).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Curves.fastLinearToSlowEaseIn,
+        curve: Curves.fastEaseInToSlowEaseOut,
+      ),
+    );
+    offset2 = Tween<Offset>(begin: Offset(0.0, 20.0), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.fastEaseInToSlowEaseOut,
       ),
     );
 
-    Future.delayed(Duration(milliseconds: 100), () {
-      setState(() {});
-    });
-
-    Future.delayed(Duration(milliseconds: 800), () {
-      controller.forward();
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        controller.forward();
+      });
     });
   }
 
@@ -361,26 +368,57 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               ])
             ]),
             Positioned(
-              bottom: 10,
-              child: SlideTransition(
-                position: offset,
-                child: GestureDetector(
-                  child: NoticeDisclaimer(
-                      textBoxSize: 230,
-                      disclaimerText:
-                          'Complete a fitness questionnaire before purchasing your first class',
-                      buttonText: 'Start',
-                      buttonLeftRightPadding: 40.0),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            child: ParQuestionnaire(),
-                            type: PageTransitionType.theme,
-                            duration: Duration(milliseconds: 300),
-                            reverseDuration: Duration(milliseconds: 300)));
-                  },
-                ),
+              bottom: 15,
+              child: Column(
+                children: [
+                  SlideTransition(
+                    position: offset,
+                    child: GestureDetector(
+                      child: NoticeDisclaimer(
+                          textBoxSize: 230,
+                          disclaimerTitle: 'Fitness Questionnaire',
+                          disclaimerText:
+                              'Complete a fitness questionnaire before purchasing your first class',
+                          buttonText: 'Start',
+                          buttonLeftRightPadding: 35.0),
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: ParQuestionnaire(),
+                                type: PageTransitionType.theme,
+                                duration: Duration(milliseconds: 300),
+                                reverseDuration: Duration(milliseconds: 300)));
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  //Notice to set up Stripe (If not already set up)
+                  if (widget.userInstance.userType == UserType.Trainer &&
+                      widget.userInstance.stripeAccountID.isNotEmpty &&
+                      widget.userInstance.isStripeDetailsSubmitted == false)
+                    SlideTransition(
+                      position: offset2,
+                      child: GestureDetector(
+                        child: NoticeDisclaimer(
+                            textBoxSize: 250,
+                            disclaimerTitle: 'Finish Account Set Up',
+                            disclaimerText:
+                                'Continue your Stripe account set up so you can start getting paid',
+                            buttonText: 'Finish Set Up',
+                            buttonLeftRightPadding: 10),
+                        onTap: () {
+                          HapticFeedback.selectionClick();
+
+                          //Call Stripe Set Up
+                          StripeLogic().stripeSetUp(widget.userInstance);
+                        },
+                      ),
+                    ),
+                ],
               ),
             )
           ],
