@@ -95,6 +95,12 @@ class _PersonalProfileState extends State<PersonalProfile>
         curve: Curves.fastEaseInToSlowEaseOut,
       ),
     );
+
+    Future.delayed(Duration(milliseconds: 1000), () {
+      setState(() {
+        controller.forward();
+      });
+    });
   }
 
   //----------
@@ -290,6 +296,7 @@ class _PersonalProfileState extends State<PersonalProfile>
             SystemUiOverlayStyle(statusBarBrightness: statusBarTheme),
       ),
       body: Stack(
+        alignment: Alignment.center,
         children: [
           CustomScrollView(
               shrinkWrap: false,
@@ -1267,12 +1274,12 @@ class _PersonalProfileState extends State<PersonalProfile>
                 position: offset,
                 child: GestureDetector(
                   child: NoticeDisclaimer(
-                      textBoxSize: 240,
-                      disclaimerTitle: 'Start getting paid',
-                      disclaimerText:
-                          'Create a Stripe account to start getting paid for your sessions',
-                      buttonText: 'Start set up',
-                      buttonLeftRightPadding: 25.0),
+                    textBoxSize: 230,
+                    disclaimerTitle: 'Start getting paid',
+                    disclaimerText:
+                        'Create a Stripe account to start getting paid for your sessions',
+                    buttonText: 'Start',
+                  ),
                   onTap: () {
                     HapticFeedback.selectionClick();
                     StripeLogic().stripeSetUp(widget.userInstance);

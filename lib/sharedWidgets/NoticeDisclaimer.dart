@@ -1,25 +1,22 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:balance/constants.dart';
-import 'package:balance/sharedWidgets/BodyButton.dart';
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
 
+// ignore: must_be_immutable
 class NoticeDisclaimer extends StatelessWidget {
-  NoticeDisclaimer(
-      {Key? key,
-      required this.textBoxSize,
-      required this.disclaimerTitle,
-      required this.disclaimerText,
-      required this.buttonText,
-      required this.buttonLeftRightPadding})
-      : super(key: key);
+  NoticeDisclaimer({
+    Key? key,
+    required this.textBoxSize,
+    required this.disclaimerTitle,
+    required this.disclaimerText,
+    required this.buttonText,
+  }) : super(key: key);
 
   double textBoxSize;
   String disclaimerTitle;
   String disclaimerText;
   String buttonText;
-  double buttonLeftRightPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -91,30 +88,30 @@ class NoticeDisclaimer extends StatelessWidget {
                       )
                     ],
                   ),
-                  Padding(
-                      padding: const EdgeInsets.only(
-                        right: 12.0,
-                        top: 10,
-                        bottom: 10,
-                      ),
-                      child: Container(
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            color: strawberry,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: buttonLeftRightPadding,
-                            right: buttonLeftRightPadding,
-                            top: 10,
-                            bottom: 10,
-                          ),
-                          child: Text(
-                            buttonText,
-                            style: buttonText2snow,
-                          ),
+                  Expanded(
+                    child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 12.0,
+                          top: 10,
+                          bottom: 10,
                         ),
-                      ))
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              color: strawberry,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              top: 10,
+                              bottom: 10,
+                            ),
+                            child: Text(
+                              buttonText,
+                              style: buttonText2snow,
+                            ),
+                          ),
+                        )),
+                  )
                 ],
               ),
             ),

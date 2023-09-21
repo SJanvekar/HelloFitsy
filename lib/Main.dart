@@ -195,7 +195,7 @@ class _MainPageState extends State<MainPage>
                 child: ScaleTransition(
                   scale: scaleAnimation,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 0.45,
+                    height: MediaQuery.of(context).size.height * 0.5,
                     width: MediaQuery.of(context).size.width - 80,
                     decoration: ShapeDecoration(
                         color: Colors.white,

@@ -44,6 +44,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     print(widget.userInstance.isStripeDetailsSubmitted);
     getUserFollowing();
     Future.delayed(Duration(milliseconds: 150), () {
@@ -68,11 +69,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       ),
     );
 
-    Future.delayed(Duration(milliseconds: 1000), () {
-      setState(() {
-        controller.forward();
+    if (controller != null && controller.status == AnimationStatus.dismissed) {
+      Future.delayed(Duration(milliseconds: 1000), () {
+        setState(() {
+          controller.forward();
+        });
       });
-    });
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the Ticker and the AnimationController
+    controller.dispose();
+    super.dispose();
   }
 
   //Function - Get Following List
@@ -375,12 +385,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     position: offset,
                     child: GestureDetector(
                       child: NoticeDisclaimer(
-                          textBoxSize: 230,
-                          disclaimerTitle: 'Fitness Questionnaire',
-                          disclaimerText:
-                              'Complete a fitness questionnaire before purchasing your first class',
-                          buttonText: 'Start',
-                          buttonLeftRightPadding: 35.0),
+                        textBoxSize: 230,
+                        disclaimerTitle: 'Fitness Questionnaire',
+                        disclaimerText:
+                            'Complete a fitness questionnaire before purchasing your first class',
+                        buttonText: 'Start',
+                      ),
                       onTap: () {
                         HapticFeedback.selectionClick();
                         Navigator.push(
@@ -404,12 +414,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       position: offset2,
                       child: GestureDetector(
                         child: NoticeDisclaimer(
-                            textBoxSize: 250,
-                            disclaimerTitle: 'Finish Account Set Up',
-                            disclaimerText:
-                                'Continue your Stripe account set up so you can start getting paid',
-                            buttonText: 'Finish Set Up',
-                            buttonLeftRightPadding: 10),
+                          textBoxSize: 250,
+                          disclaimerTitle: 'Finish Account Set Up',
+                          disclaimerText:
+                              'Continue your Stripe account set up so you can start getting paid',
+                          buttonText: 'Start',
+                        ),
                         onTap: () {
                           HapticFeedback.selectionClick();
 
