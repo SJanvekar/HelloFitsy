@@ -3,7 +3,6 @@
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/screen/home/components/userListItem.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/material.dart';
@@ -217,10 +216,11 @@ class _Search extends State<Search> {
                                   padding: const EdgeInsets.only(
                                       left: 26.0, right: 26.0),
                                   child: UserProfileComponentLight(
+                                    userID: userItem.userID,
                                     userFirstName: userItem.firstName,
                                     userLastName: userItem.lastName,
                                     userName: userItem.userName,
-                                    imageURL: userItem.profileImageURL,
+                                    profileImageURL: userItem.profileImageURL,
                                     profileImageRadius: 22.5,
                                     userFullNameFontSize: 15,
                                     userNameFontSize: 14,

@@ -43,7 +43,6 @@ class _HomeTestState extends State<HomeTest> {
     super.initState();
     getUserInfo();
     getUserFollowing();
-
     setState(() {});
   }
 
@@ -57,20 +56,19 @@ class _HomeTestState extends State<HomeTest> {
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     FollowingRequests()
-        .getFollowingList(sharedPrefs.getString('userName') ?? "")
+        .getFollowingList(sharedPrefs.getString('userID') ?? "")
         .then((val) async {
       if (val.data['success']) {
         print('successful get following list');
         getClassFeed([
           for (dynamic document in (val.data['following'] as List<dynamic>))
-            Following.fromJson(document).followingUsername
+            document['FollowingUserID']
         ]);
-        isLoading = false;
       } else {
         //Remove print statement in production
         print('Empty Class List');
-        isLoading = false;
       }
+      isLoading = false;
     });
   }
 
@@ -79,10 +77,9 @@ class _HomeTestState extends State<HomeTest> {
       //get logged in user's following list
       if (val.data['success']) {
         print('successful get class feed');
-        //TODO: Theoretically, you should be able to foreach and get list of classes
-        //Hardcoded first item for now, since we're only getting one class
-        allClasses
-            .add(Class.fromJson((val.data['classArray'] as List<dynamic>)[0]));
+        (val.data['classArray'] as List<dynamic>).forEach((element) {
+          allClasses.add(Class.fromJson(element));
+        });
       } else {
         print('error get class feed: ${val.data['msg']}');
       }
@@ -169,36 +166,12 @@ class _HomeTestState extends State<HomeTest> {
                     ),
                     onTap: () {
                       print("Notifications Button Pressed");
+                      //TODO: Implement notifications screen
                       // Navigator.of(context).push(CupertinoPageRoute(
                       //     fullscreenDialog: true,
                       //     builder: (context) => CreateClassType()));
                     },
                   ),
-
-                  //DEPRECATED SEARCH ICON
-
-                  // Padding(
-                  //   padding: const EdgeInsets.only(right: 26.0),
-                  //   child: GestureDetector(
-                  //     child: SvgPicture.asset(
-                  //       'assets/icons/generalIcons/search.svg',
-                  //       height: 20,
-                  //       width: 20,
-                  //     ),
-                  //     onTap: () {
-                  //       Navigator.push(
-                  //           context,
-                  //           PageTransition(
-                  //               child: Search(),
-                  //               type: PageTransitionType.fade,
-                  //               isIos: false,
-                  //               duration: Duration(milliseconds: 0),
-                  //               reverseDuration: Duration(milliseconds: 0)));
-                  //     },
-                  //   ),
-                  // ),
-                  //
-                  //
                 ],
               )
             ],

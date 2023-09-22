@@ -24,7 +24,7 @@ class AuthService {
     dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       return await dio.get(
-        '$urlDomain/getinfo',
+        '$urlDomain/getLogInInfo',
         queryParameters: {"Account": account},
       );
     } catch (e) {
@@ -43,12 +43,9 @@ class AuthService {
             "LastName": userModel.lastName,
             "Username": userModel.userName,
             "UserEmail": authModel.userEmail,
+            "UserPhone": authModel.userPhone,
             "Password": authModel.password,
-            "Categories": userModel.categories,
-            "LikedClasses": userModel.likedClasses,
-            "ClassHistory": userModel.classHistory,
-            "Following": userModel.following,
-            "Followers": userModel.followers
+            "Categories": userModel.categories
           },
           options: Options(
             contentType: Headers.formUrlEncodedContentType,

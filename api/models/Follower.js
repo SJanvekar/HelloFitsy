@@ -3,21 +3,20 @@ var Schema = mongoose.Schema;
 
 var UserFollowerSchema = new Schema({
 
-    //User perspective of their followers Username
-    FollowerUsername: {
-        type: String,
+    //User perspective of their followers User ID
+    FollowerUserID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-        lowercase: true,
-        index: true
+        unique: true
     },
 
-    //Username
-    Username: {
-        type: String,
+    //User ID
+    UserID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-        unique: true,
-        lowercase: true,
-        index: true
+        unique: true
     },
 })
 

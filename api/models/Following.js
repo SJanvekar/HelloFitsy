@@ -3,21 +3,20 @@ var Schema = mongoose.Schema;
 
 var UserFollowingSchema = new Schema({
 
-    //User perspective of who they're following Username
-    FollowingUsername: {
-        type: String,
+    //User perspective of who they're following User ID
+    FollowingUserID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-        lowercase: true,
-        index: true
+        unique: true
     },
 
-    //Username
-    Username: {
-        type: String,
+    //User ID
+    UserID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-        unique: true,
-        lowercase: true,
-        index: true
+        unique: true
     },
 })
 

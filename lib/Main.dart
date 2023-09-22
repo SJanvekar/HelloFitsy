@@ -87,6 +87,7 @@ class _MainPageState extends State<MainPage> {
 
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
+    userInstance.userID = sharedPrefs.getString('userID') ?? '';
     userInstance.userName = sharedPrefs.getString('userName') ?? '';
     userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
     userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
@@ -96,10 +97,6 @@ class _MainPageState extends State<MainPage> {
     String userType = sharedPrefs.getString('userType') ?? '';
     userInstance.profileImageURL =
         sharedPrefs.getString('profileImageURL') ?? '';
-    print(userInstance.userBio);
-    // print(json.decode(sharedPrefs.getString('user') ?? ''));
-    // User userInstance =
-    //     User.fromJson(json.decode(sharedPrefs.getString('user') ?? ''));
 
     // Trainer/Trainee assigning
     if (userType == 'Trainee') {

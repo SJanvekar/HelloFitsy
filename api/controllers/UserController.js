@@ -4,6 +4,7 @@ var jwt = require('jwt-simple')
 var config = require('../../config/Private/dbconfig')
 const { json } = require('body-parser')
 const { findOne } = require('../models/User')
+const { default: mongoose } = require('mongoose')
 
 var functions = {
   
@@ -15,6 +16,7 @@ var functions = {
         else {
             var newAuth = Auth({
                 UserEmail: req.body.UserEmail,
+                UserPhone: req.body.UserPhone,
                 Password: req.body.Password,
             })
         
@@ -89,8 +91,8 @@ var functions = {
 
 //*****GET REQUESTS*****//
 
-    // Get Information
-    getinfo: function (req, res) {
+    // Get Information after log in
+    getLogInInfo: function (req, res) {
         const userPromiseAsync = (responseJSON) => {
             return new Promise((resolve, reject) => {
                 let responseString = JSON.stringify(responseJSON)
@@ -99,7 +101,7 @@ var functions = {
                 if (user) {
                     resolve(user)
                 } else {
-                    reject(new Error('getInfo returned null'))
+                    reject(new Error('userPromiseAsync returned null'))
                 }
             })
         }
@@ -113,17 +115,13 @@ var functions = {
                 } else {
                     return userPromiseAsync(user).then(parsedResponse => 
                         res.json({success: true, 
+                            _id: parsedResponse._id,
                             userType: String(parsedResponse.UserType), 
                             profileImageURL: parsedResponse.ProfileImageURL,
                             userName: parsedResponse.Username,
                             firstName: parsedResponse.FirstName,
                             lastName: parsedResponse.LastName,
-                            userEmail: parsedResponse.UserEmail,
-                            categories: parsedResponse.Categories,
-                            likedClasses: parsedResponse.LikedClasses,
-                            classHistory: parsedResponse.ClassHistory,
-                            following: parsedResponse.Following,
-                            followers: parsedResponse.Followers}))
+                            categories: parsedResponse.Categories}))
                 }
             })
         } else {
@@ -131,19 +129,36 @@ var functions = {
         }
     },
 
-    // Get User Following list
-    getUserFollowing: function (req, res) {
-        if ((!req.query.Username)) {
-            res.json({success: false, msg: 'Missing query parameter Username'});
+    //Get trainer information for class
+    getClassTrainerInfo: function (req, res) {
+        const classTrainerInfoAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('classTrainerInfoAsync returned null'))
+                }
+            })
         }
-        User.findOne({Username: req.query.Username}, 'Following', function (err, response) {
+        if ((!req.query.UserID)) {
+            res.json({success: false, msg: 'Missing query parameter UserID'});
+        }
+        User.findOne({_id: mongoose.Types.ObjectId(req.query.UserID)}, 
+        '_id ProfileImageURL FirstName LastName Username', function (err, user) {
             if (err) {
                 console.log(err)
                 return res.json({success: false, msg: err})
             } else {
-                return res.json({success: true, 
-                        following: response.Following
-                    })
+                return classTrainerInfoAsync(user).then(parsedResponse => 
+                    res.json({success: true,
+                        _id: parsedResponse._id, 
+                        ProfileImageURL: parsedResponse.ProfileImageURL,
+                        Username: parsedResponse.Username,
+                        FirstName: parsedResponse.FirstName,
+                        LastName: parsedResponse.LastName}))
             }
         })
     },
@@ -173,13 +188,12 @@ var functions = {
 //*****POST REQUESTS*****//
   
     updateUserinfo: function (req, res) {
-        User.findOneAndUpdate({'Username': req.body.OldUsername}, {$set: {'FirstName' : req.body.FirstName, 
+        User.findOneAndUpdate({'_id':  mongoose.Types.ObjectId(req.body.oldUserID)}, {$set: {'FirstName' : req.body.FirstName, 
         'LastName' : req.body.LastName, 'Username' : req.body.NewUsername, 'UserBio' : req.body.UserBio, 'ProfileImageURL': req.body.ProfileImageURL}}, 
             function (err, response) {
             if (err) {
                 console.log(err)
                 return res.json({success: false, errorCode: err.code})
-              
             } else {
                 return res.json({success: true})
             }

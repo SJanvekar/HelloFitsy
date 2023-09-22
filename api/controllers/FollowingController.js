@@ -6,13 +6,13 @@ const { json } = require('body-parser')
 var functions = {
     //Add New Following
     addFollowing: function (req, res) {
-        if ((!req.body.Username || !req.body.FollowingUserName)) {
+        if ((!req.body.UserID || !req.body.FollowingUserID)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else {
             var newFollowing = Following({
-                FollowingUsername: req.body.FollowingUserName,
-                Username: req.body.Username,
+                FollowingUserID: req.body.FollowingUserID,
+                UserID: req.body.UserID,
             });
             newFollowing.save(function (err, newFollowing){
                 if (err) {
@@ -29,11 +29,12 @@ var functions = {
 
     //Remove Following
     removeFollowing: function (req, res) {
-        if ((!req.body.Username || !req.body.FollowingUserName)) {
+        if ((!req.body.UserID || !req.body.FollowingUserID)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else {
-            Following.deleteOne({$and:[{'Username': req.body.Username} , {'FollowingUsername': req.body.FollowingUserName}]}, function (err, deletedFollowing){
+            Following.deleteOne({$and:[{'UserID': req.body.UserID} , 
+            {'FollowingUserID': req.body.FollowingUserID}]}, function (err, deletedFollowing){
                 if (err || !deletedFollowing) {
                     console.log(err)
                     res.json({success: false, msg: err})
@@ -72,10 +73,10 @@ var functions = {
 
     // Get User Following list
     getUserFollowing: function (req, res) {
-        if ((!req.query.Username)) {
+        if ((!req.query.UserID)) {
             res.json({success: false, msg: 'Missing query parameter Username'});
         }
-        Following.find({Username: req.query.Username}, function (err, response) {
+        Following.find({UserID: req.query.UserID}, function (err, response) {
             if (err) {
                 console.log(err)
                 return res.json({success: false, msg: err})

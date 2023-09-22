@@ -6,14 +6,14 @@ class UserRequests {
 
   updateUserInformation(
       String? profileImageURL,
-      String? oldUsername,
+      String? userID,
       String? firstName,
       String? lastName,
       String? newUserName,
       String? bio) async {
     try {
       return await dio.post('$urlDomain/updateUserInfo', data: {
-        "OldUsername": oldUsername,
+        "OldUserID": userID,
         "ProfileImageURL": profileImageURL,
         "FirstName": firstName,
         "LastName": lastName,
@@ -25,12 +25,12 @@ class UserRequests {
     }
   }
 
-  getUserFollowing(String username) async {
+  searchTrainers(String searchIndex) async {
     try {
       return await dio.get(
-        '$urlDomain/getUserFollowing',
+        '$urlDomain/searchTrainers',
         queryParameters: {
-          "Username": username,
+          "SearchIndex": searchIndex,
         },
       );
     } on DioError catch (e) {
@@ -38,12 +38,12 @@ class UserRequests {
     }
   }
 
-  searchTrainers(String searchIndex) async {
+  getClassTrainerInfo(String userID) async {
     try {
       return await dio.get(
-        '$urlDomain/searchTrainers',
+        '$urlDomain/getClassTrainerInfo',
         queryParameters: {
-          "SearchIndex": searchIndex,
+          "UserID": userID,
         },
       );
     } on DioError catch (e) {

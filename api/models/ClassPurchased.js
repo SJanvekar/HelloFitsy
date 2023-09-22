@@ -70,4 +70,4 @@ var ClassPurchasedSchema = new Schema({
     }
 })
 
-module.exports = mongoose.model('ClassPurchased', ClassPurchasedSchema)
+module.exports = mongoose.model('Class Purchased', ClassPurchasedSchema)

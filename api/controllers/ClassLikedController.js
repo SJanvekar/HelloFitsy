@@ -8,12 +8,12 @@ var functions = {
     //Add liked class
     addClassLiked: function (req, res) {
         console.log("Running add")
-        if ((!req.body.UserName || !req.body.ClassID)) {
+        if ((!req.body.UserID || !req.body.ClassID)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else {
             var newClassLiked= ClassLiked({
-                Username: req.body.UserName,
+                UserID: req.body.UserID,
                 ClassID: req.body.ClassID,
             });
             newClassLiked.save(function (err, newClassLiked){
@@ -31,11 +31,11 @@ var functions = {
     //Remove liked class
     removeClassLiked: function (req, res) {
         console.log("Running remove")
-        if ((!req.body.UserName || !req.body.ClassID)) {
+        if ((!req.body.UserID || !req.body.ClassID)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else {
-            ClassLiked.deleteOne({Username: req.body.UserName, ClassID: mongoose.Types.ObjectId(req.body.ClassID)}, function (err){
+            ClassLiked.deleteOne({UserID: mongoose.Types.ObjectId(req.body.UserID), ClassID: mongoose.Types.ObjectId(req.body.ClassID)}, function (err){
                 if (err) {
                     console.log(err)
                     res.json({success: false, msg: err})
@@ -48,11 +48,11 @@ var functions = {
     },
 
     isLiked: function (req, res) {
-        if ((!req.query.UserName || !req.query.ClassID)) {
+        if ((!req.query.UserID || !req.query.ClassID)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else {
-            ClassLiked.findOne({Username: req.query.UserName, ClassID: mongoose.Types.ObjectId(req.query.ClassID)}, function (err, response) {
+            ClassLiked.findOne({UserID: mongoose.Types.ObjectId(req.query.UserID), ClassID: mongoose.Types.ObjectId(req.query.ClassID)}, function (err, response) {
                 if (err && err.code != 11000) {
                     console.log(err)
                     return res.json({success: false, msg: err, errorCode: err.code})
@@ -65,10 +65,10 @@ var functions = {
 
     // Get liked class list
     getClassLikedList: function (req, res) {
-        if ((!req.query.UserName)) {
+        if ((!req.query.UserID)) {
             res.json({success: false, msg: 'Missing query parameter Username'});
         }
-        ClassLiked.find({Username: req.query.UserName}, function (err, response) {
+        ClassLiked.find({UserID: mongoose.Types.ObjectId(req.query.UserID)}, function (err, response) {
             if (err) {
                 console.log(err)
                 return res.json({success: false, msg: err})

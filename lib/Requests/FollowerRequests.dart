@@ -6,12 +6,12 @@ class FollowerRequests {
   Dio dio = new Dio();
 
   //Create Follower
-  addFollower(Follower followerModel) async {
+  addFollower(String followerUserID, String userID) async {
     try {
       return await dio.post('$urlDomain/addFollower',
           data: {
-            "FollowerUserName": followerModel.followerUsername,
-            "Username": followerModel.username,
+            "FollowerUserID": followerUserID,
+            "UserID": userID,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -20,12 +20,12 @@ class FollowerRequests {
   }
 
   //Remove Follower
-  removeFollower(String followerUsername, String username) async {
+  removeFollower(String followerUserID, String userID) async {
     try {
       return await dio.get('$urlDomain/removeFollower',
           data: {
-            "FollowerUserName": followerUsername,
-            "Username": username,
+            "FollowerUserID": followerUserID,
+            "UserID": userID,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -38,6 +38,20 @@ class FollowerRequests {
     try {
       return await dio.get(
         '$urlDomain/getFollowerList',
+        queryParameters: {
+          "Username": username,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  //NOTE - this has not been used yet
+  getUserFollowing(String username) async {
+    try {
+      return await dio.get(
+        '$urlDomain/getUserFollowing',
         queryParameters: {
           "Username": username,
         },

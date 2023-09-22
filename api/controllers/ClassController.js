@@ -23,11 +23,8 @@ var functions = {
                 ClassOverallRating: req.body.ClassOverallRating,
                 ClassReviewsAmount: req.body.ClassReviewsAmount,
                 ClassPrice: req.body.ClassPrice,
-                ClassTrainer: req.body.ClassTrainer,
+                ClassTrainerID: req.body.ClassTrainerID,
                 Categories: req.body.Categories,
-                TrainerImageUrl: req.body.TrainerImageUrl,
-                TrainerFirstName: req.body.TrainerFirstName,
-                TrainerLastName: req.body.TrainerLastName,
             });
             newClass.save(function (err, newClass){
                 if(err){

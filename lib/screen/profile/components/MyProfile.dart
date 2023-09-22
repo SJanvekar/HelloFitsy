@@ -63,6 +63,29 @@ class _PersonalProfileState extends State<PersonalProfile> {
   Brightness statusBarTheme = Brightness.dark;
   bool isFollowing = false;
   bool isClickable = true;
+  String trainerImageURL = '';
+  String trainerUsername = '';
+  String trainerFirstName = '';
+  String trainerLastName = '';
+
+  void getClassTrainerInfo() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    UserRequests()
+        //HARD CODED - MUST CHANGE sharedPrefs to actual classTrainerID
+        .getClassTrainerInfo(sharedPrefs.getString('userID') ?? "")
+        .then((val) async {
+      if (val.data['success']) {
+        trainerImageURL = val.data['ProfileImageURL'] ?? '';
+        trainerUsername = val.data['Username'] ?? '';
+        trainerFirstName = val.data['FirstName'] ?? '';
+        trainerLastName = val.data['LastName'] ?? '';
+      } else {
+        //Remove print statement in production
+        print('error getting class liked: ${val.data['result']}');
+      }
+      setState(() {});
+    });
+  }
 
 //----------
   @override
@@ -771,7 +794,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                                                         UserRequests()
                                                             .updateUserInformation(
                                                           newProfileImageURL,
-                                                          newUserName,
+                                                          widget.userInstance
+                                                              .userID,
                                                           newFirstName,
                                                           newLastName,
                                                           newUserName,
@@ -1149,8 +1173,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                         classImageUrl: savedClasses.classImageUrl,
                         buttonBookOrRebookText: 'Book',
                         classTitle: savedClasses.className,
-                        classTrainer: savedClasses.trainerFirstName,
-                        classTrainerImageUrl: savedClasses.trainerImageUrl,
+                        classTrainer: trainerFirstName,
+                        classTrainerImageUrl: trainerImageURL,
                       );
                     },
                   ),
@@ -1227,8 +1251,8 @@ class _PersonalProfileState extends State<PersonalProfile> {
                           classImageUrl: savedClasses.classImageUrl,
                           buttonBookOrRebookText: 'Book',
                           classTitle: savedClasses.className,
-                          classTrainer: savedClasses.trainerFirstName,
-                          classTrainerImageUrl: savedClasses.trainerImageUrl,
+                          classTrainer: trainerFirstName,
+                          classTrainerImageUrl: trainerImageURL,
                         );
                       }
                     },

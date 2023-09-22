@@ -40,6 +40,8 @@ void onSubmitSignInField(context) {
         if (val?.data['success'] ?? false) {
           print('Successful get user info');
           final String encodedCategories = json.encode(val.data['categories']);
+          //TODO - Encrypt id
+          sharedPrefs.setString('userID', val.data['_id']);
           sharedPrefs.setString('userType', val.data['userType']);
           sharedPrefs.setString('profileImageURL', val.data['profileImageURL']);
           sharedPrefs.setString('userName', val.data['userName']);

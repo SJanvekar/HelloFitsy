@@ -65,14 +65,8 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
       //Firebase Image Upload
       await uploadImage();
       final sharedPrefs = await SharedPreferences.getInstance();
-      widget.classTemplate.classTrainer =
-          sharedPrefs.getString('userName') ?? "";
-      widget.classTemplate.trainerImageUrl =
-          sharedPrefs.getString('profileImageURL') ?? "";
-      widget.classTemplate.trainerFirstName =
-          sharedPrefs.getString('firstName') ?? "";
-      widget.classTemplate.trainerLastName =
-          sharedPrefs.getString('lastName') ?? "";
+      widget.classTemplate.classTrainerID =
+          sharedPrefs.getString('userID') ?? "";
       print(widget.classTemplate.toJson());
       ClassRequests().addClass(widget.classTemplate).then((val) {
         if (val.data['success']) {

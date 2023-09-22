@@ -2,6 +2,7 @@
 enum UserType { Trainee, Trainer }
 
 class User {
+  late String userID;
   bool isActive;
   UserType userType;
   late String profileImageURL;
@@ -10,12 +11,6 @@ class User {
   String userName;
   late String? userBio;
   late List<String> categories;
-
-  //TODO: Delete below when done with listSchemaChanges branch
-  late List<String> likedClasses;
-  late List<String> classHistory;
-  late List<String> following;
-  late List<String> followers;
 
   User({
     required this.isActive,
@@ -28,7 +23,8 @@ class User {
 
   //JSON parsers are required to parse arrays of JSON
   User.fromJson(Map<String, dynamic> json)
-      : isActive =
+      : userID = json['_id'],
+        isActive =
             json['IsActive'].toString().toLowerCase() == "true" ? true : false,
         userType = stringToUserType(json['UserType'][0]),
         profileImageURL = json['ProfileImageURL'],

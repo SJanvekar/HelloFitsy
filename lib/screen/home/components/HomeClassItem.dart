@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/ClassCardOpen.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
@@ -31,17 +32,17 @@ class HomeClassItem extends StatefulWidget {
     switch (classType) {
       case ClassType.Solo:
         {
-          var classTypeIconPath = 'assets/icons/generalIcons/classOneOnOne.svg';
+          classTypeIconPath = 'assets/icons/generalIcons/classOneOnOne.svg';
           break;
         }
       case ClassType.Group:
         {
-          var classTypeIconPath = 'assets/icons/generalIcons/classGroup.svg';
+          classTypeIconPath = 'assets/icons/generalIcons/classGroup.svg';
           break;
         }
       case ClassType.Virtual:
         {
-          var classTypeIconPath = 'assets/icons/generalIcons/classVirtual.svg';
+          classTypeIconPath = 'assets/icons/generalIcons/classVirtual.svg';
           break;
         }
 
@@ -60,7 +61,7 @@ class HomeClassItem extends StatefulWidget {
 
 //Class reviews
 Widget classReviews() {
-  //Update this with a count of reviews for the class being viewed
+  ///HARD CODED - MUST CHANGE
   return Text(
     '45 Reviews',
     style: roundedNumberStyle1LightShadowUnderlined,
@@ -106,17 +107,38 @@ Widget highlyRatedBadge() {
 
 class _HomeClassItem extends State<HomeClassItem> {
   bool classLiked = false;
+  String trainerUserID = '';
+  String trainerImageURL = '';
+  String trainerUsername = '';
+  String trainerFirstName = '';
+  String trainerLastName = '';
+
+  void getClassTrainerInfo() async {
+    UserRequests()
+        .getClassTrainerInfo(widget.classItem.classTrainerID)
+        .then((val) async {
+      if (val.data['success']) {
+        trainerUserID = val.data['_id'] ?? '';
+        trainerImageURL = val.data['ProfileImageURL'] ?? '';
+        trainerUsername = val.data['Username'] ?? '';
+        trainerFirstName = val.data['FirstName'] ?? '';
+        trainerLastName = val.data['LastName'] ?? '';
+      } else {
+        print('error getting class trainer info: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
 
   void getIsLiked() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     ClassLikedRequests()
         .isLiked(
-            sharedPrefs.getString('userName') ?? "", widget.classItem.classID)
+            sharedPrefs.getString('userID') ?? "", widget.classItem.classID)
         .then((val) async {
       if (val.data['success']) {
         classLiked = val.data['result'];
       } else {
-        //Remove print statement in production
         print('error getting class liked: ${val.data['result']}');
       }
       setState(() {});
@@ -132,13 +154,12 @@ class _HomeClassItem extends State<HomeClassItem> {
   void changeLikedStatus() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     ClassLikedRequests()
-        .addOrRemoveClassLiked(sharedPrefs.getString('userName') ?? "",
+        .addOrRemoveClassLiked(sharedPrefs.getString('userID') ?? "",
             widget.classItem.classID, classLiked)
         .then((val) async {
       if (val.data['success']) {
         print('classLiked is ${val.data['liked']}');
       } else {
-        //Remove print statement in production
         print('error ${classLiked ? "adding" : "removing"} class liked');
       }
     });
@@ -147,6 +168,7 @@ class _HomeClassItem extends State<HomeClassItem> {
   @override
   void initState() {
     super.initState();
+    getClassTrainerInfo();
     getIsLiked();
   }
 
@@ -266,13 +288,14 @@ class _HomeClassItem extends State<HomeClassItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               UserProfileComponentLight(
-                  userLastName: widget.classItem.trainerLastName,
-                  userName: widget.classItem.classTrainer,
-                  imageURL: widget.classItem.trainerImageUrl,
+                  userID: trainerUserID,
+                  userFirstName: trainerFirstName,
+                  userLastName: trainerLastName,
+                  userName: trainerUsername,
+                  profileImageURL: trainerImageURL,
                   profileImageRadius: 22.5,
                   userFullNameFontSize: 15,
-                  userNameFontSize: 14,
-                  userFirstName: widget.classItem.trainerFirstName),
+                  userNameFontSize: 14),
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: GestureDetector(

@@ -23,11 +23,8 @@ class ClassRequests {
             "ClassOverallRating": classModel.classOverallRating,
             "ClassReviewsAmount": classModel.classReviewsAmount,
             "ClassPrice": classModel.classPrice,
-            "ClassTrainer": classModel.classTrainer,
+            "ClassTrainerID": classModel.classTrainerID,
             "Categories": classModel.classCategories,
-            "TrainerImageUrl": classModel.trainerImageUrl,
-            "TrainerFirstName": classModel.trainerFirstName,
-            "TrainerLastName": classModel.trainerLastName,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {

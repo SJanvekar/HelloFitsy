@@ -6,13 +6,13 @@ const { json } = require('body-parser')
 var functions = {
     //Add New Follower
     addFollower: function (req, res) {
-        if ((!req.body.Username || !req.body.FollowerUserName)) {
+        if ((!req.body.UserID || !req.body.FollowerUserID)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else {
             var newFollower = Follower({
-                FollowerUsername: req.body.FollowerUserName,
-                Username: req.body.Username,
+                FollowerUserID: req.body.FollowerUserID,
+                UserID: req.body.UserID,
             });
             newFollower.save(function (err, newFollower){
                 if (err) {
@@ -29,11 +29,12 @@ var functions = {
 
     //Remove Follower
     removeFollower: function (req, res) {
-        if ((!req.body.Username || !req.body.FollowerUserName)) {
+        if ((!req.body.UserID || !req.body.FollowerUserID)) {
             res.json({success: false, msg: 'Missing Information'})
         }
         else {
-            Follower.deleteOne({$and:[{'Username': req.body.Username} , {'FollowerUsername': req.body.FollowerUserName}]}, function (err, deletedFollower){
+            Follower.deleteOne({$and:[{'UserID': req.body.UserID} , 
+            {'FollowerUserID': req.body.FollowerUserID}]}, function (err, deletedFollower){
                 if (err || !deletedFollower) {
                     console.log(err)
                     res.json({success: false, msg: err})

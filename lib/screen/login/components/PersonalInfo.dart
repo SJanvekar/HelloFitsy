@@ -26,6 +26,7 @@ class PersonalInfo extends StatefulWidget {
 
 Auth authTemplate = Auth(
   userEmail: '',
+  userPhone: '',
   password: '',
 );
 
@@ -282,7 +283,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   left: 26.0,
                   right: 26.0,
                 ),
-                child: textInputEmail(context),
+                child: textInputEmailOrPhone(context, true),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 15,
+                  left: 26.0,
+                  right: 26.0,
+                ),
+                child: textInputEmailOrPhone(context, false),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -723,7 +732,7 @@ Widget textInputUsername() {
 }
 
 //Email
-Widget textInputEmail(BuildContext context) {
+Widget textInputEmailOrPhone(BuildContext context, bool isEmail) {
   return Container(
     height: 50,
     decoration: BoxDecoration(
@@ -738,7 +747,10 @@ Widget textInputEmail(BuildContext context) {
             padding: const EdgeInsets.only(left: 20, right: 10),
             child: Center(
                 child: SvgPicture.asset(
-              'assets/icons/generalIcons/mail.svg',
+              //HARD CODED - MUST CHANGE replace with phone icon asset
+              isEmail
+                  ? 'assets/icons/generalIcons/mail.svg'
+                  : 'assets/icons/generalIcons/mail.svg',
               width: 18,
               color: jetBlack40,
             )),
@@ -755,7 +767,7 @@ Widget textInputEmail(BuildContext context) {
                 fontWeight: FontWeight.w700),
             decoration: InputDecoration.collapsed(
               border: InputBorder.none,
-              hintText: 'Email',
+              hintText: isEmail ? 'Email' : 'Phone',
               hintStyle: const TextStyle(
                 fontFamily: 'SFDisplay',
                 color: shark,
@@ -764,7 +776,11 @@ Widget textInputEmail(BuildContext context) {
               ),
             ),
             onChanged: (val) {
-              authTemplate.userEmail = val;
+              if (isEmail) {
+                authTemplate.userEmail = val;
+              } else {
+                authTemplate.userPhone = val;
+              }
             },
             textInputAction: TextInputAction.next,
           ),

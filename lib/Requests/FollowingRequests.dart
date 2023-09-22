@@ -6,12 +6,12 @@ class FollowingRequests {
   Dio dio = new Dio();
 
   //Create Following
-  addFollowing(Following followingModel) async {
+  addFollowing(String followingUserID, String userID) async {
     try {
       return await dio.post('$urlDomain/addFollowing',
           data: {
-            "FollowingUserName": followingModel.followingUsername,
-            "Username": followingModel.username,
+            "FollowingUserID": followingUserID,
+            "UserID": userID,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -20,12 +20,12 @@ class FollowingRequests {
   }
 
   //Remove Following
-  removeFollowing(String followingUsername, String username) async {
+  removeFollowing(String followingUserID, String userID) async {
     try {
       return await dio.get('$urlDomain/removeFollowing',
           data: {
-            "FollowingUserName": followingUsername,
-            "Username": username,
+            "FollowingUserID": followingUserID,
+            "UserID": userID,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -34,12 +34,12 @@ class FollowingRequests {
   }
 
   //Remove Following
-  isFollowing(String followingUsername, String username) async {
+  isFollowing(String followingUserID, String userID) async {
     try {
       return await dio.get('$urlDomain/isFollowing',
           data: {
-            "FollowingUserName": followingUsername,
-            "Username": username,
+            "FollowingUserID": followingUserID,
+            "UserID": userID,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -48,12 +48,12 @@ class FollowingRequests {
   }
 
   //Get Following List
-  getFollowingList(String username) async {
+  getFollowingList(String userID) async {
     try {
       return await dio.get(
         '$urlDomain/getFollowingList',
         queryParameters: {
-          "Username": username,
+          "UserID": userID,
         },
       );
     } on DioError catch (e) {

@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,21 +9,23 @@ import '../screen/profile/components/Profile.dart';
 class UserProfileComponentLight extends StatelessWidget {
   UserProfileComponentLight({
     Key? key,
+    required this.userID,
     required this.userFirstName,
     required this.userLastName,
-    required this.userFullNameFontSize,
     required this.userName,
+    required this.profileImageURL,
+    required this.userFullNameFontSize,
     required this.userNameFontSize,
-    required this.imageURL,
     required this.profileImageRadius,
   }) : super(key: key);
 
+  String userID;
   String userFirstName;
   String userLastName;
-  double userFullNameFontSize;
   String userName;
+  String profileImageURL;
+  double userFullNameFontSize;
   double userNameFontSize;
-  String imageURL;
   double profileImageRadius;
 
   //Follow button ~ State 0
@@ -80,7 +83,7 @@ class UserProfileComponentLight extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            foregroundImage: NetworkImage(imageURL),
+            foregroundImage: NetworkImage(profileImageURL),
             backgroundColor: Colors.transparent,
             radius: profileImageRadius,
           ),
@@ -112,10 +115,11 @@ class UserProfileComponentLight extends StatelessWidget {
         Navigator.of(context).push(CupertinoPageRoute(
             maintainState: true,
             builder: (context) => UserProfile(
-                profileImageURL: imageURL,
-                userName: userName,
+                userID: userID,
                 userFirstName: userFirstName,
-                userLastName: userLastName)));
+                userLastName: userLastName,
+                userName: userName,
+                profileImageURL: profileImageURL)));
       },
     );
   }
