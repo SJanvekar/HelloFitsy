@@ -65,7 +65,7 @@ var functions = {
                             } else {
                                 newAuth.comparePassword(req.body.Password, function (err, isMatch) {
                                     if (isMatch && !err) {
-                                        var token = jwt.encode(newAuth, process.env.secret)
+                                        var token = jwt.encode(newAuth, process.env.DATABASE_SECRET)
                                         return res.json({success: true, token: token})
                                     } else {
                                         console.log("Error Incorrect Password")
@@ -79,7 +79,7 @@ var functions = {
             } else {
                 newAuth.comparePassword(req.body.Password, function (err, isMatch) {
                     if (isMatch && !err) {
-                        var token = jwt.encode(newAuth, process.env.secret)
+                        var token = jwt.encode(newAuth, process.env.DATABASE_SECRET)
                         return res.json({success: true, token: token})
                     } else {
                         console.log("Error Incorrect Password")
@@ -108,7 +108,7 @@ var functions = {
         }
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
-            var decodedtoken = jwt.decode(token, process.env.secret)
+            var decodedtoken = jwt.decode(token, process.env.DATABASE_SECRET)
             User.findOne({Auth: decodedtoken._id}, function (err, user) {
                 if (err) {
                     console.log(err)

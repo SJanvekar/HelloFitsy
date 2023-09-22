@@ -9,7 +9,7 @@ dotenv.config();
 module.exports = function(passport){
     var opts = {};
     opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
-    opts.secretOrKey = process.env.secret;
+    opts.secretOrKey = process.env.;
     
     passport.use(new JwtStrat(opts, function(jwt_payload, done) {
         User.findOne({id: jwt_payload.id}, function(err, user) {
