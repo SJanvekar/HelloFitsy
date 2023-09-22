@@ -1,7 +1,9 @@
 var User = require('../models/User')
 var Auth = require('../models/Auth')
 var jwt = require('jwt-simple')
-var config = require('../../config/Private/dbconfig')
+// var config = require('../../config/Private/dbconfig')
+const dotenv = require('dotenv');
+dotenv.config();
 const { json } = require('body-parser')
 const { findOne } = require('../models/User')
 
@@ -63,7 +65,7 @@ var functions = {
                             } else {
                                 newAuth.comparePassword(req.body.Password, function (err, isMatch) {
                                     if (isMatch && !err) {
-                                        var token = jwt.encode(newAuth, config.secret)
+                                        var token = jwt.encode(newAuth, process.env.secret)
                                         return res.json({success: true, token: token})
                                     } else {
                                         console.log("Error Incorrect Password")
@@ -77,7 +79,7 @@ var functions = {
             } else {
                 newAuth.comparePassword(req.body.Password, function (err, isMatch) {
                     if (isMatch && !err) {
-                        var token = jwt.encode(newAuth, config.secret)
+                        var token = jwt.encode(newAuth, process.env.secret)
                         return res.json({success: true, token: token})
                     } else {
                         console.log("Error Incorrect Password")
@@ -106,7 +108,7 @@ var functions = {
         }
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
-            var decodedtoken = jwt.decode(token, config.secret)
+            var decodedtoken = jwt.decode(token, process.env.secret)
             User.findOne({Auth: decodedtoken._id}, function (err, user) {
                 if (err) {
                     console.log(err)

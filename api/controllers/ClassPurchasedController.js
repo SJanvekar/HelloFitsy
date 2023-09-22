@@ -1,5 +1,4 @@
 var jwt = require('jwt-simple')
-var config = require('../../config/Private/dbconfig');
 const ClassPurchased = require('../models/ClassPurchased');
 
 var functions = {
