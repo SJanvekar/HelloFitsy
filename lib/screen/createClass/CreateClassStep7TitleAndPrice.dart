@@ -2,6 +2,7 @@
 import 'dart:ffi';
 
 import 'package:balance/Authentication/authService.dart';
+import 'package:balance/Main.dart';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
@@ -9,7 +10,7 @@ import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep3WhatToExpect.dart';
-import 'package:balance/screen/home/HomeCopy.dart';
+import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -84,7 +85,7 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
               childCurrent: CreateClassTitleAndPrice(
                 classTemplate: classTemplate,
               ),
-              child: HomeTest()));
+              child: MainPage()));
         } else {
           print("Creating class failed: ${val.data['msg']}");
         }

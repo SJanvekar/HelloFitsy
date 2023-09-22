@@ -16,7 +16,7 @@ class UpcomingClassesItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width - (26 * 2);
+    var width = MediaQuery.of(context).size.width - (20 * 2);
     return Column(
       children: [
         //Upcoming Class Card
@@ -25,7 +25,7 @@ class UpcomingClassesItem extends StatelessWidget {
           width: width,
           decoration: BoxDecoration(
             color: bone60,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(15),
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 15, top: 12, bottom: 12),

@@ -6,8 +6,8 @@ const classLikedController = require('../controllers/ClassLikedController.js')
 const classPurchasedController = require('../controllers/ClassPurchasedController.js')
 const followerController = require('../controllers/FollowerController.js')
 const followingController = require('../controllers/FollowingController.js')
+const stripeController = require('../controllers/StripeController.js')
 const userController = require('../controllers/UserController.js')
-
 
 router.get('/dashboard', (req, res) =>{
   res.send('Dashboard')
@@ -47,11 +47,16 @@ router.get('/dashboard', (req, res) =>{
     //Is current user following account
     router.get('/isFollowing', followingController.isFollowing)
 
+  //Stripe Routes
+    router.get('/retrieveStripeAccountDetails', stripeController.retrieveStripeAccountDetails)  
+
   //User routes
     //Get information for a new user
     router.get('/getinfo', userController.getinfo)
     //Search trainers
     router.get('/searchTrainers', userController.searchTrainers)
+  
+    
 
   router.get('/', (req, res) =>{
     res.send('I am up and running! -- Welcome to Fitsy')
@@ -84,6 +89,13 @@ router.get('/dashboard', (req, res) =>{
     //Add New Following
     router.post('/addFollowing', followingController.addFollowing)
 
+  //Stripe routes
+    // Create Express account
+    router.post('/createStripeAccount', stripeController.createNewStripeAccount)
+
+    // Create Stripe account link
+    router.post('/createStripeAccountLink', stripeController.createStripeAccountLink)
+
   //User routes
     //Add New User
     router.post('/adduser', userController.addNew)
@@ -91,5 +103,9 @@ router.get('/dashboard', (req, res) =>{
     router.post('/authenticate', userController.authenticate)
     //Update user information
     router.post('/updateUserInfo', userController.updateUserinfo)
+    //Update user stripe account ID
+    router.post('/updateUserStripeAccountID', userController.updateUserStripeAccountID)
+
+  
 
 module.exports = router

@@ -1,7 +1,9 @@
+import 'dart:convert';
+
 import 'package:balance/Authentication/authService.dart';
+import 'package:balance/Main.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/AuthModel.dart';
-import 'package:balance/screen/home/HomeCopy.dart';
 import 'package:balance/screen/login/components/CategorySelect_bloc.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 
 import '../../../feModels/Categories.dart';
@@ -84,71 +87,6 @@ class _CategorySelectionState extends State<CategorySelection> {
         MultiSliver(children: [
           pageTitle(),
           pageText(),
-          // Padding(
-          //     padding: EdgeInsets.only(
-          //         top: 10.0, bottom: 10.0, left: 26.0, right: 26.0),
-          //     child: SizedBox(
-          //       width: 323,
-          //       height: 40,
-          //       child: TextField(
-          //         onChanged: searchCategories,
-          //         controller: _inputController,
-          //         autofocus: false,
-          //         textInputAction: TextInputAction.search,
-          //         style: const TextStyle(
-          //             fontFamily: 'SFDisplay',
-          //             fontSize: 15.5,
-          //             fontWeight: FontWeight.w500,
-          //             color: jetBlack),
-          //         cursorColor: ocean,
-          //         decoration: InputDecoration(
-          //           contentPadding: EdgeInsets.only(top: 11, bottom: 11),
-          //           fillColor: bone60,
-          //           filled: true,
-          //           border: OutlineInputBorder(
-          //             borderRadius: BorderRadius.circular(20),
-          //             borderSide: BorderSide.none,
-          //           ),
-          //           hintText: 'Search Interests',
-          //           hintStyle: const TextStyle(
-          //               color: jetBlack40,
-          //               fontSize: 15.5,
-          //               fontFamily: 'SFRounded',
-          //               fontWeight: FontWeight.w400),
-          //           prefixIcon: Container(
-          //             alignment: Alignment.center,
-          //             width: 10,
-          //             height: 18,
-          //             padding: const EdgeInsets.only(
-          //                 left: 20, top: 10, bottom: 10, right: 0),
-          //             child: SvgPicture.asset(
-          //               'assets/icons/generalIcons/search.svg',
-          //               height: 14,
-          //               width: 114,
-          //               color: jetBlack60,
-          //             ),
-          //           ),
-          //           suffixIcon: _inputController.text.length > 0
-          //               ? GestureDetector(
-          //                   child: Container(
-          //                       width: 50,
-          //                       height: 30,
-          //                       alignment: Alignment.center,
-          //                       child: SvgPicture.asset(
-          //                         'assets/icons/generalIcons/exit.svg',
-          //                         color: shark,
-          //                         height: 12,
-          //                       )),
-          //                   onTap: () {
-          //                     HapticFeedback.mediumImpact();
-          //                     _inputController.clear();
-          //                     setState(() {});
-          //                     searchCategories('');
-          //                   })
-          //               : null,
-          //         ),
-          //       ),
-          //     )),
           SliverGrid(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
@@ -230,28 +168,12 @@ class _CategorySelectionState extends State<CategorySelection> {
                   {selectedCategories.remove(allCategories[i].categoryName)}
               },
             userTemplate.categories = selectedCategories,
-            sendUserModel()
+            sendUserModel(),
           },
         ),
       ),
     );
   }
-
-  // //Search - Unused
-  // void refresh() {
-  //   setState(() {});
-  // }
-
-  // void searchCategories(String query) {
-  //   final categoriesSearched = categoriesList.where((category) {
-  //     final categoriesSearchedName = category.categoryName.toLowerCase();
-  //     final input = query.toLowerCase();
-
-  //     return categoriesSearchedName.contains(input);
-  //   }).toList();
-
-  //   setState(() => allCategories = categoriesSearched);
-  // }
 
   void sendUserModel() {
     userTemplate.likedClasses = <String>[];
@@ -260,11 +182,22 @@ class _CategorySelectionState extends State<CategorySelection> {
     userTemplate.following = <String>[];
 
     //Auth Service Call
-    AuthService().signUp(authTemplate, userTemplate).then((val) {
+    AuthService().signUp(authTemplate, userTemplate).then((val) async {
       if (val.data['success']) {
         print('Successful user add');
+
+        //Assign all userTemplate information to shared preferences for MainPage
+        final sharedPrefs = await SharedPreferences.getInstance();
+        final String encodedCategories = jsonEncode(userTemplate.categories);
+        sharedPrefs.setString('userType', userTemplate.userType.toString());
+        sharedPrefs.setString('profileImageURL', userTemplate.profileImageURL);
+        sharedPrefs.setString('userName', userTemplate.userName);
+        sharedPrefs.setString('firstName', userTemplate.firstName);
+        sharedPrefs.setString('lastName', userTemplate.lastName);
+        sharedPrefs.setString('categories', encodedCategories);
+
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomeTest()));
+            .push(MaterialPageRoute(builder: (context) => MainPage()));
       } else {
         print("Sign up error: ${val.data['msg']}");
       }

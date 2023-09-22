@@ -1,34 +1,53 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/Categories.dart';
-import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
-import 'package:balance/screen/home/HomeCopy.dart';
+import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/home/components/Search.dart';
+import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/profile/components/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
+import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
 import 'feModels/UserModel.dart';
+import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const FITSY());
+  runApp(MaterialApp.router(
+    debugShowCheckedModeBanner: false,
+    debugShowMaterialGrid: false,
+    routerConfig: router,
+  ));
 }
+
+/// This handles '/'.
+final router = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (_, __) => FITSY(),
+      routes: [
+        GoRoute(
+          path: 'Home',
+          builder: (_, __) => MainPage(),
+        ),
+      ],
+    ),
+  ],
+);
 
 class FITSY extends StatelessWidget {
   const FITSY({Key? key}) : super(key: key);
@@ -62,7 +81,8 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage>
+    with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
   User userInstance = User(
@@ -74,32 +94,66 @@ class _MainPageState extends State<MainPage> {
     userName: '',
   );
 
+  //Animation variables
+  late AnimationController controller;
+  late Animation<double> scaleAnimation;
+
   @override
   void initState() {
     super.initState();
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
     //   SystemUiOverlay.top,
     // ]);
+
+    //Add Home
+    _widgetOptions.add(Home(
+      userInstance: userInstance,
+    ));
+
+    //Add Search
+    _widgetOptions.add(Search());
+
+    //Animation Controller Set Up
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 700),
+    );
+    scaleAnimation = CurvedAnimation(
+        parent: controller,
+        curve: Interval(0.5, 1.0, curve: Curves.elasticOut));
+
+    controller.addListener(() {
+      setState(() {});
+    });
+    controller.forward();
     getUserDetails();
+    setState(() {
+      print('main set');
+    });
   }
 
   //----------
 
+  //Get User Information
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     userInstance.userName = sharedPrefs.getString('userName') ?? '';
     userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
     userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
     userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
+    print(sharedPrefs.getString('stripeAccountID'));
+    if (sharedPrefs.getString('stripeAccountID') != null) {
+      userInstance.stripeAccountID =
+          sharedPrefs.getString('stripeAccountID') ?? '';
+    } else {
+      userInstance.stripeAccountID = null;
+    }
+
     userInstance.categories =
         json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
     String userType = sharedPrefs.getString('userType') ?? '';
     userInstance.profileImageURL =
         sharedPrefs.getString('profileImageURL') ?? '';
-    print(userInstance.userBio);
-    // print(json.decode(sharedPrefs.getString('user') ?? ''));
-    // User userInstance =
-    //     User.fromJson(json.decode(sharedPrefs.getString('user') ?? ''));
 
     // Trainer/Trainee assigning
     if (userType == 'Trainee') {
@@ -108,11 +162,22 @@ class _MainPageState extends State<MainPage> {
       userInstance.userType = UserType.Trainer;
     }
 
+    //Call function checkStripeAccountID -- This will check if the Stripe account has been set up yet
+    checkStripeAccountID();
+
+    //---------Dynamically fill the widget options on MainPage--------------------//
+
     // Add Create Class if user is a trainer
     if (userInstance.userType == UserType.Trainer) {
-      _widgetOptions[2] = CreateClassSelectType(
-          isTypeSelected: false, classTemplate: classTemplate);
-      _widgetOptions.add(ScheduleCalendar());
+      //Add Create Class
+      _widgetOptions.add(CreateClassSelectType(
+          isTypeSelected: false, classTemplate: classTemplate));
+
+      //Add Schedule Calendar
+      _widgetOptions.add(const ScheduleCalendar());
+    } else {
+      //Add Schedule Calendar
+      _widgetOptions.add(const ScheduleCalendar());
     }
 
     //Add Personal Profile to list of navigation widgets
@@ -120,14 +185,57 @@ class _MainPageState extends State<MainPage> {
       userInstance: userInstance,
     ));
 
-    setState(() {});
+    setState(() {
+      print('main set state 2');
+    });
   }
 
-  List<Widget> _widgetOptions = <Widget>[
-    HomeTest(),
-    Search(),
-    ScheduleCalendar(),
-  ];
+  //Function - Show Alert Dialog
+  void showAlert(BuildContext context) {
+    showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (context) => Center(
+              child: Material(
+                color: Colors.transparent,
+                child: ScaleTransition(
+                  scale: scaleAnimation,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.5,
+                    width: MediaQuery.of(context).size.width - 80,
+                    decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(50.0),
+                      child: SetUpTrainerStripeAccount(
+                        userInstance: userInstance,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ));
+  }
+
+  //Check if there is a stripe ID associated with the Trainer account
+  void checkStripeAccountID() {
+    if (userInstance.userType == UserType.Trainer &&
+        userInstance.stripeAccountID == null) {
+      Future.delayed(Duration(milliseconds: 0), () => showAlert(context));
+    }
+
+    //Else if the account is not empty for the trainer retrieve if details are submitted
+    else if (userInstance.userType == UserType.Trainer &&
+        userInstance.stripeAccountID != null) {
+      print(userInstance.stripeAccountID);
+      StripeLogic().stripeDetailsSubmitted(userInstance);
+    }
+  }
+
+  //Dynamically filled via
+  List<Widget> _widgetOptions = <Widget>[];
 
   void _onItemTapped(int index) {
     if (index == 2 && userInstance.userType == UserType.Trainer) {

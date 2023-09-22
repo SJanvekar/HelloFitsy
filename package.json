@@ -38,12 +38,14 @@
     "config": "^3.3.7",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
     "express": "^4.17.2",
     "jwt-simple": "^0.5.6",
     "mongoose": "^6.3.4",
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
-    "serve": "^13.0.2"
+    "serve": "^13.0.2",
+    "stripe": "^13.6.0"
   }
 }
