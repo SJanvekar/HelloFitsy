@@ -408,7 +408,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   ),
                   //Notice to set up Stripe (If not already set up)
                   if (widget.userInstance.userType == UserType.Trainer &&
-                      widget.userInstance.stripeAccountID.isNotEmpty &&
+                      widget.userInstance.stripeAccountID != null &&
                       widget.userInstance.isStripeDetailsSubmitted == false)
                     SlideTransition(
                       position: offset2,

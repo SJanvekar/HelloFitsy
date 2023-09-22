@@ -52,9 +52,9 @@ void onSubmitSignInField(context) {
           // sharedPrefs.setString('user', json.encode(val.data));
 
           // Check if stripeAccountID is not null (AccountID exists for Stripe)
-
-          sharedPrefs.setString(
-              'stripeAccountID', val.data['stripeAccountID'] ?? '');
+          if (val.data['stripeAccountID'] != null)
+            sharedPrefs.setString(
+                'stripeAccountID', val.data['stripeAccountID'] ?? '');
         } else {
           print('Failed get user info');
         }

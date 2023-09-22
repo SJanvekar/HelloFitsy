@@ -10,7 +10,7 @@ class User {
   String userName;
   late String? userBio;
   late List<String> categories;
-  late String stripeAccountID;
+  late String? stripeAccountID;
   late bool isStripeDetailsSubmitted = false;
 
   //TODO: Delete below when done with listSchemaChanges branch

@@ -141,8 +141,14 @@ class _MainPageState extends State<MainPage>
     userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
     userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
     userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
-    userInstance.stripeAccountID =
-        sharedPrefs.getString('stripeAccountID') ?? '';
+    print(sharedPrefs.getString('stripeAccountID'));
+    if (sharedPrefs.getString('stripeAccountID') != null) {
+      userInstance.stripeAccountID =
+          sharedPrefs.getString('stripeAccountID') ?? '';
+    } else {
+      userInstance.stripeAccountID = null;
+    }
+
     userInstance.categories =
         json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
     String userType = sharedPrefs.getString('userType') ?? '';
@@ -216,13 +222,13 @@ class _MainPageState extends State<MainPage>
   //Check if there is a stripe ID associated with the Trainer account
   void checkStripeAccountID() {
     if (userInstance.userType == UserType.Trainer &&
-        userInstance.stripeAccountID.isEmpty) {
+        userInstance.stripeAccountID == null) {
       Future.delayed(Duration(milliseconds: 0), () => showAlert(context));
     }
 
     //Else if the account is not empty for the trainer retrieve if details are submitted
     else if (userInstance.userType == UserType.Trainer &&
-        userInstance.stripeAccountID.isNotEmpty) {
+        userInstance.stripeAccountID != null) {
       print(userInstance.stripeAccountID);
       StripeLogic().stripeDetailsSubmitted(userInstance);
     }

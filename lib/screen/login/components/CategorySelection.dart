@@ -195,11 +195,6 @@ class _CategorySelectionState extends State<CategorySelection> {
         sharedPrefs.setString('firstName', userTemplate.firstName);
         sharedPrefs.setString('lastName', userTemplate.lastName);
         sharedPrefs.setString('categories', encodedCategories);
-        // Check if stripeAccountID is not null (AccountID exists for Stripe)
-        if (userTemplate.stripeAccountID.isNotEmpty) {
-          sharedPrefs.setString(
-              'stripeAccountID', userTemplate.stripeAccountID);
-        }
 
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MainPage()));

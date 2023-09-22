@@ -103,6 +103,13 @@ class _PersonalProfileState extends State<PersonalProfile>
     });
   }
 
+  @override
+  void dispose() {
+    // Dispose of the Ticker and the AnimationController
+    controller.dispose();
+    super.dispose();
+  }
+
   //----------
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
@@ -1267,7 +1274,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 ]),
               ]),
           if (widget.userInstance.userType == UserType.Trainer &&
-              widget.userInstance.stripeAccountID.isEmpty)
+              widget.userInstance.stripeAccountID == null)
             Positioned(
               bottom: 15,
               child: SlideTransition(
