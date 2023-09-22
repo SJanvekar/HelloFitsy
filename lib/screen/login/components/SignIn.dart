@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/screen/home/HomeCopy.dart';
 import 'package:balance/screen/login/components/ForgotPassword.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
+import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
 import '../../../Main.dart';
 
 class SignIn extends StatefulWidget {
@@ -38,7 +37,9 @@ void onSubmitSignInField(context) {
       AuthService().getUserInfo(token, account).then((val) async {
         final sharedPrefs = await SharedPreferences.getInstance();
         if (val?.data['success'] ?? false) {
-          print('Successful get user info');
+          //Clear shared prefs:
+          sharedPrefs.clear();
+
           final String encodedCategories = json.encode(val.data['categories']);
           //TODO - Encrypt id
           sharedPrefs.setString('userID', val.data['_id']);
@@ -48,7 +49,14 @@ void onSubmitSignInField(context) {
           sharedPrefs.setString('firstName', val.data['firstName']);
           sharedPrefs.setString('lastName', val.data['lastName']);
           sharedPrefs.setString('categories', encodedCategories);
-          sharedPrefs.setString('user', json.encode(val.data));
+
+          // Check this and figure out how to make it work
+          // sharedPrefs.setString('user', json.encode(val.data));
+
+          // Check if stripeAccountID is not null (AccountID exists for Stripe)
+          if (val.data['stripeAccountID'] != null)
+            sharedPrefs.setString(
+                'stripeAccountID', val.data['stripeAccountID'] ?? '');
         } else {
           print('Failed get user info');
         }
@@ -277,14 +285,6 @@ Widget signInPartners() {
   );
 }
 
-//'Already have an account?',
-// style: TextStyle(
-//   fontFamily: 'SFDisplay',
-//   color: jetBlack40,
-//   fontSize: 13,
-//   fontWeight: FontWeight.w600,
-// ),
-
 //Sign In Typeface
 Widget typeFace(topPadding) {
   return Padding(
@@ -317,28 +317,6 @@ class _SignInState extends State<SignIn> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            // title: Padding(
-            //   padding: const EdgeInsets.only(
-            //     left: 0,
-            //     right: 158,
-            //   ),
-            //   child: TextButton(
-            //     style: ButtonStyle(
-            //       overlayColor: MaterialStateProperty.resolveWith<Color>(
-            //           (Set<MaterialState> states) {
-            //         if (states.contains(MaterialState.pressed)) {
-            //           return Colors.transparent;
-            //         }
-            //         return snow;
-            //       }),
-            //     ),
-            //     onPressed: () {
-            //       print("Personal Information Pressed");
-            //       Navigator.of(context).pop();
-            //     },
-            //     child: Text("Cancel", style: logInPageNavigationButtons),
-            //   ),
-            // ),
           ),
           body: SingleChildScrollView(
             child: Center(
@@ -433,7 +411,10 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                     orDivider(),
+
+                    //Sign in partners widget
                     signInPartners(),
+
                     //Sign Up if you don't have an account
                     Padding(
                       padding: const EdgeInsets.only(top: 30.0),

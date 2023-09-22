@@ -1,11 +1,12 @@
 import 'package:balance/Requests/ClassRequests.dart';
-import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
+import 'package:balance/screen/home/components/PARQ.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
-import 'package:balance/screen/profile/components/myProfile.dart';
+import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
+import 'package:balance/sharedWidgets/noticeDisclaimer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,25 +15,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../feModels/ClassModel.dart';
+import '../../feModels/UserModel.dart';
 import '../../sharedWidgets/bodyButton.dart';
-import '../../sharedWidgets/searchBarWidget.dart';
-import '../createClass/CreateClassStep1SelectType.dart';
 import 'components/Search.dart';
 
-class HomeTest extends StatefulWidget {
-  HomeTest({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key? key, required this.userInstance}) : super(key: key);
+
+  User userInstance;
 
   @override
-  State<HomeTest> createState() => _HomeTestState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomeTestState extends State<HomeTest> {
+class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   //Variables
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   String profileImageUrl = "";
   List<Class> allClasses = [];
-  String username = "";
-  String userFirstName = "";
+  late AnimationController controller;
+  late Animation<Offset> offset;
+  late Animation<Offset> offset2;
 
   //Update this to true once the app is launched
   bool isLoading = false;
@@ -41,18 +44,48 @@ class _HomeTestState extends State<HomeTest> {
   @override
   void initState() {
     super.initState();
-    getUserInfo();
+
+    print(widget.userInstance.isStripeDetailsSubmitted);
     getUserFollowing();
-    setState(() {});
+    Future.delayed(Duration(milliseconds: 150), () {
+      setState(() {});
+    });
+
+    //Animation controllers
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 600),
+    );
+    offset = Tween<Offset>(begin: Offset(0.0, 10.0), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.fastEaseInToSlowEaseOut,
+      ),
+    );
+    offset2 = Tween<Offset>(begin: Offset(0.0, 20.0), end: Offset.zero).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.fastEaseInToSlowEaseOut,
+      ),
+    );
+
+    if (controller != null && controller.status == AnimationStatus.dismissed) {
+      Future.delayed(Duration(milliseconds: 1000), () {
+        setState(() {
+          controller.forward();
+        });
+      });
+    }
   }
 
-  void getUserInfo() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    userFirstName = sharedPrefs.getString('firstName') ?? "";
-    profileImageUrl = sharedPrefs.getString('profileImageURL') ?? "";
-    setState(() {});
+  @override
+  void dispose() {
+    // Dispose of the Ticker and the AnimationController
+    controller.dispose();
+    super.dispose();
   }
 
+  //Function - Get Following List
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     FollowingRequests()
@@ -65,7 +98,6 @@ class _HomeTestState extends State<HomeTest> {
             document['FollowingUserID']
         ]);
       } else {
-        //Remove print statement in production
         print('Empty Class List');
       }
       isLoading = false;
@@ -77,6 +109,7 @@ class _HomeTestState extends State<HomeTest> {
       //get logged in user's following list
       if (val.data['success']) {
         print('successful get class feed');
+
         (val.data['classArray'] as List<dynamic>).forEach((element) {
           allClasses.add(Class.fromJson(element));
         });
@@ -99,304 +132,312 @@ class _HomeTestState extends State<HomeTest> {
         key: _key,
         backgroundColor: snow,
 
-        // // Profile SideBar
-        // drawer: SideBar(),
-        // drawerEdgeDragWidth: MediaQuery.of(context).size.width,
-
         //Appbar (White section, this should be consitent on every page.)
         appBar: AppBar(
           toolbarHeight: 0,
           elevation: 0,
           backgroundColor: snow,
         ),
-        body: CustomScrollView(slivers: [
-          //AppBar Sliver
-          SliverAppBar(
-            stretch: false,
-            pinned: false,
-            floating: true,
-            toolbarHeight: 50,
-            centerTitle: true,
-            elevation: 0,
-            backgroundColor: snow,
-            automaticallyImplyLeading: false,
+        body: Stack(
+          alignment: Alignment.center,
+          children: [
+            CustomScrollView(slivers: [
+              //AppBar Sliver
+              SliverAppBar(
+                stretch: false,
+                pinned: false,
+                floating: true,
+                toolbarHeight: 50,
+                centerTitle: true,
+                elevation: 0,
+                backgroundColor: snow,
+                automaticallyImplyLeading: false,
 
-            // Typeface
-            title: Image.asset(
-              'assets/images/Typeface.png',
-              height: 44,
-            ),
-
-            //Notifications & Chat & Create Class
-            actions: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // GestureDetector(
-                  //   child: SvgPicture.asset(
-                  //     'assets/icons/generalIcons/create.svg',
-                  //     height: 20,
-                  //     width: 20,
-                  //   ),
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //         context,
-                  //         PageTransition(
-                  //             child: CreateClassSelectType(
-                  //               isTypeSelected: false,
-                  //               classTemplate: classTemplate,
-                  //             ),
-                  //             type: PageTransitionType.fade,
-                  //             isIos: false,
-                  //             duration: Duration(milliseconds: 0),
-                  //             reverseDuration: Duration(milliseconds: 0)));
-                  //   },
-                  // ),
-                  GestureDetector(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 25.0,
-                        right: 35.0,
-                      ),
-                      child: SvgPicture.asset(
-                        'assets/icons/generalIcons/notifications.svg',
-                        height: 20,
-                        width: 20,
-                      ),
-                    ),
-                    onTap: () {
-                      print("Notifications Button Pressed");
-                      //TODO: Implement notifications screen
-                      // Navigator.of(context).push(CupertinoPageRoute(
-                      //     fullscreenDialog: true,
-                      //     builder: (context) => CreateClassType()));
-                    },
-                  ),
-                ],
-              )
-            ],
-          ),
-
-          // // Search Bar Sliver
-          // SliverPersistentHeader(
-          //   floating: true,
-          //   delegate: _SliverSearchBarDelegate(GestureDetector(
-          //     child: Stack(
-          //       alignment: Alignment.center,
-          //       children: [
-          //         Hero(
-          //             tag: 'SearchBar',
-          //             child: FitsySearchBar(
-          //               isAutoFocusTrue: false,
-          //               searchBarWidth: searchBarWidth,
-          //               searchHintText: 'Search',
-          //               callback: null,
-          //             )),
-          //         Container(
-          //             height: 45,
-          //             width: searchBarWidth,
-          //             color: Colors.transparent)
-          //       ],
-          //     ),
-          //     onTap: () {
-          //       Navigator.push(
-          //           context,
-          //           PageTransition(
-          //               child: Search(),
-          //               type: PageTransitionType.fade,
-          //               duration: Duration(milliseconds: 0),
-          //               reverseDuration: Duration(milliseconds: 0)));
-          //     },
-          //   )),
-          //   pinned: false,
-          // ),
-
-          MultiSliver(children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 26.0, right: 26.0, top: 15.0),
-              child: Text(
-                'Hi, ${userFirstName}',
-                style: TextStyle(
-                  color: jetBlack,
-                  fontFamily: 'SFDisplay',
-                  fontSize: 24,
-                  fontWeight: FontWeight.w600,
+                // Typeface
+                title: Image.asset(
+                  'assets/images/Typeface.png',
+                  height: 44,
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 26.0, right: 26.0, top: 2.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Check out your upcoming classes',
-                    style: TextStyle(
-                      color: jetBlack,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Text(
-                    'See all',
-                    style: TextStyle(
-                      color: ocean,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
+
+                //Notifications & Chat & Create Class
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 25.0,
+                            right: 35.0,
+                          ),
+                          child: SvgPicture.asset(
+                            'assets/icons/generalIcons/notifications.svg',
+                            height: 20,
+                            width: 20,
+                          ),
+                        ),
+                        onTap: () {
+                          // Navigator.of(context).push(CupertinoPageRoute(
+                          //     fullscreenDialog: true,
+                          //     builder: (context) => CreateClassType()));
+                        },
+                      ),
+                    ],
                   )
                 ],
               ),
-            ),
-            SliverList(
-                delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Padding(
+
+              //Home Header - Upcoming Classes
+              MultiSliver(children: [
+                Padding(
                   padding:
-                      const EdgeInsets.only(top: 15.0, left: 26.0, right: 26.0),
-                  child: UpcomingClassesItem(),
-                );
-              },
-              childCount: 1,
-            )),
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: 26.0, right: 26.0, top: 35.0),
-              child: Text(
-                'For you',
-                style: TextStyle(
-                  color: jetBlack,
-                  fontFamily: 'SFDisplay',
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
+                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 15.0),
+                  child: Text(
+                    'Hi, ${widget.userInstance.firstName}',
+                    style: const TextStyle(
+                      color: jetBlack,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            if (isLoading)
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) => Padding(
+                const Padding(
+                  padding: EdgeInsets.only(
+                      left: 26.0, right: 26.0, top: 2.0, bottom: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Check out your upcoming classes',
+                        style: TextStyle(
+                          color: jetBlack,
+                          fontFamily: 'SFDisplay',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Text(
+                        'See all',
+                        style: TextStyle(
+                          color: ocean,
+                          fontFamily: 'SFDisplay',
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                        top: 10.0,
+                      ),
+                      child: UpcomingClassesItem(),
+                    );
+                  },
+                  childCount: 1,
+                )),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 35.0),
+                  child: Text(
+                    'For you',
+                    style: TextStyle(
+                      color: jetBlack,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                if (isLoading)
+                  SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) => Padding(
+                        padding: const EdgeInsets.only(
+                          left: 26.0,
+                          right: 26.0,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(color: Colors.white),
+                          child: SkeletonItem(
+                              child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  SkeletonAvatar(
+                                    style: SkeletonAvatarStyle(
+                                        shape: BoxShape.circle,
+                                        width: 50,
+                                        height: 50),
+                                  ),
+                                  SizedBox(width: 8),
+                                  Expanded(
+                                    child: SkeletonParagraph(
+                                      style: SkeletonParagraphStyle(
+                                          lines: 2,
+                                          spacing: 4,
+                                          lineStyle: SkeletonLineStyle(
+                                            randomLength: true,
+                                            height: 10,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            minLength: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                6,
+                                            maxLength: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                3,
+                                          )),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 12),
+                              SkeletonAvatar(
+                                style: SkeletonAvatarStyle(
+                                    width: double.infinity,
+                                    height: 400,
+                                    borderRadius: BorderRadius.circular(20)),
+                              ),
+                              SizedBox(height: 10),
+                            ],
+                          )),
+                        ),
+                      ),
+                      childCount: 3,
+                    ),
+                  )
+                else if (allClasses.isEmpty && !isLoading)
+                  Padding(
                     padding: const EdgeInsets.only(
                       left: 26.0,
                       right: 26.0,
+                      bottom: 20.0,
                     ),
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(color: Colors.white),
-                      child: SkeletonItem(
-                          child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              SkeletonAvatar(
-                                style: SkeletonAvatarStyle(
-                                    shape: BoxShape.circle,
-                                    width: 50,
-                                    height: 50),
-                              ),
-                              SizedBox(width: 8),
-                              Expanded(
-                                child: SkeletonParagraph(
-                                  style: SkeletonParagraphStyle(
-                                      lines: 2,
-                                      spacing: 4,
-                                      lineStyle: SkeletonLineStyle(
-                                        randomLength: true,
-                                        height: 10,
-                                        borderRadius: BorderRadius.circular(8),
-                                        minLength:
-                                            MediaQuery.of(context).size.width /
-                                                6,
-                                        maxLength:
-                                            MediaQuery.of(context).size.width /
-                                                3,
-                                      )),
-                                ),
-                              )
-                            ],
+                    child: Column(
+                      // ignore: prefer_const_literals_to_create_immutables
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: SvgPicture.asset(
+                            'assets/icons/generalIcons/listIcon.svg',
+                            color: shark,
+                            height: 50,
                           ),
-                          SizedBox(height: 12),
-                          SkeletonAvatar(
-                            style: SkeletonAvatarStyle(
-                                width: double.infinity,
-                                height: 400,
-                                borderRadius: BorderRadius.circular(20)),
+                        ),
+                        Text(
+                          'No classes',
+                          textAlign: TextAlign.center,
+                          style: emptyListDisclaimerText,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: GestureDetector(
+                            child: BodyButton(
+                                buttonColor: strawberry,
+                                textColor: snow,
+                                buttonText: 'Search for classes'),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      child: Search(),
+                                      type: PageTransitionType.fade,
+                                      duration: Duration(milliseconds: 0),
+                                      reverseDuration:
+                                          Duration(milliseconds: 0)));
+                            },
                           ),
-                          SizedBox(height: 10),
-                        ],
-                      )),
+                        )
+                      ],
+                    ),
+                  )
+
+                //If the user has liked classes ~ display the list
+                else
+                  SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      final classItem = allClasses[index];
+                      return HomeClassItem(
+                        classItem: classItem,
+                      );
+                    },
+                    childCount: allClasses.length,
+                  )),
+              ])
+            ]),
+            Positioned(
+              bottom: 15,
+              child: Column(
+                children: [
+                  SlideTransition(
+                    position: offset,
+                    child: GestureDetector(
+                      child: NoticeDisclaimer(
+                        textBoxSize: 230,
+                        disclaimerTitle: 'Fitness Questionnaire',
+                        disclaimerText:
+                            'Complete a fitness questionnaire before purchasing your first class',
+                        buttonText: 'Start',
+                      ),
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                child: ParQuestionnaire(),
+                                type: PageTransitionType.theme,
+                                duration: Duration(milliseconds: 300),
+                                reverseDuration: Duration(milliseconds: 300)));
+                      },
                     ),
                   ),
-                  childCount: 3,
-                ),
-              )
-            else if (allClasses.isEmpty && !isLoading)
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 26.0,
-                  right: 26.0,
-                  bottom: 20.0,
-                ),
-                child: Column(
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: SvgPicture.asset(
-                        'assets/icons/generalIcons/listIcon.svg',
-                        color: shark,
-                        height: 50,
-                      ),
-                    ),
-                    Text(
-                      'No classes',
-                      textAlign: TextAlign.center,
-                      style: emptyListDisclaimerText,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  //Notice to set up Stripe (If not already set up)
+                  if (widget.userInstance.userType == UserType.Trainer &&
+                      widget.userInstance.stripeAccountID != null &&
+                      widget.userInstance.isStripeDetailsSubmitted == false)
+                    SlideTransition(
+                      position: offset2,
                       child: GestureDetector(
-                        child: BodyButton(
-                            buttonColor: strawberry,
-                            textColor: snow,
-                            buttonText: 'Search for classes'),
+                        child: NoticeDisclaimer(
+                          textBoxSize: 250,
+                          disclaimerTitle: 'Finish Account Set Up',
+                          disclaimerText:
+                              'Continue your Stripe account set up so you can start getting paid',
+                          buttonText: 'Start',
+                        ),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  child: Search(),
-                                  type: PageTransitionType.fade,
-                                  duration: Duration(milliseconds: 0),
-                                  reverseDuration: Duration(milliseconds: 0)));
+                          HapticFeedback.selectionClick();
+
+                          //Call Stripe Set Up
+                          StripeLogic().stripeSetUp(widget.userInstance);
                         },
                       ),
-                    )
-                  ],
-                ),
-              )
-
-            //If the user has liked classes ~ display the list
-            else
-              SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  final classItem = allClasses[index];
-                  return HomeClassItem(
-                    classItem: classItem,
-                  );
-                },
-                childCount: allClasses.length,
-              )),
-          ])
-        ]),
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
-      onTap: () => {FocusScope.of(context).requestFocus(new FocusNode())},
+      onTap: () => {
+        FocusScope.of(context).requestFocus(new FocusNode()),
+      },
     );
   }
 }
@@ -424,7 +465,6 @@ class _SliverSearchBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(_SliverSearchBarDelegate oldDelegate) {
-    print('rebuilding');
     return true;
   }
 }

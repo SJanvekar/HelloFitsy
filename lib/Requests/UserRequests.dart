@@ -25,6 +25,30 @@ class UserRequests {
     }
   }
 
+  updateUserStripeAccountID(String? stripeAccountID, String? userName) async {
+    try {
+      return await dio.post('$urlDomain/updateUserStripeAccountID', data: {
+        "StripeAccountID": stripeAccountID,
+        "Username": userName,
+      });
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  getUserFollowing(String username) async {
+    try {
+      return await dio.get(
+        '$urlDomain/getUserFollowing',
+        queryParameters: {
+          "Username": username,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
   searchTrainers(String searchIndex) async {
     try {
       return await dio.get(

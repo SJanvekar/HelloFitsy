@@ -11,6 +11,8 @@ class User {
   String userName;
   late String? userBio;
   late List<String> categories;
+  late String? stripeAccountID;
+  late bool isStripeDetailsSubmitted = false;
 
   User({
     required this.isActive,

@@ -1,0 +1,11 @@
+{
+  "applinks": {
+      "apps": [],
+      "details": [
+      {
+        "appID": "7H5U7P48CS.ca.fitsy.fitsy",
+        "paths": ["*"]
+      }
+    ]
+  }
+}

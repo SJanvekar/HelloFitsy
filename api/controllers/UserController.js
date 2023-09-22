@@ -37,6 +37,7 @@ var functions = {
                     ClassHistory: req.body.ClassHistory,
                     Following: req.body.Following,
                     Followers: req.body.Followers,
+                    StripeAccountID: req.body.StripeAccountID
                 });
                 newUser.save(function (err) {
                     if (err) { //TODO: Maybe delete auth object when error occurs
@@ -121,7 +122,8 @@ var functions = {
                             userName: parsedResponse.Username,
                             firstName: parsedResponse.FirstName,
                             lastName: parsedResponse.LastName,
-                            categories: parsedResponse.Categories}))
+                            categories: parsedResponse.Categories,
+                            stripeAccountID: parsedResponse.StripeAccountID,}))
                 }
             })
         } else {
@@ -199,6 +201,29 @@ var functions = {
             }
         })
     },
+
+    //Update user stripe account ID on accountID creation (Stripe set up)
+    updateUserStripeAccountID: function (req, res) {
+        // Find the user by Username
+        User.findOne({'Username': req.body.Username}, function (err, user) {
+          if (err) {
+            console.log(err);
+            return res.json({ success: false, errorCode: err.code });
+          } else {
+            user.StripeAccountID = req.body.StripeAccountID;
+            console.log(user);
+                // Save the updated user
+            user.save(function (err, updatedUser) {
+                if (err) {
+                console.error(err);
+                return res.json({ success: false, errorCode: err.code });
+                } else {
+                return res.json({ success: true });
+                }
+            });
+          }
+        });
+      },
 }
 
 module.exports = functions

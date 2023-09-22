@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 //localhost:8888
-//www.fitsy.ca
+//https://www.fitsy.ca
 const String urlDomain = 'http://localhost:8888';
 
 //----MONGOOSE ERROR CODES-------------//
@@ -199,8 +198,8 @@ const settingsDefaultSelectionText = TextStyle(
 
 const popUpMenuText = TextStyle(
     fontFamily: 'SFDisplay',
-    color: jetBlack80,
-    fontSize: 17,
+    color: jetBlack60,
+    fontSize: 15,
     fontWeight: FontWeight.w500,
     decoration: TextDecoration.none);
 
@@ -262,6 +261,29 @@ const roundedBodyTextStyle1 = TextStyle(
   decoration: TextDecoration.none,
 );
 
+const buttonText1Jetblack80 = TextStyle(
+  fontFamily: 'SFRounded',
+  color: jetBlack80,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const buttonText3Jetblack40 = TextStyle(
+  fontFamily: 'SFRounded',
+  color: jetBlack40,
+  fontSize: 14,
+  fontWeight: FontWeight.w100,
+  decoration: TextDecoration.none,
+);
+
+const buttonText2snow = TextStyle(
+  fontFamily: 'SFRounded',
+  color: snow,
+  fontSize: 14,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
 const BodyTextFontBold80 = TextStyle(
     color: jetBlack80,
     fontFamily: 'SFDisplay',
@@ -274,3 +296,10 @@ const profileBodyTextFont = TextStyle(
     fontFamily: 'SFDisplay',
     fontSize: 14.5,
     fontWeight: FontWeight.w400);
+
+//TEXT BUTTON STYLES
+
+//NO SPLASH
+var textButtonStyleNoSplash = ButtonStyle(
+  overlayColor: MaterialStateProperty.all(Colors.transparent),
+);

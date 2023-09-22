@@ -1,16 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
-
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/sharedWidgets/searchBarWidget.dart';
 import 'package:balance/sharedWidgets/userProfileComponentLight.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-
-import '../home.dart';
 import 'HomeClassItem.dart';
 
 class Search extends StatefulWidget {
