@@ -317,7 +317,7 @@ class _MainPageState extends State<MainPage>
                               return Container(
                                 color: Colors.transparent,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.75,
+                                    MediaQuery.of(context).size.height * 0.8,
                                 child: CreateClassSelectType(
                                     isTypeSelected: false,
                                     classTemplate: classTemplate),

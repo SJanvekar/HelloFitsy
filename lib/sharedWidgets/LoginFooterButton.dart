@@ -20,6 +20,7 @@ class FooterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 45,
+      width: MediaQuery.of(context).size.width - 26.0 * 2,
       decoration: BoxDecoration(
           color: buttonColor, borderRadius: BorderRadius.circular(20)),
       child: Center(

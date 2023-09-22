@@ -98,16 +98,20 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
       child:
 
           //Body
-          Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+          Stack(
+        alignment: Alignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 26.0, top: 30),
-            child: GestureDetector(
-              child: Text("Cancel", style: logInPageNavigationButtons),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+          Positioned(
+            left: 0.0,
+            top: 10.0,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 26.0, top: 30),
+              child: GestureDetector(
+                child: Text("Cancel", style: logInPageNavigationButtons),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
           ),
           Column(
@@ -118,7 +122,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
 
               //Class Type selection
               Padding(
-                padding: const EdgeInsets.only(left: 26, right: 26, top: 50),
+                padding: const EdgeInsets.only(left: 26, right: 26, top: 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -185,7 +189,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                                   color: _currentTextColorGroup,
                                 ),
                               ),
-                              Text('Group session',
+                              Text('Group class',
                                   style: TextStyle(
                                     color: _currentTextColorGroup,
                                     fontFamily: 'SFDisplay',
@@ -245,33 +249,29 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                         })
                       },
                     ),
-                    //Bottom Navigation Bar
-                    GestureDetector(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 30,
-                            bottom: 46,
-                          ),
-                          child: FooterButton(
-                            buttonColor: strawberry,
-                            buttonText: 'Continue',
-                            textColor: snow,
-                          ),
-                        ),
-                        onTap: () => {
-                              if (widget.isTypeSelected == true)
-                                {
-                                  Navigator.of(context).push(CupertinoPageRoute(
-                                      fullscreenDialog: true,
-                                      builder: (context) =>
-                                          CreateClassDescription(
-                                              classTemplate: classTemplate)))
-                                }
-                            }),
                   ],
                 ),
               ),
             ],
+          ),
+          //Bottom Navigation Bar
+          Positioned(
+            bottom: 55,
+            child: GestureDetector(
+                child: FooterButton(
+                  buttonColor: strawberry,
+                  buttonText: 'Continue',
+                  textColor: snow,
+                ),
+                onTap: () => {
+                      if (widget.isTypeSelected == true)
+                        {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => CreateClassDescription(
+                                  classTemplate: classTemplate)))
+                        }
+                    }),
           ),
         ],
       ),
@@ -288,7 +288,6 @@ Widget pageTitle() {
         right: 46.5,
       ),
       child: Container(
-          padding: EdgeInsets.only(top: 40),
           decoration: BoxDecoration(color: snow),
           child: Text(
             'What type of class are you listing?',
