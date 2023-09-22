@@ -1,5 +1,5 @@
 var Class = require('../models/Class')
-var jwt = require('jwt-simple')
+// var jwt = require('jwt-simple')
 
 var functions = {
 

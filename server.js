@@ -5,7 +5,6 @@ const connectDB = require('./config/Public/db')
 const passport = require('passport')
 const bodyParser = require('body-parser')
 const routes = require( './api/routes/FitsyRoutes')
-const config = require('config')
 const path = require('path'); 
 connectDB()
 const app = express()
