@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,21 +9,23 @@ import '../screen/profile/components/Profile.dart';
 class UserProfileComponentDark extends StatelessWidget {
   UserProfileComponentDark({
     Key? key,
-    required this.userFullName,
+    required this.userID,
     required this.userFirstName,
-    required this.userFullNameFontSize,
+    required this.userLastName,
     required this.userName,
+    required this.profileImageURL,
+    required this.userFullNameFontSize,
     required this.userNameFontSize,
-    required this.imageURL,
     required this.profileImageRadius,
   }) : super(key: key);
 
-  String userFullName;
+  String userID;
   String userFirstName;
-  double userFullNameFontSize;
+  String userLastName;
   String userName;
+  String profileImageURL;
+  double userFullNameFontSize;
   double userNameFontSize;
-  String imageURL;
   double profileImageRadius;
 
   //Follow button ~ State 0
@@ -83,7 +86,7 @@ class UserProfileComponentDark extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                foregroundImage: NetworkImage(imageURL),
+                foregroundImage: NetworkImage(profileImageURL),
                 backgroundColor: Colors.transparent,
                 radius: profileImageRadius,
               ),
@@ -93,7 +96,7 @@ class UserProfileComponentDark extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userFullName,
+                      userFirstName + ' ' + userLastName,
                       style: TextStyle(
                           color: snow,
                           fontFamily: 'SFDisplay',
@@ -117,11 +120,11 @@ class UserProfileComponentDark extends StatelessWidget {
         Navigator.of(context).push(CupertinoPageRoute(
             maintainState: true,
             builder: (context) => UserProfile(
-                profileImageURL: imageURL,
-                userName: userName,
+                userID: userID,
                 userFirstName: userFirstName,
-                //HARD CODED - MUST CHANGE
-                userLastName: '')));
+                userLastName: userLastName,
+                userName: userName,
+                profileImageURL: profileImageURL)));
       },
     );
   }

@@ -5,8 +5,10 @@ import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/FollowerModel.dart';
 import 'package:balance/feModels/FollowingModel.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:balance/sharedWidgets/unfollowDialog.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,17 +22,19 @@ import '../../../sharedWidgets/categories/categorySmall.dart';
 class UserProfile extends StatefulWidget {
   UserProfile({
     Key? key,
-    required this.profileImageURL,
-    required this.userName,
+    required this.userID,
     required this.userFirstName,
     required this.userLastName,
+    required this.userName,
+    required this.profileImageURL,
   }) : super(key: key);
 
   //User details:
-  String profileImageURL;
-  String userName;
+  String userID;
   String userFirstName;
   String userLastName;
+  String userName;
+  String profileImageURL;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -56,10 +60,26 @@ class _UserProfileState extends State<UserProfile> {
   //Class list
   List<Class> trainerClasses = classList;
 
+  void handleFollowPress() async {
+    setState(() {});
+    EasyDebounce.debounce('followDebouncer', const Duration(milliseconds: 500),
+        () => changeFollowStatus());
+  }
+
+  void changeFollowStatus() async {
+    if (isUserFollowing) {
+      addFollowing();
+      addFollower();
+    } else {
+      removeFollowing();
+      removeFollower();
+    }
+  }
+
   void isFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     await FollowingRequests()
-        .isFollowing(widget.userName, sharedPrefs.getString('userName') ?? '')
+        .isFollowing(widget.userID, sharedPrefs.getString('userID') ?? '')
         .then((val) async {
       if (val.data['success']) {
         print('successful is following');
@@ -75,10 +95,9 @@ class _UserProfileState extends State<UserProfile> {
 
   void addFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    Following newFollowing = Following(
-        followingUsername: widget.userName,
-        username: sharedPrefs.getString('userName') ?? '');
-    FollowingRequests().addFollowing(newFollowing).then((val) async {
+    FollowingRequests()
+        .addFollowing(widget.userID, sharedPrefs.getString('userID') ?? '')
+        .then((val) async {
       if (val.data['success']) {
         print('successful add following');
       } else {
@@ -89,10 +108,9 @@ class _UserProfileState extends State<UserProfile> {
 
   void addFollower() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    Follower newFollower = Follower(
-        followerUsername: sharedPrefs.getString('userName') ?? '',
-        username: widget.userName);
-    FollowerRequests().addFollower(newFollower).then((val) async {
+    FollowerRequests()
+        .addFollower(sharedPrefs.getString('userID') ?? '', widget.userID)
+        .then((val) async {
       if (val.data['success']) {
         print('successful add follower');
       } else {
@@ -104,8 +122,7 @@ class _UserProfileState extends State<UserProfile> {
   void removeFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     FollowingRequests()
-        .removeFollowing(
-            widget.userName, sharedPrefs.getString('userName') ?? '')
+        .removeFollowing(widget.userID, sharedPrefs.getString('userID') ?? '')
         .then((val) async {
       if (val.data['success']) {
         print('successful remove following');
@@ -118,8 +135,7 @@ class _UserProfileState extends State<UserProfile> {
   void removeFollower() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     FollowerRequests()
-        .removeFollower(
-            sharedPrefs.getString('userName') ?? '', widget.userName)
+        .removeFollower(sharedPrefs.getString('userID') ?? '', widget.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful remove follower');
@@ -171,16 +187,10 @@ class _UserProfileState extends State<UserProfile> {
 //Title Colour Function
   _followOnTap() {
     setState(() {
-      if (!isUserFollowing) {
-        addFollowing();
-        addFollower();
-      } else {
-        removeFollowing();
-        removeFollower();
-      }
       isUserFollowing = !isUserFollowing;
       HapticFeedback.mediumImpact();
     });
+    handleFollowPress();
   }
 
   //Class Type and Title

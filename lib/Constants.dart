@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //http://localhost:8888
 //https://www.fitsy.ca
-const String urlDomain = 'https://www.fitsy.ca';
+const String urlDomain = 'http://localhost:8888';
 
 //----MONGOOSE ERROR CODES-------------//
 const int duplicateKeycode = 11000;

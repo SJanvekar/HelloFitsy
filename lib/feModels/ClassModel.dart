@@ -19,7 +19,7 @@ class Schedule {
 }
 
 class Class {
-  late String classID;
+  String classID;
   String classImageUrl;
   String className;
   double classPrice;
@@ -32,15 +32,13 @@ class Class {
   double classLongitude;
   double classOverallRating;
   int classReviewsAmount;
-  String classTrainer;
-  String trainerFirstName;
-  String trainerLastName;
+  String classTrainerID;
   late List<Schedule> classTimes;
-  String trainerImageUrl;
   late List<String> classCategories;
   File? profileImageTempHolder;
 
   Class({
+    required this.classID,
     required this.classImageUrl,
     required this.className,
     required this.classDescription,
@@ -58,11 +56,7 @@ class Class {
     required this.classTimes,
 
     //Trainer Info
-    required this.classTrainer,
-    required this.trainerImageUrl,
-    required this.trainerFirstName,
-    required this.trainerLastName,
-    // required this.trainerUsername,
+    required this.classTrainerID,
   });
 
   //JSON parsers are required to parse arrays of JSON
@@ -81,10 +75,7 @@ class Class {
         classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
         classCategories = List<String>.from(json['Categories']),
-        classTrainer = json['ClassTrainer'],
-        trainerImageUrl = json['TrainerImageUrl'],
-        trainerFirstName = json['TrainerFirstName'],
-        trainerLastName = json['TrainerLastName'];
+        classTrainerID = json['ClassTrainerID'];
 
   Map<String, dynamic> toJson() => {
         '_id': classID,
@@ -100,10 +91,7 @@ class Class {
         'ClassRating': classOverallRating,
         'ClassReview': classReviewsAmount,
         'ClassPrice': classPrice,
-        'ClassTrainer': classTrainer,
-        'TrainerImageUrl': trainerImageUrl,
-        'TrainerFirstName': trainerFirstName,
-        'TrainerLastName': trainerLastName
+        'ClassTrainerID': classTrainerID
       };
 }
 

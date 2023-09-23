@@ -137,6 +137,7 @@ class _MainPageState extends State<MainPage>
   //Get User Information
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
+    userInstance.userID = sharedPrefs.getString('userID') ?? '';
     userInstance.userName = sharedPrefs.getString('userName') ?? '';
     userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
     userInstance.lastName = sharedPrefs.getString('lastName') ?? '';

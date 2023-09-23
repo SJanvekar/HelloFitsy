@@ -109,6 +109,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       //get logged in user's following list
       if (val.data['success']) {
         print('successful get class feed');
+
         (val.data['classArray'] as List<dynamic>).forEach((element) {
           allClasses.add(Class.fromJson(element));
         });

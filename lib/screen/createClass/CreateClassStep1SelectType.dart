@@ -29,6 +29,7 @@ class CreateClassSelectType extends StatefulWidget {
 }
 
 Class classTemplate = Class(
+    classID: '',
     className: '',
     classDescription: '',
     classType: ClassType.Solo,
@@ -38,12 +39,8 @@ Class classTemplate = Class(
     classOverallRating: 0,
     classReviewsAmount: 0,
     classPrice: 0,
-    classTrainer: '',
+    classTrainerID: '',
     classTimes: [],
-    trainerImageUrl: '',
-    // trainerUsername: '',
-    trainerFirstName: '',
-    trainerLastName: '',
     classUserRequirements: '',
     classWhatToExpect: '',
     classImageUrl: '');

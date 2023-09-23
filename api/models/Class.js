@@ -81,10 +81,12 @@ var ClassSchema = new Schema({
         required: true,
     },
 
-    //Class Trainer
-    ClassTrainer: {
-        type: String,
+    //Class Trainer Reference
+    ClassTrainerID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
+        unique: true,
     },
 
     //Class Schedules
@@ -98,24 +100,6 @@ var ClassSchema = new Schema({
         type: String,
         required: false,
     }],
-
-    //Trainer Profile Image URL
-    TrainerImageUrl: {
-        type: String,
-        required: false
-    },
-    
-    //Trainer First Name
-    TrainerFirstName: {
-        type: String,
-        required: true
-    },
-
-    //Last Name
-    TrainerLastName: {
-        type: String,
-        required: true
-    },
 })
 
 module.exports = mongoose.model('Class', ClassSchema)

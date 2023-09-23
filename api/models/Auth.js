@@ -19,11 +19,17 @@ var AuthSchema = new Schema({
         // validate: [validateEmail, 'Please fill a valid email address'],
     },
 
+    //Unique User Phone
+    UserPhone: {
+        type: String,
+        required: true,
+        required: 'Phone number is required',
+    },
+
     //Password
     Password: {
         type: String,
         required: true
-
     },
 })
 

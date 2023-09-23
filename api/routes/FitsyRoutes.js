@@ -52,11 +52,11 @@ router.get('/dashboard', (req, res) =>{
 
   //User routes
     //Get information for a new user
-    router.get('/getinfo', userController.getinfo)
+    router.get('/getLogInInfo', userController.getLogInInfo)
     //Search trainers
     router.get('/searchTrainers', userController.searchTrainers)
-  
-    
+    //Get trainer info for classes only
+    router.get('/getClassTrainerInfo', userController.getClassTrainerInfo)
 
   router.get('/', (req, res) =>{
     res.send('I am up and running! -- Welcome to Fitsy')

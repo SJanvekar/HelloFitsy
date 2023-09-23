@@ -3,13 +3,12 @@ var Schema = mongoose.Schema;
 
 var ClassLikedSchema = new Schema({
 
-    //Username
-    Username: {
-        type: String,
+    //UserID
+    UserID: {
+        type:  mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
         unique: true,
-        lowercase: true,
-        index: true
     },
 
     //Class ID

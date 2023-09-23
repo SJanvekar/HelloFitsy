@@ -6,14 +6,14 @@ class UserRequests {
 
   updateUserInformation(
       String? profileImageURL,
-      String? oldUsername,
+      String? userID,
       String? firstName,
       String? lastName,
       String? newUserName,
       String? bio) async {
     try {
       return await dio.post('$urlDomain/updateUserInfo', data: {
-        "OldUsername": oldUsername,
+        "UserID": userID,
         "ProfileImageURL": profileImageURL,
         "FirstName": firstName,
         "LastName": lastName,
@@ -55,6 +55,19 @@ class UserRequests {
         '$urlDomain/searchTrainers',
         queryParameters: {
           "SearchIndex": searchIndex,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  getClassTrainerInfo(String userID) async {
+    try {
+      return await dio.get(
+        '$urlDomain/getClassTrainerInfo',
+        queryParameters: {
+          "UserID": userID,
         },
       );
     } on DioError catch (e) {

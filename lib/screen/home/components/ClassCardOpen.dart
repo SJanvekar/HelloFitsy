@@ -6,6 +6,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
@@ -43,6 +44,30 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   Brightness statusBarTheme = Brightness.dark;
   bool classLiked = false;
   //Get Trainer Details
+  String trainerUserID = '';
+  String trainerImageURL = '';
+  String trainerUsername = '';
+  String trainerFirstName = '';
+  String trainerLastName = '';
+
+  void getClassTrainerInfo() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    UserRequests()
+        .getClassTrainerInfo(sharedPrefs.getString('userID') ?? "")
+        .then((val) async {
+      if (val.data['success']) {
+        trainerUserID = val.data['_id'] ?? '';
+        trainerImageURL = val.data['ProfileImageURL'] ?? '';
+        trainerUsername = val.data['Username'] ?? '';
+        trainerFirstName = val.data['FirstName'] ?? '';
+        trainerLastName = val.data['LastName'] ?? '';
+      } else {
+        //Remove print statement in production
+        print('error getting class liked: ${val.data['result']}');
+      }
+      setState(() {});
+    });
+  }
 
   void getIsLiked() async {
     final sharedPrefs = await SharedPreferences.getInstance();
@@ -116,14 +141,14 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           UserProfileComponentDark(
-            imageURL: widget.classItem.trainerImageUrl,
+            userID: trainerUserID,
+            userFirstName: trainerFirstName,
+            userLastName: trainerLastName,
+            userName: trainerUsername,
+            profileImageURL: trainerImageURL,
             profileImageRadius: 25,
-            userFullName:
-                '${widget.classItem.trainerFirstName} ${widget.classItem.trainerLastName}',
             userFullNameFontSize: 16,
-            userName: widget.classItem.classTrainer,
             userNameFontSize: 13,
-            userFirstName: widget.classItem.trainerFirstName,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 26),
@@ -380,13 +405,14 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         UserProfileComponentLight(
-          imageURL: widget.classItem.trainerImageUrl,
+          userID: trainerUserID,
+          userFirstName: trainerFirstName,
+          userLastName: trainerLastName,
+          userName: trainerUsername,
+          profileImageURL: trainerImageURL,
           profileImageRadius: 25,
-          userLastName: widget.classItem.trainerLastName,
           userFullNameFontSize: 16,
-          userName: widget.classItem.classTrainer,
           userNameFontSize: 13,
-          userFirstName: widget.classItem.trainerFirstName,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 15.0),

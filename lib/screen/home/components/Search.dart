@@ -211,10 +211,11 @@ class _Search extends State<Search> {
                                   padding: const EdgeInsets.only(
                                       left: 26.0, right: 26.0),
                                   child: UserProfileComponentLight(
+                                    userID: userItem.userID,
                                     userFirstName: userItem.firstName,
                                     userLastName: userItem.lastName,
                                     userName: userItem.userName,
-                                    imageURL: userItem.profileImageURL,
+                                    profileImageURL: userItem.profileImageURL,
                                     profileImageRadius: 22.5,
                                     userFullNameFontSize: 15,
                                     userNameFontSize: 14,

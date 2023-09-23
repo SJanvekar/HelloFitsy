@@ -176,11 +176,6 @@ class _CategorySelectionState extends State<CategorySelection> {
   }
 
   void sendUserModel() {
-    userTemplate.likedClasses = <String>[];
-    userTemplate.classHistory = <String>[];
-    userTemplate.followers = <String>[];
-    userTemplate.following = <String>[];
-
     //Auth Service Call
     AuthService().signUp(authTemplate, userTemplate).then((val) async {
       if (val.data['success']) {
