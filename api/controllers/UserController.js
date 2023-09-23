@@ -79,7 +79,7 @@ var functions = {
         }
         newAuth.comparePassword(req.body.Password, function (err, isMatch) {
             if (isMatch && !err) {
-                var token = jwt.encode(newAuth, config.secret)
+                var token = jwt.encode(newAuth, process.env.DATABASE_SECRET)
                 return res.json({success: true, token: token})
             } else {
                 console.log("Error Incorrect Password")
@@ -106,7 +106,7 @@ var functions = {
         }
         if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
             var token = req.headers.authorization.split(' ')[1]
-            var decodedtoken = jwt.decode(token, config.secret)
+            var decodedtoken = jwt.decode(token, process.env.DATABASE_SECRET)
             try {
                 user = await User.findOne({Auth: decodedtoken._id})
             } catch (err) {
