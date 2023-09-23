@@ -1,6 +1,5 @@
 var ClassLiked = require('../models/ClassLiked')
 var jwt = require('jwt-simple')
-var config = require('../../config/Private/dbconfig')
 const { json } = require('body-parser')
 const { default: mongoose } = require('mongoose')
 

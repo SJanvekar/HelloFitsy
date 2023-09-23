@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-//localhost:8888
+//http://localhost:8888
 //https://www.fitsy.ca
 const String urlDomain = 'http://localhost:8888';
 

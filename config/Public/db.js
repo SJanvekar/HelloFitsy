@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
-const dbconfig = require('../Private/dbconfig')
+// const dbconfig = require('../Private/dbconfig')
+const dotenv = require('dotenv');
+dotenv.config();
 
 
 const connectDB = async() => {
     try{
-        const con = await mongoose.connect(dbconfig.database,{
+        const con = await mongoose.connect(process.env.DATABASE_NAME,{
             useNewUrlParser: true,
         })
         console.log('MongoDB Connected:', con.connection.host)

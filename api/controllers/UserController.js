@@ -1,7 +1,9 @@
 var User = require('../models/User')
 var Auth = require('../models/Auth')
 var jwt = require('jwt-simple')
-var config = require('../../config/Private/dbconfig')
+// var config = require('../../config/Private/dbconfig')
+const dotenv = require('dotenv');
+dotenv.config();
 const { json } = require('body-parser')
 const { findOne } = require('../models/User')
 const { default: mongoose } = require('mongoose')

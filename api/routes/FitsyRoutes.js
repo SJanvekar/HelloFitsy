@@ -6,7 +6,7 @@ const classLikedController = require('../controllers/ClassLikedController.js')
 const classPurchasedController = require('../controllers/ClassPurchasedController.js')
 const followerController = require('../controllers/FollowerController.js')
 const followingController = require('../controllers/FollowingController.js')
-const stripeController = require('../controllers/StripeController.js')
+const stripeController = require('../controllers/StripeControllerAPI.js')
 const userController = require('../controllers/UserController.js')
 
 router.get('/dashboard', (req, res) =>{
