@@ -50,6 +50,11 @@ void onSubmitSignInField(context) {
 
           // Check this and figure out how to make it work
           // sharedPrefs.setString('user', json.encode(val.data));
+          if (val.data['userBio'] != null) {
+            sharedPrefs.setString('userBio', val.data['userBio'] ?? '');
+          } else {
+            print('Failed get user info');
+          }
 
           // Check if stripeAccountID is not null (AccountID exists for Stripe)
           if (val.data['stripeAccountID'] != null)

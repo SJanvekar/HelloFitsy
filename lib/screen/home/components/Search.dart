@@ -18,6 +18,15 @@ class Search extends StatefulWidget {
 class _Search extends State<Search> {
   // ignore: prefer_const_constructors_in_immutables
 
+  //----------
+  @override
+  void initState() {
+    super.initState();
+    _controller.clear();
+  }
+
+  final _controller = TextEditingController();
+
   List<User> userSearchResult = [];
   void retrieveSearchResult(List<User> newResult) {
     setState(() {
@@ -90,36 +99,10 @@ class _Search extends State<Search> {
                                 isAutoFocusTrue: true,
                                 searchHintText: 'Search trainers or classes',
                                 callback: retrieveSearchResult,
+                                controller: _controller,
                               ),
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(right: 15.0),
-                          //   child: GestureDetector(
-                          //     child: SizedBox(
-                          //       width: 50,
-                          //       child: Text('Cancel',
-                          //           style: TextStyle(
-                          //             color: jetBlack80,
-                          //             fontFamily: 'SFDisplay',
-                          //             fontWeight: FontWeight.w600,
-                          //             fontSize: 15.0,
-                          //           )),
-                          //     ),
-                          //     onTap: () {
-                          //       Navigator.pop(
-                          //         context,
-                          //         PageTransition(
-                          //             child: Home(),
-                          //             type: PageTransitionType.fade,
-                          //             isIos: true,
-                          //             reverseDuration:
-                          //                 Duration(milliseconds: 0),
-                          //             duration: Duration(milliseconds: 0)),
-                          //       );
-                          //     },
-                          //   ),
-                          // )
                         ],
                       ),
                     ],

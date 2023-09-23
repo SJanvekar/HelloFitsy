@@ -128,6 +128,7 @@ var functions = {
                             following: parsedResponse.Following,
                             followers: parsedResponse.Followers,
                             stripeAccountID: parsedResponse.StripeAccountID,
+                            userBio : parsedResponse.UserBio,
                         }))
                 }
             })

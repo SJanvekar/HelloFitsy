@@ -4,13 +4,17 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:balance/Constants.dart';
+import 'package:balance/Main.dart';
 import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/feModels/Categories.dart';
 import 'package:balance/screen/home/components/Search.dart';
+import 'package:balance/screen/login/components/SignIn.dart';
+import 'package:balance/screen/profile/components/SpinnerPage.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
+import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/noticeDisclaimer.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCardPersonalProfile.dart';
@@ -20,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../../feModels/ClassModel.dart';
@@ -266,7 +271,7 @@ class _PersonalProfileState extends State<PersonalProfile>
         child: Padding(
           padding: const EdgeInsets.only(left: 15.0, right: 15.0),
           child: Text(
-            'Edit profile',
+            'Settings',
             style: TextStyle(
                 color: jetBlack,
                 fontFamily: 'SFDisplay',
@@ -412,13 +417,13 @@ class _PersonalProfileState extends State<PersonalProfile>
                           child: GestureDetector(
                               child: Container(
                                 height: 30,
-                                width: 100,
+                                width: 80,
                                 decoration: BoxDecoration(
                                     color: iconCircleColor,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
                                     child: Text(
-                                  'Edit profile',
+                                  'Settings',
                                   style: TextStyle(
                                     color: iconColor,
                                     fontFamily: 'SFDisplay',
@@ -912,8 +917,8 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                                   image: NetworkImage(widget
                                                                       .userInstance
                                                                       .profileImageURL!),
-                                                                  width: 180,
-                                                                  height: 180,
+                                                                  width: 160,
+                                                                  height: 160,
                                                                   fit: BoxFit
                                                                       .cover,
                                                                 ))
@@ -936,18 +941,19 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                                             context)
                                                                         .size
                                                                         .width *
-                                                                    0.2,
+                                                                    0.22,
                                                                 right: MediaQuery.of(
                                                                             context)
                                                                         .size
                                                                         .width *
-                                                                    0.2),
+                                                                    0.22),
                                                             child:
                                                                 GestureDetector(
                                                               child: BodyButton(
                                                                 buttonColor:
-                                                                    strawberry,
-                                                                textColor: snow,
+                                                                    bone,
+                                                                textColor:
+                                                                    blueMusk,
                                                                 buttonText:
                                                                     'Upload new picture',
                                                               ),
@@ -982,9 +988,57 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                           Padding(
                                                             padding:
                                                                 EdgeInsets.only(
-                                                                    top: 25.0),
+                                                                    top: 25.0,
+                                                                    bottom:
+                                                                        35.0),
                                                             child: editBio(),
                                                           ),
+                                                          GestureDetector(
+                                                              child: FooterButton(
+                                                                  buttonColor:
+                                                                      snow,
+                                                                  textColor:
+                                                                      strawberry,
+                                                                  buttonText:
+                                                                      'Log out'),
+                                                              onTap: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .push(
+                                                                        PageTransition(
+                                                                  fullscreenDialog:
+                                                                      true,
+                                                                  child:
+                                                                      SpinnerPage(),
+                                                                  type: PageTransitionType
+                                                                      .topToBottom,
+                                                                ));
+                                                                Future.delayed(
+                                                                    Duration(
+                                                                        milliseconds:
+                                                                            1000),
+                                                                    () async {
+                                                                  //Load Shared Prefs
+                                                                  final sharedPrefs =
+                                                                      await SharedPreferences
+                                                                          .getInstance();
+                                                                  //Clear Shared Prefs
+                                                                  sharedPrefs
+                                                                      .clear();
+                                                                  //Navigate to the sign in page
+                                                                  // ignore: use_build_context_synchronously
+                                                                  Navigator.of(context).push(PageTransition(
+                                                                      fullscreenDialog:
+                                                                          true,
+                                                                      child:
+                                                                          SignIn(),
+                                                                      type: PageTransitionType
+                                                                          .fade,
+                                                                      duration:
+                                                                          Duration
+                                                                              .zero));
+                                                                });
+                                                              }),
                                                           SizedBox(height: 80)
                                                         ])
                                                       ],

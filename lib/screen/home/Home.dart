@@ -93,10 +93,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         .then((val) async {
       if (val.data['success']) {
         print('successful get following list');
-        // getClassFeed([
-        //   for (dynamic document in (val.data['following'] as List<dynamic>))
-        //     Following.fromJson(document).followingUsername
-        // ]);
+        getClassFeed([
+          for (dynamic document in (val.data['following'] as List<dynamic>))
+            Following.fromJson(document).followingUsername
+        ]);
         isLoading = false;
       } else {
         isLoading = false;
@@ -104,19 +104,26 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     });
   }
 
-  void getClassFeed(List<String> followingUsernames) async {
-    ClassRequests().getClass(followingUsernames).then((val) async {
-      //get logged in user's following list
-      if (val.data['success']) {
-        print('successful get class feed');
+  Future<void> getClassFeed(List<String> followingUsernames) async {
+    try {
+      final response = await ClassRequests().getClass(followingUsernames);
 
-        allClasses
-            .add(Class.fromJson((val.data['classArray'] as List<dynamic>)[0]));
+      if (response.data['success']) {
+        final classArray = response.data['classArray'] as List<dynamic>;
+        if (classArray.isNotEmpty) {
+          final firstClass = Class.fromJson(classArray[0]);
+          allClasses.add(firstClass);
+          setState(() {});
+          print('Successful get class feed');
+        } else {
+          print('No classes found');
+        }
       } else {
-        print('error get class feed: ${val.data['msg']}');
+        print('Error get class feed: ${response.data['msg']}');
       }
-      setState(() {});
-    });
+    } catch (error) {
+      print('Error: $error');
+    }
   }
 
   @override
@@ -242,7 +249,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 )),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 35.0),
+                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 20.0),
                   child: Text(
                     'For you',
                     style: TextStyle(
@@ -375,6 +382,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     },
                     childCount: allClasses.length,
                   )),
+                SizedBox(height: 100)
               ])
             ]),
             Positioned(

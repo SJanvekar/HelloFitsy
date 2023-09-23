@@ -141,7 +141,7 @@ class _MainPageState extends State<MainPage>
     userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
     userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
     userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
-    print(sharedPrefs.getString('stripeAccountID'));
+
     if (sharedPrefs.getString('stripeAccountID') != null) {
       userInstance.stripeAccountID =
           sharedPrefs.getString('stripeAccountID') ?? '';

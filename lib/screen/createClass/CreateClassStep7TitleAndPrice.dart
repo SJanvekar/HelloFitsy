@@ -74,7 +74,6 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
           sharedPrefs.getString('firstName') ?? "";
       widget.classTemplate.trainerLastName =
           sharedPrefs.getString('lastName') ?? "";
-      print(widget.classTemplate.toJson());
       ClassRequests().addClass(widget.classTemplate).then((val) {
         if (val.data['success']) {
           print('Successful class add');

@@ -31,6 +31,7 @@ class CategorySelection extends StatefulWidget {
 }
 
 List<Category> allCategories = categoriesList;
+var controller = TextEditingController();
 
 class _CategorySelectionState extends State<CategorySelection> {
   //variables
@@ -255,6 +256,7 @@ class _SearchBarSliverDelegate extends SliverPersistentHeaderDelegate {
       isAutoFocusTrue: false,
       searchHintText: 'Search Categories',
       callback: null,
+      controller: controller,
     );
   }
 

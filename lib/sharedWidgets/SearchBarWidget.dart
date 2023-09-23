@@ -8,21 +8,20 @@ import 'dart:async';
 
 class FitsySearchBar extends StatefulWidget {
   final Function(List<User>)? callback;
-  FitsySearchBar(
-      {Key? key,
-      required this.isAutoFocusTrue,
-      required this.searchHintText,
-      required this.callback})
-      : super(key: key);
+  FitsySearchBar({
+    Key? key,
+    required this.isAutoFocusTrue,
+    required this.searchHintText,
+    required this.callback,
+    required this.controller,
+  }) : super(key: key);
   bool isAutoFocusTrue;
-
+  var controller;
   String searchHintText;
 
   @override
   State<FitsySearchBar> createState() => _FitsySearchBarState();
 }
-
-var _controller = TextEditingController();
 
 class _FitsySearchBarState extends State<FitsySearchBar> {
   late Timer onStoppedTyping = new Timer(duration, () => search('test'));
@@ -64,7 +63,7 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
             setState(
                 () => onStoppedTyping = new Timer(duration, () => search(val)));
           },
-          controller: _controller,
+          controller: widget.controller,
           autofocus: widget.isAutoFocusTrue,
           textInputAction: TextInputAction.search,
           style: const TextStyle(
@@ -100,7 +99,7 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
                 color: jetBlack60,
               ),
             ),
-            suffixIcon: _controller.text.length > 0
+            suffixIcon: widget.controller.text.length > 0
                 ? GestureDetector(
                     child: Container(
                         width: 50,
@@ -113,7 +112,7 @@ class _FitsySearchBarState extends State<FitsySearchBar> {
                         )),
                     onTap: () {
                       HapticFeedback.mediumImpact();
-                      _controller.clear();
+                      widget.controller.clear();
                       setState(() {});
                     })
                 : null,
