@@ -5,40 +5,36 @@ var config = require('../../config/Private/dbconfig')
 var functions = {
 
     //Add New Class fnc
-    addNewClass: function (req, res){
+    addNewClass: async function (req, res) {
         if ((!req.body.ClassName || !req.body.ClassType || !req.body.ClassPrice)) {
-            res.json({success: false, msg: 'Missing Information'})
+            return res.json({success: false, msg: 'Missing Information'})
         }
-        else{
-            var newClass = Class({
-                ClassName: req.body.ClassName,
-                ClassImageUrl: req.body.ClassImageUrl,
-                ClassDescription: req.body.ClassDescription,
-                ClassWhatToExpect: req.body.ClassWhatToExpect,
-                ClassUserRequirements: req.body.ClassUserRequirements,
-                ClassType: req.body.ClassType,
-                ClassLocationName: req.body.ClassLocationName,
-                ClassLatitude: req.body.ClassLatitude,
-                ClassLongitude: req.body.ClassLongitude,
-                ClassOverallRating: req.body.ClassOverallRating,
-                ClassReviewsAmount: req.body.ClassReviewsAmount,
-                ClassPrice: req.body.ClassPrice,
-                ClassTrainerID: req.body.ClassTrainerID,
-                Categories: req.body.Categories,
-            });
-            newClass.save(function (err, newClass){
-                if(err){
-                    res.json({success: false, msg: err})
-                }
-                else {
-                    res.json({success: true, msg: 'Successfully saved'})
-                }
-            })
+        var newClass = Class({
+            ClassName: req.body.ClassName,
+            ClassImageUrl: req.body.ClassImageUrl,
+            ClassDescription: req.body.ClassDescription,
+            ClassWhatToExpect: req.body.ClassWhatToExpect,
+            ClassUserRequirements: req.body.ClassUserRequirements,
+            ClassType: req.body.ClassType,
+            ClassLocationName: req.body.ClassLocationName,
+            ClassLatitude: req.body.ClassLatitude,
+            ClassLongitude: req.body.ClassLongitude,
+            ClassOverallRating: req.body.ClassOverallRating,
+            ClassReviewsAmount: req.body.ClassReviewsAmount,
+            ClassPrice: req.body.ClassPrice,
+            ClassTrainerID: req.body.ClassTrainerID,
+            Categories: req.body.Categories,
+        });
+        try {
+            await newClass.save()
+        } catch (err) {
+            return res.json({success: false, msg: err})
         }
+        return res.json({success: true, msg: 'Successfully saved'})
     },
 
     // Get Class Information, can handle arrays
-    getClasses: function (req, res) {
+    getClasses: async function (req, res) {
         const classPromiseAsync = (responseJSON) => {
             return new Promise((resolve, reject) => {
                 let responseString = JSON.stringify(responseJSON)
@@ -55,20 +51,19 @@ var functions = {
             return res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
         }
         const decodedArray = JSON.parse(decodeURIComponent(req.query.ClassTrainer))
-        Class.find({ClassTrainer: {$all:decodedArray}}, function (err, classArray) {
-            if (err) {
-                console.log(err)
-                return res.json({success: false, msg: "Failed to find class: " + err})
+        try {
+            classArray = await Class.find({ClassTrainerID: {$all:decodedArray}})
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: "Failed to find class: " + err})
+        }
+        return classPromiseAsync(classArray).then( function (parsedResponse) {
+            //RESPONSE string is an array of classes
+            if (parsedResponse instanceof Error) {
+                return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
             } else {
-                return classPromiseAsync(classArray).then( function (parsedResponse) {
-                    //RESPONSE string is an array of classes
-                    if (parsedResponse instanceof Error) {
-                        return res.json({success: false, msg: "Failed to convert response to JSON:" + err})
-                    } else {
-                        res.json({success: true, 
-                            classArray: parsedResponse,
-                        })
-                    }
+                return res.json({success: true, 
+                    classArray: parsedResponse,
                 })
             }
         })

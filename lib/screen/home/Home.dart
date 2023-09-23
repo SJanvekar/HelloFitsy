@@ -89,18 +89,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
     FollowingRequests()
-        .getFollowingList(sharedPrefs.getString('userName') ?? "")
+        .getFollowingList(sharedPrefs.getString('userID') ?? "")
         .then((val) async {
       if (val.data['success']) {
         print('successful get following list');
-        // getClassFeed([
-        //   for (dynamic document in (val.data['following'] as List<dynamic>))
-        //     Following.fromJson(document).followingUsername
-        // ]);
-        isLoading = false;
+        getClassFeed([
+          for (dynamic document in (val.data['following'] as List<dynamic>))
+            document['FollowingUserID']
+        ]);
       } else {
-        isLoading = false;
+        print('Empty Class List');
       }
+      isLoading = false;
     });
   }
 
@@ -109,9 +109,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       //get logged in user's following list
       if (val.data['success']) {
         print('successful get class feed');
-
-        allClasses
-            .add(Class.fromJson((val.data['classArray'] as List<dynamic>)[0]));
+        (val.data['classArray'] as List<dynamic>).forEach((element) {
+          allClasses.add(Class.fromJson(element));
+        });
       } else {
         print('error get class feed: ${val.data['msg']}');
       }

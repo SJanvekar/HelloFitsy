@@ -13,7 +13,7 @@ class UserRequests {
       String? bio) async {
     try {
       return await dio.post('$urlDomain/updateUserInfo', data: {
-        "OldUserID": userID,
+        "UserID": userID,
         "ProfileImageURL": profileImageURL,
         "FirstName": firstName,
         "LastName": lastName,
