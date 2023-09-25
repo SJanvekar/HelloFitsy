@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/home/components/ClassCardOpen.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -112,6 +113,7 @@ class _HomeClassItem extends State<HomeClassItem> {
   String trainerUsername = '';
   String trainerFirstName = '';
   String trainerLastName = '';
+  late User user;
 
   void getClassTrainerInfo() async {
     UserRequests()
@@ -132,9 +134,9 @@ class _HomeClassItem extends State<HomeClassItem> {
 
   void getIsLiked() async {
     final sharedPrefs = await SharedPreferences.getInstance();
+    user = User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
     ClassLikedRequests()
-        .isLiked(
-            sharedPrefs.getString('userID') ?? "", widget.classItem.classID)
+        .isLiked(user.userID, widget.classItem.classID)
         .then((val) async {
       if (val.data['success']) {
         classLiked = val.data['result'];
@@ -152,10 +154,9 @@ class _HomeClassItem extends State<HomeClassItem> {
   }
 
   void changeLikedStatus() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     ClassLikedRequests()
-        .addOrRemoveClassLiked(sharedPrefs.getString('userID') ?? "",
-            widget.classItem.classID, classLiked)
+        .addOrRemoveClassLiked(
+            user.userID, widget.classItem.classID, classLiked)
         .then((val) async {
       if (val.data['success']) {
         print('classLiked is ${val.data['liked']}');

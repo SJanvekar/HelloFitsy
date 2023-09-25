@@ -6,10 +6,11 @@ var User = require('../../api/models/User')
 const dotenv = require('dotenv');
 dotenv.config();
 
-module.exports = function(passport){
-    var opts = {};
-    opts.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt');
-    opts.secretOrKey = process.env.DATABASE_SECRET;
+module.exports = function(passport) {
+    var opts = {
+        jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+        secretOrKey: process.env.DATABASE_SECRET,
+    };
     
     passport.use(new JwtStrat(opts, function(jwt_payload, done) {
         User.findOne({id: jwt_payload.id}, function(err, user) {

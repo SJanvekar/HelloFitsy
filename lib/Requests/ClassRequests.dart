@@ -45,4 +45,17 @@ class ClassRequests {
       print(e);
     }
   }
+
+  searchClasses(String searchIndex) async {
+    try {
+      return await dio.get(
+        '$urlDomain/searchClasses',
+        queryParameters: {
+          "SearchIndex": searchIndex,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 }

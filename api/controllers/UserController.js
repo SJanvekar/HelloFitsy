@@ -117,15 +117,7 @@ var functions = {
                 if (parsedResponse instanceof Error) {
                     return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
                 } else {
-                    return res.json({success: true, 
-                        _id: parsedResponse._id,
-                        userType: String(parsedResponse.UserType), 
-                        profileImageURL: parsedResponse.ProfileImageURL,
-                        userName: parsedResponse.Username,
-                        firstName: parsedResponse.FirstName,
-                        lastName: parsedResponse.LastName,
-                        categories: parsedResponse.Categories,
-                        stripeAccountID: parsedResponse.StripeAccountID,})
+                    return res.json({success: true, user: parsedResponse})
                 }
             })
         } else {

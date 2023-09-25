@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
+import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:balance/Authentication/authService.dart';
@@ -6,6 +7,7 @@ import 'package:balance/Main.dart';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
@@ -66,8 +68,9 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
       //Firebase Image Upload
       await uploadImage();
       final sharedPrefs = await SharedPreferences.getInstance();
-      widget.classTemplate.classTrainerID =
-          sharedPrefs.getString('userID') ?? "";
+      User user =
+          User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
+      widget.classTemplate.classTrainerID = user.userID;
       print(widget.classTemplate.toJson());
       ClassRequests().addClass(widget.classTemplate).then((val) {
         if (val.data['success']) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 import 'package:balance/Requests/FollowerRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
@@ -48,6 +49,7 @@ class _UserProfileState extends State<UserProfile> {
   late ScrollController _scrollController;
   Brightness statusBarTheme = Brightness.dark;
   bool isUserFollowing = false;
+  late User user;
 
   //Interests Lists
   //A list contained within the Category model which holds the trainers' interests (since this list contains the category information)
@@ -78,8 +80,9 @@ class _UserProfileState extends State<UserProfile> {
 
   void isFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
+    user = User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
     await FollowingRequests()
-        .isFollowing(widget.userID, sharedPrefs.getString('userID') ?? '')
+        .isFollowing(widget.userID, user.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful is following');
@@ -94,9 +97,8 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void addFollowing() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     FollowingRequests()
-        .addFollowing(widget.userID, sharedPrefs.getString('userID') ?? '')
+        .addFollowing(widget.userID, user.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful add following');
@@ -107,9 +109,8 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void addFollower() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     FollowerRequests()
-        .addFollower(sharedPrefs.getString('userID') ?? '', widget.userID)
+        .addFollower(user.userID, widget.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful add follower');
@@ -120,9 +121,8 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void removeFollowing() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     FollowingRequests()
-        .removeFollowing(widget.userID, sharedPrefs.getString('userID') ?? '')
+        .removeFollowing(widget.userID, user.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful remove following');
@@ -133,9 +133,8 @@ class _UserProfileState extends State<UserProfile> {
   }
 
   void removeFollower() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     FollowerRequests()
-        .removeFollower(sharedPrefs.getString('userID') ?? '', widget.userID)
+        .removeFollower(user.userID, widget.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful remove follower');

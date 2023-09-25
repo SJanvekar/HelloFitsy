@@ -63,10 +63,9 @@ class _PersonalProfileState extends State<PersonalProfile>
   String trainerLastName = '';
 
   void getClassTrainerInfo() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     UserRequests()
         //HARD CODED - MUST CHANGE sharedPrefs to actual classTrainerID
-        .getClassTrainerInfo(sharedPrefs.getString('userID') ?? "")
+        .getClassTrainerInfo(widget.userInstance.userID)
         .then((val) async {
       if (val.data['success']) {
         trainerImageURL = val.data['ProfileImageURL'] ?? '';
@@ -124,31 +123,11 @@ class _PersonalProfileState extends State<PersonalProfile>
     super.dispose();
   }
 
-  //----------
-  void getUserDetails() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    widget.userInstance.userName = sharedPrefs.getString('userName') ?? '';
-    widget.userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
-    widget.userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
-    widget.userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
-    String userType = sharedPrefs.getString('userType') ?? '';
-    // Trainer/Trainee assigning
-    if (userType == 'Trainee') {
-      widget.userInstance.userType = UserType.Trainee;
-    } else {
-      widget.userInstance.userType = UserType.Trainer;
-    }
-
-    widget.userInstance.categories =
-        json.decode(sharedPrefs.getString('categories') ?? '');
-
-    getSet2UserDetails();
-  }
-
   void getSet2UserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    widget.userInstance.profileImageURL =
-        sharedPrefs.getString('profileImageURL') ?? '';
+    final user =
+        User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
+    widget.userInstance.profileImageURL = user.profileImageURL;
 
     setState(() {});
   }
@@ -816,46 +795,64 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                                 final sharedPrefs =
                                                                     await SharedPreferences
                                                                         .getInstance();
-                                                                //Username - Set shared preferences & userInstance variables
-                                                                sharedPrefs.setString(
-                                                                    'userName',
-                                                                    newUserName!);
-                                                                widget.userInstance
-                                                                        .userName =
+                                                                User user = User
+                                                                    .fromJson(jsonDecode(
+                                                                        sharedPrefs.getString('loggedUser') ??
+                                                                            ''));
+                                                                user.userName =
                                                                     newUserName!;
-
-                                                                //Firstname - Set shared preferences & userInstance variables
-                                                                sharedPrefs.setString(
-                                                                    'firstName',
-                                                                    newFirstName!);
-                                                                widget.userInstance
-                                                                        .firstName =
+                                                                user.firstName =
                                                                     newFirstName!;
-
-                                                                //Lastname - Set shared preferences & userInstance variables
-                                                                sharedPrefs.setString(
-                                                                    'lastName',
-                                                                    newLastName!);
-                                                                widget.userInstance
-                                                                        .lastName =
+                                                                user.lastName =
                                                                     newLastName!;
-
-                                                                //UserBio - Set shared preferences & userInstance variables
-                                                                sharedPrefs
-                                                                    .setString(
-                                                                        'userBio',
-                                                                        newBio!);
-                                                                widget.userInstance
-                                                                        .userBio =
+                                                                user.userBio =
                                                                     newBio!;
+                                                                user.profileImageURL =
+                                                                    newProfileImageURL!;
+                                                                await sharedPrefs.setString(
+                                                                    'loggedUser',
+                                                                    jsonEncode(user
+                                                                        .toJson()));
+                                                                // //Username - Set shared preferences & userInstance variables
+                                                                // sharedPrefs.setString(
+                                                                //     'userName',
+                                                                //     newUserName!);
+                                                                // widget.userInstance
+                                                                //         .userName =
+                                                                //     newUserName!;
 
-                                                                //Profile Image URL - Set shared preferences & userInstance variables
-                                                                sharedPrefs.setString(
-                                                                    'profileImageURL',
-                                                                    newProfileImageURL!);
-                                                                widget.userInstance
-                                                                        .profileImageURL ==
-                                                                    newProfileImageURL;
+                                                                // //Firstname - Set shared preferences & userInstance variables
+                                                                // sharedPrefs.setString(
+                                                                //     'firstName',
+                                                                //     newFirstName!);
+                                                                // widget.userInstance
+                                                                //         .firstName =
+                                                                //     newFirstName!;
+
+                                                                // //Lastname - Set shared preferences & userInstance variables
+                                                                // sharedPrefs.setString(
+                                                                //     'lastName',
+                                                                //     newLastName!);
+                                                                // widget.userInstance
+                                                                //         .lastName =
+                                                                //     newLastName!;
+
+                                                                // //UserBio - Set shared preferences & userInstance variables
+                                                                // sharedPrefs
+                                                                //     .setString(
+                                                                //         'userBio',
+                                                                //         newBio!);
+                                                                // widget.userInstance
+                                                                //         .userBio =
+                                                                //     newBio!;
+
+                                                                // //Profile Image URL - Set shared preferences & userInstance variables
+                                                                // sharedPrefs.setString(
+                                                                //     'profileImageURL',
+                                                                //     newProfileImageURL!);
+                                                                // widget.userInstance
+                                                                //         .profileImageURL ==
+                                                                //     newProfileImageURL;
                                                               } else {
                                                                 if (val.data[
                                                                         'errorCode'] ==

@@ -67,6 +67,26 @@ var functions = {
             }
         })
     },
+
+    // Search Classes
+    searchClasses: async function (req, res) {
+        try {
+            response = await Class.aggregate([
+                {$search: {
+                    index: 'ClassName',
+                    text: {
+                        query: req.query.SearchIndex,
+                        path: 'ClassName',
+                        fuzzy: {}
+                    }
+                }},
+            ])
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, errorCode: err.code})
+        }
+        return res.json({success: true, searchResults: response})
+    },
 }
 
 module.exports = functions

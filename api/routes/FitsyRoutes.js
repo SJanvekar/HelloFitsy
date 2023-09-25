@@ -18,6 +18,8 @@ router.get('/dashboard', (req, res) =>{
   //Class routes
     //Get information for a class
     router.get('/getClasses', classController.getClasses)
+    //Search trainers
+    router.get('/searchClasses', classController.searchClasses)
 
   //Class History routes
     //Get current user's class history
