@@ -14,7 +14,7 @@ import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/screen/profile/components/scheduledClassItem.dart';
+import 'package:balance/screen/schedule/ScheduledClassItem.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
@@ -561,7 +561,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                         buttonColor: ocean,
                                         textColor: snow,
                                         buttonText: 'Save'),
-                                    onTap: () => {Navigator.of(context).pop()},
+                                    onTap: () => {
+                                      ClassRequests().addClassSchedule(widget.userInstance.userID, startTime, endTime, recurranceType);
+                                      Navigator.of(context).pop()},
                                   ),
                                 ])
                               ],

@@ -9,7 +9,7 @@ import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
-import 'package:balance/screen/profile/components/CreateClassSchedule.dart';
+import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/cupertino.dart';

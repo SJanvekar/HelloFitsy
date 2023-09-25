@@ -2,8 +2,8 @@ import 'package:balance/feModels/ClassModel.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../../../constants.dart';
-import '../../home/components/ClassCardOpen.dart';
+import '../../constants.dart';
+import '../home/components/ClassCardOpen.dart';
 
 class ScheduledClassTile extends StatelessWidget {
   ScheduledClassTile({Key? key, required this.classItem}) : super(key: key);

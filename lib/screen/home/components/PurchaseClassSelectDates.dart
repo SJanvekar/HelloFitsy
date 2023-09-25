@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:balance/constants.dart';
-import 'package:balance/screen/profile/components/createClassSchedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
