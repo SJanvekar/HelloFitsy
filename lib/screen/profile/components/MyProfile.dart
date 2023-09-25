@@ -8,6 +8,9 @@ import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/feModels/Categories.dart';
 import 'package:balance/screen/home/components/Search.dart';
+import 'package:balance/screen/login/components/SignIn.dart';
+import 'package:balance/sharedWidgets/LoginFooterButton.dart';
+import 'package:balance/sharedWidgets/SpinnerPage.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/classes/classItemCondensed1.dart';
@@ -20,6 +23,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../../feModels/ClassModel.dart';
@@ -246,31 +250,6 @@ class _PersonalProfileState extends State<PersonalProfile>
         ]);
   }
 
-//Edit Profile button
-  Widget editProfileButton() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 26.0, right: 26.0),
-      child: Container(
-        alignment: Alignment.center,
-        height: 40,
-        width: (MediaQuery.of(context).size.width - (26 * 2) - 32 - 8),
-        decoration: BoxDecoration(
-            color: shark40, borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-          child: Text(
-            'Edit profile',
-            style: TextStyle(
-                color: jetBlack,
-                fontFamily: 'SFDisplay',
-                fontSize: 14.0,
-                fontWeight: FontWeight.w600),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     var top = 0.0;
@@ -405,13 +384,13 @@ class _PersonalProfileState extends State<PersonalProfile>
                           child: GestureDetector(
                               child: Container(
                                 height: 30,
-                                width: 100,
+                                width: 80,
                                 decoration: BoxDecoration(
                                     color: iconCircleColor,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
                                     child: Text(
-                                  'Edit profile',
+                                  'Settings',
                                   style: TextStyle(
                                     color: iconColor,
                                     fontFamily: 'SFDisplay',
@@ -813,46 +792,6 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                                     'loggedUser',
                                                                     jsonEncode(user
                                                                         .toJson()));
-                                                                // //Username - Set shared preferences & userInstance variables
-                                                                // sharedPrefs.setString(
-                                                                //     'userName',
-                                                                //     newUserName!);
-                                                                // widget.userInstance
-                                                                //         .userName =
-                                                                //     newUserName!;
-
-                                                                // //Firstname - Set shared preferences & userInstance variables
-                                                                // sharedPrefs.setString(
-                                                                //     'firstName',
-                                                                //     newFirstName!);
-                                                                // widget.userInstance
-                                                                //         .firstName =
-                                                                //     newFirstName!;
-
-                                                                // //Lastname - Set shared preferences & userInstance variables
-                                                                // sharedPrefs.setString(
-                                                                //     'lastName',
-                                                                //     newLastName!);
-                                                                // widget.userInstance
-                                                                //         .lastName =
-                                                                //     newLastName!;
-
-                                                                // //UserBio - Set shared preferences & userInstance variables
-                                                                // sharedPrefs
-                                                                //     .setString(
-                                                                //         'userBio',
-                                                                //         newBio!);
-                                                                // widget.userInstance
-                                                                //         .userBio =
-                                                                //     newBio!;
-
-                                                                // //Profile Image URL - Set shared preferences & userInstance variables
-                                                                // sharedPrefs.setString(
-                                                                //     'profileImageURL',
-                                                                //     newProfileImageURL!);
-                                                                // widget.userInstance
-                                                                //         .profileImageURL ==
-                                                                //     newProfileImageURL;
                                                               } else {
                                                                 if (val.data[
                                                                         'errorCode'] ==
@@ -908,8 +847,8 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                                     child: Image
                                                                         .file(
                                                                   newProfileImage!,
-                                                                  width: 180,
-                                                                  height: 180,
+                                                                  width: 150,
+                                                                  height: 150,
                                                                   fit: BoxFit
                                                                       .cover,
                                                                 ))
@@ -995,9 +934,60 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                           Padding(
                                                             padding:
                                                                 EdgeInsets.only(
-                                                                    top: 25.0),
+                                                                    top: 25.0,
+                                                                    bottom:
+                                                                        25.0),
                                                             child: editBio(),
                                                           ),
+                                                          GestureDetector(
+                                                              child: FooterButton(
+                                                                  buttonColor:
+                                                                      snow,
+                                                                  textColor:
+                                                                      strawberry,
+                                                                  buttonText:
+                                                                      'Log out'),
+                                                              onTap: () {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .push(
+                                                                        PageTransition(
+                                                                  duration: Duration(
+                                                                      milliseconds:
+                                                                          100),
+                                                                  fullscreenDialog:
+                                                                      true,
+                                                                  child:
+                                                                      SpinnerPage(),
+                                                                  type: PageTransitionType
+                                                                      .bottomToTop,
+                                                                ));
+                                                                Future.delayed(
+                                                                    Duration(
+                                                                        milliseconds:
+                                                                            1000),
+                                                                    () async {
+                                                                  //Load Shared Prefs
+                                                                  final sharedPrefs =
+                                                                      await SharedPreferences
+                                                                          .getInstance();
+                                                                  //Clear Shared Prefs
+                                                                  sharedPrefs
+                                                                      .clear();
+                                                                  //Navigate to the sign in page
+                                                                  // ignore: use_build_context_synchronously
+                                                                  Navigator.of(context).push(PageTransition(
+                                                                      fullscreenDialog:
+                                                                          true,
+                                                                      child:
+                                                                          SignIn(),
+                                                                      type: PageTransitionType
+                                                                          .fade,
+                                                                      duration:
+                                                                          Duration
+                                                                              .zero));
+                                                                });
+                                                              }),
                                                           SizedBox(height: 80)
                                                         ])
                                                       ],
