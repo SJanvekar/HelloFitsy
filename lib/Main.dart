@@ -127,9 +127,6 @@ class _MainPageState extends State<MainPage>
     });
     controller.forward();
     getUserDetails();
-    setState(() {
-      print('main set');
-    });
   }
 
   //----------
@@ -170,10 +167,14 @@ class _MainPageState extends State<MainPage>
           isTypeSelected: false, classTemplate: classTemplate));
 
       //Add Schedule Calendar
-      _widgetOptions.add(const ScheduleCalendar());
+      _widgetOptions.add(ScheduleCalendar(
+        userInstance: userInstance,
+      ));
     } else {
       //Add Schedule Calendar
-      _widgetOptions.add(const ScheduleCalendar());
+      _widgetOptions.add(ScheduleCalendar(
+        userInstance: userInstance,
+      ));
     }
 
     //Add Personal Profile to list of navigation widgets
