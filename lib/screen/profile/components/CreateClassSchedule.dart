@@ -2,8 +2,10 @@
 import 'dart:ffi';
 import 'dart:collection';
 import 'package:balance/Authentication/authService.dart';
+import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassTimeList.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
@@ -31,15 +33,17 @@ import 'package:table_calendar/table_calendar.dart';
 String recurranceType = 'None';
 
 class ScheduleCalendar extends StatefulWidget {
-  const ScheduleCalendar({
+  ScheduleCalendar({
     Key? key,
+    required this.userInstance,
   }) : super(key: key);
-
+  User userInstance;
   @override
   State<ScheduleCalendar> createState() => _ScheduleCalendar();
 }
 
 //Global Variables
+
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.now().add(Duration(hours: 1));
 bool isClassSelected = false;
@@ -47,6 +51,7 @@ String selectedClassName = '';
 String selectedClassImageUrl = '';
 List<Class> scheduledClassesList = classList;
 List<Class> allClasses = classList;
+List<String> trainerIDList = [];
 
 //Class Placeholder until a class gets selected
 Widget selectClassPlaceholder() {
@@ -118,7 +123,37 @@ Widget selectClassListItem(image, className) {
 }
 
 class _ScheduleCalendar extends State<ScheduleCalendar> {
-  //variables
+  //On load function
+  void initState() {
+    super.initState();
+    _selectedDays.add(_focusedDay);
+
+    //Add the userID to trainerIDList
+    trainerIDList.add(widget.userInstance.userID);
+
+    //Get classes for this trainer
+    getClassFeed(trainerIDList);
+  }
+
+  //Functions -----------------------------------------------------------------
+
+  //Get Classes for the trainer
+  void getClassFeed(trainerID) async {
+    ClassRequests().getClass(trainerID).then((val) async {
+      //get logged in user's following list
+      if (val.data['success']) {
+        print('successful get class feed');
+        (val.data['classArray'] as List<dynamic>).forEach((element) {
+          allClasses.add(Class.fromJson(element));
+        });
+      } else {
+        print('error get class feed: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
+
+  //Vars ----------------------------------------------------------------------
   DateTime _focusedDay = DateTime.now();
   var _formattedDate;
   var _focusedDateStartTimes = [];
@@ -127,11 +162,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     equals: isSameDay,
     hashCode: getHashCode,
   );
-
-  void initState() {
-    super.initState();
-    _selectedDays.add(_focusedDay);
-  }
 
   CalendarStyle calendarStyle = CalendarStyle(
       selectedDecoration: BoxDecoration(
@@ -303,7 +333,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                       child: selectClassPlaceholder(),
                                       onTap: () {
                                         displayClassPicker(
-                                            setModalSheetPage2State);
+                                            setModalSheetPage2State,
+                                            trainerIDList,
+                                            context);
                                       },
                                     )
                                   else
@@ -313,7 +345,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           selectedClassName),
                                       onTap: () {
                                         displayClassPicker(
-                                            setModalSheetPage2State);
+                                            setModalSheetPage2State,
+                                            trainerIDList,
+                                            context);
                                       },
                                     ),
                                   SizedBox(height: 25),
@@ -339,7 +373,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -349,7 +383,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -361,7 +395,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -376,7 +410,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           ),
                                           onTap: () {
                                             displayTimePicker(
-                                                true, setModalSheetPage2State);
+                                                true,
+                                                setModalSheetPage2State,
+                                                context);
                                           }),
                                       PageDivider(
                                         leftPadding: 0,
@@ -403,7 +439,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -413,7 +449,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -425,7 +461,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -440,7 +476,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           ),
                                           onTap: () {
                                             displayTimePicker(
-                                                false, setModalSheetPage2State);
+                                                false,
+                                                setModalSheetPage2State,
+                                                context);
                                           }),
                                     ],
                                   ),
@@ -495,7 +533,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -539,7 +577,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   }
 
   //Time Picker Modal Sheet
-  void displayTimePicker(bool isStartDateLabel, StateSetter modalsetState) {
+  void displayTimePicker(
+      bool isStartDateLabel, StateSetter modalsetState, context) {
     DateTime initialTime = isStartDateLabel ? startTime : endTime;
 
     showCupertinoModalPopup(
@@ -551,7 +590,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
               color: snow,
               borderRadius: BorderRadius.circular(20),
             ),
-            height: MediaQuery.of(context).copyWith().size.height * 0.57,
+            height: MediaQuery.of(context).copyWith().size.height * 0.45,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -573,16 +612,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                     textAlign: TextAlign.center,
                   )),
                 ),
-                // Container(
-                //   child: Divider(
-                //     thickness: 0.33,
-                //     color: shark,
-                //     indent: 10,
-                //     endIndent: 10,
-                //   ),
-                // ),
                 Container(
-                  height: MediaQuery.of(context).copyWith().size.height * 0.3,
+                  height: MediaQuery.of(context).copyWith().size.height * 0.2,
                   child: CupertinoDatePicker(
                     mode: CupertinoDatePickerMode.time,
                     onDateTimeChanged: (value) {
@@ -609,10 +640,14 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 ),
                 SizedBox(height: 50.0),
                 GestureDetector(
-                  child: FooterButton(
-                      buttonColor: bone,
-                      textColor: jetBlack,
-                      buttonText: 'Done'),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        left: 26.0, right: 26.0, bottom: 20),
+                    child: FooterButton(
+                        buttonColor: bone,
+                        textColor: jetBlack,
+                        buttonText: 'Done'),
+                  ),
                   onTap: () {
                     Navigator.of(context).pop();
                     modalsetState(() {
@@ -628,7 +663,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   }
 
   //Class Picker Modal Sheet
-  void displayClassPicker(StateSetter modalsetState) {
+  void displayClassPicker(
+      StateSetter modalsetState, List<String> trainerID, context) {
     showCupertinoModalPopup(
         barrierColor: jetBlack60,
         context: context,
@@ -839,8 +875,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           icon: Icons.delete,
                                           label: 'Delete',
                                           borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(20),
-                                              bottomRight: Radius.circular(20)),
+                                              topRight: Radius.circular(10),
+                                              bottomRight: Radius.circular(10)),
                                         ),
                                       ]),
                                   child: ScheduledClassTile(
@@ -897,7 +933,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
               ),
             ),
             onTap: () {
-              displayTimePicker(true, setState);
+              displayTimePicker(true, setState, context);
             },
           ),
           const Padding(
@@ -931,7 +967,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
               ),
             ),
             onTap: () {
-              displayTimePicker(false, setState);
+              displayTimePicker(false, setState, context);
             },
           ),
         ],
