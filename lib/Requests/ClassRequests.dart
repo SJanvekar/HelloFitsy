@@ -58,4 +58,64 @@ class ClassRequests {
       print(e);
     }
   }
+
+  addClassSchedule(String classTrainerID, String startDate, String endDate,
+      String recurrence) async {
+    try {
+      return await dio.get(
+        '$urlDomain/addClassTimes',
+        queryParameters: {
+          "ClassTrainerID": classTrainerID,
+          "StartDate": startDate,
+          "EndDate": endDate,
+          "Recurrence": recurrence,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  changeClassSchedule(
+      String classTrainerID,
+      String oldStartDate,
+      String oldEndDate,
+      String oldRecurrence,
+      String newStartDate,
+      String newEndDate,
+      String newRecurrence) async {
+    try {
+      return await dio.get(
+        '$urlDomain/changeClassTimes',
+        queryParameters: {
+          "ClassTrainerID": classTrainerID,
+          "NewStartDate": newStartDate,
+          "NewEndDate": newEndDate,
+          "NewRecurrence": newRecurrence,
+          "OldStartDate": oldStartDate,
+          "OldEndDate": oldEndDate,
+          "OldRecurrence": oldRecurrence,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
+  removeClassSchedule(String classTrainerID, String startDate, String endDate,
+      String recurrence) async {
+    try {
+      return await dio.get(
+        '$urlDomain/removeClassTimes',
+        queryParameters: {
+          "ClassTrainerID": classTrainerID,
+          "StartDate": startDate,
+          "EndDate": endDate,
+          "Recurrence": recurrence,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 }
