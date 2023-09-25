@@ -147,6 +147,93 @@ class _PersonalProfileState extends State<PersonalProfile>
     }
   }
 
+//---------- logout function
+  void logout(context) {
+    Navigator.of(context).push(PageTransition(
+      duration: Duration(milliseconds: 100),
+      fullscreenDialog: true,
+      child: SpinnerPage(),
+      type: PageTransitionType.bottomToTop,
+    ));
+    Future.delayed(Duration(milliseconds: 1000), () async {
+      //Load Shared Prefs
+      final sharedPrefs = await SharedPreferences.getInstance();
+      //Clear Shared Prefs
+      sharedPrefs.clear();
+      //Navigate to the sign in page
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).push(PageTransition(
+          fullscreenDialog: true,
+          child: SignIn(),
+          type: PageTransitionType.fade,
+          duration: Duration.zero));
+    });
+  }
+
+//---------- Log out warning dialog
+  contentBox(context) {
+    return Container(
+      padding: EdgeInsets.all(30),
+      decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(color: jetBlack20, offset: Offset(0, 5), blurRadius: 10),
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+              child: Text(
+                'Are you sure you want to log out?',
+                style: BodyTextFontBold80,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                      child: BodyButton(
+                          buttonColor: shark60,
+                          textColor: jetBlack,
+                          buttonText: 'Cancel'),
+                      onTap: () => {
+                            HapticFeedback.selectionClick(),
+                            Navigator.of(context).pop(),
+                          }),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                      child: BodyButton(
+                          buttonColor: strawberry,
+                          textColor: snow,
+                          buttonText: 'Log out'),
+                      //Log out function
+                      onTap: () => {
+                            logout(context),
+                          }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 //----------
   bool get _isSliverAppBarExpanded {
     return _scrollController.hasClients &&
@@ -660,6 +747,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                     style: logInPageBodyText,
                                                   ),
                                                   TextField(
+                                                    controller: _bioController,
                                                     maxLengthEnforcement:
                                                         MaxLengthEnforcement
                                                             .none,
@@ -948,45 +1036,30 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                                   buttonText:
                                                                       'Log out'),
                                                               onTap: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .push(
-                                                                        PageTransition(
-                                                                  duration: Duration(
-                                                                      milliseconds:
-                                                                          100),
-                                                                  fullscreenDialog:
-                                                                      true,
-                                                                  child:
-                                                                      SpinnerPage(),
-                                                                  type: PageTransitionType
-                                                                      .bottomToTop,
-                                                                ));
-                                                                Future.delayed(
-                                                                    Duration(
-                                                                        milliseconds:
-                                                                            1000),
-                                                                    () async {
-                                                                  //Load Shared Prefs
-                                                                  final sharedPrefs =
-                                                                      await SharedPreferences
-                                                                          .getInstance();
-                                                                  //Clear Shared Prefs
-                                                                  sharedPrefs
-                                                                      .clear();
-                                                                  //Navigate to the sign in page
-                                                                  // ignore: use_build_context_synchronously
-                                                                  Navigator.of(context).push(PageTransition(
-                                                                      fullscreenDialog:
-                                                                          true,
-                                                                      child:
-                                                                          SignIn(),
-                                                                      type: PageTransitionType
-                                                                          .fade,
-                                                                      duration:
-                                                                          Duration
-                                                                              .zero));
-                                                                });
+                                                                HapticFeedback
+                                                                    .selectionClick();
+
+                                                                //Show log out dialog
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return Dialog(
+                                                                        shape:
+                                                                            RoundedRectangleBorder(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(15),
+                                                                        ),
+                                                                        elevation:
+                                                                            0,
+                                                                        backgroundColor:
+                                                                            Colors.transparent,
+                                                                        child: contentBox(
+                                                                            context),
+                                                                      );
+                                                                    });
                                                               }),
                                                           SizedBox(height: 80)
                                                         ])

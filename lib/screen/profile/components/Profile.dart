@@ -597,7 +597,7 @@ class _UserProfileState extends State<UserProfile> {
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        20),
+                                                                        15),
                                                           ),
                                                           elevation: 0,
                                                           backgroundColor:
