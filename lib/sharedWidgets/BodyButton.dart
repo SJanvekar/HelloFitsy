@@ -20,7 +20,6 @@ class BodyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 35,
-      width: MediaQuery.of(context).size.width / 2.5,
       decoration: BoxDecoration(
           color: buttonColor, borderRadius: BorderRadius.circular(20)),
       child: Center(
