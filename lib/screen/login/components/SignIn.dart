@@ -53,7 +53,7 @@ void onSubmitSignInField(context) {
           if (val.data['userBio'] != null) {
             sharedPrefs.setString('userBio', val.data['userBio'] ?? '');
           } else {
-            print('Failed get user info');
+            print('Failed get user bio');
           }
 
           // Check if stripeAccountID is not null (AccountID exists for Stripe)
