@@ -113,6 +113,26 @@ var functions = {
         }
         return res.json({success: true, msg: 'Successfully added class schedule'})
     },
+
+    //Change New Schedule function
+    changeClassTimes: async function (req, res) {
+        if ((!req.body.classTrainerID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        const newClassTimes = {
+            StartDate: req.body.StartDate,
+            EndDate: req.body.EndDate,
+            Recurrence: req.body.Recurrence,
+        }
+        try {
+            await Class.findOneAndUpdate(
+                {_id: new mongoose.Types.ObjectId(req.query.classTrainerID)},
+                { $push: { ClassTimes: newClassTimes } })
+        } catch (err) {
+            return res.json({success: false, msg: err})
+        }
+        return res.json({success: true, msg: 'Successfully added class schedule'})
+    },
 }
 
 module.exports = functions

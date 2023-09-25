@@ -121,6 +121,10 @@ var ClassSchema = new Schema({
                 default: ['None'],
                 required: true,
             },
+
+            IsBooked:{
+                
+            },
             required: false,
         },
     ],
