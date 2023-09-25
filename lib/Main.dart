@@ -137,24 +137,19 @@ class _MainPageState extends State<MainPage>
   //Get User Information
   void getUserDetails() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    userInstance.userID = sharedPrefs.getString('userID') ?? '';
-    userInstance.userName = sharedPrefs.getString('userName') ?? '';
-    userInstance.firstName = sharedPrefs.getString('firstName') ?? '';
-    userInstance.lastName = sharedPrefs.getString('lastName') ?? '';
-    userInstance.userBio = sharedPrefs.getString('userBio') ?? '';
-    print(sharedPrefs.getString('stripeAccountID'));
-    if (sharedPrefs.getString('stripeAccountID') != null) {
-      userInstance.stripeAccountID =
-          sharedPrefs.getString('stripeAccountID') ?? '';
-    } else {
-      userInstance.stripeAccountID = null;
-    }
+    User user =
+        User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
+    userInstance.userID = user.userID;
+    userInstance.userName = user.userName;
+    userInstance.firstName = user.firstName;
+    userInstance.lastName = user.lastName;
+    userInstance.userBio = user.userBio ?? '';
+    userInstance.stripeAccountID = user.stripeAccountID;
 
-    userInstance.categories =
-        json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
-    String userType = sharedPrefs.getString('userType') ?? '';
-    userInstance.profileImageURL =
-        sharedPrefs.getString('profileImageURL') ?? '';
+    userInstance.categories = user.categories;
+    // json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
+    String userType = user.userType.toString();
+    userInstance.profileImageURL = user.profileImageURL;
 
     // Trainer/Trainee assigning
     if (userType == 'Trainee') {

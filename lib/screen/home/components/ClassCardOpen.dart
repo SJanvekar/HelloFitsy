@@ -8,6 +8,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -49,11 +50,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   String trainerUsername = '';
   String trainerFirstName = '';
   String trainerLastName = '';
+  late User user;
 
   void getClassTrainerInfo() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     UserRequests()
-        .getClassTrainerInfo(sharedPrefs.getString('userID') ?? "")
+        .getClassTrainerInfo(widget.classItem.classTrainerID)
         .then((val) async {
       if (val.data['success']) {
         trainerUserID = val.data['_id'] ?? '';
@@ -62,8 +63,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         trainerFirstName = val.data['FirstName'] ?? '';
         trainerLastName = val.data['LastName'] ?? '';
       } else {
-        //Remove print statement in production
-        print('error getting class liked: ${val.data['result']}');
+        print('error getting class trainer info: ${val.data['msg']}');
       }
       setState(() {});
     });
@@ -71,16 +71,13 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
 
   void getIsLiked() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    print(widget.classItem.classID);
-    print(sharedPrefs.getString('userName') ?? "");
+    user = User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
     ClassLikedRequests()
-        .isLiked(
-            sharedPrefs.getString('userName') ?? "", widget.classItem.classID)
+        .isLiked(user.userID, widget.classItem.classID)
         .then((val) async {
       if (val.data['success']) {
         classLiked = val.data['result'];
       } else {
-        //Remove print statement in production
         print('error getting class liked: ${val.data['result']}');
       }
       setState(() {});
@@ -94,15 +91,13 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   }
 
   void changeLikedStatus() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
     ClassLikedRequests()
-        .addOrRemoveClassLiked(sharedPrefs.getString('userName') ?? "",
-            widget.classItem.classID, classLiked)
+        .addOrRemoveClassLiked(
+            user.userID, widget.classItem.classID, classLiked)
         .then((val) async {
       if (val.data['success']) {
         print('classLiked is ${val.data['liked']}');
       } else {
-        //Remove print statement in production
         print('error ${classLiked ? "adding" : "removing"} class liked');
       }
     });
@@ -112,7 +107,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     _scrollController = ScrollController()
       ..addListener(() {
         setState(() {

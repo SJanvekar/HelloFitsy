@@ -34,7 +34,8 @@ class User {
         lastName = json['LastName'],
         userName = json['Username'],
         userBio = json['UserBio'],
-        categories = dyanamicArrayToStringArray(json['Categories']);
+        categories = dyanamicArrayToStringArray(json['Categories']),
+        stripeAccountID = json['StripeAccountID'];
 
   Map<String, dynamic> toJson() => {
         'IsActive': isActive,
@@ -45,6 +46,7 @@ class User {
         'Username': userName,
         'UserBio': userBio,
         'Categories': categories,
+        'StripeAccountID': stripeAccountID
       };
 }
 

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
@@ -88,9 +90,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   //Function - Get Following List
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
-    FollowingRequests()
-        .getFollowingList(sharedPrefs.getString('userID') ?? "")
-        .then((val) async {
+    User user =
+        User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
+    FollowingRequests().getFollowingList(user.userID).then((val) async {
       if (val.data['success']) {
         print('successful get following list');
         getClassFeed([

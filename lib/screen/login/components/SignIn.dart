@@ -39,21 +39,8 @@ void onSubmitSignInField(context) {
         if (val?.data['success'] ?? false) {
           //Clear shared prefs:
           sharedPrefs.clear();
-
-          final String encodedCategories = json.encode(val.data['categories']);
-          //TODO - Encrypt id
-          sharedPrefs.setString('userID', val.data['_id']);
-          sharedPrefs.setString('userType', val.data['userType']);
-          sharedPrefs.setString('profileImageURL', val.data['profileImageURL']);
-          sharedPrefs.setString('userName', val.data['userName']);
-          sharedPrefs.setString('firstName', val.data['firstName']);
-          sharedPrefs.setString('lastName', val.data['lastName']);
-          sharedPrefs.setString('categories', encodedCategories);
-
-          // Check this and figure out how to make it work
-          // sharedPrefs.setString('user', json.encode(val.data));
-
-          // Check if stripeAccountID is not null (AccountID exists for Stripe)
+          await sharedPrefs.setString(
+              'loggedUser', jsonEncode(val.data['user']));
           if (val.data['stripeAccountID'] != null)
             sharedPrefs.setString(
                 'stripeAccountID', val.data['stripeAccountID'] ?? '');

@@ -1,13 +1,16 @@
+import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 
 class FitsySearchBar extends StatefulWidget {
-  final Function(List<User>)? callback;
+  final Function(List<User>, List<Class>)? callback;
   FitsySearchBar(
       {Key? key,
       required this.isAutoFocusTrue,
@@ -27,25 +30,44 @@ var _controller = TextEditingController();
 class _FitsySearchBarState extends State<FitsySearchBar> {
   late Timer onStoppedTyping = new Timer(duration, () => search('test'));
   static const duration = Duration(milliseconds: 800);
-  List<User> searchResults = [];
+  List<User> searchResultsUsers = [];
+  List<Class> searchResultsClasses = [];
 
-  void search(String val) {
-    searchResults.clear();
+  Future<void> search(String val) async {
+    searchResultsUsers.clear();
+    searchResultsClasses.clear();
     if (val.isNotEmpty) {
-      UserRequests().searchTrainers(val).then((val) async {
-        if (val.data['success']) {
-          List<dynamic> receivedJSON = val.data['searchResults'];
-          receivedJSON.forEach((user) {
-            searchResults.add(User.fromJson(user));
-          });
-          _updateSearchData();
-        }
-      });
+      //Doing try/catch statements because callbacks might be the wrong choice
+      Response? userResponse;
+      Response? classResponse;
+      try {
+        userResponse = await UserRequests().searchTrainers(val);
+        classResponse = await ClassRequests().searchClasses(val);
+      } catch (err) {
+        print("Something went horribly wrong");
+      }
+      if (userResponse != null) {
+        List<dynamic> receivedUserJSON = userResponse.data['searchResults'];
+        receivedUserJSON.forEach((user) {
+          searchResultsUsers.add(User.fromJson(user));
+        });
+      } else {
+        print("Something went horribly wrong");
+      }
+      if (classResponse != null) {
+        List<dynamic> receivedClassJSON = classResponse.data['searchResults'];
+        receivedClassJSON.forEach((classItem) {
+          searchResultsClasses.add(Class.fromJson(classItem));
+        });
+      } else {
+        print("Something went horribly wrong");
+      }
+      _updateSearchData();
     }
   }
 
   void _updateSearchData() {
-    widget.callback!(searchResults);
+    widget.callback!(searchResultsUsers, searchResultsClasses);
   }
 
   @override

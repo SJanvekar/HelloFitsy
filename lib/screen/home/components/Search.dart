@@ -19,15 +19,17 @@ class _Search extends State<Search> {
   // ignore: prefer_const_constructors_in_immutables
 
   List<User> userSearchResult = [];
-  void retrieveSearchResult(List<User> newResult) {
+  List<Class> classSearchResult = [];
+  void retrieveSearchResult(
+      List<User> newResultUser, List<Class> newResultClass) {
     setState(() {
-      userSearchResult = newResult;
+      userSearchResult = newResultUser;
+      classSearchResult = newResultClass;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Class> allClasses = classList;
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
 
@@ -93,33 +95,6 @@ class _Search extends State<Search> {
                               ),
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(right: 15.0),
-                          //   child: GestureDetector(
-                          //     child: SizedBox(
-                          //       width: 50,
-                          //       child: Text('Cancel',
-                          //           style: TextStyle(
-                          //             color: jetBlack80,
-                          //             fontFamily: 'SFDisplay',
-                          //             fontWeight: FontWeight.w600,
-                          //             fontSize: 15.0,
-                          //           )),
-                          //     ),
-                          //     onTap: () {
-                          //       Navigator.pop(
-                          //         context,
-                          //         PageTransition(
-                          //             child: Home(),
-                          //             type: PageTransitionType.fade,
-                          //             isIos: true,
-                          //             reverseDuration:
-                          //                 Duration(milliseconds: 0),
-                          //             duration: Duration(milliseconds: 0)),
-                          //       );
-                          //     },
-                          //   ),
-                          // )
                         ],
                       ),
                     ],
@@ -209,7 +184,10 @@ class _Search extends State<Search> {
 
                                 return Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 26.0, right: 26.0),
+                                      left: 26.0,
+                                      right: 26.0,
+                                      top: 10,
+                                      bottom: 10),
                                   child: UserProfileComponentLight(
                                     userID: userItem.userID,
                                     userFirstName: userItem.firstName,
@@ -231,7 +209,7 @@ class _Search extends State<Search> {
 
                   //Tab #2 - Classes Search Tab
 
-                  if (allClasses.isEmpty)
+                  if (classSearchResult.isEmpty)
 
                     //Empty ClassList (No search results)
                     Center(
@@ -263,12 +241,12 @@ class _Search extends State<Search> {
                                 delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                                 //This will need to be replaced with a list of classes received from the search.
-                                final classItem = allClasses[index];
+                                final classItem = classSearchResult[index];
                                 return HomeClassItem(
                                   classItem: classItem,
                                 );
                               },
-                              childCount: allClasses.length,
+                              childCount: classSearchResult.length,
                             )),
                           ]),
                         ],
@@ -292,9 +270,9 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   final TabBar _TabBar;
 
   @override
-  double get minExtent => 100;
+  double get minExtent => 65;
   @override
-  double get maxExtent => 100;
+  double get maxExtent => 65;
 
   @override
   Widget build(

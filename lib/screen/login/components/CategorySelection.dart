@@ -183,14 +183,11 @@ class _CategorySelectionState extends State<CategorySelection> {
 
         //Assign all userTemplate information to shared preferences for MainPage
         final sharedPrefs = await SharedPreferences.getInstance();
-        final String encodedCategories = jsonEncode(userTemplate.categories);
-        sharedPrefs.setString('userType', userTemplate.userType.toString());
-        sharedPrefs.setString('profileImageURL', userTemplate.profileImageURL);
-        sharedPrefs.setString('userName', userTemplate.userName);
-        sharedPrefs.setString('firstName', userTemplate.firstName);
-        sharedPrefs.setString('lastName', userTemplate.lastName);
-        sharedPrefs.setString('categories', encodedCategories);
-
+        //TODO: If sharedPrefs fails unexpectedly, have a failsafe.
+        //One idea is to run getUser to handle shared pref exception.
+        //Do this for all set/get instance.
+        await sharedPrefs.setString(
+            'loggedUser', jsonEncode(userTemplate.toJson()));
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MainPage()));
       } else {
