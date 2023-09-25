@@ -89,11 +89,41 @@ var ClassSchema = new Schema({
         unique: true,
     },
 
+    // //Class Schedules
+    // ClassTimes: {
+    //     type: [Schedule.schema],
+    //     required: false,
+    // },
+
     //Class Schedules
-    ClassTimes: {
-        type: [Schedule.schema],
-        required: false,
-    },
+    ClassTimes: [
+        {
+            //Start Date
+            StartDate: {
+                type: Date,
+                required: true
+            },
+
+            //End Date
+            EndDate: {
+                type: Date,
+                required: true
+            },
+
+            //Recurrence Type
+            Recurrence: {
+                type: [{
+
+                type: String,
+                    enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
+                    }],
+
+                default: ['None'],
+                required: true,
+            },
+            required: false,
+        },
+    ],
 
     //Categories (Linked)
     Categories: [{

@@ -69,6 +69,7 @@ router.get('/dashboard', (req, res) =>{
   //Class routes
     //Add New Class
     router.post('/addclass', classController.addNewClass)
+    router.post('/addClassTimes', classController.addClassTimes)
 
   //Class History routes
     //Add Class History
