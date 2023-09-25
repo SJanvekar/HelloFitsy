@@ -19,15 +19,17 @@ class _Search extends State<Search> {
   // ignore: prefer_const_constructors_in_immutables
 
   List<User> userSearchResult = [];
-  void retrieveSearchResult(List<User> newResult) {
+  List<Class> classSearchResult = [];
+  void retrieveSearchResult(
+      List<User> newResultUser, List<Class> newResultClass) {
     setState(() {
-      userSearchResult = newResult;
+      userSearchResult = newResultUser;
+      classSearchResult = newResultClass;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Class> allClasses = classList;
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
 
@@ -207,7 +209,7 @@ class _Search extends State<Search> {
 
                   //Tab #2 - Classes Search Tab
 
-                  if (allClasses.isEmpty)
+                  if (classSearchResult.isEmpty)
 
                     //Empty ClassList (No search results)
                     Center(
@@ -239,12 +241,12 @@ class _Search extends State<Search> {
                                 delegate: SliverChildBuilderDelegate(
                               (BuildContext context, int index) {
                                 //This will need to be replaced with a list of classes received from the search.
-                                final classItem = allClasses[index];
+                                final classItem = classSearchResult[index];
                                 return HomeClassItem(
                                   classItem: classItem,
                                 );
                               },
-                              childCount: allClasses.length,
+                              childCount: classSearchResult.length,
                             )),
                           ]),
                         ],
