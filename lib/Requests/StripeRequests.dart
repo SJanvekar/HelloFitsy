@@ -39,4 +39,25 @@ class StripeRequests {
       print("Stripe Account Retrival Error: ${e}");
     }
   }
+
+  //Create payment intent
+  newPaymentIntent(
+    customerID,
+    paymentAmount,
+    fitsyFee,
+    accountID,
+  ) async {
+    try {
+      return await dio.get('$urlDomain/newPaymentIntent',
+          data: {
+            'customerID': customerID,
+            'amount': paymentAmount,
+            'fitsyFee': fitsyFee,
+            'accountID': accountID,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } catch (e) {
+      print("Stripe Payment Intent Creation Error: ${e}");
+    }
+  }
 }

@@ -47,6 +47,49 @@ createStripeAccountLink: async function (req, res) {
     }
   },
 
+  //Create new Stripe Customer & Payment Intent
+  newPaymentIntent: async function (req, res){
+    try {
+      //Payment intents require CustomerID, so create that first
+      //CustomerID null check
+      if(req.body.customerID == null){
+        customer = await stripe.customers.create();
+        customerID = customer.id;
+      } else {
+        customerID = req.body.customer
+      }
+
+      //Generate Ephemeral Key (Grants SDK temporary access to customer)
+      const ephemeralKey = await stripe.ephemeralKeys.create(
+        {customer: customerID},
+
+        //TODO: Hardcoded apiVersion, fix later
+        {apiVersion: '2022-11-15'}
+      );
+      
+      //Create payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: req.body.amount,
+        currency: 'cad',
+        customer: customerID,
+        // In the latest version of the API, specifying the `automatic_payment_methods` 
+        // parameter is optional because Stripe enables its functionality by default.
+        automatic_payment_methods: {
+          enabled: true,
+        },
+        application_fee_amount: req.body.fitsyFee,
+        transfer_data: {
+          destination: req.body.accountID,
+        },
+      });
+
+      res.json({ success: true, msg: 'Successfully created new payment intent', id: account.id });
+    } catch (err) {
+      res.status(500).json({ success: false, msg: 'Error creating new payment intent', 
+        error: err.message });
+    } 
+  },
+
   //Retrieve Account Details
   retrieveStripeAccountDetails: async function (req, res){
     try {
