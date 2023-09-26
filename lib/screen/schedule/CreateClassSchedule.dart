@@ -138,7 +138,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   //Functions -----------------------------------------------------------------
 
   //Get Classes for the trainer
-  void getClassFeed(trainerID) async {
+  void getClassFeed(List<String> trainerID) async {
     ClassRequests().getClass(trainerID).then((val) async {
       //get logged in user's following list
       if (val.data['success']) {
@@ -150,6 +150,19 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         print('error get class feed: ${val.data['msg']}');
       }
       setState(() {});
+    });
+  }
+
+  void addClassSchedule() async {
+    ClassRequests()
+        .addClassSchedule(
+            widget.userInstance.userID, startTime, endTime, recurranceType)
+        .then((val) {
+      if (val.data['success']) {
+        print("Successfully added class schedule");
+      } else {
+        print("Saving class schedule failed: ${val.data['msg']}");
+      }
     });
   }
 
@@ -264,13 +277,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void displayClassAndTimePicker() {
     isClassSelected = false;
 
-    //Start Time Format
-    String returnedTime = '';
-
-    void formatTimes(DateTime dateToFormat) {
+    String formatTimes(DateTime dateToFormat) {
       String formattedDate = dateToFormat.toString();
       Jiffy.parse(formattedDate).format(pattern: "h:mm a");
-      returnedTime = Jiffy.parse(formattedDate).format(pattern: "h:mm a");
+      return Jiffy.parse(formattedDate).format(pattern: "h:mm a");
     }
 
     showCupertinoModalPopup(
@@ -282,10 +292,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
           return StatefulBuilder(
             builder:
                 (BuildContext context, StateSetter setModalSheetPage2State) {
-              formatTimes(startTime);
-              String startTimeFormatted = returnedTime;
-              formatTimes(endTime);
-              String endTimeFormatted = returnedTime;
+              String startTimeFormatted = formatTimes(startTime);
+              String endTimeFormatted = formatTimes(endTime);
 
               return Material(
                 borderRadius: BorderRadius.circular(20),
@@ -373,7 +381,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -383,7 +391,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -395,7 +403,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -439,7 +447,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -449,7 +457,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -461,7 +469,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -533,7 +541,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -562,8 +570,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                         textColor: snow,
                                         buttonText: 'Save'),
                                     onTap: () => {
-                                      ClassRequests().addClassSchedule(widget.userInstance.userID, startTime, endTime, recurranceType);
-                                      Navigator.of(context).pop()},
+                                      addClassSchedule(),
+                                      Navigator.of(context).pop()
+                                    },
                                   ),
                                 ])
                               ],
@@ -1062,8 +1071,6 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
   @override
   void initState() {
     super.initState();
-    print('hi there');
-
     //Call bolding/selection trait function here (Bold selected option)
   }
 

@@ -89,25 +89,16 @@ var ClassSchema = new Schema({
         unique: true,
     },
 
-    // //Class Schedules
-    // ClassTimes: {
-    //     type: [Schedule.schema],
-    //     required: false,
-    // },
-
     //Class Schedules
-    ClassTimes: [
-        {
+    ClassTimes: [{
             //Start Date
             StartDate: {
                 type: Date,
-                required: true
             },
 
             //End Date
             EndDate: {
                 type: Date,
-                required: true
             },
 
             //Recurrence Type
@@ -119,15 +110,8 @@ var ClassSchema = new Schema({
                     }],
 
                 default: ['None'],
-                required: true,
             },
-
-            IsBooked:{
-                
-            },
-            required: false,
-        },
-    ],
+        }],
 
     //Categories (Linked)
     Categories: [{

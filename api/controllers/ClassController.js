@@ -91,7 +91,7 @@ var functions = {
         } catch (err) {
             return res.json({success: false, msg: err})
         }
-        return res.json({success: true, msg: 'Successfully saved'})
+        return res.json({success: true, msg: 'Successfully saved class'})
     },
 
     //Add New Schedule function
@@ -100,18 +100,22 @@ var functions = {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
-            StartDate: req.body.StartDate,
-            EndDate: req.body.EndDate,
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
             Recurrence: req.body.Recurrence,
         }
         try {
-            await Class.updateOne(
-                {_id: new mongoose.Types.ObjectId(req.query.ClassTrainerID)},
+            result = await Class.updateOne(
+                {ClassTrainerID: new mongoose.Types.ObjectId(req.body.ClassTrainerID)},
                 { $push: { ClassTimes: newClassTimes } })
         } catch (err) {
             return res.json({success: false, msg: err})
         }
-        return res.json({success: true, msg: 'Successfully added class schedule'})
+        //Success bool determined if matched and modified doc are both value 1
+        return res.json({success: ((result.matchedCount === 1 && result.modifiedCount === 1) ? true : false), 
+                        msg: result})
+        // return res.json({success: true, msg: 'Successfully added class schedule'})
     },
 
     //Change New Schedule function
@@ -134,7 +138,7 @@ var functions = {
           }
         try {
             await Class.findOneAndUpdate(
-                {_id: new mongoose.Types.ObjectId(req.query.ClassTrainerID)},
+                {ClassTrainerID: new mongoose.Types.ObjectId(req.body.ClassTrainerID)},
                 {$push: { ClassTimes: newClassTimes}},
                 filterConditions)
         } catch (err) {
@@ -155,7 +159,7 @@ var functions = {
         }
         try {
             await Class.updateOne(
-                {_id: new mongoose.Types.ObjectId(req.query.ClassTrainerID)},
+                {ClassTrainerID: new mongoose.Types.ObjectId(req.body.ClassTrainerID)},
                 { $pull: { ClassTimes: newClassTimes } })
         } catch (err) {
             return res.json({success: false, msg: err})

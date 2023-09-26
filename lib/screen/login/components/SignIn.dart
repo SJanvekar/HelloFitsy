@@ -34,7 +34,7 @@ void onSubmitSignInField(context) {
     if (val?.data['success'] ?? false) {
       print('Successful authenticate');
       token = val.data['token'];
-      AuthService().getUserInfo(token, account).then((val) async {
+      AuthService().getLogInInfo(token, account).then((val) async {
         final sharedPrefs = await SharedPreferences.getInstance();
         if (val?.data['success'] ?? false) {
           //Clear shared prefs:

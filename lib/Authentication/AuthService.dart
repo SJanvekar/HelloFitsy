@@ -20,7 +20,7 @@ class AuthService {
     }
   }
 
-  getUserInfo(token, account) async {
+  getLogInInfo(token, account) async {
     dio.options.headers['Authorization'] = 'Bearer $token';
     try {
       return await dio.get(

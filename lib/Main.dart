@@ -144,7 +144,6 @@ class _MainPageState extends State<MainPage>
     userInstance.stripeAccountID = user.stripeAccountID;
 
     userInstance.categories = user.categories;
-    // json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
     String userType = user.userType.toString();
     userInstance.profileImageURL = user.profileImageURL;
 

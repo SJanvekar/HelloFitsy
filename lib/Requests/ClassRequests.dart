@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:balance/constants.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import '../feModels/ClassModel.dart';
 
 class ClassRequests {
@@ -59,15 +60,16 @@ class ClassRequests {
     }
   }
 
-  addClassSchedule(String classTrainerID, String startDate, String endDate,
+  addClassSchedule(String classTrainerID, DateTime startDate, DateTime endDate,
       String recurrence) async {
     try {
-      return await dio.get(
+      return await dio.post(
         '$urlDomain/addClassTimes',
-        queryParameters: {
+        data: {
           "ClassTrainerID": classTrainerID,
-          "StartDate": startDate,
-          "EndDate": endDate,
+          "StartDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
+          "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
           "Recurrence": recurrence,
         },
       );
@@ -78,16 +80,16 @@ class ClassRequests {
 
   changeClassSchedule(
       String classTrainerID,
-      String oldStartDate,
-      String oldEndDate,
+      DateTime oldStartDate,
+      DateTime oldEndDate,
       String oldRecurrence,
-      String newStartDate,
-      String newEndDate,
+      DateTime newStartDate,
+      DateTime newEndDate,
       String newRecurrence) async {
     try {
-      return await dio.get(
+      return await dio.post(
         '$urlDomain/changeClassTimes',
-        queryParameters: {
+        data: {
           "ClassTrainerID": classTrainerID,
           "NewStartDate": newStartDate,
           "NewEndDate": newEndDate,
@@ -102,12 +104,12 @@ class ClassRequests {
     }
   }
 
-  removeClassSchedule(String classTrainerID, String startDate, String endDate,
-      String recurrence) async {
+  removeClassSchedule(String classTrainerID, DateTime startDate,
+      DateTime endDate, String recurrence) async {
     try {
-      return await dio.get(
+      return await dio.post(
         '$urlDomain/removeClassTimes',
-        queryParameters: {
+        data: {
           "ClassTrainerID": classTrainerID,
           "StartDate": startDate,
           "EndDate": endDate,
