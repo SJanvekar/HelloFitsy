@@ -1,10 +1,15 @@
 import 'dart:collection';
 
+import 'package:balance/Requests/StripeRequests.dart';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/profile/components/createClassSchedule.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -15,14 +20,16 @@ import '../../../sharedWidgets/loginFooterButton.dart';
 import '../../../sharedWidgets/pageDivider.dart';
 
 class PurchaseClassSelectDates extends StatefulWidget {
-  PurchaseClassSelectDates({
-    Key? key,
-    required this.classImageUrl,
-    required this.className,
-  }) : super(key: key);
+  PurchaseClassSelectDates(
+      {Key? key,
+      required this.classItem,
+      required this.userInstance,
+      required this.trainerStripeAccountID})
+      : super(key: key);
 
-  String classImageUrl;
-  String className;
+  User userInstance;
+  Class classItem;
+  String trainerStripeAccountID;
 
   @override
   State<PurchaseClassSelectDates> createState() =>
@@ -67,6 +74,73 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
   void initState() {
     super.initState();
     _selectedDays.add(_focusedDay);
+  }
+
+//Stripe Functions ------------------------------------------------------------
+  var paymentIntent;
+  var client_secret;
+  var paymentAmount;
+  var fitsyFee = 0;
+
+  void createPaymentIntent() {
+    StripeRequests()
+        .newPaymentIntent(widget.userInstance.stripeCustomerID, paymentAmount,
+            fitsyFee, widget.trainerStripeAccountID)
+        .then((val) async {
+      if (val.data['success']) {
+        //Store customerID & paymentIntent object
+        String customerID = val.data['customerID'];
+        paymentIntent = val.data['paymentIntent'];
+        client_secret = val.data['client_secret'];
+        //Check if customerID was null
+        if (widget.userInstance.stripeCustomerID == null) {
+          //Update the AccountID on the user level in the database
+          UserRequests()
+              .updateUserStripeCustomerID(
+            customerID,
+            widget.userInstance.userName,
+          )
+              .then((val) {
+            widget.userInstance.stripeCustomerID = customerID;
+          });
+        }
+      }
+    });
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        //Clear paymentIntent variable after successful payment
+        paymentIntent = null;
+      }).onError((error, stackTrace) {
+        throw Exception(error);
+      });
+    } on StripeException catch (e) {
+      print('Error is:---> $e');
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  //Make Payment Function
+  Future<void> makePayment() async {
+    try {
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret:
+                      client_secret, //Gotten from payment intent
+                  style: ThemeMode.light,
+                  merchantDisplayName: 'Fitsy'))
+          .then((value) {});
+
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet();
+    } catch (err) {
+      throw Exception(err);
+    }
   }
 
 //variables
@@ -215,14 +289,15 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                                image: NetworkImage(widget.classImageUrl),
+                                image: NetworkImage(
+                                    widget.classItem.classImageUrl),
                                 fit: BoxFit.cover),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Text(
-                            widget.className,
+                            widget.classItem.className,
                             style: sectionTitles,
                           ),
                         )
@@ -370,7 +445,10 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                                 buttonText: 'Purchase Class',
                                 textColor: snow,
                               ),
-                              onTap: () => {Navigator.of(context).pop()},
+                              onTap: () => {
+                                displayPaymentSheet(),
+                                // Navigator.of(context).pop()
+                              },
                             ),
                           ),
                         )),

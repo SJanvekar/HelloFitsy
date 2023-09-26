@@ -1,4 +1,5 @@
 import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -6,9 +7,14 @@ import '../../../constants.dart';
 import '../../home/components/ClassCardOpen.dart';
 
 class ScheduledClassTile extends StatelessWidget {
-  ScheduledClassTile({Key? key, required this.classItem}) : super(key: key);
+  ScheduledClassTile({
+    Key? key,
+    required this.classItem,
+    required this.userInstance,
+  }) : super(key: key);
 
   Class classItem;
+  User userInstance;
 
 //------Widgets------
 
@@ -112,7 +118,10 @@ class ScheduledClassTile extends StatelessWidget {
             Navigator.push(
                 context,
                 PageTransition(
-                    child: ClassCardOpen(classItem: classItem),
+                    child: ClassCardOpen(
+                      classItem: classItem,
+                      userInstance: userInstance,
+                    ),
                     type: PageTransitionType.fade,
                     duration: Duration(milliseconds: 0),
                     reverseDuration: Duration(milliseconds: 0)))

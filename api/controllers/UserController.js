@@ -39,7 +39,8 @@ var functions = {
             ClassHistory: req.body.ClassHistory,
             Following: req.body.Following,
             Followers: req.body.Followers,
-            StripeAccountID: req.body.StripeAccountID
+            StripeAccountID: req.body.StripeAccountID,
+            StripeCustomerID: req.body.StripeCustomerID
         });
         try {
             await newUser.save()
@@ -154,7 +155,9 @@ var functions = {
                 ProfileImageURL: parsedResponse.ProfileImageURL,
                 Username: parsedResponse.Username,
                 FirstName: parsedResponse.FirstName,
-                LastName: parsedResponse.LastName}))
+                LastName: parsedResponse.LastName,
+                StripeAccountID: parsedResponse.StripeAccountID
+            }))
     },
 
     // Search Trainers
@@ -204,6 +207,27 @@ var functions = {
             return res.json({ success: false, errorCode: err.code });
         }
         user.StripeAccountID = req.body.StripeAccountID;
+        // Save the updated user
+        try {
+            await user.save()
+        } catch (err) {
+            console.error(err);
+            return res.json({ success: false, errorCode: err.code });
+        }
+        return res.json({ success: true });
+      },
+
+
+    //Update user stripe account ID on accountID creation (Stripe set up)
+    updateUserStripeCustomerID: async function (req, res) {
+        // Find the user by Username
+        try {
+            user = await User.findOne({'Username': req.body.Username})
+        } catch (err) {
+            console.log(err);
+            return res.json({ success: false, errorCode: err.code });
+        }
+        user.StripeCustomerID = req.body.StripeCustomerID;
         // Save the updated user
         try {
             await user.save()

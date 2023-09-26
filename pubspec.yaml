@@ -64,6 +64,7 @@ dependencies:
   flutter_survey: ^0.1.4
   url_launcher: ^6.1.14
   loading_animation_widget: ^1.2.0+4
+  flutter_stripe: ^9.4.0
 
 dev_dependencies:
   dependency_validator: ^3.0.0

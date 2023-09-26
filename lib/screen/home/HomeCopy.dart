@@ -7,6 +7,7 @@ import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/PARQ.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
+import 'package:balance/screen/login/components/PersonalInfo.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:balance/sharedWidgets/noticeDisclaimer.dart';
 import 'package:flutter/material.dart';
@@ -354,7 +355,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               Navigator.push(
                                   context,
                                   PageTransition(
-                                      child: Search(),
+                                      child: Search(
+                                        userInstance: widget.userInstance,
+                                      ),
                                       type: PageTransitionType.fade,
                                       duration: Duration(milliseconds: 0),
                                       reverseDuration:
@@ -374,6 +377,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       final classItem = allClasses[index];
                       return HomeClassItem(
                         classItem: classItem,
+                        userInstance: widget.userInstance,
                       );
                     },
                     childCount: allClasses.length,

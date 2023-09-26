@@ -30,9 +30,11 @@ import '../../../sharedWidgets/classMoreActions.dart';
 final oCcy = new NumberFormat("#,##0", "en_US");
 
 class ClassCardOpen extends StatefulWidget {
-  ClassCardOpen({Key? key, required this.classItem}) : super(key: key);
+  ClassCardOpen({Key? key, required this.classItem, required this.userInstance})
+      : super(key: key);
 
   Class classItem;
+  User userInstance;
 
   @override
   State<ClassCardOpen> createState() => _ClassCardOpenState();
@@ -50,6 +52,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   String trainerUsername = '';
   String trainerFirstName = '';
   String trainerLastName = '';
+  String trainerStripeAccountID = '';
   late User user;
 
   void getClassTrainerInfo() async {
@@ -62,6 +65,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         trainerUsername = val.data['Username'] ?? '';
         trainerFirstName = val.data['FirstName'] ?? '';
         trainerLastName = val.data['LastName'] ?? '';
+        trainerStripeAccountID = val.data['StripeAccountID'] ?? '';
       } else {
         print('error getting class trainer info: ${val.data['msg']}');
       }
@@ -143,6 +147,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             profileImageRadius: 25,
             userFullNameFontSize: 16,
             userNameFontSize: 13,
+            userInstance: widget.userInstance,
           ),
           Padding(
             padding: const EdgeInsets.only(right: 26),
@@ -407,6 +412,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           profileImageRadius: 25,
           userFullNameFontSize: 16,
           userNameFontSize: 13,
+          userInstance: widget.userInstance,
         ),
         Padding(
           padding: const EdgeInsets.only(top: 15.0),
@@ -857,8 +863,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         context: context,
                         builder: (BuildContext builder) {
                           return PurchaseClassSelectDates(
-                            classImageUrl: widget.classItem.classImageUrl,
-                            className: widget.classItem.className,
+                            classItem: widget.classItem,
+                            userInstance: widget.userInstance,
+                            trainerStripeAccountID: trainerStripeAccountID,
                           );
                         });
                   });

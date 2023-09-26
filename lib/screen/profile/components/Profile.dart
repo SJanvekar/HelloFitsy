@@ -28,6 +28,7 @@ class UserProfile extends StatefulWidget {
     required this.userLastName,
     required this.userName,
     required this.profileImageURL,
+    required this.userInstance,
   }) : super(key: key);
 
   //User details:
@@ -36,6 +37,7 @@ class UserProfile extends StatefulWidget {
   String userLastName;
   String userName;
   String profileImageURL;
+  User userInstance;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -795,6 +797,7 @@ class _UserProfileState extends State<UserProfile> {
                       final trainerClassInfo = trainerClasses[index];
                       return ProfileClassCard(
                         classItem: trainerClassInfo,
+                        userInstance: widget.userInstance,
                       );
                     },
                   ),

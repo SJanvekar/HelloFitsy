@@ -20,10 +20,14 @@ import 'package:balance/feModels/ClassModel.dart';
 final oCcy = new NumberFormat("#,##0", "en_US");
 
 class HomeClassItem extends StatefulWidget {
-  HomeClassItem({Key? key, required this.classItem}) : super(key: key);
+  HomeClassItem({
+    Key? key,
+    required this.classItem,
+    required this.userInstance,
+  }) : super(key: key);
 
   Class classItem;
-
+  User userInstance;
   //------Functions------//
 
   //Class Type Function
@@ -289,14 +293,16 @@ class _HomeClassItem extends State<HomeClassItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               UserProfileComponentLight(
-                  userID: trainerUserID,
-                  userFirstName: trainerFirstName,
-                  userLastName: trainerLastName,
-                  userName: trainerUsername,
-                  profileImageURL: trainerImageURL,
-                  profileImageRadius: 22.5,
-                  userFullNameFontSize: 15,
-                  userNameFontSize: 14),
+                userID: trainerUserID,
+                userFirstName: trainerFirstName,
+                userLastName: trainerLastName,
+                userName: trainerUsername,
+                profileImageURL: trainerImageURL,
+                profileImageRadius: 22.5,
+                userFullNameFontSize: 15,
+                userNameFontSize: 14,
+                userInstance: widget.userInstance,
+              ),
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: GestureDetector(
@@ -342,6 +348,7 @@ class _HomeClassItem extends State<HomeClassItem> {
               openElevation: 0,
               closedElevation: 0,
               openBuilder: (BuildContext context, _) => ClassCardOpen(
+                userInstance: user,
                 classItem: widget.classItem,
               ),
               closedBuilder: (BuildContext context, VoidCallback openClass) =>

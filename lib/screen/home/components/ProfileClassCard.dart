@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/home/components/ClassCardOpen.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,12 @@ import 'package:balance/feModels/ClassModel.dart';
 final oCcy = new NumberFormat("#,##0", "en_US");
 
 class ProfileClassCard extends StatefulWidget {
-  ProfileClassCard({Key? key, required this.classItem}) : super(key: key);
+  ProfileClassCard(
+      {Key? key, required this.classItem, required this.userInstance})
+      : super(key: key);
 
   Class classItem;
+  User userInstance;
 
   var classTypeIconPath = 'assets/icons/generalIcons/classOneOnOne.svg';
 
@@ -68,6 +72,7 @@ class _ProfileClassCard extends State<ProfileClassCard> {
         closedColor: Colors.transparent,
         openBuilder: (BuildContext context, _) => ClassCardOpen(
           classItem: widget.classItem,
+          userInstance: widget.userInstance,
         ),
         closedBuilder: (BuildContext context, VoidCallback openClass) =>
             GestureDetector(

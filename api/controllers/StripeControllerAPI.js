@@ -83,7 +83,7 @@ createStripeAccountLink: async function (req, res) {
         },
       });
 
-      res.json({ success: true, msg: 'Successfully created new payment intent', id: account.id });
+      res.json({ success: true, msg: 'Successfully created new payment intent', paymentIntent: paymentIntent, client_secret: paymentIntent.client_secret, customerID: customerID,});
     } catch (err) {
       res.status(500).json({ success: false, msg: 'Error creating new payment intent', 
         error: err.message });
