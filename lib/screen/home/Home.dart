@@ -40,7 +40,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   late Animation<Offset> offset2;
 
   //Update this to true once the app is launched
-  bool isLoading = false;
+  bool isLoading = true;
 
   //----------
   @override

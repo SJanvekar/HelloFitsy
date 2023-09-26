@@ -26,7 +26,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
-  await Stripe.instance.applySettings();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -134,7 +133,7 @@ class _MainPageState extends State<MainPage>
     controller.forward();
     getUserDetails();
     setState(() {
-      print('main set');
+      print(userInstance.userType);
     });
   }
 
@@ -151,18 +150,10 @@ class _MainPageState extends State<MainPage>
     userInstance.lastName = user.lastName;
     userInstance.userBio = user.userBio ?? '';
     userInstance.stripeAccountID = user.stripeAccountID;
-
+    userInstance.stripeCustomerID = user.stripeCustomerID;
+    userInstance.userType = user.userType;
     userInstance.categories = user.categories;
-    // json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
-    String userType = user.userType.toString();
     userInstance.profileImageURL = user.profileImageURL;
-
-    // Trainer/Trainee assigning
-    if (userType == 'Trainee') {
-      userInstance.userType = UserType.Trainee;
-    } else {
-      userInstance.userType = UserType.Trainer;
-    }
 
     //Call function checkStripeAccountID -- This will check if the Stripe account has been set up yet
     checkStripeAccountID();

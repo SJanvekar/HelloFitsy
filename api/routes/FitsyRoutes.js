@@ -110,7 +110,7 @@ router.get('/dashboard', (req, res) =>{
     //Update user stripe account ID
     router.post('/updateUserStripeCustomerID', userController.updateUserStripeCustomerID)
     //Create new payment intent
-    router.post('/createPaymentIntent', stripeController.newPaymentIntent)
+    router.post('/newPaymentIntent', stripeController.newPaymentIntent)
 
   
 

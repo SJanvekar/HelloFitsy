@@ -48,7 +48,7 @@ class StripeRequests {
     accountID,
   ) async {
     try {
-      return await dio.get('$urlDomain/newPaymentIntent',
+      return await dio.post('$urlDomain/newPaymentIntent',
           data: {
             'customerID': customerID,
             'amount': paymentAmount,

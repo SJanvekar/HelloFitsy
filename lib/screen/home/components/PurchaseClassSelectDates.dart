@@ -63,6 +63,12 @@ List<classTimes> availableTimesTemp = [
       isSelected: false),
 ];
 
+var paymentIntent;
+late String client_secret;
+
+//Temporarily no fitsy commission
+var fitsyFee = 0;
+
 //Initialize the list for times for this class
 List<classTimes> availableTimes = availableTimesTemp;
 
@@ -77,68 +83,73 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
   }
 
 //Stripe Functions ------------------------------------------------------------
-  var paymentIntent;
-  var client_secret;
-  var paymentAmount;
-  var fitsyFee = 0;
 
-  void createPaymentIntent() {
-    StripeRequests()
-        .newPaymentIntent(widget.userInstance.stripeCustomerID, paymentAmount,
-            fitsyFee, widget.trainerStripeAccountID)
-        .then((val) async {
-      if (val.data['success']) {
-        //Store customerID & paymentIntent object
-        String customerID = val.data['customerID'];
-        paymentIntent = val.data['paymentIntent'];
-        client_secret = val.data['client_secret'];
-        //Check if customerID was null
+  Future<void> createPaymentIntent() async {
+    try {
+      print(widget.classItem.classPrice);
+      final response = await StripeRequests().newPaymentIntent(
+          widget.userInstance.stripeCustomerID,
+          10,
+          fitsyFee,
+          widget.trainerStripeAccountID);
+
+      if (response.data['success']) {
+        // Store customerID & paymentIntent object
+        final customerID = response.data['customerID'];
+        paymentIntent = response.data['paymentIntent'];
+        client_secret = response.data['client_secret'];
+
+        // Check if customerID was null and needs to be updated
         if (widget.userInstance.stripeCustomerID == null) {
-          //Update the AccountID on the user level in the database
-          UserRequests()
-              .updateUserStripeCustomerID(
+          // Update the AccountID on the user level in the database
+          await UserRequests().updateUserStripeCustomerID(
             customerID,
             widget.userInstance.userName,
-          )
-              .then((val) {
-            widget.userInstance.stripeCustomerID = customerID;
-          });
+          );
+
+          // Update the customer ID in the user instance
+          widget.userInstance.stripeCustomerID = customerID;
         }
       }
-    });
-  }
-
-  displayPaymentSheet() async {
-    try {
-      await Stripe.instance.presentPaymentSheet().then((value) {
-        //Clear paymentIntent variable after successful payment
-        paymentIntent = null;
-      }).onError((error, stackTrace) {
-        throw Exception(error);
-      });
-    } on StripeException catch (e) {
-      print('Error is:---> $e');
-    } catch (e) {
-      print('$e');
+    } catch (error) {
+      print('Error creating payment intent: $error');
+      throw Exception(error);
     }
   }
 
-  //Make Payment Function
+  Future<void> displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        // Clear paymentIntent variable after successful payment
+        paymentIntent = null;
+      });
+    } on StripeException catch (e) {
+      print('Stripe Error: $e');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   Future<void> makePayment() async {
     try {
-      //STEP 2: Initialize Payment Sheet
-      await Stripe.instance
-          .initPaymentSheet(
-              paymentSheetParameters: SetupPaymentSheetParameters(
-                  paymentIntentClientSecret:
-                      client_secret, //Gotten from payment intent
-                  style: ThemeMode.light,
-                  merchantDisplayName: 'Fitsy'))
-          .then((value) {});
+      // Create Payment Intent
+      await createPaymentIntent();
 
-      //STEP 3: Display Payment sheet
-      displayPaymentSheet();
+      await Future.delayed(Duration(milliseconds: 250), () {
+        // STEP 2: Initialize Payment Sheet
+        return Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: client_secret,
+            style: ThemeMode.light,
+            merchantDisplayName: 'Fitsy',
+          ),
+        );
+      });
+
+      // STEP 3: Display Payment Sheet
+      await displayPaymentSheet();
     } catch (err) {
+      print('Error making payment: $err');
       throw Exception(err);
     }
   }
@@ -425,33 +436,62 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                         ],
                       ),
                     ),
-                    Container(
-                        height: 110,
-                        decoration: BoxDecoration(
-                            border: Border(
-                          top: BorderSide(color: bone, width: 1),
-                        )),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 14,
-                            bottom: 46,
-                          ),
+                    if (widget.classItem.classPrice < 1)
+                      Container(
+                          height: 110,
+                          decoration: BoxDecoration(
+                              border: Border(
+                            top: BorderSide(color: bone, width: 1),
+                          )),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 0.0, right: 0.0),
-                            child: GestureDetector(
-                              child: FooterButton(
-                                buttonColor: strawberry,
-                                buttonText: 'Purchase Class',
-                                textColor: snow,
-                              ),
-                              onTap: () => {
-                                displayPaymentSheet(),
-                                // Navigator.of(context).pop()
-                              },
+                            padding: const EdgeInsets.only(
+                              top: 14,
+                              bottom: 46,
                             ),
-                          ),
-                        )),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0.0, right: 0.0),
+                              child: GestureDetector(
+                                child: FooterButton(
+                                  buttonColor: strawberry,
+                                  buttonText: 'Book Class',
+                                  textColor: snow,
+                                ),
+                                onTap: () => {
+                                  //TODO: Add SCHEDULE ADD FUNCTION HERE
+                                  Navigator.of(context).pop()
+                                },
+                              ),
+                            ),
+                          ))
+                    else
+                      Container(
+                          height: 110,
+                          decoration: BoxDecoration(
+                              border: Border(
+                            top: BorderSide(color: bone, width: 1),
+                          )),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 14,
+                              bottom: 46,
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0.0, right: 0.0),
+                              child: GestureDetector(
+                                child: FooterButton(
+                                  buttonColor: strawberry,
+                                  buttonText: 'Purchase Class',
+                                  textColor: snow,
+                                ),
+                                onTap: () => {
+                                  makePayment(),
+                                  // Navigator.of(context).pop()
+                                },
+                              ),
+                            ),
+                          )),
                   ],
                 ),
               )),

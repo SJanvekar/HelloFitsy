@@ -120,7 +120,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               _isSliverAppBarExpanded ? Brightness.light : Brightness.dark;
         });
       });
+    getClassTrainerInfo();
     getIsLiked();
+    setState(() {});
   }
 
   //----------Functions-----------//

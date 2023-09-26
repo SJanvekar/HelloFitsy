@@ -20,18 +20,18 @@ class _ClassListHomeState extends State<ClassListHome> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          ListView.builder(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemCount: classList.length,
-              itemBuilder: (context, index) {
-                final classItem = classList[index];
-                return HomeClassItem(
-                  classItem: classItem,
-                );
-              })
+          // ListView.builder(
+          //     padding: EdgeInsets.zero,
+          //     shrinkWrap: true,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     scrollDirection: Axis.vertical,
+          //     itemCount: classList.length,
+          //     itemBuilder: (context, index) {
+          //       final classItem = classList[index];
+          //       return HomeClassItem(
+          //         classItem: classItem,
+          //       );
+          //     })
         ],
       ),
     );

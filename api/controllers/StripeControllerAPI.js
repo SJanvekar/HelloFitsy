@@ -52,15 +52,19 @@ createStripeAccountLink: async function (req, res) {
     try {
       //Payment intents require CustomerID, so create that first
       //CustomerID null check
-      if(req.body.customerID == null){
-        customer = await stripe.customers.create();
+      
+      var customerID;
+      if(req.body.customer== null){
+        customer = await fitsyStripe.customers.create();
         customerID = customer.id;
       } else {
-        customerID = req.body.customer
+        customerID = req.body.customerID
       }
 
+    
+
       //Generate Ephemeral Key (Grants SDK temporary access to customer)
-      const ephemeralKey = await stripe.ephemeralKeys.create(
+      const ephemeralKey = await fitsyStripe.ephemeralKeys.create(
         {customer: customerID},
 
         //TODO: Hardcoded apiVersion, fix later
@@ -68,7 +72,7 @@ createStripeAccountLink: async function (req, res) {
       );
       
       //Create payment intent
-      const paymentIntent = await stripe.paymentIntents.create({
+      const paymentIntent = await fitsyStripe.paymentIntents.create({
         amount: req.body.amount,
         currency: 'cad',
         customer: customerID,
