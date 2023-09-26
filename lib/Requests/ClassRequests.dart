@@ -91,12 +91,16 @@ class ClassRequests {
         '$urlDomain/changeClassTimes',
         data: {
           "ClassTrainerID": classTrainerID,
-          "NewStartDate": newStartDate,
-          "NewEndDate": newEndDate,
-          "NewRecurrence": newRecurrence,
-          "OldStartDate": oldStartDate,
-          "OldEndDate": oldEndDate,
+          "OldStartDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(oldStartDate.toUtc()),
+          "OldEndDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(oldEndDate.toUtc()),
           "OldRecurrence": oldRecurrence,
+          "NewStartDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(newStartDate.toUtc()),
+          "NewEndDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(newEndDate.toUtc()),
+          "NewRecurrence": newRecurrence,
         },
       );
     } on DioError catch (e) {
@@ -111,8 +115,9 @@ class ClassRequests {
         '$urlDomain/removeClassTimes',
         data: {
           "ClassTrainerID": classTrainerID,
-          "StartDate": startDate,
-          "EndDate": endDate,
+          "StartDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
+          "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
           "Recurrence": recurrence,
         },
       );

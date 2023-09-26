@@ -124,8 +124,9 @@ var functions = {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
-            StartDate: req.body.NewStartDate,
-            EndDate: req.body.NewEndDate,
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
             Recurrence: req.body.NewRecurrence,
         }
         //Filtering based off of exact match for subfields in ClassTimes
@@ -153,8 +154,9 @@ var functions = {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
-            StartDate: req.body.StartDate,
-            EndDate: req.body.EndDate,
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
             Recurrence: req.body.Recurrence,
         }
         try {
