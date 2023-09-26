@@ -125,6 +125,34 @@ var functions = {
         }
     },
 
+    // Get User information
+    getUserInfo: async function (req, res) {
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('userPromiseAsync returned null'))
+                }
+            })
+        }
+        if ((!req.query.UserID)) {
+            res.json({success: false, msg: 'Missing query parameter UserID'});
+        }
+        try {
+            user = await User.findOne({_id: new mongoose.Types.ObjectId(req.query.UserID)})
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+        return userPromiseAsync(user).then(parsedResponse => 
+            res.json({success: true,
+                user: parsedResponse}))
+    },
+
     //Get trainer information for class
     getClassTrainerInfo: async function (req, res) {
         const classTrainerInfoAsync = (responseJSON) => {
