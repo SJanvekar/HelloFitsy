@@ -132,9 +132,7 @@ class _MainPageState extends State<MainPage>
     });
     controller.forward();
     getUserDetails();
-    setState(() {
-      print(userInstance.userType);
-    });
+    setState(() {});
   }
 
   //----------

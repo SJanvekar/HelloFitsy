@@ -67,7 +67,7 @@ var paymentIntent;
 late String client_secret;
 
 //Temporarily no fitsy commission
-var fitsyFee = 0;
+var fitsyFee = 0.00;
 
 //Initialize the list for times for this class
 List<classTimes> availableTimes = availableTimesTemp;

@@ -42,10 +42,10 @@ class StripeRequests {
 
   //Create payment intent
   newPaymentIntent(
-    customerID,
-    paymentAmount,
-    fitsyFee,
-    accountID,
+    String? customerID,
+    double paymentAmount,
+    double fitsyFee,
+    String accountID,
   ) async {
     try {
       return await dio.post('$urlDomain/newPaymentIntent',

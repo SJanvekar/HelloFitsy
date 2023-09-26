@@ -106,14 +106,4 @@ class StripeLogic {
       }
     });
   }
-
-  // //Check if details are submitted
-  // makePayment(
-  //   User userInstance,
-  //   User trainerInstance,
-  //   double amount,
-  //   double fitsyFee,
-  // ) {
-
-  // }
 }
