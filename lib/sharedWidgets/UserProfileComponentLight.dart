@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -29,6 +31,7 @@ class UserProfileComponentLight extends StatelessWidget {
   double userFullNameFontSize;
   double userNameFontSize;
   double profileImageRadius;
+  late User trainerInstance;
 
   //Follow button ~ State 0
   Widget followButton() {
@@ -113,15 +116,16 @@ class UserProfileComponentLight extends StatelessWidget {
           )
         ],
       ),
-      onTap: () {
+      onTap: () async {
+        await UserRequests().getUserInfo(userID).then((val) {
+          if (val.data['success']) {
+            trainerInstance = User.fromJson(val.data['user'] ?? '');
+          }
+        });
         Navigator.of(context).push(CupertinoPageRoute(
             maintainState: true,
             builder: (context) => UserProfile(
-                  userID: userID,
-                  userFirstName: userFirstName,
-                  userLastName: userLastName,
-                  userName: userName,
-                  profileImageURL: profileImageURL,
+                  trainerInstance: trainerInstance,
                   userInstance: userInstance,
                 )));
       },

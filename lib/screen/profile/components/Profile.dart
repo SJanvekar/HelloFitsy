@@ -8,7 +8,6 @@ import 'package:balance/feModels/FollowerModel.dart';
 import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
-import 'package:balance/sharedWidgets/unfollowDialog.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,21 +22,13 @@ import '../../../sharedWidgets/categories/categorySmall.dart';
 class UserProfile extends StatefulWidget {
   UserProfile({
     Key? key,
-    required this.userID,
-    required this.userFirstName,
-    required this.userLastName,
-    required this.userName,
-    required this.profileImageURL,
     required this.userInstance,
+    required this.trainerInstance,
   }) : super(key: key);
 
   //User details:
-  String userID;
-  String userFirstName;
-  String userLastName;
-  String userName;
-  String profileImageURL;
   User userInstance;
+  User trainerInstance;
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -55,7 +46,7 @@ class _UserProfileState extends State<UserProfile> {
 
   //Interests Lists
   //A list contained within the Category model which holds the trainers' interests (since this list contains the category information)
-  List<Category> trainerInterestsFinal = trainerInterests;
+  List<Category> trainerInterestsFinal = [];
   //Original list of all category (interest) items ~ this contains the Category name and image
   List<Category> interests = categoriesList;
   //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info //HARD CODED - MUST CHANGE
@@ -84,7 +75,7 @@ class _UserProfileState extends State<UserProfile> {
     final sharedPrefs = await SharedPreferences.getInstance();
     user = User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
     await FollowingRequests()
-        .isFollowing(widget.userID, user.userID)
+        .isFollowing(widget.trainerInstance.userID, user.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful is following');
@@ -100,7 +91,7 @@ class _UserProfileState extends State<UserProfile> {
 
   void addFollowing() async {
     FollowingRequests()
-        .addFollowing(widget.userID, user.userID)
+        .addFollowing(widget.trainerInstance.userID, user.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful add following');
@@ -112,7 +103,7 @@ class _UserProfileState extends State<UserProfile> {
 
   void addFollower() async {
     FollowerRequests()
-        .addFollower(user.userID, widget.userID)
+        .addFollower(user.userID, widget.trainerInstance.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful add follower');
@@ -124,7 +115,7 @@ class _UserProfileState extends State<UserProfile> {
 
   void removeFollowing() async {
     FollowingRequests()
-        .removeFollowing(widget.userID, user.userID)
+        .removeFollowing(widget.trainerInstance.userID, user.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful remove following');
@@ -136,7 +127,7 @@ class _UserProfileState extends State<UserProfile> {
 
   void removeFollower() async {
     FollowerRequests()
-        .removeFollower(user.userID, widget.userID)
+        .removeFollower(user.userID, widget.trainerInstance.userID)
         .then((val) async {
       if (val.data['success']) {
         print('successful remove follower');
@@ -170,7 +161,7 @@ class _UserProfileState extends State<UserProfile> {
   //----------
   void checkInterests() {
     //Checks for categories that match the trainers' interests and populates trainerInterestsFinal //HARD CODED - MUST CHANGE
-    userInterests = ['Tennis', 'Boxing'];
+    userInterests = widget.trainerInstance.categories;
     interests.forEach((interestsItem) {
       if (userInterests.contains(interestsItem.categoryName)) {
         trainerInterestsFinal.add(interestsItem);
@@ -202,7 +193,9 @@ class _UserProfileState extends State<UserProfile> {
         children: [
           Text(
             // userFullName
-            widget.userFirstName + ' ' + widget.userLastName,
+            widget.trainerInstance.firstName +
+                ' ' +
+                widget.trainerInstance.lastName,
             style: TextStyle(
                 fontSize: 26,
                 fontFamily: 'SFDisplay',
@@ -218,7 +211,7 @@ class _UserProfileState extends State<UserProfile> {
             maxLines: 1,
           ),
           Text(
-            '@' + widget.userName,
+            '@' + widget.trainerInstance.userName,
             // userName,
             style: TextStyle(
                 fontSize: 16,
@@ -351,7 +344,7 @@ class _UserProfileState extends State<UserProfile> {
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Text(
-              'Chat with ' + widget.userFirstName,
+              'Chat with ' + widget.trainerInstance.firstName,
               // userFirstName,
               style: TextStyle(
                   color: snow,
@@ -397,7 +390,9 @@ class _UserProfileState extends State<UserProfile> {
               Padding(
                 padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                 child: Text(
-                  'Are you sure you want to unfollow ' + widget.userName + '?',
+                  'Are you sure you want to unfollow ' +
+                      widget.trainerInstance.userName +
+                      '?',
                   style: TextStyle(
                       color: jetBlack80,
                       fontFamily: 'SFDisplay',
@@ -523,7 +518,7 @@ class _UserProfileState extends State<UserProfile> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                             image: NetworkImage(
-                              widget.profileImageURL,
+                              widget.trainerInstance.profileImageURL,
                             ),
                             fit: BoxFit.cover),
                       ),
@@ -630,7 +625,10 @@ class _UserProfileState extends State<UserProfile> {
                 expandedTitleScale: 1,
                 centerTitle: false,
               ),
-              title: Text(widget.userFirstName + ' ' + widget.userLastName,
+              title: Text(
+                  widget.trainerInstance.firstName +
+                      ' ' +
+                      widget.trainerInstance.lastName,
                   // userFullName,
                   style: TextStyle(
                       color: _textColor,
@@ -672,7 +670,7 @@ class _UserProfileState extends State<UserProfile> {
                 Padding(
                   padding: EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
                   child: Text(
-                    'About ' + widget.userFirstName,
+                    'About ' + widget.trainerInstance.userName,
                     // ${userFirstName}',
                     style: sectionTitles,
                   ),
@@ -733,7 +731,7 @@ class _UserProfileState extends State<UserProfile> {
                   padding:
                       const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
                   child: Text(
-                    'Roger Federer holds several ATP records and is considered to be one of the greatest tennis players of all time. The Swiss player has proved his dominance on court with 20 Grand Slam titles and 103 career ATP titles. In 2003, he founded the Roger Federer Foundation, which is dedicated to providing education programs for children living in poverty in Africa and Switzerland',
+                    widget.trainerInstance.userBio ?? '',
                     style: TextStyle(
                         color: jetBlack60,
                         fontFamily: 'SFDisplay',
@@ -750,7 +748,7 @@ class _UserProfileState extends State<UserProfile> {
                 padding: const EdgeInsets.only(
                     top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
-                  widget.userFirstName + "'s Specialities",
+                  widget.trainerInstance.firstName + "'s Specialities",
                   style: sectionTitles,
                 ),
               ),
@@ -782,7 +780,7 @@ class _UserProfileState extends State<UserProfile> {
                 padding: const EdgeInsets.only(
                     top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
-                  "Train with " + widget.userFirstName,
+                  "Train with " + widget.trainerInstance.firstName,
                   style: sectionTitles,
                 ),
               ),

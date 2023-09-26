@@ -53,6 +53,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   String trainerFirstName = '';
   String trainerLastName = '';
   String trainerStripeAccountID = '';
+  String trainerBio = '';
   late User user;
 
   void getClassTrainerInfo() async {
@@ -66,6 +67,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         trainerFirstName = val.data['FirstName'] ?? '';
         trainerLastName = val.data['LastName'] ?? '';
         trainerStripeAccountID = val.data['StripeAccountID'] ?? '';
+        trainerBio = val.data['UserBio'] ?? '';
       } else {
         print('error getting class trainer info: ${val.data['msg']}');
       }
@@ -420,7 +422,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           padding: const EdgeInsets.only(top: 15.0),
           child: Text(
             //Implement the Trainer bio here
-            'Roger Federer holds several ATP records and is considered to be one of the greatest tennis players of all time. The Swiss player has proved his dominance on court with 20 Grand Slam titles and 103 career ATP titles. In 2003, he founded the Roger Federer Foundation, which is dedicated to providing education programs for children living in poverty in Africa and Switzerland',
+            trainerBio,
             style: TextStyle(
                 fontFamily: 'SFDisplay',
                 color: jetBlack80,
