@@ -62,6 +62,19 @@ class UserRequests {
     }
   }
 
+  getUserInfo(String userID) async {
+    try {
+      return await dio.get(
+        '$urlDomain/getUserInfo',
+        queryParameters: {
+          "UserID": userID,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
   getClassTrainerInfo(String userID) async {
     try {
       return await dio.get(
