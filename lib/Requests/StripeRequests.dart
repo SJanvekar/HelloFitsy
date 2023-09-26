@@ -15,7 +15,7 @@ class StripeRequests {
   }
 
   //Create Stripe Account
-  createStripeAccountLink(stripeAccountID) async {
+  createStripeAccountLink(String? stripeAccountID) async {
     try {
       return await dio.post('$urlDomain/createStripeAccountLink',
           data: {
@@ -28,7 +28,7 @@ class StripeRequests {
   }
 
   //Retrieve account information
-  retrieveStripeAccount(stripeAccountID) async {
+  retrieveStripeAccount(String? stripeAccountID) async {
     try {
       return await dio.get('$urlDomain/retrieveStripeAccountDetails',
           queryParameters: {
