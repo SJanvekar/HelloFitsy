@@ -40,7 +40,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   late Animation<Offset> offset2;
 
   //Update this to true once the app is launched
-  bool isLoading = false;
+  bool isLoading = true;
 
   //----------
   @override
@@ -353,7 +353,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               Navigator.push(
                                   context,
                                   PageTransition(
-                                      child: Search(),
+                                      child: Search(
+                                        userInstance: widget.userInstance,
+                                      ),
                                       type: PageTransitionType.fade,
                                       duration: Duration(milliseconds: 0),
                                       reverseDuration:
@@ -373,6 +375,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       final classItem = allClasses[index];
                       return HomeClassItem(
                         classItem: classItem,
+                        userInstance: widget.userInstance,
                       );
                     },
                     childCount: allClasses.length,

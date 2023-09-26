@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 //https://www.fitsy.ca
 const String urlDomain = 'http://localhost:8888';
 
+const String publishableStripeKey =
+    'pk_test_51N1KMLHPTcKdqvMqmxEGhpnBnrFS7KKdymTmwZlByroml00eU2g0ocRutSqH2K4WFTAx2BAmxLPFpvwhCzsb7nC900JCQMgDCH';
+
 //----MONGOOSE ERROR CODES-------------//
 const int duplicateKeycode = 11000;
 

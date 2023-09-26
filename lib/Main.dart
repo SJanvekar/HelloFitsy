@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/Home.dart';
@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
 import 'feModels/UserModel.dart';
@@ -23,6 +24,8 @@ import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = publishableStripeKey;
+  Stripe.merchantIdentifier = 'Fitsy';
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -111,7 +114,9 @@ class _MainPageState extends State<MainPage>
     ));
 
     //Add Search
-    _widgetOptions.add(Search());
+    _widgetOptions.add(Search(
+      userInstance: userInstance,
+    ));
 
     //Animation Controller Set Up
     controller = AnimationController(
@@ -127,9 +132,7 @@ class _MainPageState extends State<MainPage>
     });
     controller.forward();
     getUserDetails();
-    setState(() {
-      print('main set');
-    });
+    setState(() {});
   }
 
   //----------
@@ -145,18 +148,10 @@ class _MainPageState extends State<MainPage>
     userInstance.lastName = user.lastName;
     userInstance.userBio = user.userBio ?? '';
     userInstance.stripeAccountID = user.stripeAccountID;
-
+    userInstance.stripeCustomerID = user.stripeCustomerID;
+    userInstance.userType = user.userType;
     userInstance.categories = user.categories;
-    // json.decode(sharedPrefs.getString('categories') ?? '').cast<String>();
-    String userType = user.userType.toString();
     userInstance.profileImageURL = user.profileImageURL;
-
-    // Trainer/Trainee assigning
-    if (userType == 'Trainee') {
-      userInstance.userType = UserType.Trainee;
-    } else {
-      userInstance.userType = UserType.Trainer;
-    }
 
     //Call function checkStripeAccountID -- This will check if the Stripe account has been set up yet
     checkStripeAccountID();
@@ -170,10 +165,14 @@ class _MainPageState extends State<MainPage>
           isTypeSelected: false, classTemplate: classTemplate));
 
       //Add Schedule Calendar
-      _widgetOptions.add(const ScheduleCalendar());
+      _widgetOptions.add(ScheduleCalendar(
+        userInstance: userInstance,
+      ));
     } else {
       //Add Schedule Calendar
-      _widgetOptions.add(const ScheduleCalendar());
+      _widgetOptions.add(ScheduleCalendar(
+        userInstance: userInstance,
+      ));
     }
 
     //Add Personal Profile to list of navigation widgets

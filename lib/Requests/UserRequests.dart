@@ -36,6 +36,17 @@ class UserRequests {
     }
   }
 
+  updateUserStripeCustomerID(String? stripeCustomerID, String? userName) async {
+    try {
+      return await dio.post('$urlDomain/updateUserStripeCustomerID', data: {
+        "StripeCustomerID": stripeCustomerID,
+        "Username": userName,
+      });
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
+
   getUserFollowing(String username) async {
     try {
       return await dio.get(
