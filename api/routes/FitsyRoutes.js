@@ -53,12 +53,14 @@ router.get('/dashboard', (req, res) =>{
     router.get('/retrieveStripeAccountDetails', stripeController.retrieveStripeAccountDetails)  
 
   //User routes
-    //Get information for a new user
-    router.get('/getLogInInfo', userController.getLogInInfo)
-    //Search trainers
-    router.get('/searchTrainers', userController.searchTrainers)
     //Get trainer info for classes only
     router.get('/getClassTrainerInfo', userController.getClassTrainerInfo)
+    //Get information for a new user
+    router.get('/getLogInInfo', userController.getLogInInfo)
+    //Get information for a new user
+    router.get('/getUserInfo', userController.getUserInfo)
+    //Search trainers
+    router.get('/searchTrainers', userController.searchTrainers)
 
   router.get('/', (req, res) =>{
     res.send('I am up and running! -- Welcome to Fitsy')
@@ -110,7 +112,9 @@ router.get('/dashboard', (req, res) =>{
     router.post('/updateUserInfo', userController.updateUserinfo)
     //Update user stripe account ID
     router.post('/updateUserStripeAccountID', userController.updateUserStripeAccountID)
-
-  
+    //Update user stripe account ID
+    router.post('/updateUserStripeCustomerID', userController.updateUserStripeCustomerID)
+    //Create new payment intent
+    router.post('/newPaymentIntent', stripeController.newPaymentIntent)
 
 module.exports = router

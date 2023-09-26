@@ -1,9 +1,14 @@
 import 'dart:collection';
 
+import 'package:balance/Requests/StripeRequests.dart';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -14,14 +19,16 @@ import '../../../sharedWidgets/loginFooterButton.dart';
 import '../../../sharedWidgets/pageDivider.dart';
 
 class PurchaseClassSelectDates extends StatefulWidget {
-  PurchaseClassSelectDates({
-    Key? key,
-    required this.classImageUrl,
-    required this.className,
-  }) : super(key: key);
+  PurchaseClassSelectDates(
+      {Key? key,
+      required this.classItem,
+      required this.userInstance,
+      required this.trainerStripeAccountID})
+      : super(key: key);
 
-  String classImageUrl;
-  String className;
+  User userInstance;
+  Class classItem;
+  String trainerStripeAccountID;
 
   @override
   State<PurchaseClassSelectDates> createState() =>
@@ -55,6 +62,12 @@ List<classTimes> availableTimesTemp = [
       isSelected: false),
 ];
 
+var paymentIntent;
+late String client_secret;
+
+//Temporarily no fitsy commission
+var fitsyFee = 0.00;
+
 //Initialize the list for times for this class
 List<classTimes> availableTimes = availableTimesTemp;
 
@@ -66,6 +79,78 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
   void initState() {
     super.initState();
     _selectedDays.add(_focusedDay);
+  }
+
+//Stripe Functions ------------------------------------------------------------
+
+  Future<void> createPaymentIntent() async {
+    try {
+      print(widget.classItem.classPrice);
+      final response = await StripeRequests().newPaymentIntent(
+          widget.userInstance.stripeCustomerID,
+          10,
+          fitsyFee,
+          widget.trainerStripeAccountID);
+
+      if (response.data['success']) {
+        // Store customerID & paymentIntent object
+        final customerID = response.data['customerID'];
+        paymentIntent = response.data['paymentIntent'];
+        client_secret = response.data['client_secret'];
+
+        // Check if customerID was null and needs to be updated
+        if (widget.userInstance.stripeCustomerID == null) {
+          // Update the AccountID on the user level in the database
+          await UserRequests().updateUserStripeCustomerID(
+            customerID,
+            widget.userInstance.userName,
+          );
+
+          // Update the customer ID in the user instance
+          widget.userInstance.stripeCustomerID = customerID;
+        }
+      }
+    } catch (error) {
+      print('Error creating payment intent: $error');
+      throw Exception(error);
+    }
+  }
+
+  Future<void> displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        // Clear paymentIntent variable after successful payment
+        paymentIntent = null;
+      });
+    } on StripeException catch (e) {
+      print('Stripe Error: $e');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  Future<void> makePayment() async {
+    try {
+      // Create Payment Intent
+      await createPaymentIntent();
+
+      await Future.delayed(Duration(milliseconds: 250), () {
+        // STEP 2: Initialize Payment Sheet
+        return Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+            paymentIntentClientSecret: client_secret,
+            style: ThemeMode.light,
+            merchantDisplayName: 'Fitsy',
+          ),
+        );
+      });
+
+      // STEP 3: Display Payment Sheet
+      await displayPaymentSheet();
+    } catch (err) {
+      print('Error making payment: $err');
+      throw Exception(err);
+    }
   }
 
 //variables
@@ -214,14 +299,15 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             image: DecorationImage(
-                                image: NetworkImage(widget.classImageUrl),
+                                image: NetworkImage(
+                                    widget.classItem.classImageUrl),
                                 fit: BoxFit.cover),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: Text(
-                            widget.className,
+                            widget.classItem.className,
                             style: sectionTitles,
                           ),
                         )
@@ -349,30 +435,62 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                         ],
                       ),
                     ),
-                    Container(
-                        height: 110,
-                        decoration: BoxDecoration(
-                            border: Border(
-                          top: BorderSide(color: bone, width: 1),
-                        )),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 14,
-                            bottom: 46,
-                          ),
+                    if (widget.classItem.classPrice < 1)
+                      Container(
+                          height: 110,
+                          decoration: BoxDecoration(
+                              border: Border(
+                            top: BorderSide(color: bone, width: 1),
+                          )),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 0.0, right: 0.0),
-                            child: GestureDetector(
-                              child: FooterButton(
-                                buttonColor: strawberry,
-                                buttonText: 'Purchase Class',
-                                textColor: snow,
-                              ),
-                              onTap: () => {Navigator.of(context).pop()},
+                            padding: const EdgeInsets.only(
+                              top: 14,
+                              bottom: 46,
                             ),
-                          ),
-                        )),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0.0, right: 0.0),
+                              child: GestureDetector(
+                                child: FooterButton(
+                                  buttonColor: strawberry,
+                                  buttonText: 'Book Class',
+                                  textColor: snow,
+                                ),
+                                onTap: () => {
+                                  //TODO: Add SCHEDULE ADD FUNCTION HERE
+                                  Navigator.of(context).pop()
+                                },
+                              ),
+                            ),
+                          ))
+                    else
+                      Container(
+                          height: 110,
+                          decoration: BoxDecoration(
+                              border: Border(
+                            top: BorderSide(color: bone, width: 1),
+                          )),
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 14,
+                              bottom: 46,
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 0.0, right: 0.0),
+                              child: GestureDetector(
+                                child: FooterButton(
+                                  buttonColor: strawberry,
+                                  buttonText: 'Purchase Class',
+                                  textColor: snow,
+                                ),
+                                onTap: () => {
+                                  makePayment(),
+                                  // Navigator.of(context).pop()
+                                },
+                              ),
+                            ),
+                          )),
                   ],
                 ),
               )),

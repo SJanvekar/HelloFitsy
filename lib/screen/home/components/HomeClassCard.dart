@@ -28,6 +28,7 @@ class HomeClassItem extends StatefulWidget {
 
   Class classItem;
   User userInstance;
+
   //------Functions------//
 
   //Class Type Function
@@ -348,8 +349,8 @@ class _HomeClassItem extends State<HomeClassItem> {
               openElevation: 0,
               closedElevation: 0,
               openBuilder: (BuildContext context, _) => ClassCardOpen(
-                userInstance: user,
                 classItem: widget.classItem,
+                userInstance: widget.userInstance,
               ),
               closedBuilder: (BuildContext context, VoidCallback openClass) =>
                   GestureDetector(

@@ -131,7 +131,8 @@ var functions = {
             ClassHistory: req.body.ClassHistory,
             Following: req.body.Following,
             Followers: req.body.Followers,
-            StripeAccountID: req.body.StripeAccountID
+            StripeAccountID: req.body.StripeAccountID,
+            StripeCustomerID: req.body.StripeCustomerID
         });
         try {
             await newUser.save()
@@ -179,6 +180,128 @@ var functions = {
             }
         })
     },
+
+//*****GET REQUESTS*****//
+
+    // Get Information after log in
+    getLogInInfo: async function (req, res) {
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('userPromiseAsync returned null'))
+                }
+            })
+        }
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            var token = req.headers.authorization.split(' ')[1]
+            var decodedtoken = jwt.decode(token, process.env.DATABASE_SECRET)
+            try {
+                user = await User.findOne({Auth: decodedtoken._id})
+            } catch (err) {
+                console.log(err)
+                return res.json({success: false, msg: err})
+            }
+            return userPromiseAsync(user).then(function (parsedResponse) {
+                if (parsedResponse instanceof Error) {
+                    return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
+                } else {
+                    return res.json({success: true, user: parsedResponse})
+                }
+            })
+        } else {
+            return res.json({success: false, msg: 'No Headers'})
+        }
+    },
+
+    // Get User information
+    getUserInfo: async function (req, res) {
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('userPromiseAsync returned null'))
+                }
+            })
+        }
+        if ((!req.query.UserID)) {
+            res.json({success: false, msg: 'Missing query parameter UserID'});
+        }
+        try {
+            user = await User.findOne({_id: new mongoose.Types.ObjectId(req.query.UserID)})
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+        return userPromiseAsync(user).then(parsedResponse => 
+            res.json({success: true,
+                user: parsedResponse}))
+    },
+
+    //Get trainer information for class
+    getClassTrainerInfo: async function (req, res) {
+        const classTrainerInfoAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('classTrainerInfoAsync returned null'))
+                }
+            })
+        }
+        if ((!req.query.UserID)) {
+            res.json({success: false, msg: 'Missing query parameter UserID'});
+        }
+        try {
+            user = await User.findOne({_id: new mongoose.Types.ObjectId(req.query.UserID)}, '_id ProfileImageURL FirstName LastName Username StripeAccountID')
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+        return classTrainerInfoAsync(user).then(parsedResponse => 
+            res.json({success: true,
+                _id: parsedResponse._id, 
+                ProfileImageURL: parsedResponse.ProfileImageURL,
+                Username: parsedResponse.Username,
+                FirstName: parsedResponse.FirstName,
+                LastName: parsedResponse.LastName,
+                StripeAccountID: parsedResponse.StripeAccountID
+            }))
+    },
+
+    // Search Trainers
+    searchTrainers: async function (req, res) {
+        try {
+            response = await User.aggregate([
+                {$search: {
+                    index: 'Username',
+                    text: {
+                        query: req.query.SearchIndex,
+                        path: 'Username',
+                        fuzzy: {}
+                    }
+                }},
+                {$match: {UserType: 'Trainer'}},
+            ])
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, errorCode: err.code})
+        }
+        return res.json({success: true, searchResults: response})
+    },
+
+//*****POST REQUESTS*****//
   
     updateUserinfo: async function (req, res) {
         try {
@@ -204,6 +327,27 @@ var functions = {
             return res.json({ success: false, errorCode: err.code });
         }
         user.StripeAccountID = req.body.StripeAccountID;
+        // Save the updated user
+        try {
+            await user.save()
+        } catch (err) {
+            console.error(err);
+            return res.json({ success: false, errorCode: err.code });
+        }
+        return res.json({ success: true });
+      },
+
+
+    //Update user stripe account ID on accountID creation (Stripe set up)
+    updateUserStripeCustomerID: async function (req, res) {
+        // Find the user by Username
+        try {
+            user = await User.findOne({'Username': req.body.Username})
+        } catch (err) {
+            console.log(err);
+            return res.json({ success: false, errorCode: err.code });
+        }
+        user.StripeCustomerID = req.body.StripeCustomerID;
         // Save the updated user
         try {
             await user.save()

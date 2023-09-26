@@ -75,6 +75,13 @@ var UserSchema = new Schema({
         type: String,
         required: false
     },
+
+    //Stripe Customer ID
+    StripeCustomerID: {
+        type: String,
+        required: false
+    },
+    
     
 })
 

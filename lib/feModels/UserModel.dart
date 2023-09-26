@@ -12,6 +12,7 @@ class User {
   late String? userBio;
   late List<String> categories;
   late String? stripeAccountID;
+  late String? stripeCustomerID;
   late bool isStripeDetailsSubmitted = false;
 
   User({
@@ -35,7 +36,8 @@ class User {
         userName = json['Username'],
         userBio = json['UserBio'],
         categories = dyanamicArrayToStringArray(json['Categories']),
-        stripeAccountID = json['StripeAccountID'];
+        stripeAccountID = json['StripeAccountID'],
+        stripeCustomerID = json['StripeCustomerID'];
 
   Map<String, dynamic> toJson() => {
         'IsActive': isActive,
@@ -46,7 +48,8 @@ class User {
         'Username': userName,
         'UserBio': userBio,
         'Categories': categories,
-        'StripeAccountID': stripeAccountID
+        'StripeAccountID': stripeAccountID,
+        'StripeCustomerID': stripeCustomerID
       };
 }
 

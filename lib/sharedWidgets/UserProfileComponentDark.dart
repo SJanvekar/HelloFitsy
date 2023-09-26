@@ -9,6 +9,7 @@ import '../screen/profile/components/Profile.dart';
 class UserProfileComponentDark extends StatelessWidget {
   UserProfileComponentDark({
     Key? key,
+    required this.userInstance,
     required this.userID,
     required this.userFirstName,
     required this.userLastName,
@@ -19,6 +20,7 @@ class UserProfileComponentDark extends StatelessWidget {
     required this.profileImageRadius,
   }) : super(key: key);
 
+  User userInstance;
   String userID;
   String userFirstName;
   String userLastName;
@@ -120,11 +122,13 @@ class UserProfileComponentDark extends StatelessWidget {
         Navigator.of(context).push(CupertinoPageRoute(
             maintainState: true,
             builder: (context) => UserProfile(
-                userID: userID,
-                userFirstName: userFirstName,
-                userLastName: userLastName,
-                userName: userName,
-                profileImageURL: profileImageURL)));
+                  userID: userID,
+                  userFirstName: userFirstName,
+                  userLastName: userLastName,
+                  userName: userName,
+                  profileImageURL: profileImageURL,
+                  userInstance: userInstance,
+                )));
       },
     );
   }

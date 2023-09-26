@@ -15,7 +15,7 @@ class StripeRequests {
   }
 
   //Create Stripe Account
-  createStripeAccountLink(stripeAccountID) async {
+  createStripeAccountLink(String? stripeAccountID) async {
     try {
       return await dio.post('$urlDomain/createStripeAccountLink',
           data: {
@@ -28,7 +28,7 @@ class StripeRequests {
   }
 
   //Retrieve account information
-  retrieveStripeAccount(stripeAccountID) async {
+  retrieveStripeAccount(String? stripeAccountID) async {
     try {
       return await dio.get('$urlDomain/retrieveStripeAccountDetails',
           queryParameters: {
@@ -37,6 +37,27 @@ class StripeRequests {
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } catch (e) {
       print("Stripe Account Retrival Error: ${e}");
+    }
+  }
+
+  //Create payment intent
+  newPaymentIntent(
+    String? customerID,
+    double paymentAmount,
+    double fitsyFee,
+    String accountID,
+  ) async {
+    try {
+      return await dio.post('$urlDomain/newPaymentIntent',
+          data: {
+            'customerID': customerID,
+            'amount': paymentAmount,
+            'fitsyFee': fitsyFee,
+            'accountID': accountID,
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } catch (e) {
+      print("Stripe Payment Intent Creation Error: ${e}");
     }
   }
 }

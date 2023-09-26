@@ -37,6 +37,7 @@ class ScheduleCalendar extends StatefulWidget {
     Key? key,
     required this.userInstance,
   }) : super(key: key);
+
   User userInstance;
   @override
   State<ScheduleCalendar> createState() => _ScheduleCalendar();
@@ -892,6 +893,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                       ]),
                                   child: ScheduledClassTile(
                                     classItem: scheduledClass,
+                                    userInstance: widget.userInstance,
                                   ),
                                 ),
                               );

@@ -9,8 +9,8 @@ import 'package:sliver_tools/sliver_tools.dart';
 import 'HomeClassItem.dart';
 
 class Search extends StatefulWidget {
-  Search({Key? key}) : super(key: key);
-
+  Search({Key? key, required this.userInstance}) : super(key: key);
+  User userInstance;
   @override
   State<Search> createState() => _Search();
 }
@@ -197,6 +197,7 @@ class _Search extends State<Search> {
                                     profileImageRadius: 22.5,
                                     userFullNameFontSize: 15,
                                     userNameFontSize: 14,
+                                    userInstance: widget.userInstance,
                                   ),
                                 );
                               },
@@ -244,6 +245,7 @@ class _Search extends State<Search> {
                                 final classItem = classSearchResult[index];
                                 return HomeClassItem(
                                   classItem: classItem,
+                                  userInstance: widget.userInstance,
                                 );
                               },
                               childCount: classSearchResult.length,

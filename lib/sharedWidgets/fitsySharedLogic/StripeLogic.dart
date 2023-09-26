@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,12 +14,6 @@ class StripeLogic {
     if (userInstance.stripeAccountID == null) {
       StripeRequests().createStripeAccount().then((val) async {
         if (val.data['success']) {
-          //Initialize Shared Prefs instance
-          final sharedPrefs = await SharedPreferences.getInstance();
-
-          //Assign the accountID to the sharedPrefs variable stripeAccountID
-          sharedPrefs.setString('stripeAccountID', val.data['id']);
-
           //Store account ID
           String accountID = val.data['id'];
 

@@ -1217,7 +1217,9 @@ class _PersonalProfileState extends State<PersonalProfile>
                             ),
                             onTap: () {
                               Navigator.of(context).push(CupertinoPageRoute(
-                                  builder: (context) => Search()));
+                                  builder: (context) => Search(
+                                        userInstance: widget.userInstance,
+                                      )));
                             },
                           )
                         ],
