@@ -165,7 +165,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   }
 
   //Check if a class should be scheduled based on recurrence
-  Schedule? shouldScheduleClass(Class classItem, DateTime selectedDay) {
+  void shouldScheduleClass(Class classItem, DateTime selectedDay) {
     for (Schedule classTime in classItem.classTimes) {
       final DateTime startDate = classTime.startDate;
       final RecurrenceType recurrence = classTime.recurrence;
@@ -181,43 +181,39 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
       //First check if today is the original start date
       if (startDate == selectedDay) {
-        return classTime;
-        // return true;
+        scheduledClassesMap[classTime] = classItem;
+        continue;
       }
 
       //Second check the recurrance if it is anything other than none (None is handled with the above check)
       if (recurrence == RecurrenceType.Daily &&
           dateDifference % 1 == 0 &&
           dateDifference != 0) {
-        return classTime;
-        // return dateDifference % 1 == 0 && dateDifference != 0;
+        scheduledClassesMap[classTime] = classItem;
+        continue;
       } else if (recurrence == RecurrenceType.Weekly &&
           dateDifference % 7 == 0 &&
           dateDifference != 0) {
-        return classTime;
-        // return dateDifference % 7 == 0 && dateDifference != 0;
+        scheduledClassesMap[classTime] = classItem;
+        continue;
       } else if (recurrence == RecurrenceType.BiWeekly &&
           dateDifference % 14 == 0 &&
           dateDifference != 0) {
-        return classTime;
-        // return dateDifference % 14 == 0 && dateDifference != 0;
+        scheduledClassesMap[classTime] = classItem;
+        continue;
       } else if (recurrence == RecurrenceType.Monthly &&
           startDate.month != selectedDay.month &&
           startDate.day == selectedDay.day) {
-        return classTime;
-        // return startDate.month != selectedDay.month &&
-        //     startDate.day == selectedDay.day;
+        scheduledClassesMap[classTime] = classItem;
+        continue;
       } else if (recurrence == RecurrenceType.Yearly &&
           startDate.year != selectedDay.year &&
           startDate.month == selectedDay.month &&
           startDate.day == selectedDay.day) {
-        return classTime;
-        // return startDate.year != selectedDay.year &&
-        //     startDate.month == selectedDay.month &&
-        //     startDate.day == selectedDay.day;
+        scheduledClassesMap[classTime] = classItem;
+        continue;
       }
     }
-    return null;
   }
 
 //Determine Today's Schedule
@@ -227,10 +223,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
     for (var selectedDay in selectedDays) {
       for (var classItem in allClasses) {
-        Schedule? scheduleMatch = shouldScheduleClass(classItem, selectedDay);
-        if (scheduleMatch != null) {
-          scheduledClassesMap[scheduleMatch] = classItem;
-        }
+        shouldScheduleClass(classItem, selectedDay);
       }
     }
   }
