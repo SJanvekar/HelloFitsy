@@ -30,7 +30,8 @@ class Schedule {
           recurrence == other.recurrence;
 
   @override
-  int get hashCode => startDate.hashCode * endDate.hashCode;
+  int get hashCode =>
+      startDate.hashCode ^ endDate.hashCode ^ recurrence.hashCode;
 
   Schedule.fromJson(Map<String, dynamic> json)
       : startDate = DateTime.parse(json['StartDate']).toLocal(),
