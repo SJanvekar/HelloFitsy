@@ -15,6 +15,7 @@ import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/screen/schedule/ScheduledClassItem.dart';
+import 'package:balance/sharedWidgets/BodyButton.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,7 +48,7 @@ DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.now().add(Duration(hours: 1));
 DateTime initialStartTime = DateTime.now();
 DateTime initialEndTime = DateTime.now();
-RecurrenceType recurranceType = RecurrenceType.None;
+RecurrenceType recurrenceType = RecurrenceType.None;
 RecurrenceType initialRecurrence = RecurrenceType.None;
 bool isClassSelected = false;
 String selectedClassName = '';
@@ -231,7 +232,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void addClassSchedule() async {
     ClassRequests()
         .addClassSchedule(
-            widget.userInstance.userID, startTime, endTime, recurranceType.name)
+            widget.userInstance.userID, startTime, endTime, recurrenceType.name)
         .then((val) {
       if (val.data['success']) {
         print("Successfully added class schedule");
@@ -264,6 +265,87 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         print("Saving class schedule edit failed: ${val.data['msg']}");
       }
     });
+  }
+
+  void deleteClassSchedule(
+      DateTime startDate, DateTime endDate, String recurrence) async {
+    ClassRequests()
+        .removeClassSchedule(
+            widget.userInstance.userID, startDate, endDate, recurrence)
+        .then((val) {
+      if (val.data['success']) {
+        print("Successfully deleted class schedule");
+      } else {
+        print("Deleting class schedule failed: ${val.data['msg']}");
+      }
+    });
+  }
+
+  //Delete schedule confirmation
+  contentBox(context) {
+    return Container(
+      padding: EdgeInsets.all(30),
+      decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(color: jetBlack20, offset: Offset(0, 5), blurRadius: 10),
+          ]),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 5.0, right: 5.0),
+              child: Text(
+                'Are you sure you want to delete this event?',
+                style: BodyTextFontBold80,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            SizedBox(
+              height: 25,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                      child: BodyButton(
+                          buttonColor: shark60,
+                          textColor: jetBlack,
+                          buttonText: 'Cancel'),
+                      onTap: () => {
+                            HapticFeedback.selectionClick(),
+                            Navigator.of(context).pop(),
+                          }),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                      child: BodyButton(
+                          buttonColor: strawberry,
+                          textColor: snow,
+                          buttonText: 'Delete'),
+                      //Log out function
+                      onTap: () => {
+                            deleteClassSchedule(
+                                startTime, endTime, recurrenceType.name),
+                            Navigator.of(context).pop(),
+                            setState(() {})
+                          }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   //Vars ----------------------------------------------------------------------
@@ -385,7 +467,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 (BuildContext context, StateSetter setModalSheetPage2State) {
               String startTimeFormatted = formatTimes(startTime);
               String endTimeFormatted = formatTimes(endTime);
-              initialRecurrence = recurranceType;
+              initialRecurrence = recurrenceType;
 
               return Material(
                 borderRadius: BorderRadius.circular(20),
@@ -473,7 +555,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -483,7 +565,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -495,7 +577,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -539,7 +621,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -549,7 +631,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -561,7 +643,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -626,11 +708,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          (recurranceType ==
+                                                          (recurrenceType ==
                                                                   RecurrenceType
                                                                       .BiWeekly)
                                                               ? 'Bi-Weekly'
-                                                              : recurranceType
+                                                              : recurrenceType
                                                                   .name,
                                                           style:
                                                               settingsDefaultSelectionText,
@@ -638,7 +720,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -668,20 +750,15 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                               textColor: snow,
                                               buttonText: 'Save Changes'),
                                           onTap: () => {
-                                            print(initialStartTime),
-                                            print(initialEndTime),
-                                            print(initialRecurrence.toString()),
-                                            print(startTime),
-                                            print(endTime),
-                                            print(recurranceType.toString()),
                                             changeClassSchedule(
                                                 initialStartTime,
                                                 initialEndTime,
-                                                initialRecurrence.toString(),
+                                                initialRecurrence.name,
                                                 startTime,
                                                 endTime,
-                                                recurranceType.toString()),
-                                            Navigator.of(context).pop()
+                                                recurrenceType.name),
+                                            Navigator.of(context).pop(),
+                                            setState(() {}),
                                           },
                                         )
                                       : GestureDetector(
@@ -940,7 +1017,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       onTap: () {
                         isClassSelected = false;
                         isEditMode = false;
-                        recurranceType = RecurrenceType.None;
+                        recurrenceType = RecurrenceType.None;
                         startTime = DateTime.now();
                         endTime = DateTime.now().add(Duration(hours: 1));
                         displayClassAndTimePicker();
@@ -1010,7 +1087,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                 classItem.className;
                                             selectedClassImageUrl =
                                                 classItem.classImageUrl;
-                                            recurranceType =
+                                            recurrenceType =
                                                 scheduleItem.recurrence;
                                             startTime = scheduleItem.startDate;
                                             endTime = scheduleItem.endDate;
@@ -1023,7 +1100,25 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                         ),
                                         SlidableAction(
                                           flex: 2,
-                                          onPressed: (BuildContext context) {},
+                                          onPressed: (BuildContext context) {
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Dialog(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                    elevation: 0,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    child: contentBox(context),
+                                                  );
+                                                });
+                                          },
                                           backgroundColor: strawberry,
                                           foregroundColor: snow,
                                           icon: Icons.delete,
@@ -1250,7 +1345,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = RecurrenceType.None;
+                      recurrenceType = RecurrenceType.None;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1280,7 +1375,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = RecurrenceType.Daily;
+                      recurrenceType = RecurrenceType.Daily;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1310,7 +1405,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = RecurrenceType.Weekly;
+                      recurrenceType = RecurrenceType.Weekly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1340,7 +1435,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = RecurrenceType.BiWeekly;
+                      recurrenceType = RecurrenceType.BiWeekly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1370,7 +1465,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = RecurrenceType.Monthly;
+                      recurrenceType = RecurrenceType.Monthly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1400,7 +1495,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = RecurrenceType.Yearly;
+                      recurrenceType = RecurrenceType.Yearly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
