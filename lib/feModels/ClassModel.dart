@@ -1,5 +1,7 @@
 import 'dart:io';
-import 'dart:convert' as convert;
+import 'dart:convert';
+
+import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 
 // ignore: constant_identifier_names
 enum RecurrenceType { None, Daily, Weekly, BiWeekly, Monthly, Yearly }
@@ -16,6 +18,17 @@ class Schedule {
       {required this.startDate,
       required this.endDate,
       required this.recurrence});
+
+  Schedule.fromJson(Map<String, dynamic> json)
+      : startDate = DateTime.parse(json['StartDate']).toLocal(),
+        endDate = DateTime.parse(json['EndDate']).toLocal(),
+        recurrence = stringToRecurrenceType(json['Recurrence'][0]);
+
+  Map<String, dynamic> toJson() => {
+        'StartDate': startDate,
+        'EndDate': endDate,
+        'Recurrence': recurrence.toString()
+      };
 }
 
 class Class {
@@ -74,6 +87,7 @@ class Class {
         classOverallRating = json['ClassOverallRating'].toDouble(),
         classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
+        classTimes = parseClassTimes(json['ClassTimes']),
         classCategories = List<String>.from(json['Categories']),
         classTrainerID = json['ClassTrainerID'];
 
@@ -91,11 +105,26 @@ class Class {
         'ClassRating': classOverallRating,
         'ClassReview': classReviewsAmount,
         'ClassPrice': classPrice,
+        //NOTE: have not confirmed if ClassTimes or Categories work for this,
+        //because there hasn't been a need to use Class.toJson() yet.
+        //If Class.toJson() fails, let me know. -Will
+        'ClassTimes':
+            json.encode(classTimes.map((element) => element.toJson()).toList()),
+        'Categories': json.encode(classCategories),
         'ClassTrainerID': classTrainerID
       };
 }
 
-//Semi-hardcoded casting from String to ClassType, not optimal but the best I can think of right now
+List<Schedule> parseClassTimes(dynamic testString) {
+  List<Schedule> allSchedules = [];
+  (testString as List<dynamic>).forEach((element) {
+    allSchedules.add(Schedule.fromJson(element));
+  });
+  return allSchedules;
+}
+
+//Semi-hardcoded casting from String to ClassType,
+//not optimal but the best I can think of right now
 ClassType stringToClassType(String string) {
   switch (string) {
     case "Solo":
@@ -106,6 +135,27 @@ ClassType stringToClassType(String string) {
       return ClassType.Virtual;
     default:
       throw Exception('String to ClassType cast failed');
+  }
+}
+
+//Semi-hardcoded casting from String to RecurrenceType,
+//not optimal but the best I can think of right now
+RecurrenceType stringToRecurrenceType(String string) {
+  switch (string) {
+    case "None":
+      return RecurrenceType.None;
+    case "Daily":
+      return RecurrenceType.Daily;
+    case "Weekly":
+      return RecurrenceType.Weekly;
+    case "BiWeekly":
+      return RecurrenceType.BiWeekly;
+    case "Monthly":
+      return RecurrenceType.Monthly;
+    case "Yearly":
+      return RecurrenceType.Yearly;
+    default:
+      throw Exception('String to RecurrenceType cast failed');
   }
 }
 

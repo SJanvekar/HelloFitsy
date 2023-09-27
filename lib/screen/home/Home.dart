@@ -110,10 +110,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     ClassRequests().getClass(followingUsernames).then((val) async {
       //get logged in user's following list
       if (val.data['success']) {
-        print('successful get class feed');
         (val.data['classArray'] as List<dynamic>).forEach((element) {
           allClasses.add(Class.fromJson(element));
         });
+        print(allClasses[0].classTimes[0].startDate);
+        print(allClasses[0].classTimes[0].endDate);
       } else {
         print('error get class feed: ${val.data['msg']}');
       }

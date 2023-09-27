@@ -30,7 +30,7 @@ import 'package:table_calendar/table_calendar.dart';
 
 //  -------------------------------------------------------- Calendar Widget ------------------------------------------------------------- //
 
-String recurranceType = 'None';
+RecurrenceType recurranceType = RecurrenceType.None;
 
 class ScheduleCalendar extends StatefulWidget {
   ScheduleCalendar({
@@ -157,7 +157,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void addClassSchedule() async {
     ClassRequests()
         .addClassSchedule(
-            widget.userInstance.userID, startTime, endTime, recurranceType)
+            widget.userInstance.userID, startTime, endTime, recurranceType.name)
         .then((val) {
       if (val.data['success']) {
         print("Successfully added class schedule");
@@ -264,15 +264,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       //   _selectedDays.add(selectedDay);
       // }
     });
-
-    void _onRecurranceTypeChange() {
-      switch (recurranceType) {
-        case 'None':
-          return;
-
-        case 'Daily':
-      }
-    }
   }
 
   void displayClassAndTimePicker() {
@@ -535,7 +526,12 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                     child: Row(
                                                       children: [
                                                         Text(
-                                                          recurranceType,
+                                                          (recurranceType ==
+                                                                  RecurrenceType
+                                                                      .BiWeekly)
+                                                              ? 'Bi-Weekly'
+                                                              : recurranceType
+                                                                  .name,
                                                           style:
                                                               settingsDefaultSelectionText,
                                                         ),
@@ -818,7 +814,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                         width: 22,
                       ),
                       onTap: () {
-                        recurranceType = 'None';
+                        recurranceType = RecurrenceType.None;
                         startTime = DateTime.now();
                         endTime = DateTime.now().add(Duration(hours: 1));
                         displayClassAndTimePicker();
@@ -1107,7 +1103,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = 'None';
+                      recurranceType = RecurrenceType.None;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1137,7 +1133,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = 'Daily';
+                      recurranceType = RecurrenceType.Daily;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1167,7 +1163,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = 'Weekly';
+                      recurranceType = RecurrenceType.Weekly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1197,7 +1193,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = 'Bi-Weekly';
+                      recurranceType = RecurrenceType.BiWeekly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1227,7 +1223,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = 'Monthly';
+                      recurranceType = RecurrenceType.Monthly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
@@ -1257,7 +1253,7 @@ class _PopUpMenuContentsState extends State<PopUpMenuContents> {
                   ),
                   onTap: () => {
                     widget.modalSetState(() {
-                      recurranceType = 'Yearly';
+                      recurranceType = RecurrenceType.Yearly;
                     }),
                     HapticFeedback.selectionClick(),
                     Navigator.of(context, rootNavigator: true).pop("Discard")
