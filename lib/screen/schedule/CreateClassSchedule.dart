@@ -47,11 +47,13 @@ class ScheduleCalendar extends StatefulWidget {
 
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.now().add(Duration(hours: 1));
+DateTime initalStartTime = DateTime.now();
+DateTime initialEndTime = DateTime.now();
 bool isClassSelected = false;
 String selectedClassName = '';
 String selectedClassImageUrl = '';
-List<Class> scheduledClassesList = classList;
-List<Class> allClasses = classList;
+List<Class> scheduledClassesList = [];
+List<Class> allClasses = [];
 List<String> trainerIDList = [];
 
 //Class Placeholder until a class gets selected
@@ -127,6 +129,12 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   //On load function
   void initState() {
     super.initState();
+
+    //Clear all lists
+    scheduledClassesList.clear();
+    allClasses.clear();
+
+    //Set today's date as selected day
     _selectedDays.add(_focusedDay);
 
     //Add the userID to trainerIDList
@@ -150,8 +158,64 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       } else {
         print('error get class feed: ${val.data['msg']}');
       }
+      print(allClasses[0].classTimes[0].recurrence);
+      determineDaySchedule(allClasses, _selectedDays);
       setState(() {});
     });
+  }
+
+  //Check if a class should be scheduled based on recurrence
+  bool shouldScheduleClass(Class classItem, DateTime selectedDay) {
+    for (var classTime in classItem.classTimes) {
+      final DateTime startDate = classTime.startDate;
+      final RecurrenceType recurrence = classTime.recurrence;
+
+      //Find the difference between the currently selected date and the start date
+      int daysBetween(DateTime from, DateTime to) {
+        from = DateTime(from.year, from.month, from.day);
+        to = DateTime(to.year, to.month, to.day);
+        return (to.difference(from).inHours / 24).round();
+      }
+
+      final int dateDifference = daysBetween(startDate, selectedDay);
+
+      //First check if today is the original start date
+      if (startDate == selectedDay) {
+        return true;
+      }
+
+      //Second check the recurrance if it is anything other than none (None is handled with the above check)
+      if (recurrence == RecurrenceType.Daily) {
+        return dateDifference % 1 == 0 && dateDifference != 0;
+      } else if (recurrence == RecurrenceType.Weekly) {
+        return dateDifference % 7 == 0 && dateDifference != 0;
+      } else if (recurrence == RecurrenceType.BiWeekly) {
+        print(startDate.year + 1);
+        return dateDifference % 14 == 0 && dateDifference != 0;
+      } else if (recurrence == RecurrenceType.Monthly) {
+        return startDate.month != selectedDay.month &&
+            startDate.day == selectedDay.day;
+      } else if (recurrence == RecurrenceType.Yearly) {
+        return startDate.year != selectedDay.year &&
+            startDate.month == selectedDay.month &&
+            startDate.day == selectedDay.day;
+      }
+    }
+    return false;
+  }
+
+//Determine Today's Schedule
+  void determineDaySchedule(
+      List<Class> allClasses, Set<DateTime> selectedDays) {
+    scheduledClassesList.clear();
+
+    for (var selectedDay in selectedDays) {
+      for (var classItem in allClasses) {
+        if (shouldScheduleClass(classItem, selectedDay)) {
+          scheduledClassesList.add(classItem);
+        }
+      }
+    }
   }
 
   void addClassSchedule() async {
@@ -167,7 +231,33 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     });
   }
 
+  void changeClassSchedule(
+      DateTime initialStartDate,
+      DateTime initialEndDate,
+      String initialRecurrence,
+      DateTime newStartDate,
+      DateTime newEndDate,
+      String newRecurrence) async {
+    ClassRequests()
+        .changeClassSchedule(
+            widget.userInstance.userID,
+            initialStartDate,
+            initialEndDate,
+            initialRecurrence,
+            newStartDate,
+            newEndDate,
+            newRecurrence)
+        .then((val) {
+      if (val.data['success']) {
+        print("Successfully edited class schedule");
+      } else {
+        print("Saving class schedule edit failed: ${val.data['msg']}");
+      }
+    });
+  }
+
   //Vars ----------------------------------------------------------------------
+  bool isEditMode = false;
   DateTime _focusedDay = DateTime.now();
   var _formattedDate;
   var _focusedDateStartTimes = [];
@@ -257,6 +347,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
           Jiffy.parseFromDateTime(_focusedDay).format(pattern: "MMMM do");
       _selectedDays.clear();
       _selectedDays.add(selectedDay);
+      determineDaySchedule(allClasses, _selectedDays);
       // // Update values in a Set
       // if (_selectedDays.contains(selectedDay)) {
       //   _selectedDays.remove(selectedDay);
@@ -267,8 +358,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   }
 
   void displayClassAndTimePicker() {
-    isClassSelected = false;
-
     String formatTimes(DateTime dateToFormat) {
       String formattedDate = dateToFormat.toString();
       Jiffy.parse(formattedDate).format(pattern: "h:mm a");
@@ -373,7 +462,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -383,7 +472,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -395,7 +484,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -439,7 +528,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -449,7 +538,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -461,7 +550,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -538,7 +627,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -561,16 +650,33 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                   SizedBox(
                                     height: 20,
                                   ),
-                                  GestureDetector(
-                                    child: FooterButton(
-                                        buttonColor: ocean,
-                                        textColor: snow,
-                                        buttonText: 'Save'),
-                                    onTap: () => {
-                                      addClassSchedule(),
-                                      Navigator.of(context).pop()
-                                    },
-                                  ),
+                                  isEditMode
+                                      ? GestureDetector(
+                                          child: FooterButton(
+                                              buttonColor: ocean,
+                                              textColor: snow,
+                                              buttonText: 'Add'),
+                                          onTap: () => {
+                                            addClassSchedule(),
+                                            Navigator.of(context).pop()
+                                          },
+                                        )
+                                      : GestureDetector(
+                                          child: FooterButton(
+                                              buttonColor: ocean,
+                                              textColor: snow,
+                                              buttonText: 'Save Changes'),
+                                          onTap: () => {
+                                            changeClassSchedule(
+                                                initialStartDate,
+                                                initialEndDate,
+                                                initialRecurrence,
+                                                newStartDate,
+                                                newEndDate,
+                                                newRecurrence),
+                                            Navigator.of(context).pop()
+                                          },
+                                        ),
                                 ])
                               ],
                             ),
@@ -736,17 +842,17 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       padding: EdgeInsets.zero,
                       itemCount: allClasses.length,
                       itemBuilder: (context, index) {
-                        final allClassesList = allClasses[index];
+                        final scheduledClassItem = scheduledClassesList[index];
                         return GestureDetector(
                           child: selectClassListItem(
-                              allClassesList.classImageUrl,
-                              allClassesList.className),
+                              scheduledClassItem.classImageUrl,
+                              scheduledClassItem.className),
                           onTap: () {
                             modalsetState(() {
                               isClassSelected = true;
-                              selectedClassName = allClassesList.className;
+                              selectedClassName = scheduledClassItem.className;
                               selectedClassImageUrl =
-                                  allClassesList.classImageUrl;
+                                  scheduledClassItem.classImageUrl;
                             });
                             HapticFeedback.lightImpact();
                             Navigator.of(context).pop();
@@ -765,7 +871,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
     var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2) - 50;
-    void doNothing(BuildContext context) {}
+
     return Scaffold(
         backgroundColor: snow,
 
@@ -814,6 +920,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                         width: 22,
                       ),
                       onTap: () {
+                        isClassSelected = false;
                         recurranceType = RecurrenceType.None;
                         startTime = DateTime.now();
                         endTime = DateTime.now().add(Duration(hours: 1));
@@ -849,6 +956,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                           ),
                         ),
                       ),
+
+                      //Scheduled classes for _selectdDays (Date selected)
                       SizedBox(
                         height: 250,
                         child: ListView.builder(
@@ -866,10 +975,24 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                   endActionPane: ActionPane(
                                       motion: ScrollMotion(),
                                       children: [
+                                        //Edit Schedule
                                         SlidableAction(
                                           // An action can be bigger than the others.
                                           flex: 2,
-                                          onPressed: doNothing,
+                                          onPressed: (BuildContext context) {
+                                            isEditMode = !isEditMode;
+                                            isClassSelected = true;
+                                            selectedClassName =
+                                                scheduledClass.className;
+                                            selectedClassImageUrl =
+                                                scheduledClass.classImageUrl;
+                                            recurranceType = scheduledClass
+                                                .classTimes[index].recurrence;
+                                            startTime = DateTime.now();
+                                            endTime = DateTime.now()
+                                                .add(Duration(hours: 1));
+                                            displayClassAndTimePicker();
+                                          },
                                           backgroundColor: bone,
                                           foregroundColor: jetBlack,
                                           icon: Icons.edit,
@@ -877,7 +1000,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                         ),
                                         SlidableAction(
                                           flex: 2,
-                                          onPressed: doNothing,
+                                          onPressed: (BuildContext context) {},
                                           backgroundColor: strawberry,
                                           foregroundColor: snow,
                                           icon: Icons.delete,

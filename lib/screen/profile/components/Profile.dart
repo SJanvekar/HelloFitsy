@@ -170,7 +170,6 @@ class _UserProfileState extends State<UserProfile> {
   //----------
   void checkInterests() {
     //Checks for categories that match the trainers' interests and populates trainerInterestsFinal //HARD CODED - MUST CHANGE
-    userInterests = ['Tennis', 'Boxing'];
     interests.forEach((interestsItem) {
       if (userInterests.contains(interestsItem.categoryName)) {
         trainerInterestsFinal.add(interestsItem);
