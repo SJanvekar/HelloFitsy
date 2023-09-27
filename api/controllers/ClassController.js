@@ -132,8 +132,8 @@ var functions = {
         //Filtering based off of exact match for subfields in ClassTimes
         const filterConditions = {
             $and: [
-              {'ClassTimes.StartDate': req.body.OldStartDate},
-              {'ClassTimes.EndDate': req.body.OldEndDate},
+              {'ClassTimes.StartDate': new Date(req.body.OldStartDate + 'Z')},
+              {'ClassTimes.EndDate': new Date(req.body.OldEndDate + 'Z')},
               {'ClassTimes.Recurrence': req.body.OldRecurrence},
             ],
           }

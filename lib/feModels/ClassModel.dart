@@ -72,6 +72,15 @@ class Class {
     required this.classTrainerID,
   });
 
+  //below two functions for '==' and hashcode are necessary to avoid conflicts
+  //when using the Class object in a map
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Class && classID == other.classID;
+
+  @override
+  int get hashCode => classID.hashCode;
+
   //JSON parsers are required to parse arrays of JSON
   Class.fromJson(Map<String, dynamic> json)
       : classID = json['_id'],

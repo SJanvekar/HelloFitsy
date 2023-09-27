@@ -52,7 +52,7 @@ DateTime initialEndTime = DateTime.now();
 bool isClassSelected = false;
 String selectedClassName = '';
 String selectedClassImageUrl = '';
-List<Class> scheduledClassesList = [];
+Map<Class, Schedule> scheduledClassesMap = {};
 List<Class> allClasses = [];
 List<String> trainerIDList = [];
 
@@ -130,8 +130,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void initState() {
     super.initState();
 
-    //Clear all lists
-    scheduledClassesList.clear();
+    //Clear all lists and maps
+    scheduledClassesMap.clear();
     allClasses.clear();
 
     //Set today's date as selected day
@@ -165,8 +165,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   }
 
   //Check if a class should be scheduled based on recurrence
-  bool shouldScheduleClass(Class classItem, DateTime selectedDay) {
-    for (var classTime in classItem.classTimes) {
+  Schedule? shouldScheduleClass(Class classItem, DateTime selectedDay) {
+    for (Schedule classTime in classItem.classTimes) {
       final DateTime startDate = classTime.startDate;
       final RecurrenceType recurrence = classTime.recurrence;
 
@@ -181,38 +181,55 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
       //First check if today is the original start date
       if (startDate == selectedDay) {
-        return true;
+        return classTime;
+        // return true;
       }
 
       //Second check the recurrance if it is anything other than none (None is handled with the above check)
-      if (recurrence == RecurrenceType.Daily) {
-        return dateDifference % 1 == 0 && dateDifference != 0;
-      } else if (recurrence == RecurrenceType.Weekly) {
-        return dateDifference % 7 == 0 && dateDifference != 0;
-      } else if (recurrence == RecurrenceType.BiWeekly) {
-        print(startDate.year + 1);
-        return dateDifference % 14 == 0 && dateDifference != 0;
-      } else if (recurrence == RecurrenceType.Monthly) {
-        return startDate.month != selectedDay.month &&
-            startDate.day == selectedDay.day;
-      } else if (recurrence == RecurrenceType.Yearly) {
-        return startDate.year != selectedDay.year &&
-            startDate.month == selectedDay.month &&
-            startDate.day == selectedDay.day;
+      if (recurrence == RecurrenceType.Daily &&
+          dateDifference % 1 == 0 &&
+          dateDifference != 0) {
+        return classTime;
+        // return dateDifference % 1 == 0 && dateDifference != 0;
+      } else if (recurrence == RecurrenceType.Weekly &&
+          dateDifference % 7 == 0 &&
+          dateDifference != 0) {
+        return classTime;
+        // return dateDifference % 7 == 0 && dateDifference != 0;
+      } else if (recurrence == RecurrenceType.BiWeekly &&
+          dateDifference % 14 == 0 &&
+          dateDifference != 0) {
+        return classTime;
+        // return dateDifference % 14 == 0 && dateDifference != 0;
+      } else if (recurrence == RecurrenceType.Monthly &&
+          startDate.month != selectedDay.month &&
+          startDate.day == selectedDay.day) {
+        return classTime;
+        // return startDate.month != selectedDay.month &&
+        //     startDate.day == selectedDay.day;
+      } else if (recurrence == RecurrenceType.Yearly &&
+          startDate.year != selectedDay.year &&
+          startDate.month == selectedDay.month &&
+          startDate.day == selectedDay.day) {
+        return classTime;
+        // return startDate.year != selectedDay.year &&
+        //     startDate.month == selectedDay.month &&
+        //     startDate.day == selectedDay.day;
       }
     }
-    return false;
+    return null;
   }
 
 //Determine Today's Schedule
   void determineDaySchedule(
       List<Class> allClasses, Set<DateTime> selectedDays) {
-    scheduledClassesList.clear();
+    scheduledClassesMap.clear();
 
     for (var selectedDay in selectedDays) {
       for (var classItem in allClasses) {
-        if (shouldScheduleClass(classItem, selectedDay)) {
-          scheduledClassesList.add(classItem);
+        Schedule? scheduleMatch = shouldScheduleClass(classItem, selectedDay);
+        if (scheduleMatch != null) {
+          scheduledClassesMap[classItem] = scheduleMatch;
         }
       }
     }
@@ -462,7 +479,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -472,7 +489,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -484,7 +501,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -528,7 +545,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -538,7 +555,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -550,7 +567,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -627,7 +644,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -842,17 +859,17 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       padding: EdgeInsets.zero,
                       itemCount: allClasses.length,
                       itemBuilder: (context, index) {
-                        final scheduledClassItem = scheduledClassesList[index];
+                        final classItem =
+                            scheduledClassesMap.keys.elementAt(index);
+                        // final scheduleItem = scheduledClassesMap[classItem];
                         return GestureDetector(
                           child: selectClassListItem(
-                              scheduledClassItem.classImageUrl,
-                              scheduledClassItem.className),
+                              classItem.classImageUrl, classItem.className),
                           onTap: () {
                             modalsetState(() {
                               isClassSelected = true;
-                              selectedClassName = scheduledClassItem.className;
-                              selectedClassImageUrl =
-                                  scheduledClassItem.classImageUrl;
+                              selectedClassName = classItem.className;
+                              selectedClassImageUrl = classItem.classImageUrl;
                             });
                             HapticFeedback.lightImpact();
                             Navigator.of(context).pop();
@@ -966,10 +983,15 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                             scrollDirection: Axis.vertical,
                             padding: EdgeInsets.only(
                                 top: 20, left: 26.0, right: 26.0),
-                            itemCount: scheduledClassesList.length,
+                            itemCount: scheduledClassesMap.length,
                             itemBuilder: (context, index) {
-                              final scheduledClass =
-                                  scheduledClassesList[index];
+                              final classItem =
+                                  scheduledClassesMap.keys.elementAt(index);
+                              //If an exception is thrown here, something went horribly wrong
+                              Schedule scheduleItem =
+                                  scheduledClassesMap[classItem]!;
+                              // final scheduledClass =
+                              //     scheduledClassesList[index];
                               return GestureDetector(
                                 child: Slidable(
                                   endActionPane: ActionPane(
@@ -983,14 +1005,13 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                             isEditMode = !isEditMode;
                                             isClassSelected = true;
                                             selectedClassName =
-                                                scheduledClass.className;
+                                                classItem.className;
                                             selectedClassImageUrl =
-                                                scheduledClass.classImageUrl;
-                                            recurranceType = scheduledClass
-                                                .classTimes[index].recurrence;
-                                            startTime = DateTime.now();
-                                            endTime = DateTime.now()
-                                                .add(Duration(hours: 1));
+                                                classItem.classImageUrl;
+                                            recurranceType =
+                                                scheduleItem.recurrence;
+                                            startTime = scheduleItem.startDate;
+                                            endTime = scheduleItem.endDate;
                                             displayClassAndTimePicker();
                                           },
                                           backgroundColor: bone,
