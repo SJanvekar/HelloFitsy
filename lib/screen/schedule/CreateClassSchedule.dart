@@ -30,8 +30,6 @@ import 'package:table_calendar/table_calendar.dart';
 
 //  -------------------------------------------------------- Calendar Widget ------------------------------------------------------------- //
 
-RecurrenceType recurranceType = RecurrenceType.None;
-
 class ScheduleCalendar extends StatefulWidget {
   ScheduleCalendar({
     Key? key,
@@ -47,8 +45,10 @@ class ScheduleCalendar extends StatefulWidget {
 
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.now().add(Duration(hours: 1));
-DateTime initalStartTime = DateTime.now();
+DateTime initialStartTime = DateTime.now();
 DateTime initialEndTime = DateTime.now();
+RecurrenceType recurranceType = RecurrenceType.None;
+RecurrenceType initialRecurrence = RecurrenceType.None;
 bool isClassSelected = false;
 String selectedClassName = '';
 String selectedClassImageUrl = '';
@@ -392,6 +392,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 (BuildContext context, StateSetter setModalSheetPage2State) {
               String startTimeFormatted = formatTimes(startTime);
               String endTimeFormatted = formatTimes(endTime);
+              initialRecurrence = recurranceType;
 
               return Material(
                 borderRadius: BorderRadius.circular(20),
@@ -479,7 +480,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -489,7 +490,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -501,7 +502,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -545,7 +546,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -555,7 +556,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -567,7 +568,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -644,7 +645,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -672,9 +673,21 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           child: FooterButton(
                                               buttonColor: ocean,
                                               textColor: snow,
-                                              buttonText: 'Add'),
+                                              buttonText: 'Save Changes'),
                                           onTap: () => {
-                                            addClassSchedule(),
+                                            print(initialStartTime),
+                                            print(initialEndTime),
+                                            print(initialRecurrence.toString()),
+                                            print(startTime),
+                                            print(endTime),
+                                            print(recurranceType.toString()),
+                                            changeClassSchedule(
+                                                initialStartTime,
+                                                initialEndTime,
+                                                initialRecurrence.toString(),
+                                                startTime,
+                                                endTime,
+                                                recurranceType.toString()),
                                             Navigator.of(context).pop()
                                           },
                                         )
@@ -682,18 +695,12 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           child: FooterButton(
                                               buttonColor: ocean,
                                               textColor: snow,
-                                              buttonText: 'Save Changes'),
+                                              buttonText: 'Add'),
                                           onTap: () => {
-                                            changeClassSchedule(
-                                                initialStartDate,
-                                                initialEndDate,
-                                                initialRecurrence,
-                                                newStartDate,
-                                                newEndDate,
-                                                newRecurrence),
+                                            addClassSchedule(),
                                             Navigator.of(context).pop()
                                           },
-                                        ),
+                                        )
                                 ])
                               ],
                             ),
@@ -711,7 +718,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void displayTimePicker(
       bool isStartDateLabel, StateSetter modalsetState, context) {
     DateTime initialTime = isStartDateLabel ? startTime : endTime;
-
+    initialStartTime = startTime;
+    initialEndTime = endTime;
     showCupertinoModalPopup(
         barrierColor: jetBlack60,
         context: context,
@@ -938,6 +946,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       ),
                       onTap: () {
                         isClassSelected = false;
+                        isEditMode = false;
                         recurranceType = RecurrenceType.None;
                         startTime = DateTime.now();
                         endTime = DateTime.now().add(Duration(hours: 1));
@@ -1002,7 +1011,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           // An action can be bigger than the others.
                                           flex: 2,
                                           onPressed: (BuildContext context) {
-                                            isEditMode = !isEditMode;
+                                            isEditMode = true;
                                             isClassSelected = true;
                                             selectedClassName =
                                                 classItem.className;
@@ -1032,7 +1041,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                         ),
                                       ]),
                                   child: ScheduledClassTile(
-                                    classItem: scheduledClass,
+                                    classItem: classItem,
+                                    scheduleItem: scheduleItem,
                                     userInstance: widget.userInstance,
                                   ),
                                 ),

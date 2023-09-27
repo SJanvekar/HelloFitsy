@@ -1,6 +1,8 @@
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:flutter/material.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../constants.dart';
@@ -10,37 +12,15 @@ class ScheduledClassTile extends StatelessWidget {
   ScheduledClassTile({
     Key? key,
     required this.classItem,
+    required this.scheduleItem,
     required this.userInstance,
   }) : super(key: key);
 
   Class classItem;
   User userInstance;
+  Schedule scheduleItem;
 
 //------Widgets------
-
-//Edit Profile button
-  Widget deleteClassButton() {
-    return Container(
-      alignment: Alignment.center,
-      height: 25,
-      width: 70,
-      decoration: BoxDecoration(
-          color: strawberry,
-          // border: Border.all(color: shark60),
-          borderRadius: BorderRadius.circular(10)),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-        child: Text(
-          'Delete',
-          style: TextStyle(
-              color: snow,
-              fontFamily: 'SFDisplay',
-              fontSize: 13.5,
-              fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
-  }
 
   //Edit Profile button
   Widget classTimes() {
@@ -50,7 +30,8 @@ class ScheduledClassTile extends StatelessWidget {
       children: [
         //Start Time
         Text(
-          '10:30 AM',
+          Jiffy.parse(scheduleItem.startDate.toString())
+              .format(pattern: "h:mm a"),
           style: TextStyle(
               color: jetBlack,
               fontFamily: 'SFRounded',
@@ -60,7 +41,8 @@ class ScheduledClassTile extends StatelessWidget {
 
         //End Time
         Text(
-          '12:30 PM',
+          Jiffy.parse(scheduleItem.endDate.toString())
+              .format(pattern: "h:mm a"),
           style: TextStyle(
               color: jetBlack40,
               fontFamily: 'SFRounded',
@@ -74,28 +56,49 @@ class ScheduledClassTile extends StatelessWidget {
   //Class Availability - Booked
   Widget classAvailabilityBooked() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 5.0),
-          child: ClipOval(
-            child: Container(
-              height: 10,
-              width: 10,
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                color: emerald,
+        Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: ClipOval(
+                child: Container(
+                  height: 10,
+                  width: 10,
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    color: emerald,
+                  ),
+                ),
               ),
             ),
+            Text(
+              'Available',
+              style: TextStyle(
+                  color: emerald,
+                  fontFamily: 'SFRounded',
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+        if (scheduleItem.recurrence == RecurrenceType.BiWeekly)
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Text(
+              'Bi-Weekly',
+              style: buttonText1Jetblack80,
+            ),
+          )
+        else
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Text(
+              scheduleItem.recurrence.name,
+              style: buttonText1Jetblack80,
+            ),
           ),
-        ),
-        Text(
-          'Available',
-          style: TextStyle(
-              color: emerald,
-              fontFamily: 'SFRounded',
-              fontSize: 14,
-              fontWeight: FontWeight.w600),
-        ),
       ],
     );
   }
