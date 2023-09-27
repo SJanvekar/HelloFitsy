@@ -10,12 +10,14 @@ enum RecurrenceType { None, Daily, Weekly, BiWeekly, Monthly, Yearly }
 enum ClassType { Solo, Group, Virtual }
 
 class Schedule {
+  String scheduleID;
   DateTime startDate;
   DateTime endDate;
   RecurrenceType recurrence;
 
   Schedule(
-      {required this.startDate,
+      {required this.scheduleID,
+      required this.startDate,
       required this.endDate,
       required this.recurrence});
 
@@ -34,11 +36,13 @@ class Schedule {
       startDate.hashCode ^ endDate.hashCode ^ recurrence.hashCode;
 
   Schedule.fromJson(Map<String, dynamic> json)
-      : startDate = DateTime.parse(json['StartDate']).toLocal(),
+      : scheduleID = json['_id'],
+        startDate = DateTime.parse(json['StartDate']).toLocal(),
         endDate = DateTime.parse(json['EndDate']).toLocal(),
         recurrence = stringToRecurrenceType(json['Recurrence'][0]);
 
   Map<String, dynamic> toJson() => {
+        '_id': scheduleID,
         'StartDate': startDate,
         'EndDate': endDate,
         'Recurrence': recurrence.toString()
@@ -61,6 +65,8 @@ class Class {
   int classReviewsAmount;
   String classTrainerID;
   late List<Schedule> classTimes;
+  late List<Schedule> updatedClassTimes;
+  late List<Schedule> canceledClassTimes;
   late List<String> classCategories;
   File? profileImageTempHolder;
 
@@ -81,6 +87,8 @@ class Class {
     //Good after this point
     required this.classPrice,
     required this.classTimes,
+    required this.updatedClassTimes,
+    required this.canceledClassTimes,
 
     //Trainer Info
     required this.classTrainerID,
@@ -102,6 +110,8 @@ class Class {
         classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
         classTimes = parseClassTimes(json['ClassTimes']),
+        updatedClassTimes = parseClassTimes(json['UpdatedClassTimes']),
+        canceledClassTimes = parseClassTimes(json['CanceledClassTimes']),
         classCategories = List<String>.from(json['Categories']),
         classTrainerID = json['ClassTrainerID'];
 
@@ -124,12 +134,19 @@ class Class {
         //If Class.toJson() fails, let me know. -Will
         'ClassTimes':
             json.encode(classTimes.map((element) => element.toJson()).toList()),
+        'UpdatedClassTimes': json.encode(
+            updatedClassTimes.map((element) => element.toJson()).toList()),
+        'CanceledClassTimes': json.encode(
+            canceledClassTimes.map((element) => element.toJson()).toList()),
         'Categories': json.encode(classCategories),
         'ClassTrainerID': classTrainerID
       };
 }
 
 List<Schedule> parseClassTimes(dynamic testString) {
+  if (testString == null) {
+    return [];
+  }
   List<Schedule> allSchedules = [];
   (testString as List<dynamic>).forEach((element) {
     allSchedules.add(Schedule.fromJson(element));

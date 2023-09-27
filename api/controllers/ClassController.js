@@ -96,7 +96,7 @@ var functions = {
 
     //Add New Schedule function
     addClassTimes: async function (req, res) {
-        if ((!req.body.ClassTrainerID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+        if ((!req.body.ClassID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
@@ -107,20 +107,20 @@ var functions = {
         }
         try {
             result = await Class.updateOne(
-                {ClassTrainerID: new mongoose.Types.ObjectId(req.body.ClassTrainerID)},
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID)},
                 { $push: { ClassTimes: newClassTimes } })
         } catch (err) {
             return res.json({success: false, msg: err})
         }
         //Success bool determined if matched and modified doc are both value 1
         return res.json({success: ((result.matchedCount === 1 && result.modifiedCount === 1) ? true : false), 
-                        msg: result})
+                        msg: 'Successfully added class schedule'})
         // return res.json({success: true, msg: 'Successfully added class schedule'})
     },
 
     //Change New Schedule function
     changeClassTimes: async function (req, res) {
-        if ((!req.body.ClassTrainerID || !req.body.NewStartDate || !req.body.NewEndDate || !req.body.NewRecurrence)) {
+        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.NewStartDate || !req.body.NewEndDate || !req.body.NewRecurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
@@ -130,16 +130,16 @@ var functions = {
             Recurrence: req.body.NewRecurrence,
         }
         //Filtering based off of exact match for subfields in ClassTimes
-        const filterConditions = {
-            $and: [
-              {'ClassTimes.StartDate': new Date(req.body.OldStartDate + 'Z')},
-              {'ClassTimes.EndDate': new Date(req.body.OldEndDate + 'Z')},
-              {'ClassTimes.Recurrence': req.body.OldRecurrence},
-            ],
-          }
+        // const filterConditions = {
+        //     $and: [
+        //       {'ClassTimes.StartDate': new Date(req.body.OldStartDate + 'Z')},
+        //       {'ClassTimes.EndDate': new Date(req.body.OldEndDate + 'Z')},
+        //       {'ClassTimes.Recurrence': req.body.OldRecurrence},
+        //     ],
+        //   }
         try {
             await Class.findOneAndUpdate(
-                {ClassTrainerID: new mongoose.Types.ObjectId(req.body.ClassTrainerID)},
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
                 {$push: { ClassTimes: newClassTimes}},
                 filterConditions)
         } catch (err) {
@@ -150,7 +150,58 @@ var functions = {
 
     //Remove Schedule function
     removeClassTimes: async function (req, res) {
-        if ((!req.body.ClassTrainerID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+        console.log(req.body.ClassID)
+        console.log(req.body.ScheduleID)
+        console.log(req.body.StartDate)
+        console.log(req.body.EndDate)
+        console.log(req.body.Recurrence)
+        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        const newClassTimes = {
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
+            Recurrence: req.body.Recurrence,
+        }
+        try {
+            result = await Class.updateOne(
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+                { $pull: { ClassTimes: newClassTimes } })
+        } catch (err) {
+            return res.json({success: false, msg: err})
+        }
+        return res.json({success: ((result.matchedCount === 1 && result.modifiedCount === 1) ? true : false), 
+            msg: 'Successfully removed class schedule'})
+    },
+
+    //Add New Updated Schedule function
+    addUpdatedClassTimes: async function (req, res) {
+        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        const newClassTimes = {
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
+            Recurrence: req.body.Recurrence,
+        }
+        try {
+            result = await Class.updateOne(
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID)},
+                { $push: { UpdatedClassTimes: newClassTimes } })
+        } catch (err) {
+            return res.json({success: false, msg: err})
+        }
+        //Success bool determined if matched and modified doc are both value 1
+        return res.json({success: ((result.matchedCount === 1 && result.modifiedCount === 1) ? true : false), 
+                        msg: result})
+        // return res.json({success: true, msg: 'Successfully added class schedule'})
+    },
+
+    //Remove UpdatedSchedule function
+    removeUpdatedClassTimes: async function (req, res) {
+        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
@@ -161,8 +212,53 @@ var functions = {
         }
         try {
             await Class.updateOne(
-                {ClassTrainerID: new mongoose.Types.ObjectId(req.body.ClassTrainerID)},
-                { $pull: { ClassTimes: newClassTimes } })
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+                { $pull: { UpdatedClassTimes: newClassTimes } })
+        } catch (err) {
+            return res.json({success: false, msg: err})
+        }
+        return res.json({success: true, msg: 'Successfully removed class schedule'})
+    },
+
+    //Add New Cancelled Schedule function
+    addCancelledClassTimes: async function (req, res) {
+        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        const newClassTimes = {
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
+            Recurrence: req.body.Recurrence,
+        }
+        try {
+            result = await Class.updateOne(
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID)},
+                { $push: { CancelledClassTimes: newClassTimes } })
+        } catch (err) {
+            return res.json({success: false, msg: err})
+        }
+        //Success bool determined if matched and modified doc are both value 1
+        return res.json({success: ((result.matchedCount === 1 && result.modifiedCount === 1) ? true : false), 
+                        msg: result})
+        // return res.json({success: true, msg: 'Successfully added class schedule'})
+    },
+
+    //Remove Cancelled Schedule function
+    removeCancelledClassTimes: async function (req, res) {
+        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        const newClassTimes = {
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
+            Recurrence: req.body.Recurrence,
+        }
+        try {
+            await Class.updateOne(
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+                { $pull: { CancelledClassTimes: newClassTimes } })
         } catch (err) {
             return res.json({success: false, msg: err})
         }

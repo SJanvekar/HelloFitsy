@@ -86,32 +86,58 @@ var ClassSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        unique: true,
     },
 
     //Class Schedules
     ClassTimes: [{
-            //Start Date
-            StartDate: {
-                type: Date,
-            },
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
 
-            //End Date
-            EndDate: {
-                type: Date,
-            },
+        //End Date
+        EndDate: {
+            type: Date,
+        },
 
-            //Recurrence Type
-            Recurrence: {
-                type: [{
 
-                type: String,
-                    enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
-                    }],
+        //Recurrence Type
+        Recurrence: {
+            type: [{
 
-                default: ['None'],
-            },
-        }],
+            type: String,
+                enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
+                }],
+
+            default: ['None'],
+        },
+    }],
+
+    //Class Schedules that the user decides to update
+    UpdatedClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+    }],
+
+    //Class Schedules that the user decides to cancel
+    CancelledClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+    }],
 
     //Categories (Linked)
     Categories: [{

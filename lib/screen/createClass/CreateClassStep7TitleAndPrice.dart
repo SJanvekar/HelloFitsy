@@ -71,7 +71,6 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
       User user =
           User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
       widget.classTemplate.classTrainerID = user.userID;
-      print(widget.classTemplate.toJson());
       ClassRequests().addClass(widget.classTemplate).then((val) {
         if (val.data['success']) {
           print('Successful class add');

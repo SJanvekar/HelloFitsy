@@ -41,6 +41,8 @@ Class classTemplate = Class(
     classPrice: 0,
     classTrainerID: '',
     classTimes: [],
+    updatedClassTimes: [],
+    canceledClassTimes: [],
     classUserRequirements: '',
     classWhatToExpect: '',
     classImageUrl: '');

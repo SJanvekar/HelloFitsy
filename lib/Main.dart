@@ -224,7 +224,6 @@ class _MainPageState extends State<MainPage>
     //Else if the account is not empty for the trainer retrieve if details are submitted
     else if (userInstance.userType == UserType.Trainer &&
         userInstance.stripeAccountID != null) {
-      print(userInstance.stripeAccountID);
       StripeLogic().stripeDetailsSubmitted(userInstance);
     }
   }

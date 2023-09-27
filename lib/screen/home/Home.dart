@@ -47,7 +47,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    print(widget.userInstance.isStripeDetailsSubmitted);
     getUserFollowing();
     Future.delayed(Duration(milliseconds: 150), () {
       setState(() {});

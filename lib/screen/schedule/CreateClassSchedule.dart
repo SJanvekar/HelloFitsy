@@ -44,6 +44,7 @@ class ScheduleCalendar extends StatefulWidget {
 
 //Global Variables
 
+String scheduleID = '';
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.now().add(Duration(hours: 1));
 DateTime initialStartTime = DateTime.now();
@@ -53,6 +54,7 @@ RecurrenceType initialRecurrence = RecurrenceType.None;
 bool isClassSelected = false;
 String selectedClassName = '';
 String selectedClassImageUrl = '';
+String selectedClassID = '';
 Map<Schedule, Class> scheduledClassesMap = {};
 List<Class> allClasses = [];
 List<String> trainerIDList = [];
@@ -159,7 +161,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       } else {
         print('error get class feed: ${val.data['msg']}');
       }
-      print(allClasses[0].classTimes[0].recurrence);
       determineDaySchedule(allClasses, _selectedDays);
       setState(() {});
     });
@@ -232,7 +233,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void addClassSchedule() async {
     ClassRequests()
         .addClassSchedule(
-            widget.userInstance.userID, startTime, endTime, recurrenceType.name)
+            selectedClassID, startTime, endTime, recurrenceType.name)
         .then((val) {
       if (val.data['success']) {
         print("Successfully added class schedule");
@@ -242,22 +243,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     });
   }
 
-  void changeClassSchedule(
-      DateTime initialStartDate,
-      DateTime initialEndDate,
-      String initialRecurrence,
-      DateTime newStartDate,
-      DateTime newEndDate,
-      String newRecurrence) async {
+  void changeClassSchedule(String scheduleID, DateTime newStartDate,
+      DateTime newEndDate, String newRecurrence) async {
     ClassRequests()
-        .changeClassSchedule(
-            widget.userInstance.userID,
-            initialStartDate,
-            initialEndDate,
-            initialRecurrence,
-            newStartDate,
-            newEndDate,
-            newRecurrence)
+        .changeClassSchedule(selectedClassID, scheduleID, newStartDate,
+            newEndDate, newRecurrence)
         .then((val) {
       if (val.data['success']) {
         print("Successfully edited class schedule");
@@ -267,11 +257,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     });
   }
 
-  void deleteClassSchedule(
-      DateTime startDate, DateTime endDate, String recurrence) async {
+  void deleteClassSchedule(String scheduleID, DateTime startDate,
+      DateTime endDate, String recurrence) async {
     ClassRequests()
         .removeClassSchedule(
-            widget.userInstance.userID, startDate, endDate, recurrence)
+            selectedClassID, scheduleID, startDate, endDate, recurrence)
         .then((val) {
       if (val.data['success']) {
         print("Successfully deleted class schedule");
@@ -334,8 +324,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                           buttonText: 'Delete'),
                       //Log out function
                       onTap: () => {
-                            deleteClassSchedule(
-                                startTime, endTime, recurrenceType.name),
+                            deleteClassSchedule(scheduleID, startTime, endTime,
+                                recurrenceType.name),
                             Navigator.of(context).pop(),
                             setState(() {})
                           }),
@@ -555,7 +545,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -565,7 +555,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -577,7 +567,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -621,7 +611,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -631,7 +621,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -643,7 +633,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -720,7 +710,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -751,9 +741,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                               buttonText: 'Save Changes'),
                                           onTap: () => {
                                             changeClassSchedule(
-                                                initialStartTime,
-                                                initialEndTime,
-                                                initialRecurrence.name,
+                                                scheduleID,
                                                 startTime,
                                                 endTime,
                                                 recurrenceType.name),
@@ -937,9 +925,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       padding: EdgeInsets.zero,
                       itemCount: allClasses.length,
                       itemBuilder: (context, index) {
-                        final classItem =
-                            scheduledClassesMap.values.elementAt(index);
-                        // final scheduleItem = scheduledClassesMap[classItem];
+                        final classItem = allClasses[index];
                         return GestureDetector(
                           child: selectClassListItem(
                               classItem.classImageUrl, classItem.className),
@@ -948,6 +934,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                               isClassSelected = true;
                               selectedClassName = classItem.className;
                               selectedClassImageUrl = classItem.classImageUrl;
+                              selectedClassID = classItem.classID;
                             });
                             HapticFeedback.lightImpact();
                             Navigator.of(context).pop();
@@ -1083,12 +1070,16 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           onPressed: (BuildContext context) {
                                             isEditMode = true;
                                             isClassSelected = true;
-                                            selectedClassName =
-                                                classItem.className;
+                                            selectedClassID =
+                                                selectedClassName =
+                                                    classItem.classID;
+                                            classItem.className;
                                             selectedClassImageUrl =
                                                 classItem.classImageUrl;
                                             recurrenceType =
                                                 scheduleItem.recurrence;
+                                            scheduleID =
+                                                scheduleItem.scheduleID;
                                             startTime = scheduleItem.startDate;
                                             endTime = scheduleItem.endDate;
                                             displayClassAndTimePicker();
@@ -1101,6 +1092,15 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                         SlidableAction(
                                           flex: 2,
                                           onPressed: (BuildContext context) {
+                                            selectedClassID =
+                                                selectedClassName =
+                                                    classItem.classID;
+                                            scheduleID =
+                                                scheduleItem.scheduleID;
+                                            startTime = scheduleItem.startDate;
+                                            endTime = scheduleItem.endDate;
+                                            recurrenceType =
+                                                scheduleItem.recurrence;
                                             showDialog(
                                                 context: context,
                                                 builder:
