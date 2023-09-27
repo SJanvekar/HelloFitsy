@@ -52,7 +52,7 @@ RecurrenceType initialRecurrence = RecurrenceType.None;
 bool isClassSelected = false;
 String selectedClassName = '';
 String selectedClassImageUrl = '';
-Map<Class, Schedule> scheduledClassesMap = {};
+Map<Schedule, Class> scheduledClassesMap = {};
 List<Class> allClasses = [];
 List<String> trainerIDList = [];
 
@@ -229,7 +229,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       for (var classItem in allClasses) {
         Schedule? scheduleMatch = shouldScheduleClass(classItem, selectedDay);
         if (scheduleMatch != null) {
-          scheduledClassesMap[classItem] = scheduleMatch;
+          scheduledClassesMap[scheduleMatch] = classItem;
         }
       }
     }
@@ -480,7 +480,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -490,7 +490,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -502,7 +502,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -546,7 +546,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -556,7 +556,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -568,7 +568,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -645,7 +645,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -868,7 +868,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       itemCount: allClasses.length,
                       itemBuilder: (context, index) {
                         final classItem =
-                            scheduledClassesMap.keys.elementAt(index);
+                            scheduledClassesMap.values.elementAt(index);
                         // final scheduleItem = scheduledClassesMap[classItem];
                         return GestureDetector(
                           child: selectClassListItem(
@@ -994,11 +994,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                 top: 20, left: 26.0, right: 26.0),
                             itemCount: scheduledClassesMap.length,
                             itemBuilder: (context, index) {
-                              final classItem =
+                              final scheduleItem =
                                   scheduledClassesMap.keys.elementAt(index);
                               //If an exception is thrown here, something went horribly wrong
-                              Schedule scheduleItem =
-                                  scheduledClassesMap[classItem]!;
+                              final classItem =
+                                  scheduledClassesMap[scheduleItem]!;
                               // final scheduledClass =
                               //     scheduledClassesList[index];
                               return GestureDetector(
