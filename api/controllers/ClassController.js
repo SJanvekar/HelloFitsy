@@ -125,36 +125,23 @@ var functions = {
         }
         const newClassTimes = {
             //Add Z for signalling UTC time
-            StartDate: new Date(req.body.StartDate + 'Z'),
-            EndDate: new Date(req.body.EndDate + 'Z'),
+            StartDate: new Date(req.body.NewStartDate + 'Z'),
+            EndDate: new Date(req.body.NewEndDate + 'Z'),
             Recurrence: req.body.NewRecurrence,
         }
-        //Filtering based off of exact match for subfields in ClassTimes
-        // const filterConditions = {
-        //     $and: [
-        //       {'ClassTimes.StartDate': new Date(req.body.OldStartDate + 'Z')},
-        //       {'ClassTimes.EndDate': new Date(req.body.OldEndDate + 'Z')},
-        //       {'ClassTimes.Recurrence': req.body.OldRecurrence},
-        //     ],
-        //   }
         try {
-            await Class.findOneAndUpdate(
-                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
-                {$push: { ClassTimes: newClassTimes}},
-                filterConditions)
+            await Class.updateOne({_id: new mongoose.Types.ObjectId(req.body.ClassID),
+                'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+                { $set: { 'ClassTimes.$': newClassTimes 
+            }})
         } catch (err) {
-            return res.json({success: false, msg: err})
+            return res.json({success: false, msg: "Failed on changing schedule: " + err})
         }
         return res.json({success: true, msg: 'Successfully changed class schedule'})
     },
 
     //Remove Schedule function
     removeClassTimes: async function (req, res) {
-        console.log(req.body.ClassID)
-        console.log(req.body.ScheduleID)
-        console.log(req.body.StartDate)
-        console.log(req.body.EndDate)
-        console.log(req.body.Recurrence)
         if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }

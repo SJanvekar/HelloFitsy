@@ -44,17 +44,17 @@ class ScheduleCalendar extends StatefulWidget {
 
 //Global Variables
 
-String scheduleID = '';
 DateTime startTime = DateTime.now();
 DateTime endTime = DateTime.now().add(Duration(hours: 1));
-DateTime initialStartTime = DateTime.now();
-DateTime initialEndTime = DateTime.now();
 RecurrenceType recurrenceType = RecurrenceType.None;
-RecurrenceType initialRecurrence = RecurrenceType.None;
 bool isClassSelected = false;
+String selectedClassID = '';
+String selectedScheduleID = '';
+DateTime selectedStartTime = DateTime.now();
+DateTime selectedEndTime = DateTime.now();
+RecurrenceType selectedRecurrenceType = RecurrenceType.None;
 String selectedClassName = '';
 String selectedClassImageUrl = '';
-String selectedClassID = '';
 Map<Schedule, Class> scheduledClassesMap = {};
 List<Class> allClasses = [];
 List<String> trainerIDList = [];
@@ -243,11 +243,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     });
   }
 
-  void changeClassSchedule(String scheduleID, DateTime newStartDate,
-      DateTime newEndDate, String newRecurrence) async {
+  void changeClassSchedule() async {
     ClassRequests()
-        .changeClassSchedule(selectedClassID, scheduleID, newStartDate,
-            newEndDate, newRecurrence)
+        .changeClassSchedule(selectedClassID, selectedScheduleID,
+            selectedStartTime, selectedEndTime, selectedRecurrenceType.name)
         .then((val) {
       if (val.data['success']) {
         print("Successfully edited class schedule");
@@ -257,11 +256,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     });
   }
 
-  void deleteClassSchedule(String scheduleID, DateTime startDate,
-      DateTime endDate, String recurrence) async {
+  void deleteClassSchedule() async {
     ClassRequests()
-        .removeClassSchedule(
-            selectedClassID, scheduleID, startDate, endDate, recurrence)
+        .removeClassSchedule(selectedClassID, selectedScheduleID,
+            selectedStartTime, selectedEndTime, selectedRecurrenceType.name)
         .then((val) {
       if (val.data['success']) {
         print("Successfully deleted class schedule");
@@ -324,8 +322,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                           buttonText: 'Delete'),
                       //Log out function
                       onTap: () => {
-                            deleteClassSchedule(scheduleID, startTime, endTime,
-                                recurrenceType.name),
+                            deleteClassSchedule(),
                             Navigator.of(context).pop(),
                             setState(() {})
                           }),
@@ -457,7 +454,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 (BuildContext context, StateSetter setModalSheetPage2State) {
               String startTimeFormatted = formatTimes(startTime);
               String endTimeFormatted = formatTimes(endTime);
-              initialRecurrence = recurrenceType;
 
               return Material(
                 borderRadius: BorderRadius.circular(20),
@@ -739,14 +735,14 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                               buttonColor: ocean,
                                               textColor: snow,
                                               buttonText: 'Save Changes'),
-                                          onTap: () => {
-                                            changeClassSchedule(
-                                                scheduleID,
-                                                startTime,
-                                                endTime,
-                                                recurrenceType.name),
-                                            Navigator.of(context).pop(),
-                                            setState(() {}),
+                                          onTap: () {
+                                            selectedStartTime = startTime;
+                                            selectedEndTime = endTime;
+                                            selectedRecurrenceType =
+                                                recurrenceType;
+                                            changeClassSchedule();
+                                            Navigator.of(context).pop();
+                                            setState(() {});
                                           },
                                         )
                                       : GestureDetector(
@@ -776,8 +772,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void displayTimePicker(
       bool isStartDateLabel, StateSetter modalsetState, context) {
     DateTime initialTime = isStartDateLabel ? startTime : endTime;
-    initialStartTime = startTime;
-    initialEndTime = endTime;
     showCupertinoModalPopup(
         barrierColor: jetBlack60,
         context: context,
@@ -1056,8 +1050,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                               //If an exception is thrown here, something went horribly wrong
                               final classItem =
                                   scheduledClassesMap[scheduleItem]!;
-                              // final scheduledClass =
-                              //     scheduledClassesList[index];
                               return GestureDetector(
                                 child: Slidable(
                                   endActionPane: ActionPane(
@@ -1068,18 +1060,15 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           // An action can be bigger than the others.
                                           flex: 2,
                                           onPressed: (BuildContext context) {
+                                            selectedClassID = classItem.classID;
+                                            selectedClassName =
+                                                classItem.className;
+                                            selectedScheduleID =
+                                                scheduleItem.scheduleID;
                                             isEditMode = true;
                                             isClassSelected = true;
-                                            selectedClassID =
-                                                selectedClassName =
-                                                    classItem.classID;
-                                            classItem.className;
-                                            selectedClassImageUrl =
-                                                classItem.classImageUrl;
                                             recurrenceType =
                                                 scheduleItem.recurrence;
-                                            scheduleID =
-                                                scheduleItem.scheduleID;
                                             startTime = scheduleItem.startDate;
                                             endTime = scheduleItem.endDate;
                                             displayClassAndTimePicker();
@@ -1095,12 +1084,18 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                             selectedClassID =
                                                 selectedClassName =
                                                     classItem.classID;
-                                            scheduleID =
+                                            selectedScheduleID =
                                                 scheduleItem.scheduleID;
-                                            startTime = scheduleItem.startDate;
-                                            endTime = scheduleItem.endDate;
-                                            recurrenceType =
+                                            selectedStartTime =
+                                                scheduleItem.startDate;
+                                            selectedEndTime =
+                                                scheduleItem.endDate;
+                                            selectedRecurrenceType =
                                                 scheduleItem.recurrence;
+                                            selectedClassName =
+                                                classItem.className;
+                                            selectedClassImageUrl =
+                                                classItem.classImageUrl;
                                             showDialog(
                                                 context: context,
                                                 builder:

@@ -100,8 +100,6 @@ class ClassRequests {
 
   removeClassSchedule(String classID, String scheduleID, DateTime startDate,
       DateTime endDate, String recurrence) async {
-    print(classID);
-    print(scheduleID);
     try {
       return await dio.post(
         '$urlDomain/removeClassTimes',
