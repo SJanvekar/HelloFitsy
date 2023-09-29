@@ -6,6 +6,7 @@ import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassTimeList.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
@@ -137,18 +138,19 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void initState() {
     super.initState();
 
+    _focusedDay = DateTime.now();
     //Clear all lists and maps
-    scheduledClassesMap.clear();
     allClasses.clear();
-
     //Set today's date as selected day
     _selectedDays.add(_focusedDay);
 
+    trainerIDList.clear();
     //Add the userID to trainerIDList
     trainerIDList.add(widget.userInstance.userID);
-
+    print(trainerIDList);
     //Get classes for this trainer
     getClassFeed(trainerIDList);
+    print(_selectedDays);
   }
 
   //Functions -----------------------------------------------------------------
@@ -156,7 +158,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   //Get Classes for the trainer
   void getClassFeed(List<String> trainerID) async {
     ClassRequests().getClass(trainerID).then((val) async {
-      //get logged in user's following list
       if (val.data['success']) {
         print('successful get class feed');
         (val.data['classArray'] as List<dynamic>).forEach((element) {
@@ -428,20 +429,25 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
           Jiffy.parseFromDateTime(_focusedDay).format(pattern: "MMMM do");
       _selectedDays.clear();
       _selectedDays.add(selectedDay);
+
       determineDaySchedule(allClasses, _selectedDays);
-      // // Update values in a Set
-      // if (_selectedDays.contains(selectedDay)) {
-      //   _selectedDays.remove(selectedDay);
-      // } else {
-      //   _selectedDays.add(selectedDay);
-      // }
+      print('Map');
+      print(allClasses[0].classTimes.length);
+      //Set start and end time to date selected
+      startTime =
+          DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
+      endTime = DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
     });
   }
 
   void displayClassAndTimePicker() {
+    String formatdates(DateTime dateToFormat) {
+      String formattedDate = dateToFormat.toString();
+      return Jiffy.parse(formattedDate).format(pattern: "MMMM do");
+    }
+
     String formatTimes(DateTime dateToFormat) {
       String formattedDate = dateToFormat.toString();
-      Jiffy.parse(formattedDate).format(pattern: "h:mm a");
       return Jiffy.parse(formattedDate).format(pattern: "h:mm a");
     }
 
@@ -454,6 +460,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
           return StatefulBuilder(
             builder:
                 (BuildContext context, StateSetter setModalSheetPage2State) {
+              String startDateFormatted = formatdates(startTime);
               String startTimeFormatted = formatTimes(startTime);
               String endTimeFormatted = formatTimes(endTime);
 
@@ -461,7 +468,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.60,
+                    height: MediaQuery.of(context).size.height * 0.65,
                     decoration: BoxDecoration(
                         color: snow, borderRadius: BorderRadius.circular(20)),
                     child: Padding(
@@ -541,6 +548,72 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                   child: Row(
                                                     children: [
                                                       Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  left: 20.0),
+                                                          child: Icon(
+                                                            HelloFitsy.calendar,
+                                                            size: 21.5,
+                                                            color: jetBlack,
+                                                          )),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 10.0),
+                                                        child: Text(
+                                                          'Start date',
+                                                          style:
+                                                              settingsDefaultHeaderText,
+                                                        ),
+                                                      ),
+                                                      Spacer(),
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                right: 20.0),
+                                                        child: Text(
+                                                          startDateFormatted,
+                                                          style: popUpMenuText,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          onTap: () {
+                                            displayTimePicker(
+                                                true,
+                                                true,
+                                                setModalSheetPage2State,
+                                                context);
+                                          }),
+                                      PageDivider(
+                                        leftPadding: 0,
+                                        rightPadding: 0,
+                                      ),
+                                      GestureDetector(
+                                          child: Container(
+                                            height: 60,
+                                            decoration: BoxDecoration(
+                                              color: bone80,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(0),
+                                                topRight: Radius.circular(0),
+                                                bottomRight: Radius.circular(0),
+                                                bottomLeft: Radius.circular(0),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Row(
+                                                    children: [
+                                                      Padding(
                                                         padding:
                                                             const EdgeInsets
                                                                 .only(
@@ -580,6 +653,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           ),
                                           onTap: () {
                                             displayTimePicker(
+                                                false,
                                                 true,
                                                 setModalSheetPage2State,
                                                 context);
@@ -646,6 +720,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           ),
                                           onTap: () {
                                             displayTimePicker(
+                                                false,
                                                 false,
                                                 setModalSheetPage2State,
                                                 context);
@@ -744,7 +819,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                 recurrenceType;
                                             changeClassSchedule();
                                             Navigator.of(context).pop();
-                                            setState(() {});
+                                            getClassFeed(trainerIDList);
                                           },
                                         )
                                       : GestureDetector(
@@ -752,9 +827,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                               buttonColor: ocean,
                                               textColor: snow,
                                               buttonText: 'Add'),
-                                          onTap: () => {
-                                            addClassSchedule(),
-                                            Navigator.of(context).pop()
+                                          onTap: () {
+                                            addClassSchedule();
+                                            Navigator.of(context).pop();
+                                            getClassFeed(trainerIDList);
                                           },
                                         )
                                 ])
@@ -772,7 +848,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   //Time Picker Modal Sheet
   void displayTimePicker(
-      bool isStartDateLabel, StateSetter modalsetState, context) {
+      bool isDate, bool isStartDateLabel, StateSetter modalsetState, context) {
     DateTime initialTime = isStartDateLabel ? startTime : endTime;
     showCupertinoModalPopup(
         barrierColor: jetBlack60,
@@ -794,7 +870,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                   ),
                   child: Center(
                       child: Text(
-                    "Select a time",
+                    isDate ? "Select a date" : "Select a time",
                     style: TextStyle(
                       fontFamily: 'SFDisplay',
                       color: jetBlack,
@@ -808,21 +884,32 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 Container(
                   height: MediaQuery.of(context).copyWith().size.height * 0.2,
                   child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.time,
+                    mode: isDate
+                        ? CupertinoDatePickerMode.date
+                        : CupertinoDatePickerMode.time,
                     onDateTimeChanged: (value) {
-                      if (isStartDateLabel) {
-                        if (value != startTime) {
-                          setState(() {
-                            startTime = value;
-                          });
-                        }
+                      if (isDate) {
+                        setState(() {
+                          startTime = DateTime(value.year, value.month,
+                              value.day, startTime.hour, startTime.minute);
+                          endTime = DateTime(value.year, value.month, value.day,
+                              endTime.hour, endTime.minute);
+                        });
                       } else {
-                        if (value != endTime) {
-                          setState(() {
-                            endTime = value;
+                        if (isStartDateLabel) {
+                          if (value != startTime) {
+                            setState(() {
+                              startTime = value;
+                            });
+                          }
+                        } else {
+                          if (value != endTime) {
+                            setState(() {
+                              endTime = value;
 
-                            //Add checks for if End Date is before start date
-                          });
+                              //Add checks for if End Date is before start date
+                            });
+                          }
                         }
                       }
                     },
@@ -844,8 +931,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                   onTap: () {
                     Navigator.of(context).pop();
                     modalsetState(() {
-                      startTime = startTime;
-                      endTime = endTime;
+                      print(startTime);
+                      print(endTime);
                     });
                   },
                 )
@@ -923,8 +1010,15 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       itemBuilder: (context, index) {
                         final classItem = allClasses[index];
                         return GestureDetector(
-                          child: selectClassListItem(
-                              classItem.classImageUrl, classItem.className),
+                          child: Column(
+                            children: [
+                              selectClassListItem(
+                                  classItem.classImageUrl, classItem.className),
+                              SizedBox(
+                                height: 15,
+                              )
+                            ],
+                          ),
                           onTap: () {
                             modalsetState(() {
                               isClassSelected = true;
@@ -932,6 +1026,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                               selectedClassImageUrl = classItem.classImageUrl;
                               selectedClassID = classItem.classID;
                             });
+
                             HapticFeedback.lightImpact();
                             Navigator.of(context).pop();
                           },
@@ -1001,8 +1096,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                         isClassSelected = false;
                         isEditMode = false;
                         recurrenceType = RecurrenceType.None;
-                        startTime = DateTime.now();
-                        endTime = DateTime.now().add(Duration(hours: 1));
                         displayClassAndTimePicker();
                       },
                     ),
@@ -1143,85 +1236,85 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         ));
   }
 
-  Widget selectTime() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: Text(
-              "Start date",
-              style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          GestureDetector(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: bone,
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              padding: EdgeInsets.only(left: 18, right: 18, top: 6, bottom: 6),
-              child: Text(
-                DateFormat.jm().format(startTime),
-                style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            onTap: () {
-              displayTimePicker(true, setState, context);
-            },
-          ),
-          const Padding(
-            padding: EdgeInsets.only(right: 10, left: 15),
-            child: Text(
-              "End date",
-              style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack,
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          GestureDetector(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: bone,
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              padding: EdgeInsets.only(left: 18, right: 18, top: 6, bottom: 6),
-              child: Text(
-                DateFormat.jm().format(endTime),
-                style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            onTap: () {
-              displayTimePicker(false, setState, context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget selectTime() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(top: 20.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       crossAxisAlignment: CrossAxisAlignment.center,
+  //       children: [
+  //         const Padding(
+  //           padding: EdgeInsets.only(right: 10),
+  //           child: Text(
+  //             "Start date",
+  //             style: TextStyle(
+  //               fontFamily: 'SFDisplay',
+  //               color: jetBlack,
+  //               fontSize: 16,
+  //               fontWeight: FontWeight.w400,
+  //             ),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //         ),
+  //         GestureDetector(
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //                 color: bone,
+  //                 borderRadius: BorderRadius.all(Radius.circular(20))),
+  //             padding: EdgeInsets.only(left: 18, right: 18, top: 6, bottom: 6),
+  //             child: Text(
+  //               DateFormat.jm().format(startTime),
+  //               style: TextStyle(
+  //                 fontFamily: 'SFDisplay',
+  //                 color: jetBlack,
+  //                 fontSize: 16,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //               textAlign: TextAlign.center,
+  //             ),
+  //           ),
+  //           onTap: () {
+  //             displayTimePicker(true, setState, context);
+  //           },
+  //         ),
+  //         const Padding(
+  //           padding: EdgeInsets.only(right: 10, left: 15),
+  //           child: Text(
+  //             "End date",
+  //             style: TextStyle(
+  //               fontFamily: 'SFDisplay',
+  //               color: jetBlack,
+  //               fontSize: 16,
+  //               fontWeight: FontWeight.w400,
+  //             ),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //         ),
+  //         GestureDetector(
+  //           child: Container(
+  //             decoration: BoxDecoration(
+  //                 color: bone,
+  //                 borderRadius: BorderRadius.all(Radius.circular(20))),
+  //             padding: EdgeInsets.only(left: 18, right: 18, top: 6, bottom: 6),
+  //             child: Text(
+  //               DateFormat.jm().format(endTime),
+  //               style: TextStyle(
+  //                 fontFamily: 'SFDisplay',
+  //                 color: jetBlack,
+  //                 fontSize: 16,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //               textAlign: TextAlign.center,
+  //             ),
+  //           ),
+  //           onTap: () {
+  //             displayTimePicker(false, setState, context);
+  //           },
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
 
 Widget _buildEventsMarker(DateTime date) {

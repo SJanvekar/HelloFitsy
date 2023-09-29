@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
 import 'dart:convert';
 import 'dart:ffi';
-
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/Main.dart';
 import 'package:balance/Requests/ClassRequests.dart';

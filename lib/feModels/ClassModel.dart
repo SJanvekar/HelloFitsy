@@ -14,6 +14,7 @@ class Schedule {
   DateTime startDate;
   DateTime endDate;
   RecurrenceType recurrence;
+  late bool isSelected = false;
 
   Schedule(
       {required this.scheduleID,
