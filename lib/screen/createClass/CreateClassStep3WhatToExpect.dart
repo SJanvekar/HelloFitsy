@@ -31,6 +31,78 @@ class CreateClassWhatToExpect extends StatefulWidget {
 
 class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
   //variables
+  var textController = TextEditingController();
+
+  //----------
+  @override
+  void initState() {
+    super.initState();
+    textController.text = classTemplate.classWhatToExpect;
+  }
+
+//Page title
+  Widget pageTitle() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 46.5,
+          right: 46.5,
+        ),
+        child: Container(
+            padding: EdgeInsets.only(top: 25),
+            decoration: BoxDecoration(color: snow),
+            child: Text(
+              'What can clients expect from this class?',
+              style: logInPageTitle,
+              textAlign: TextAlign.center,
+            )),
+      ),
+    );
+  }
+
+  Widget editClassWhatToExpect(Class template) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 30,
+          right: 30,
+          bottom: 45,
+        ),
+        child: Container(
+            padding: EdgeInsets.only(top: 25),
+            decoration: BoxDecoration(color: snow),
+            child: TextField(
+              controller: textController,
+              maxLength: 500,
+              autocorrect: true,
+              cursorColor: ocean,
+              maxLines: null,
+              textCapitalization: TextCapitalization.sentences,
+              maxLengthEnforcement: MaxLengthEnforcement.none,
+              textInputAction: TextInputAction.newline,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Start typing here',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: shark60,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onChanged: (val) {
+                template.classWhatToExpect = val;
+              },
+            )),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,67 +201,4 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
       },
     );
   }
-}
-
-//Page title
-Widget pageTitle() {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
-      ),
-      child: Container(
-          padding: EdgeInsets.only(top: 25),
-          decoration: BoxDecoration(color: snow),
-          child: Text(
-            'What can clients expect from this class?',
-            style: logInPageTitle,
-            textAlign: TextAlign.center,
-          )),
-    ),
-  );
-}
-
-Widget editClassWhatToExpect(Class template) {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 30,
-        right: 30,
-        bottom: 45,
-      ),
-      child: Container(
-          padding: EdgeInsets.only(top: 25),
-          decoration: BoxDecoration(color: snow),
-          child: TextField(
-            maxLength: 500,
-            autocorrect: true,
-            cursorColor: ocean,
-            maxLines: null,
-            textCapitalization: TextCapitalization.sentences,
-            maxLengthEnforcement: MaxLengthEnforcement.none,
-            textInputAction: TextInputAction.newline,
-            textAlign: TextAlign.left,
-            style: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack,
-                fontSize: 18,
-                fontWeight: FontWeight.w500),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Start typing here',
-              hintStyle: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: shark60,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            onChanged: (val) {
-              template.classWhatToExpect = val;
-            },
-          )),
-    ),
-  );
 }

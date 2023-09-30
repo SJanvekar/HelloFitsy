@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:balance/Constants.dart';
+import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/feModels/Categories.dart';
+import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/sharedWidgets/LoginFooterButton.dart';
@@ -42,6 +44,10 @@ class PersonalProfile extends StatefulWidget {
   State<PersonalProfile> createState() => _PersonalProfileState();
 }
 
+//Class list
+List<Class> trainerClasses = [];
+//List for trainerID (UserID)
+List<String> trainerIDList = [];
 List<Category> interests = categoriesList;
 List<Category> myInterestsFinal = Interests;
 List<Class> savedClassesList = classList;
@@ -84,12 +90,33 @@ class _PersonalProfileState extends State<PersonalProfile>
     });
   }
 
+  //Class Functions
+  void getClasses(List<String> trainerID) async {
+    ClassRequests().getClass(trainerID).then((val) async {
+      //get logged in user's following list
+      if (val.data['success']) {
+        print('successful get class feed');
+        (val.data['classArray'] as List<dynamic>).forEach((element) {
+          trainerClasses.add(Class.fromJson(element));
+        });
+      } else {
+        print('error get class feed: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
+
 //----------
   @override
   void initState() {
     super.initState();
     getSet2UserDetails();
     checkInterests();
+    trainerClasses.clear();
+    trainerIDList.clear();
+    trainerIDList.add(widget.userInstance.userID);
+    // Gets the classes for trainer
+    getClasses(trainerIDList);
     _scrollController = ScrollController()
       ..addListener(() {
         setState(() {
@@ -1159,7 +1186,38 @@ class _PersonalProfileState extends State<PersonalProfile>
                     ),
                   ),
                 ]),
+                //Trainer Classes (If Trainer)
+                if (widget.userInstance.userType == UserType.Trainer)
+                  //Trainer Classes //HARD CODED - MUST CHANGE
+                  MultiSliver(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                      child: Text(
+                        "Your Classes",
+                        style: sectionTitles,
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: 340,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.only(left: 26.0, right: 26.0),
+                          itemCount: trainerClasses.length,
+                          itemBuilder: (context, index) {
+                            final trainerClassInfo = trainerClasses[index];
+                            return ProfileClassCard(
+                              classItem: trainerClassInfo,
+                              userInstance: widget.userInstance,
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ]),
 
+                //Saved Classes
                 MultiSliver(children: [
                   Padding(
                     padding: EdgeInsets.only(
@@ -1207,21 +1265,6 @@ class _PersonalProfileState extends State<PersonalProfile>
                             textAlign: TextAlign.center,
                             style: emptyListDisclaimerText,
                           ),
-                          GestureDetector(
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: BodyButton(
-                                  buttonColor: strawberry,
-                                  textColor: snow,
-                                  buttonText: 'Explore classes'),
-                            ),
-                            onTap: () {
-                              Navigator.of(context).push(CupertinoPageRoute(
-                                  builder: (context) => Search(
-                                        userInstance: widget.userInstance,
-                                      )));
-                            },
-                          )
                         ],
                       ),
                     )

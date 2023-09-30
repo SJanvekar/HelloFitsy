@@ -167,6 +167,9 @@ class _HomeClassItem extends State<HomeClassItem> {
         print('classLiked is ${val.data['liked']}');
       } else {
         print('error ${classLiked ? "adding" : "removing"} class liked');
+        //If this request doesn't work, set liked to false again
+        classLiked = false;
+        setState(() {});
       }
     });
   }
@@ -252,8 +255,8 @@ class _HomeClassItem extends State<HomeClassItem> {
                   shadows: <Shadow>[
                     Shadow(
                       offset: Offset(0, 0),
-                      blurRadius: 5.0,
-                      color: jetBlack,
+                      blurRadius: 8.0,
+                      color: jetBlack60,
                     ),
                   ],
                 ),

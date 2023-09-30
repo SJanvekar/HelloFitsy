@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
+import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/FollowerRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/FollowerModel.dart';
-import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -35,6 +33,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  //Vars
   Color titleColor = Colors.transparent;
   Color _textColor = Colors.transparent;
   Color iconCircleColor = shark60;
@@ -43,7 +42,10 @@ class _UserProfileState extends State<UserProfile> {
   Brightness statusBarTheme = Brightness.dark;
   bool isUserFollowing = false;
   late User user;
-
+  //Class list
+  List<Class> trainerClasses = [];
+  //List for trainerID (UserID)
+  List<String> trainerIDList = [];
   //Interests Lists
   //A list contained within the Category model which holds the trainers' interests (since this list contains the category information)
   List<Category> trainerInterestsFinal = [];
@@ -52,9 +54,25 @@ class _UserProfileState extends State<UserProfile> {
   //This is where the Trainer categories list will populate ~ this is only temporary until we retrieve the trainers' info //HARD CODED - MUST CHANGE
   var userInterests = [];
 
-  //Class list
-  List<Class> trainerClasses = classList;
+  //Functions
 
+  //Class Functions
+  void getClasses(List<String> trainerID) async {
+    ClassRequests().getClass(trainerID).then((val) async {
+      //get logged in user's following list
+      if (val.data['success']) {
+        print('successful get class feed');
+        (val.data['classArray'] as List<dynamic>).forEach((element) {
+          trainerClasses.add(Class.fromJson(element));
+        });
+      } else {
+        print('error get class feed: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
+
+  //Following/Unfollowing Functions
   void handleFollowPress() async {
     setState(() {});
     EasyDebounce.debounce('followDebouncer', const Duration(milliseconds: 500),
@@ -142,7 +160,11 @@ class _UserProfileState extends State<UserProfile> {
   void initState() {
     super.initState();
     isFollowing();
-    print(trainerClasses.length);
+    trainerClasses.clear();
+    trainerIDList.clear();
+    trainerIDList.add(widget.trainerInstance.userID);
+    // Gets the classes for trainer
+    getClasses(trainerIDList);
     //Checks the trainer interests and creates a list from the categories models
     checkInterests();
 
@@ -670,61 +692,61 @@ class _UserProfileState extends State<UserProfile> {
                 Padding(
                   padding: EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
                   child: Text(
-                    'About ' + widget.trainerInstance.userName,
+                    'About ' + widget.trainerInstance.firstName,
                     // ${userFirstName}',
                     style: sectionTitles,
                   ),
                 ),
 
-                //Trainer Rating Average + Location
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 26.0, right: 26.0),
-                  child: Row(
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/generalIcons/star.svg',
-                        color: sunflower,
-                        height: 17.5,
-                        width: 17.5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 5.0,
-                        ),
-                        child:
-                            //HARD CODED - MUST CHANGE
-                            Text(
-                          '4.5',
-                          style: TextStyle(
-                              color: jetBlack,
-                              fontFamily: 'SFRounded',
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w800),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 4.0, right: 4.0),
-                        child: ClipOval(
-                          child: Container(
-                            height: 2,
-                            width: 2,
-                            color: jetBlack,
-                          ),
-                        ),
-                      ),
-                      //HARD CODED - MUST CHANGE
-                      Text(
-                        'Toronto, Ontario, Canada',
-                        style: TextStyle(
-                            color: jetBlack,
-                            fontFamily: 'SFDisplay',
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
-                  ),
-                ),
+                // //Trainer Rating Average + Location
+                // Padding(
+                //   padding:
+                //       const EdgeInsets.only(top: 10.0, left: 26.0, right: 26.0),
+                //   child: Row(
+                //     children: [
+                //       SvgPicture.asset(
+                //         'assets/icons/generalIcons/star.svg',
+                //         color: sunflower,
+                //         height: 17.5,
+                //         width: 17.5,
+                //       ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(
+                //           left: 5.0,
+                //         ),
+                //         child:
+                //             //HARD CODED - MUST CHANGE
+                //             Text(
+                //           '4.5',
+                //           style: TextStyle(
+                //               color: jetBlack,
+                //               fontFamily: 'SFRounded',
+                //               fontSize: 14.0,
+                //               fontWeight: FontWeight.w800),
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: const EdgeInsets.only(left: 4.0, right: 4.0),
+                //         child: ClipOval(
+                //           child: Container(
+                //             height: 2,
+                //             width: 2,
+                //             color: jetBlack,
+                //           ),
+                //         ),
+                //       ),
+                //       //HARD CODED - MUST CHANGE
+                //       Text(
+                //         'Toronto, Ontario, Canada',
+                //         style: TextStyle(
+                //             color: jetBlack,
+                //             fontFamily: 'SFDisplay',
+                //             fontSize: 12.5,
+                //             fontWeight: FontWeight.w500),
+                //       )
+                //     ],
+                //   ),
+                // ),
 
                 // Trainer Bio //HARD CODED - MUST CHANGE
                 Padding(
@@ -746,7 +768,7 @@ class _UserProfileState extends State<UserProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
                   widget.trainerInstance.firstName + "'s Specialities",
                   style: sectionTitles,
@@ -778,7 +800,7 @@ class _UserProfileState extends State<UserProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 40.0, left: 26.0, right: 26.0, bottom: 15.0),
+                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
                 child: Text(
                   "Train with " + widget.trainerInstance.firstName,
                   style: sectionTitles,
