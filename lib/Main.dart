@@ -202,6 +202,7 @@ class _MainPageState extends State<MainPage>
     //Add Personal Profile to list of navigation widgets
     _widgetOptions.add(PersonalProfile(
       userInstance: userInstance,
+      isFromSearch: false,
     ));
 
     setState(() {

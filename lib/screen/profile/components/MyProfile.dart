@@ -36,9 +36,11 @@ class PersonalProfile extends StatefulWidget {
   PersonalProfile({
     Key? key,
     required this.userInstance,
+    required this.isFromSearch,
   }) : super(key: key);
 
   User userInstance;
+  bool isFromSearch;
 
   @override
   State<PersonalProfile> createState() => _PersonalProfileState();
@@ -396,6 +398,38 @@ class _PersonalProfileState extends State<PersonalProfile>
               controller: _scrollController,
               slivers: [
                 SliverAppBar(
+                  leading: GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 26.0,
+                        top: 11.5,
+                        bottom: 11.5,
+                      ),
+                      child: ClipOval(
+                          child: BackdropFilter(
+                        filter: new ImageFilter.blur(
+                          sigmaX: 1,
+                          sigmaY: 1,
+                        ),
+                        child: Container(
+                          height: 32,
+                          width: 32,
+                          decoration: BoxDecoration(color: iconCircleColor),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.only(top: 8.5, bottom: 8.5),
+                            child: SvgPicture.asset(
+                              'assets/icons/generalIcons/arrowLeft.svg',
+                              color: iconColor,
+                              height: 13,
+                              width: 6,
+                            ),
+                          ),
+                        ),
+                      )),
+                    ),
+                    onTap: () => {Navigator.of(context).pop()},
+                  ),
                   leadingWidth: 58,
                   automaticallyImplyLeading: false,
                   backgroundColor: snow,

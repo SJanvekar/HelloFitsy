@@ -2,14 +2,17 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:ui';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
+import 'package:balance/sharedWidgets/UserMoreActions.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/moreClassInfoModal.dart';
@@ -21,13 +24,10 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' as localized;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../feModels/ClassModel.dart';
 import '../../../sharedWidgets/classMoreActions.dart';
-
-final oCcy = new NumberFormat("#,##0", "en_US");
 
 class ClassCardOpen extends StatefulWidget {
   ClassCardOpen({Key? key, required this.classItem, required this.userInstance})
@@ -46,7 +46,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   late ScrollController _scrollController;
   Brightness statusBarTheme = Brightness.dark;
   bool classLiked = false;
-  //Get Trainer Details
+
+  //Trainer Details
   String trainerUserID = '';
   String trainerImageURL = '';
   String trainerUsername = '';
@@ -111,8 +112,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    print(showFullTextDesc);
     _scrollController = ScrollController()
       ..addListener(() {
         setState(() {
@@ -153,35 +154,36 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             userNameFontSize: 13,
             userInstance: widget.userInstance,
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 26),
-            child: GestureDetector(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Icon(
-                    Icons.more_horiz_rounded,
-                    color: iconColor,
-                    size: 25,
-                  ),
-                  Container(
-                    height: 40,
-                    width: 60,
-                    color: Colors.transparent,
-                  ),
-                ],
+          if (widget.userInstance.userID == widget.classItem.classTrainerID)
+            Padding(
+              padding: const EdgeInsets.only(right: 26),
+              child: GestureDetector(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Icon(
+                      Icons.more_horiz_rounded,
+                      color: iconColor,
+                      size: 25,
+                    ),
+                    Container(
+                      height: 40,
+                      width: 60,
+                      color: Colors.transparent,
+                    ),
+                  ],
+                ),
+                onTap: () => {
+                  showModalBottomSheet(
+                      isDismissible: true,
+                      backgroundColor: Colors.transparent,
+                      context: context,
+                      builder: (BuildContext context) {
+                        return UserMoreActions();
+                      })
+                },
               ),
-              onTap: () => {
-                showModalBottomSheet(
-                    isDismissible: true,
-                    backgroundColor: Colors.transparent,
-                    context: context,
-                    builder: (BuildContext context) {
-                      return classMoreActions();
-                    })
-              },
-            ),
-          )
+            )
         ],
       ),
     );
@@ -281,59 +283,217 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
     );
   }
 
-//Class Desc
+// Text widget overflow checkers - Description
+  bool showFullTextDesc = false;
+
+// Class Desc
   Widget classDesc() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.classItem.classDescription,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 9,
-          style: TextStyle(
-            fontFamily: 'SFDisplay',
-            color: jetBlack80,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+        LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            assert(constraints.hasBoundedWidth);
+            final double maxWidth = constraints.maxWidth;
+            final textSpan = TextSpan(
+              text: widget.classItem.classDescription,
+              style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack80,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            );
+
+            TextDirection? direction = TextDirection.ltr;
+
+            final textPainter = TextPainter(
+              text: textSpan,
+              textDirection: direction,
+            );
+            textPainter.layout(
+              maxWidth: maxWidth,
+            );
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    showFullTextDesc
+                        ? widget.classItem.classDescription
+                        : textSpan.toPlainText(),
+                    maxLines: showFullTextDesc ? 30 : 8, // Add this line
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                GestureDetector(
+                  child: Text(
+                    showFullTextDesc ? 'See Less' : 'See More',
+                    style: TextStyle(
+                      color: ocean, // You can replace with your color
+                      decoration: TextDecoration.underline,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      HapticFeedback.selectionClick();
+                      showFullTextDesc = !showFullTextDesc;
+                    });
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ],
     );
   }
 
-  //Class What To Expect
+// Text widget overflow checkers - Description
+  bool showFullTextWhatToExpect = false;
+
+// Class Desc
   Widget classWhatToExpect() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.classItem.classWhatToExpect,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 9,
-          style: TextStyle(
-              fontFamily: 'SFDisplay',
-              color: jetBlack80,
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
+        LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            assert(constraints.hasBoundedWidth);
+            final double maxWidth = constraints.maxWidth;
+            final textSpan = TextSpan(
+              text: widget.classItem.classWhatToExpect,
+              style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack80,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            );
+
+            TextDirection? direction = TextDirection.ltr;
+
+            final textPainter = TextPainter(
+              text: textSpan,
+              textDirection: direction,
+            );
+            textPainter.layout(
+              maxWidth: maxWidth,
+            );
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    showFullTextWhatToExpect
+                        ? widget.classItem.classWhatToExpect
+                        : textSpan.toPlainText(),
+                    maxLines:
+                        showFullTextWhatToExpect ? 30 : 8, // Add this line
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                GestureDetector(
+                  child: Text(
+                    showFullTextWhatToExpect ? 'See Less' : 'See More',
+                    style: TextStyle(
+                      color: ocean, // You can replace with your color
+                      decoration: TextDecoration.underline,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      HapticFeedback.selectionClick();
+                      showFullTextWhatToExpect = !showFullTextWhatToExpect;
+                    });
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ],
     );
   }
 
-  //Class What You'll Need
-  Widget classWhatYouwillNeed() {
+// Text widget overflow checkers - Description
+  bool showFullTextWhatYouWillNeed = false;
+
+// Class Desc
+  Widget classWhatYouWillNeed() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.classItem.classUserRequirements,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 6,
-          style: TextStyle(
-              fontFamily: 'SFDisplay',
-              color: jetBlack80,
-              fontSize: 14,
-              fontWeight: FontWeight.w500),
+        LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            assert(constraints.hasBoundedWidth);
+            final double maxWidth = constraints.maxWidth;
+            final textSpan = TextSpan(
+              text: widget.classItem.classUserRequirements,
+              style: TextStyle(
+                fontFamily: 'SFDisplay',
+                color: jetBlack80,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            );
+
+            TextDirection? direction = TextDirection.ltr;
+
+            final textPainter = TextPainter(
+              text: textSpan,
+              textDirection: direction,
+            );
+            textPainter.layout(
+              maxWidth: maxWidth,
+            );
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    showFullTextWhatYouWillNeed
+                        ? widget.classItem.classUserRequirements
+                        : textSpan.toPlainText(),
+                    maxLines:
+                        showFullTextWhatYouWillNeed ? 30 : 8, // Add this line
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                GestureDetector(
+                  child: Text(
+                    showFullTextWhatYouWillNeed ? 'See Less' : 'See More',
+                    style: TextStyle(
+                      color: ocean, // You can replace with your color
+                      decoration: TextDecoration.underline,
+                      fontFamily: 'SFDisplay',
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  onTap: () {
+                    setState(() {
+                      HapticFeedback.selectionClick();
+                      showFullTextWhatYouWillNeed =
+                          !showFullTextWhatYouWillNeed;
+                    });
+                  },
+                ),
+              ],
+            );
+          },
         ),
       ],
     );
@@ -473,9 +633,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
                   child: Icon(
-                    Icons.chevron_left_rounded,
+                    HelloFitsy.arrowleft,
                     color: iconColor,
-                    size: 26,
+                    size: 15,
                   ),
                 ),
               )),
@@ -559,63 +719,118 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             centerTitle: false,
           ),
           actions: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(right: 15.0, top: 11.5, bottom: 11.5),
-              child: GestureDetector(
-                child: ClipOval(
-                    child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 1,
-                    sigmaY: 1,
-                  ),
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 32,
-                    width: 32,
-                    decoration: BoxDecoration(color: iconCircleColor),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 2, bottom: 2),
+            if (widget.classItem.classTrainerID == widget.userInstance.userID)
+              GestureDetector(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      right: 26.0, top: 11.5, bottom: 11.5),
+                  child: ClipOval(
+                      child: BackdropFilter(
+                    filter: ImageFilter.blur(
+                      sigmaX: 1,
+                      sigmaY: 1,
+                    ),
+                    child: Container(
+                      height: 32,
+                      width: 32,
+                      decoration: BoxDecoration(
+                        color: iconCircleColor,
+                      ),
                       child: Icon(
-                        classLiked
-                            ? Icons.favorite_rounded
-                            : Icons.favorite_outline_rounded,
-                        color: classLiked ? strawberry : iconColor,
-                        size: 20,
+                        Icons.edit,
+                        color: iconColor,
+                        size: 17,
                       ),
                     ),
-                  ),
-                )),
+                  )),
+                ),
                 onTap: () {
-                  setState(() {
-                    classLiked = !classLiked;
-                    HapticFeedback.mediumImpact();
-                  });
-                  handleLikedPress();
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => CreateClassSelectType(
+                            isTypeSelected: true,
+                            classTemplate: widget.classItem,
+                            isEditMode: true,
+                          )));
                 },
-              ),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.only(right: 26.0, top: 11.5, bottom: 11.5),
-              child: ClipOval(
-                  child: BackdropFilter(
-                filter: ImageFilter.blur(
-                  sigmaX: 1,
-                  sigmaY: 1,
-                ),
-                child: Container(
-                  height: 32,
-                  width: 32,
-                  decoration: BoxDecoration(color: iconCircleColor),
-                  child: Icon(
-                    Icons.more_horiz_rounded,
-                    color: iconColor,
-                    size: 20,
+              )
+            else
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        right: 15.0, top: 11.5, bottom: 11.5),
+                    child: GestureDetector(
+                      child: ClipOval(
+                          child: BackdropFilter(
+                        filter: ImageFilter.blur(
+                          sigmaX: 1,
+                          sigmaY: 1,
+                        ),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: 32,
+                          width: 32,
+                          decoration: BoxDecoration(
+                            color: iconCircleColor,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 2, bottom: 2),
+                            child: Icon(
+                              classLiked
+                                  ? Icons.favorite_rounded
+                                  : Icons.favorite_outline_rounded,
+                              color: classLiked ? strawberry : iconColor,
+                              size: 20,
+                            ),
+                          ),
+                        ),
+                      )),
+                      onTap: () {
+                        setState(() {
+                          classLiked = !classLiked;
+                          HapticFeedback.mediumImpact();
+                        });
+                        handleLikedPress();
+                      },
+                    ),
                   ),
-                ),
-              )),
-            ),
+                  GestureDetector(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          right: 26.0, top: 11.5, bottom: 11.5),
+                      child: ClipOval(
+                          child: BackdropFilter(
+                        filter: ImageFilter.blur(
+                          sigmaX: 1,
+                          sigmaY: 1,
+                        ),
+                        child: Container(
+                          height: 32,
+                          width: 32,
+                          decoration: BoxDecoration(
+                            color: iconCircleColor,
+                          ),
+                          child: Icon(
+                            Icons.more_horiz_rounded,
+                            color: iconColor,
+                            size: 20,
+                          ),
+                        ),
+                      )),
+                    ),
+                    onTap: () => {
+                      showModalBottomSheet(
+                          isDismissible: true,
+                          backgroundColor: Colors.transparent,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return classMoreActions();
+                          })
+                    },
+                  ),
+                ],
+              ),
           ],
         ),
         SliverList(
@@ -658,28 +873,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   "About this class",
                   style: sectionTitles,
                 ),
-                GestureDetector(
-                  child: Text(
-                    'See all',
-                    style: TextStyle(
-                      color: ocean,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  onTap: () => {
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        isDismissible: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return moreClassInfo(
-                              inputText: widget.classItem.classDescription);
-                        })
-                  },
-                )
               ],
             ),
           ),
@@ -702,28 +895,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   "What to expect",
                   style: sectionTitles,
                 ),
-                GestureDetector(
-                  child: Text(
-                    'See all',
-                    style: TextStyle(
-                      color: ocean,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  onTap: () => {
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        isDismissible: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return moreClassInfo(
-                              inputText: widget.classItem.classWhatToExpect);
-                        })
-                  },
-                )
               ],
             ),
           ),
@@ -747,35 +918,12 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   "What you'll need",
                   style: sectionTitles,
                 ),
-                GestureDetector(
-                  child: Text(
-                    'See all',
-                    style: TextStyle(
-                      color: ocean,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  onTap: () => {
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        isDismissible: true,
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return moreClassInfo(
-                              inputText:
-                                  widget.classItem.classUserRequirements);
-                        })
-                  },
-                )
               ],
             ),
           ),
           Padding(
             padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
-            child: classWhatYouwillNeed(),
+            child: classWhatYouWillNeed(),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),

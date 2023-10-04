@@ -74,7 +74,6 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
       classTemplate = widget.classTemplate;
       widget.classTemplate.isEditMode = widget.isEditMode;
       _buttonOnPressed(widget.classTemplate.classType);
-      print(widget.classTemplate.isEditMode);
     } else {
       classTemplate = Class(
         classID: '',

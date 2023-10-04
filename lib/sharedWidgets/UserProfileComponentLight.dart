@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -122,12 +123,23 @@ class UserProfileComponentLight extends StatelessWidget {
             trainerInstance = User.fromJson(val.data['user'] ?? '');
           }
         });
-        Navigator.of(context).push(CupertinoPageRoute(
-            maintainState: true,
-            builder: (context) => UserProfile(
-                  trainerInstance: trainerInstance,
-                  userInstance: userInstance,
-                )));
+        if (trainerInstance.userID == userInstance.userID) {
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).push(CupertinoPageRoute(
+              maintainState: true,
+              builder: (context) => PersonalProfile(
+                    userInstance: trainerInstance,
+                    isFromSearch: true,
+                  )));
+        } else {
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).push(CupertinoPageRoute(
+              maintainState: true,
+              builder: (context) => UserProfile(
+                    trainerInstance: trainerInstance,
+                    userInstance: userInstance,
+                  )));
+        }
       },
     );
   }
