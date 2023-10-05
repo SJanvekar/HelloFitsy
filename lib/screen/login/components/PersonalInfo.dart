@@ -2,7 +2,8 @@
 import 'dart:ffi';
 
 import 'package:balance/Authentication/authService.dart';
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
+
 import 'package:balance/example.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/screen/login/login.dart';
@@ -18,26 +19,15 @@ import 'package:flutter/services.dart';
 import '../../../feModels/UserModel.dart';
 
 class PersonalInfo extends StatefulWidget {
-  PersonalInfo({Key? key}) : super(key: key);
+  PersonalInfo(
+      {Key? key, required this.authTemplate, required this.userTemplate})
+      : super(key: key);
 
+  Auth authTemplate;
+  User userTemplate;
   @override
   State<PersonalInfo> createState() => _PersonalInfoState();
 }
-
-Auth authTemplate = Auth(
-  userEmail: '',
-  userPhone: '',
-  password: '',
-);
-
-User userTemplate = User(
-  isActive: true,
-  userType: UserType.Trainee,
-  profileImageURL: '',
-  firstName: '',
-  lastName: '',
-  userName: '',
-);
 
 var passwordConfirmed;
 
@@ -47,36 +37,14 @@ bool emailValid = false;
 class _PersonalInfoState extends State<PersonalInfo> {
   //variables
   double range = 0;
-  bool _buttonPressed = false;
-  // final passwordController = TextEditingController();
   bool _passwordVisibility = true;
   bool _passwordConfirmVisibility = true;
-  Color _currentBorderColorTrainee = strawberry;
-  Color _currentIconColorTrainee = snow;
-  Color _currentBorderColorTrainer = snow;
-  Color _currentIconColorTrainer = jetBlack40;
   String _showHideIcon = 'assets/icons/generalIcons/hidePassword.svg';
   String _showHideIconConfirm = 'assets/icons/generalIcons/hidePassword.svg';
   double _showHideIconHeight = 18.0;
   double _showHideIconHeightConfirm = 18.0;
   Color _eyeIconColorPassword = jetBlack40;
   Color _eyeIconColorConfirmPassword = jetBlack40;
-
-  void _ButtonOnPressed() {
-    setState(() {
-      if (_buttonPressed == true) {
-        _currentBorderColorTrainer = strawberry;
-        _currentIconColorTrainer = snow;
-        _currentBorderColorTrainee = snow;
-        _currentIconColorTrainee = jetBlack40;
-      } else {
-        _currentBorderColorTrainer = snow;
-        _currentIconColorTrainer = jetBlack40;
-        _currentBorderColorTrainee = strawberry;
-        _currentIconColorTrainee = snow;
-      }
-    });
-  }
 
   void _changePasswordVisibility() {
     setState(() {
@@ -151,114 +119,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
               pageText(),
 
               //Trainer or Trainee selection
-              Padding(
-                padding: const EdgeInsets.only(top: 30, bottom: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    //Trainee selection
-                    Padding(
-                      padding: const EdgeInsets.only(right: 35.0),
-                      child: GestureDetector(
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 50),
-                          curve: Curves.linear,
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                              color: _currentBorderColorTrainee,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                  color: _currentBorderColorTrainee, width: 3)),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: 18,
-                                  bottom: 11,
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/icons/generalIcons/user.svg",
-                                  color: _currentIconColorTrainee,
-                                  height: 27.72,
-                                  width: 32.76,
-                                ),
-                              ),
-                              Text(
-                                'Trainee',
-                                style: TextStyle(
-                                    color: _currentIconColorTrainee,
-                                    fontFamily: 'SFDisplay',
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600),
-                              )
-                            ],
-                          ),
-                        ),
-                        onTap: () => {
-                          setState(() {
-                            _buttonPressed = false;
-                            _ButtonOnPressed();
-                            HapticFeedback.mediumImpact();
-
-                            userTemplate.userType = UserType.Trainee;
-                          })
-                        },
-                      ),
-                    ),
-                    //Trainer selection
-                    Padding(
-                      padding: EdgeInsets.only(),
-                      child: GestureDetector(
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 50),
-                          curve: Curves.linear,
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                              color: _currentBorderColorTrainer,
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(
-                                color: _currentBorderColorTrainer,
-                                width: 3,
-                              )),
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  top: 18,
-                                  bottom: 11,
-                                ),
-                                child: SvgPicture.asset(
-                                  "assets/icons/generalIcons/trainer.svg",
-                                  color: _currentIconColorTrainer,
-                                  height: 28.52,
-                                  width: 53.86,
-                                ),
-                              ),
-                              Text('Trainer',
-                                  style: TextStyle(
-                                    color: _currentIconColorTrainer,
-                                    fontFamily: 'SFDisplay',
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w600,
-                                  ))
-                            ],
-                          ),
-                        ),
-                        onTap: () => {
-                          setState(() {
-                            _buttonPressed = true;
-                            _ButtonOnPressed();
-                            HapticFeedback.mediumImpact();
-                            userTemplate.userType = UserType.Trainer;
-                          })
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
               //User text input fields
               Padding(
@@ -267,7 +127,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   left: 26.0,
                   right: 26.0,
                 ),
-                child: textInputFirstLastName(boxWidth),
+                child: textInputFullName(),
               ),
               Padding(
                 padding: const EdgeInsets.only(
@@ -313,27 +173,27 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 buttonText: "Continue",
               ),
               onTap: () => {
-                    if (authTemplate.password == passwordConfirmed)
+                    if (widget.authTemplate.password == passwordConfirmed)
                       {passwordCheck = true}
                     else
                       {
                         print(
-                            'Not the same, original: ${authTemplate.password}, confirmed: $passwordConfirmed'),
+                            'Not the same, original: ${widget.authTemplate.password}, confirmed: $passwordConfirmed'),
                         passwordCheck = false
                       },
-                    if (authTemplate.userEmail == null)
+                    if (widget.authTemplate.userEmail == null)
                       {emailValid = false}
                     else
                       {
-                        emailValid =
-                            EmailValidator.validate(authTemplate.userEmail)
+                        emailValid = EmailValidator.validate(
+                            widget.authTemplate.userEmail)
                       },
                     if (passwordCheck && emailValid)
                       {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProfilePictureUpload(
-                                authTemplate: authTemplate,
-                                userTemplate: userTemplate))),
+                                authTemplate: widget.authTemplate,
+                                userTemplate: widget.userTemplate))),
                       }
                     else if (!emailValid)
                       {
@@ -457,7 +317,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     ),
                   ),
                   onChanged: (val) {
-                    authTemplate.password = val;
+                    widget.authTemplate.password = val;
                   },
                   textInputAction: TextInputAction.next,
                 ),
@@ -550,345 +410,320 @@ class _PersonalInfoState extends State<PersonalInfo> {
       ],
     );
   }
-}
 
-//Page title
-Widget pageTitle() {
-  return Center(
-    child: Container(
-        padding: EdgeInsets.only(top: 20),
-        decoration: BoxDecoration(color: snow),
-        child: Text(
-          'Tell us about yourself',
-          style: logInPageTitle,
-        )),
-  );
-}
+  //Page title
+  Widget pageTitle() {
+    return Center(
+      child: Container(
+          padding: EdgeInsets.only(top: 20),
+          decoration: BoxDecoration(color: snow),
+          child: Text(
+            'Tell us about yourself',
+            style: logInPageTitle,
+          )),
+    );
+  }
 
 //User First + Last Name input
-Widget textInputFirstLastName(boxWidth) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Container(
-        width: boxWidth,
-        height: 50,
-        decoration: BoxDecoration(
-          color: bone60,
-          borderRadius: BorderRadius.circular(20),
+  Widget textInputFullName() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            bottom: 5.0,
+            left: 2.0,
+          ),
+          child: Text(
+            'Name',
+            style: logInPageTextInputTitle,
+          ),
         ),
-        child: Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(left: 8),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 10),
-                child: Center(
-                    child: SvgPicture.asset(
-                  'assets/icons/generalIcons/user.svg',
-                  height: 22.5,
-                  width: 18,
-                  color: jetBlack40,
-                )),
-              ),
-            ),
-            Expanded(child: textInputFirstName()),
-          ],
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 10.0),
-        child: Container(
-          width: boxWidth,
-          height: 50,
+        Container(
+          height: 60,
           decoration: BoxDecoration(
-            color: bone60,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 20,
-                ),
-              ),
-              Expanded(child: textInputLastName()),
-            ],
-          ),
+              color: snow,
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(color: jetBlack40)),
+          child: Center(
+              child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: textFieldFullName(),
+          )),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
 //FastName
-Widget textInputFirstName() {
-  return TextField(
-    autocorrect: true,
-    autofocus: true,
-    textCapitalization: TextCapitalization.sentences,
-    style: const TextStyle(
-        overflow: TextOverflow.fade,
-        fontFamily: 'SFDisplay',
-        color: jetBlack80,
-        fontSize: 15,
-        fontWeight: FontWeight.w700),
-    decoration: InputDecoration.collapsed(
-      border: InputBorder.none,
-      hintText: 'First Name',
-      hintStyle: const TextStyle(
-        fontFamily: 'SFDisplay',
-        color: shark,
-        fontSize: 15,
-        fontWeight: FontWeight.w500,
+  Widget textFieldFullName() {
+    return TextField(
+      autocorrect: true,
+      autofocus: true,
+      textCapitalization: TextCapitalization.sentences,
+      style: const TextStyle(
+          overflow: TextOverflow.fade,
+          fontFamily: 'SFDisplay',
+          color: jetBlack,
+          fontSize: 16,
+          fontWeight: FontWeight.w500),
+      decoration: InputDecoration.collapsed(
+        border: InputBorder.none,
+        hintText: 'Enter your first & last name',
+        hintStyle: const TextStyle(
+          fontFamily: 'SFDisplay',
+          color: jetBlack40,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+        ),
       ),
-    ),
-    onChanged: (val) {
-      userTemplate.firstName = val;
-    },
-    textInputAction: TextInputAction.next,
-  );
-}
+      onChanged: (val) {
+        widget.userTemplate.firstName = val;
+      },
+      textInputAction: TextInputAction.next,
+    );
+  }
 
 //LastName
-Widget textInputLastName() {
-  return TextField(
-    autocorrect: true,
-    textCapitalization: TextCapitalization.sentences,
-    style: TextStyle(
-        overflow: TextOverflow.fade,
-        fontFamily: 'SFDisplay',
-        color: jetBlack80,
-        fontSize: 15,
-        fontWeight: FontWeight.w700),
-    decoration: InputDecoration.collapsed(
-      border: InputBorder.none,
-      hintText: 'Last Name',
-      hintStyle: TextStyle(
-        fontFamily: 'SFDisplay',
-        color: shark,
-        fontSize: 15,
-        fontWeight: FontWeight.w500,
+  Widget textInputLastName() {
+    return TextField(
+      autocorrect: true,
+      textCapitalization: TextCapitalization.sentences,
+      style: TextStyle(
+          overflow: TextOverflow.fade,
+          fontFamily: 'SFDisplay',
+          color: jetBlack80,
+          fontSize: 15,
+          fontWeight: FontWeight.w700),
+      decoration: InputDecoration.collapsed(
+        border: InputBorder.none,
+        hintText: '',
+        hintStyle: TextStyle(
+          fontFamily: 'SFDisplay',
+          color: shark,
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+        ),
       ),
-    ),
-    onChanged: (val) {
-      userTemplate.lastName = val;
-    },
-    textInputAction: TextInputAction.next,
-  );
-}
+      onChanged: (val) {
+        widget.userTemplate.lastName = val;
+      },
+      textInputAction: TextInputAction.next,
+    );
+  }
 
 //Username
-Widget textInputUsername() {
-  return Container(
-    height: 50,
-    decoration: BoxDecoration(
-      color: bone60,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 8),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 10),
-            child: Center(
-                child: SvgPicture.asset(
-              'assets/icons/generalIcons/user.svg',
-              height: 22.5,
-              width: 18.0,
-              color: jetBlack40,
-            )),
-          ),
-        ),
-        Expanded(
-          child: TextField(
-            autocorrect: true,
-            style: const TextStyle(
-                overflow: TextOverflow.fade,
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
-            decoration: InputDecoration.collapsed(
-              border: InputBorder.none,
-              hintText: 'Username',
-              hintStyle: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: shark,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
+  Widget textInputUsername() {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: bone60,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 10),
+              child: Center(
+                  child: SvgPicture.asset(
+                'assets/icons/generalIcons/user.svg',
+                height: 22.5,
+                width: 18.0,
+                color: jetBlack40,
+              )),
             ),
-            onChanged: (val) {
-              userTemplate.userName = val;
-            },
-            textInputAction: TextInputAction.next,
           ),
-        ),
-      ],
-    ),
-  );
-}
+          Expanded(
+            child: TextField(
+              autocorrect: true,
+              style: const TextStyle(
+                  overflow: TextOverflow.fade,
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack80,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700),
+              decoration: InputDecoration.collapsed(
+                border: InputBorder.none,
+                hintText: 'Username',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: shark,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onChanged: (val) {
+                widget.userTemplate.userName = val;
+              },
+              textInputAction: TextInputAction.next,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
 //Email
-Widget textInputEmailOrPhone(BuildContext context, bool isEmail) {
-  return Container(
-    height: 50,
-    decoration: BoxDecoration(
-      color: bone60,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 8),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 10),
-            child: Center(
+  Widget textInputEmailOrPhone(BuildContext context, bool isEmail) {
+    return Container(
+      height: 50,
+      decoration: BoxDecoration(
+        color: bone60,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Row(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 8),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, right: 10),
+              child: Center(
+                  child: SvgPicture.asset(
+                //HARD CODED - MUST CHANGE replace with phone icon asset
+                isEmail
+                    ? 'assets/icons/generalIcons/mail.svg'
+                    : 'assets/icons/generalIcons/mail.svg',
+                width: 18,
+                color: jetBlack40,
+              )),
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              autocorrect: true,
+              style: const TextStyle(
+                  overflow: TextOverflow.fade,
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack80,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700),
+              decoration: InputDecoration.collapsed(
+                border: InputBorder.none,
+                hintText: isEmail ? 'Email' : 'Phone',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: shark,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onChanged: (val) {
+                if (isEmail) {
+                  widget.authTemplate.userEmail = val;
+                } else {
+                  widget.authTemplate.userPhone = val;
+                }
+              },
+              textInputAction: TextInputAction.next,
+            ),
+          ),
+          Padding(
+              padding: const EdgeInsets.only(right: 20, left: 10),
+              child: GestureDetector(
                 child: SvgPicture.asset(
-              //HARD CODED - MUST CHANGE replace with phone icon asset
-              isEmail
-                  ? 'assets/icons/generalIcons/mail.svg'
-                  : 'assets/icons/generalIcons/mail.svg',
-              width: 18,
-              color: jetBlack40,
-            )),
-          ),
-        ),
-        Expanded(
-          child: TextField(
-            autocorrect: true,
-            style: const TextStyle(
-                overflow: TextOverflow.fade,
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 15,
-                fontWeight: FontWeight.w700),
-            decoration: InputDecoration.collapsed(
-              border: InputBorder.none,
-              hintText: isEmail ? 'Email' : 'Phone',
-              hintStyle: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: shark,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            onChanged: (val) {
-              if (isEmail) {
-                authTemplate.userEmail = val;
-              } else {
-                authTemplate.userPhone = val;
-              }
-            },
-            textInputAction: TextInputAction.next,
-          ),
-        ),
-        Padding(
-            padding: const EdgeInsets.only(right: 20, left: 10),
-            child: GestureDetector(
-              child: SvgPicture.asset(
-                  'assets/icons/generalIcons/information.svg',
-                  color: jetBlack40,
-                  height: 20,
-                  width: 20),
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        informationDialog(context));
-              },
-            ))
-      ],
-    ),
-  );
-}
-
-//Email Info Box
-Widget informationDialog(BuildContext context) {
-  return Dialog(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-    child: Container(
-      height: 225.0,
-      width: 280.0,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
-            child: Text(
-              'Privacy Notice',
-              style: disclaimerTitle,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                child: Text(
-                  'This email will not be shared with any person or organization, it is for authentication and verification purposes only',
-                  style: TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: jetBlack60,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-          ),
-          Padding(padding: EdgeInsets.only(top: 0.0)),
-          TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 70, right: 70),
-                child: Container(
-                  height: 35,
-                  width: 323,
-                  decoration: BoxDecoration(
-                      color: strawberry,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Center(
-                      child: Text(
-                    'Confirm',
-                    style: TextStyle(
-                        color: snow,
-                        fontSize: 13,
-                        fontFamily: 'SFDisplay',
-                        letterSpacing: 0.5,
-                        fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.center,
-                  )),
-                ),
+                    'assets/icons/generalIcons/information.svg',
+                    color: jetBlack40,
+                    height: 20,
+                    width: 20),
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          informationDialog(context));
+                },
               ))
         ],
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget passwordCheckSnackbar() {
-  return Container(
-    height: 50,
-    width: 323,
-    decoration: BoxDecoration(
-      color: strawberry,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Center(
-        child: Text(
-      'Your passwords do not match, please try again.',
-      style: TextStyle(
-          color: snow,
-          fontSize: 15,
-          fontFamily: 'SFDisplay',
-          letterSpacing: 0.5,
-          fontWeight: FontWeight.w500),
-    )),
-  );
+//Email Info Box
+  Widget informationDialog(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      child: Container(
+        height: 225.0,
+        width: 280.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
+              child: Text(
+                'Privacy Notice',
+                style: disclaimerTitle,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                  child: Text(
+                    'This email will not be shared with any person or organization, it is for authentication and verification purposes only',
+                    style: TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: jetBlack60,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 0.0)),
+            TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 70, right: 70),
+                  child: Container(
+                    height: 35,
+                    width: 323,
+                    decoration: BoxDecoration(
+                        color: strawberry,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Center(
+                        child: Text(
+                      'Confirm',
+                      style: TextStyle(
+                          color: snow,
+                          fontSize: 13,
+                          fontFamily: 'SFDisplay',
+                          letterSpacing: 0.5,
+                          fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    )),
+                  ),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget passwordCheckSnackbar() {
+    return Container(
+      height: 50,
+      width: 323,
+      decoration: BoxDecoration(
+        color: strawberry,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Center(
+          child: Text(
+        'Your passwords do not match, please try again.',
+        style: TextStyle(
+            color: snow,
+            fontSize: 15,
+            fontFamily: 'SFDisplay',
+            letterSpacing: 0.5,
+            fontWeight: FontWeight.w500),
+      )),
+    );
+  }
 }

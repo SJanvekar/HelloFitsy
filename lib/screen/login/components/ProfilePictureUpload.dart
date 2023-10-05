@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/screen/login/components/CategorySelection.dart';
+import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -83,40 +84,22 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         elevation: 0,
         backgroundColor: snow,
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back to Personal Info");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => PersonalInfo()));
-                },
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        left: 0,
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          print("Back");
-                          Navigator.of(context).pop(CupertinoPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) => PersonalInfo()));
-                        },
-                        child: Text("Back", style: logInPageNavigationButtons),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+        title: Padding(
+          padding: const EdgeInsets.only(
+            left: 0,
+          ),
+          child: TextButton(
+            onPressed: () {
+              print("Back");
+              Navigator.of(context).pop(CupertinoPageRoute(
+                  fullscreenDialog: true,
+                  builder: (context) => PersonalInfo(
+                        authTemplate: authTemplate,
+                        userTemplate: userTemplate,
+                      )));
+            },
+            child: Text("Back", style: logInPageNavigationButtons),
+          ),
         ),
       ),
       body: Column(

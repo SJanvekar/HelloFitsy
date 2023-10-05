@@ -78,6 +78,14 @@ const defaultPadding = 10.0;
 //Fonts
 
 //LOG IN SPECIFIC FONTS
+
+const logInPageTitleH1 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 28,
+  fontWeight: FontWeight.w600,
+);
+
 const logInPageTitle = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
@@ -91,11 +99,17 @@ const logInPageNavigationButtons = TextStyle(
   fontSize: 17,
   fontWeight: FontWeight.w500,
 );
+const logInPageTextInputTitle = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: jetBlack80,
+    fontSize: 14.5,
+    fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none);
 
 const logInPageBodyText = TextStyle(
     fontFamily: 'SFDisplay',
-    color: jetBlack40,
-    fontSize: 16,
+    color: jetBlack60,
+    fontSize: 16.5,
     fontWeight: FontWeight.w400,
     decoration: TextDecoration.none);
 

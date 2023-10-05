@@ -57,27 +57,10 @@ class ForgotPasswordPage extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              onChanged: (val) {
-                authTemplate.userEmail = val;
-              },
+              onChanged: (val) {},
               textInputAction: TextInputAction.done,
             ),
           ),
-          Padding(
-              padding: const EdgeInsets.only(right: 20, left: 10),
-              child: GestureDetector(
-                child: SvgPicture.asset(
-                    'assets/icons/generalIcons/information.svg',
-                    color: jetBlack40,
-                    height: 20,
-                    width: 20),
-                onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          informationDialog(context));
-                },
-              ))
         ],
       ),
     );

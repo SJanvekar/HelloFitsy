@@ -58,7 +58,10 @@ class _CategorySelectionState extends State<CategorySelection> {
                   print("Back to Personal Info");
                   Navigator.of(context).pop(CupertinoPageRoute(
                       fullscreenDialog: true,
-                      builder: (context) => PersonalInfo()));
+                      builder: (context) => PersonalInfo(
+                            authTemplate: widget.authTemplate,
+                            userTemplate: widget.userTemplate,
+                          )));
                 },
                 child: Row(
                   children: [
@@ -71,7 +74,10 @@ class _CategorySelectionState extends State<CategorySelection> {
                           print("Back");
                           Navigator.of(context).pop(CupertinoPageRoute(
                               fullscreenDialog: true,
-                              builder: (context) => PersonalInfo()));
+                              builder: (context) => PersonalInfo(
+                                    authTemplate: widget.authTemplate,
+                                    userTemplate: widget.userTemplate,
+                                  )));
                         },
                         child: Text("Back", style: logInPageNavigationButtons),
                       ),
@@ -167,7 +173,7 @@ class _CategorySelectionState extends State<CategorySelection> {
                 else
                   {selectedCategories.remove(allCategories[i].categoryName)}
               },
-            userTemplate.categories = selectedCategories,
+            widget.userTemplate.categories = selectedCategories,
             sendUserModel(),
           },
         ),
@@ -177,7 +183,9 @@ class _CategorySelectionState extends State<CategorySelection> {
 
   void sendUserModel() {
     //Auth Service Call
-    AuthService().signUp(authTemplate, userTemplate).then((val) async {
+    AuthService()
+        .signUp(widget.authTemplate, widget.userTemplate)
+        .then((val) async {
       if (val.data['success']) {
         print('Successful user add');
 
@@ -187,7 +195,7 @@ class _CategorySelectionState extends State<CategorySelection> {
         //One idea is to run getUser to handle shared pref exception.
         //Do this for all set/get instance.
         await sharedPrefs.setString(
-            'loggedUser', jsonEncode(userTemplate.toJson()));
+            'loggedUser', jsonEncode(widget.userTemplate.toJson()));
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MainPage()));
       } else {

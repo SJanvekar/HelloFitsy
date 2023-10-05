@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'package:balance/Authentication/authService.dart';
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
+import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/login/components/ForgotPassword.dart';
+import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -103,54 +105,63 @@ void onSubmitSignInField(context) {
 
 //TextInput Username/Email/Phone
 Widget textInputUsername() {
-  return Container(
-    height: 50,
-    decoration: BoxDecoration(
-      color: bone60,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 8),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 10),
-            child: Center(
-                child: SvgPicture.asset(
-              'assets/icons/generalIcons/user.svg',
-              height: 22.5,
-              width: 18,
-              color: jetBlack40,
-            )),
-          ),
-        ),
-        Expanded(
-          child: TextFormField(
-              textInputAction: TextInputAction.next,
-              textCapitalization: TextCapitalization.sentences,
-              style: const TextStyle(
-                  overflow: TextOverflow.fade,
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack80,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700),
-              // ignore: prefer_const_constructors
-              decoration: InputDecoration.collapsed(
-                border: InputBorder.none,
-                hintText: 'Username',
-                hintStyle: const TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: shark,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      // Padding(
+      //   padding: const EdgeInsets.only(
+      //     bottom: 5.0,
+      //     left: 2.0,
+      //   ),
+      //   child: Text(
+      //     'Username',
+      //     style: logInPageTextInputTitle,
+      //   ),
+      // ),
+      Container(
+        height: 60,
+        decoration: BoxDecoration(
+            color: snow,
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: jetBlack40)),
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Icon(HelloFitsy.user, color: jetBlack40, size: 20),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextFormField(
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.none,
+                    style: const TextStyle(
+                        overflow: TextOverflow.fade,
+                        fontFamily: 'SFDisplay',
+                        color: jetBlack80,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700),
+                    // ignore: prefer_const_constructors
+                    decoration: InputDecoration.collapsed(
+                      border: InputBorder.none,
+                      hintText: 'Username',
+                      hintStyle: const TextStyle(
+                        fontFamily: 'SFDisplay',
+                        color: shark,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onChanged: (val) {
+                      account = val;
+                    }),
               ),
-              onChanged: (val) {
-                account = val;
-              }),
+            ),
+          ],
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }
 
@@ -318,59 +329,75 @@ class _SignInState extends State<SignIn> {
                       padding: const EdgeInsets.only(top: 20, bottom: 20),
                       child: textInputUsername(),
                     ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: bone60,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 8),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 21, right: 12),
-                              child: Center(
-                                  child: SvgPicture.asset(
-                                'assets/icons/generalIcons/lock.svg',
-                                color: jetBlack40,
-                                width: 18,
-                              )),
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              textInputAction: TextInputAction.done,
-                              obscureText: true,
-                              textCapitalization: TextCapitalization.sentences,
-                              style: const TextStyle(
-                                  overflow: TextOverflow.fade,
-                                  fontFamily: 'SFDisplay',
-                                  color: jetBlack80,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700),
-                              decoration: InputDecoration.collapsed(
-                                border: InputBorder.none,
-                                hintText: 'Password',
-                                hintStyle: const TextStyle(
-                                  fontFamily: 'SFDisplay',
-                                  color: shark,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Padding(
+                        //   padding: const EdgeInsets.only(
+                        //     bottom: 5.0,
+                        //     left: 2.0,
+                        //   ),
+                        //   child: Text(
+                        //     'Password',
+                        //     style: logInPageTextInputTitle,
+                        //   ),
+                        // ),
+                        Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                              color: snow,
+                              borderRadius: BorderRadius.circular(15),
+                              border: Border.all(color: jetBlack40)),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 5, right: 10),
+                                  child: Center(
+                                      child: SvgPicture.asset(
+                                    'assets/icons/generalIcons/lock.svg',
+                                    color: jetBlack40,
+                                    width: 18,
+                                  )),
                                 ),
                               ),
-                              focusNode: passwordFocusNode,
-                              onChanged: (val) {
-                                password = val;
-                              },
-                              onSubmitted: (value) {
-                                onSubmitSignInField(context);
-                              },
-                            ),
+                              Expanded(
+                                child: TextField(
+                                  textInputAction: TextInputAction.done,
+                                  obscureText: true,
+                                  textCapitalization:
+                                      TextCapitalization.sentences,
+                                  style: const TextStyle(
+                                      overflow: TextOverflow.fade,
+                                      fontFamily: 'SFDisplay',
+                                      color: jetBlack80,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700),
+                                  decoration: InputDecoration.collapsed(
+                                    border: InputBorder.none,
+                                    hintText: 'Password',
+                                    hintStyle: const TextStyle(
+                                      fontFamily: 'SFDisplay',
+                                      color: shark,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  focusNode: passwordFocusNode,
+                                  onChanged: (val) {
+                                    password = val;
+                                  },
+                                  onSubmitted: (value) {
+                                    onSubmitSignInField(context);
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                     //TextInput Password
 
@@ -429,14 +456,14 @@ class _SignInState extends State<SignIn> {
                                           CupertinoPageRoute(
                                               fullscreenDialog: false,
                                               builder: (context) =>
-                                                  PersonalInfo()));
+                                                  TrainerOrTrainee()));
                                     })
                             ],
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.of(context).push(CupertinoPageRoute(
                                     fullscreenDialog: false,
-                                    builder: (context) => PersonalInfo()));
+                                    builder: (context) => TrainerOrTrainee()));
                               }),
                       ),
                     ),
