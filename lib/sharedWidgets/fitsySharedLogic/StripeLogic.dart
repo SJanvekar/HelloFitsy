@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../Requests/StripeRequests.dart';
 import '../../Requests/UserRequests.dart';
 import '../../feModels/UserModel.dart';
@@ -14,6 +13,11 @@ class StripeLogic {
     if (userInstance.stripeAccountID == null) {
       StripeRequests().createStripeAccount().then((val) async {
         if (val.data['success']) {
+          //Initialize Shared Prefs instance
+          final sharedPrefs = await SharedPreferences.getInstance();
+
+          //Assign the accountID to the sharedPrefs variable stripeAccountID
+
           //Store account ID
           String accountID = val.data['id'];
 
@@ -27,6 +31,7 @@ class StripeLogic {
             if (val.data['success']) {
               //Update userInstance.StripeAccountID with accountID if successful
               userInstance.stripeAccountID = accountID;
+              sharedPrefs.setString('loggedUser', jsonEncode(userInstance));
 
               //Wait 10ms - Avoid async issues with previous function if run (Create account)
               Future.delayed(const Duration(milliseconds: 10), () {

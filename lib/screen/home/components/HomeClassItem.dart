@@ -370,11 +370,17 @@ Widget classTitle(classTitle, fixedWidth) {
       classTitle,
       minFontSize: 18,
       style: TextStyle(
-        fontSize: 18,
-        fontFamily: 'SFDisplay',
-        fontWeight: FontWeight.w600,
-        color: snow,
-      ),
+          fontSize: 18,
+          fontFamily: 'SFDisplay',
+          fontWeight: FontWeight.w600,
+          color: snow,
+          shadows: <Shadow>[
+            Shadow(
+              offset: Offset(0, 0),
+              blurRadius: 8.0,
+              color: jetBlack80,
+            ),
+          ]),
       maxLines: 2,
       overflow: TextOverflow.ellipsis,
     ),
@@ -389,92 +395,50 @@ Widget classSubHeader(classLocation) {
         color: bone80,
         fontSize: 13.5,
         fontWeight: FontWeight.w500,
-        fontFamily: 'SFDisplay'),
+        fontFamily: 'SFDisplay',
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(0, 0),
+            blurRadius: 8.0,
+            color: jetBlack80,
+          ),
+        ]),
   );
 }
 
 //Price Widget
 Widget classPrice(classPrice) {
-  return Container(
-    height: 25,
-    decoration: const BoxDecoration(
-        color: strawberry, borderRadius: BorderRadius.all(Radius.circular(20))),
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 8.0,
-        right: 8.0,
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Text(
+        '\$${oCcy.format(classPrice.round())}',
+        style: TextStyle(
+            color: snow,
+            fontSize: 20,
+            fontFamily: 'SFRounded',
+            fontWeight: FontWeight.w600,
+            shadows: <Shadow>[
+              Shadow(
+                offset: Offset(0, 0),
+                blurRadius: 8.0,
+                color: jetBlack80,
+              ),
+            ]),
       ),
-      child: Row(
-        children: [
-          Text(
-            '\$${oCcy.format(classPrice.round())}',
-            style: TextStyle(
+      Text(' session',
+          style: TextStyle(
               color: snow,
-              fontSize: 15,
-              fontFamily: 'SFRounded',
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 1.0),
-            child: Text(' /session',
-                style: TextStyle(
-                    color: snow,
-                    fontFamily: 'SFDisplay',
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400)),
-          )
-        ],
-      ),
-    ),
+              fontFamily: 'SFDisplay',
+              fontSize: 17,
+              fontWeight: FontWeight.w400,
+              shadows: <Shadow>[
+                Shadow(
+                  offset: Offset(0, 0),
+                  blurRadius: 8.0,
+                  color: jetBlack80,
+                ),
+              ]))
+    ],
   );
 }
-
-//Unused Widgets
-// Widget trainerRating(classRating, classReview) {
-//   return Row(
-//     children: [
-//       //Star Icon
-//       SvgPicture.asset(
-//         'assets/icons/StarRating.svg',
-//         height: 15,
-//         width: 15,
-//       ),
-
-//       //Rating (Numeric)
-//       Padding(
-//         padding: const EdgeInsets.only(left: 5.0),
-//         child: Container(
-//           height: 20,
-//           width: 30,
-//           decoration: BoxDecoration(
-//               color: jetBlack, borderRadius: BorderRadius.circular(20.0)),
-//           child: Center(
-//             child: Text(
-//               classRating.toString(),
-//               style: TextStyle(
-//                   fontSize: 11,
-//                   fontWeight: FontWeight.w700,
-//                   color: snow,
-//                   fontFamily: 'SFRounded'),
-//             ),
-//           ),
-//         ),
-//       ),
-
-//       //Trainer Ratings Count
-//       Padding(
-//         padding: EdgeInsets.only(left: 5.0),
-//         child: Text(
-//          classReview.toString(),
-//           style: TextStyle(
-//               color: shark,
-//               fontSize: 13,
-//               fontFamily: 'SFRounded',
-//               fontWeight: FontWeight.w500,
-//               letterSpacing: 0),
-//         ),
-//       )
-//     ],
-//   );
-// }

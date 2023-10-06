@@ -30,6 +30,78 @@ class CreateClassDescription extends StatefulWidget {
 
 class _CreateClassDescription extends State<CreateClassDescription> {
   //variables
+  var textController = TextEditingController();
+
+  //----------
+  @override
+  void initState() {
+    super.initState();
+    textController.text = classTemplate.classDescription;
+  }
+
+  //Page title
+  Widget pageTitle() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 46.5,
+          right: 46.5,
+        ),
+        child: Container(
+            padding: EdgeInsets.only(top: 25),
+            decoration: BoxDecoration(color: snow),
+            child: Text(
+              'Write a brief description of your class',
+              style: logInPageTitle,
+              textAlign: TextAlign.center,
+            )),
+      ),
+    );
+  }
+
+  Widget editClassDescription(Class template) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 30,
+          right: 30,
+          bottom: 45,
+        ),
+        child: Container(
+            padding: EdgeInsets.only(top: 25),
+            decoration: BoxDecoration(color: snow),
+            child: TextField(
+              controller: textController,
+              maxLength: 500,
+              autocorrect: true,
+              cursorColor: ocean,
+              maxLines: null,
+              textCapitalization: TextCapitalization.sentences,
+              maxLengthEnforcement: MaxLengthEnforcement.none,
+              textInputAction: TextInputAction.newline,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Start typing here',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: shark60,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onChanged: (val) {
+                template.classDescription = val;
+              },
+            )),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +130,7 @@ class _CreateClassDescription extends State<CreateClassDescription> {
                         builder: (context) => CreateClassSelectType(
                               isTypeSelected: true,
                               classTemplate: classTemplate,
+                              isEditMode: classTemplate.isEditMode,
                             )));
                   },
                   child: Text("Back", style: logInPageNavigationButtons),
@@ -129,67 +202,4 @@ class _CreateClassDescription extends State<CreateClassDescription> {
       },
     );
   }
-}
-
-//Page title
-Widget pageTitle() {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
-      ),
-      child: Container(
-          padding: EdgeInsets.only(top: 25),
-          decoration: BoxDecoration(color: snow),
-          child: Text(
-            'Write a brief description of your class',
-            style: logInPageTitle,
-            textAlign: TextAlign.center,
-          )),
-    ),
-  );
-}
-
-Widget editClassDescription(Class template) {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 30,
-        right: 30,
-        bottom: 45,
-      ),
-      child: Container(
-          padding: EdgeInsets.only(top: 25),
-          decoration: BoxDecoration(color: snow),
-          child: TextField(
-            maxLength: 500,
-            autocorrect: true,
-            cursorColor: ocean,
-            maxLines: null,
-            textCapitalization: TextCapitalization.sentences,
-            maxLengthEnforcement: MaxLengthEnforcement.none,
-            textInputAction: TextInputAction.newline,
-            textAlign: TextAlign.left,
-            style: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack,
-                fontSize: 18,
-                fontWeight: FontWeight.w500),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: 'Start typing here',
-              hintStyle: const TextStyle(
-                fontFamily: 'SFDisplay',
-                color: shark60,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            onChanged: (val) {
-              template.classDescription = val;
-            },
-          )),
-    ),
-  );
 }

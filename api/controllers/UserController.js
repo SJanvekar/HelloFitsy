@@ -172,7 +172,7 @@ var functions = {
             res.json({success: false, msg: 'Missing query parameter UserID'});
         }
         try {
-            user = await User.findOne({_id: new mongoose.Types.ObjectId(req.query.UserID)}, '_id ProfileImageURL FirstName LastName Username StripeAccountID')
+            user = await User.findOne({_id: new mongoose.Types.ObjectId(req.query.UserID)}, '_id ProfileImageURL FirstName LastName Username StripeAccountID UserBio')
         } catch (err) {
             console.log(err)
             return res.json({success: false, msg: err})
@@ -184,7 +184,8 @@ var functions = {
                 Username: parsedResponse.Username,
                 FirstName: parsedResponse.FirstName,
                 LastName: parsedResponse.LastName,
-                StripeAccountID: parsedResponse.StripeAccountID
+                StripeAccountID: parsedResponse.StripeAccountID,
+                UserBio: parsedResponse.UserBio
             }))
     },
 

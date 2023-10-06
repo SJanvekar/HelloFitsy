@@ -41,9 +41,6 @@ void onSubmitSignInField(context) {
           sharedPrefs.clear();
           await sharedPrefs.setString(
               'loggedUser', jsonEncode(val.data['user']));
-          if (val.data['stripeAccountID'] != null)
-            sharedPrefs.setString(
-                'stripeAccountID', val.data['stripeAccountID'] ?? '');
         } else {
           print('Failed get user info');
         }
