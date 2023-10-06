@@ -187,11 +187,12 @@ class _PersonalProfileState extends State<PersonalProfile>
     Future.delayed(Duration(milliseconds: 1000), () async {
       //Load Shared Prefs
       final sharedPrefs = await SharedPreferences.getInstance();
+
       //Clear Shared Prefs
       sharedPrefs.clear();
+
       //Navigate to the sign in page
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).push(PageTransition(
+      await Navigator.of(context).push(PageTransition(
           fullscreenDialog: true,
           child: SignIn(),
           type: PageTransitionType.fade,

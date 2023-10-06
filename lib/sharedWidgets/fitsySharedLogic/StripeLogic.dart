@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../Requests/StripeRequests.dart';
@@ -15,7 +17,6 @@ class StripeLogic {
           final sharedPrefs = await SharedPreferences.getInstance();
 
           //Assign the accountID to the sharedPrefs variable stripeAccountID
-          sharedPrefs.setString('stripeAccountID', val.data['id']);
 
           //Store account ID
           String accountID = val.data['id'];
@@ -30,6 +31,7 @@ class StripeLogic {
             if (val.data['success']) {
               //Update userInstance.StripeAccountID with accountID if successful
               userInstance.stripeAccountID = accountID;
+              sharedPrefs.setString('loggedUser', jsonEncode(userInstance));
 
               //Wait 10ms - Avoid async issues with previous function if run (Create account)
               Future.delayed(const Duration(milliseconds: 10), () {

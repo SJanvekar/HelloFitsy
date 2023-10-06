@@ -124,16 +124,14 @@ class UserProfileComponentLight extends StatelessWidget {
           }
         });
         if (trainerInstance.userID == userInstance.userID) {
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).push(CupertinoPageRoute(
+          await Navigator.of(context).push(CupertinoPageRoute(
               maintainState: true,
               builder: (context) => PersonalProfile(
                     userInstance: trainerInstance,
                     isFromSearch: true,
                   )));
         } else {
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).push(CupertinoPageRoute(
+          await Navigator.of(context).push(CupertinoPageRoute(
               maintainState: true,
               builder: (context) => UserProfile(
                     trainerInstance: trainerInstance,

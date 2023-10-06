@@ -34,11 +34,8 @@ class _CreateClassCategory extends State<CreateClassCategory> {
 
   void checkSelectedCategories() {
     for (var category in allCategories) {
-      if (classTemplate.classCategories.contains(category.categoryName)) {
-        category.categoryLiked = true;
-      } else {
-        category.categoryLiked = false;
-      }
+      category.categoryLiked =
+          classTemplate.classCategories.contains(category.categoryName);
     }
   }
 

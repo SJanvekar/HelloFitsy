@@ -8,7 +8,6 @@ var ClassLikedSchema = new Schema({
         type:  mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        unique: true,
     },
 
     //Class ID
@@ -16,7 +15,6 @@ var ClassLikedSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Class',
         required: true,
-        unique: true,
     }
 })
 
