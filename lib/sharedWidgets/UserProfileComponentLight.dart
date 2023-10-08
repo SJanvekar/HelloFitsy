@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +32,7 @@ class UserProfileComponentLight extends StatelessWidget {
   double userFullNameFontSize;
   double userNameFontSize;
   double profileImageRadius;
+  late User trainerInstance;
 
   //Follow button ~ State 0
   Widget followButton() {
@@ -113,17 +117,27 @@ class UserProfileComponentLight extends StatelessWidget {
           )
         ],
       ),
-      onTap: () {
-        Navigator.of(context).push(CupertinoPageRoute(
-            maintainState: true,
-            builder: (context) => UserProfile(
-                  userID: userID,
-                  userFirstName: userFirstName,
-                  userLastName: userLastName,
-                  userName: userName,
-                  profileImageURL: profileImageURL,
-                  userInstance: userInstance,
-                )));
+      onTap: () async {
+        await UserRequests().getUserInfo(userID).then((val) {
+          if (val.data['success']) {
+            trainerInstance = User.fromJson(val.data['user'] ?? '');
+          }
+        });
+        if (trainerInstance.userID == userInstance.userID) {
+          await Navigator.of(context).push(CupertinoPageRoute(
+              maintainState: true,
+              builder: (context) => PersonalProfile(
+                    userInstance: trainerInstance,
+                    isFromSearch: true,
+                  )));
+        } else {
+          await Navigator.of(context).push(CupertinoPageRoute(
+              maintainState: true,
+              builder: (context) => UserProfile(
+                    trainerInstance: trainerInstance,
+                    userInstance: userInstance,
+                  )));
+        }
       },
     );
   }

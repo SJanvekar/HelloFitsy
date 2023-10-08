@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/Constants.dart';
+import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/Home.dart';
@@ -88,6 +89,26 @@ class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
   int _selectedIndex = 0;
 
+  //Class Template Declaration
+  Class classTemplate = Class(
+    classID: '',
+    className: '',
+    classDescription: '',
+    classType: ClassType.Solo,
+    classLocationName: '',
+    classLatitude: 0,
+    classLongitude: 0,
+    classOverallRating: 0,
+    classReviewsAmount: 0,
+    classPrice: 0,
+    classTrainerID: '',
+    classTimes: [],
+    classUserRequirements: '',
+    classWhatToExpect: '',
+    classImageUrl: '',
+  );
+
+  // User template decleration
   User userInstance = User(
     isActive: true,
     userType: UserType.Trainee,
@@ -162,7 +183,10 @@ class _MainPageState extends State<MainPage>
     if (userInstance.userType == UserType.Trainer) {
       //Add Create Class
       _widgetOptions.add(CreateClassSelectType(
-          isTypeSelected: false, classTemplate: classTemplate));
+        isEditMode: false,
+        isTypeSelected: false,
+        classTemplate: classTemplate,
+      ));
 
       //Add Schedule Calendar
       _widgetOptions.add(ScheduleCalendar(
@@ -178,6 +202,7 @@ class _MainPageState extends State<MainPage>
     //Add Personal Profile to list of navigation widgets
     _widgetOptions.add(PersonalProfile(
       userInstance: userInstance,
+      isFromSearch: false,
     ));
 
     setState(() {
@@ -314,8 +339,10 @@ class _MainPageState extends State<MainPage>
                                 height:
                                     MediaQuery.of(context).size.height * 0.75,
                                 child: CreateClassSelectType(
-                                    isTypeSelected: false,
-                                    classTemplate: classTemplate),
+                                  isEditMode: false,
+                                  isTypeSelected: false,
+                                  classTemplate: classTemplate,
+                                ),
                               );
                             },
                           );

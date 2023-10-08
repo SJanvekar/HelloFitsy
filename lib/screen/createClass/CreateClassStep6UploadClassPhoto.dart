@@ -23,6 +23,15 @@ class CreateClassPicture extends StatefulWidget {
 class _CreateClassPicture extends State<CreateClassPicture> {
   File? image;
 
+  //----------
+  @override
+  void initState() {
+    super.initState();
+    print(widget.classTemplate.classImageUrl);
+  }
+
+  //----------
+  @override
   Future pickImage(ImageSource source) async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -78,25 +87,42 @@ class _CreateClassPicture extends State<CreateClassPicture> {
         ),
         MultiSliver(children: [
           pageTitle(),
-          Center(
-              child: Padding(
-            padding: EdgeInsets.only(left: 26, right: 26, top: 55),
-            child: Container(
-              alignment: Alignment.center,
-              width: double.maxFinite,
-              height: 420,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  color: bone,
-                  image: image != null
-                      ? DecorationImage(
-                          image: FileImage(image!), fit: BoxFit.cover)
-                      : DecorationImage(
-                          image: AssetImage(
-                              'assets/images/createClass/uploadClassImage.png'),
-                          fit: BoxFit.contain)),
-            ),
-          )),
+          if (widget.classTemplate.classImageUrl != '' && image == null)
+            Center(
+                child: Padding(
+              padding: EdgeInsets.only(left: 26, right: 26, top: 55),
+              child: Container(
+                  alignment: Alignment.center,
+                  width: double.maxFinite,
+                  height: 420,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: bone,
+                      image: DecorationImage(
+                          image:
+                              NetworkImage(widget.classTemplate.classImageUrl),
+                          fit: BoxFit.cover))),
+            ))
+          else
+            Center(
+                child: Padding(
+              padding: EdgeInsets.only(left: 26, right: 26, top: 55),
+              child: Container(
+                alignment: Alignment.center,
+                width: double.maxFinite,
+                height: 420,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: bone,
+                    image: image != null
+                        ? DecorationImage(
+                            image: FileImage(image!), fit: BoxFit.cover)
+                        : DecorationImage(
+                            image: AssetImage(
+                                'assets/images/createClass/uploadClassImage.png'),
+                            fit: BoxFit.contain)),
+              ),
+            )),
         ])
       ]),
       bottomNavigationBar: SizedBox(

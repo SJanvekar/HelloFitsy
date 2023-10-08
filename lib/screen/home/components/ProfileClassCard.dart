@@ -1,13 +1,21 @@
+import 'dart:convert';
+
 import 'package:animations/animations.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:balance/Requests/ClassLikedRequests.dart';
+import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/ClassCardOpen.dart';
 import 'package:balance/sharedWidgets/classMoreActions.dart';
+import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../sharedWidgets/userProfileComponentLight.dart';
 import 'package:balance/feModels/ClassModel.dart';
 
@@ -50,7 +58,78 @@ class ProfileClassCard extends StatefulWidget {
 }
 
 class _ProfileClassCard extends State<ProfileClassCard> {
+  //Vars
   bool classLiked = false;
+  String trainerUserID = '';
+  String trainerImageURL = '';
+  String trainerUsername = '';
+  String trainerFirstName = '';
+  String trainerLastName = '';
+  late User user;
+
+  //Functions
+
+  void getClassTrainerInfo() async {
+    UserRequests()
+        .getClassTrainerInfo(widget.classItem.classTrainerID)
+        .then((val) async {
+      if (val.data['success']) {
+        trainerUserID = val.data['_id'] ?? '';
+        trainerImageURL = val.data['ProfileImageURL'] ?? '';
+        trainerUsername = val.data['Username'] ?? '';
+        trainerFirstName = val.data['FirstName'] ?? '';
+        trainerLastName = val.data['LastName'] ?? '';
+      } else {
+        print('error getting class trainer info: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
+
+  void getIsLiked() async {
+    final sharedPrefs = await SharedPreferences.getInstance();
+    user = User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
+    ClassLikedRequests()
+        .isLiked(user.userID, widget.classItem.classID)
+        .then((val) async {
+      if (val.data['success']) {
+        classLiked = val.data['result'];
+      } else {
+        print('error getting class liked: ${val.data['result']}');
+      }
+      setState(() {});
+    });
+  }
+
+  void handleLikedPress() async {
+    setState(() {});
+    EasyDebounce.debounce('likedDebouncer', const Duration(milliseconds: 500),
+        () => changeLikedStatus());
+  }
+
+  void changeLikedStatus() async {
+    ClassLikedRequests()
+        .addOrRemoveClassLiked(
+            user.userID, widget.classItem.classID, classLiked)
+        .then((val) async {
+      if (val.data['success']) {
+        print('classLiked is ${val.data['liked']}');
+      } else {
+        print('error ${classLiked ? "adding" : "removing"} class liked');
+        //If this request doesn't work, set liked to false again
+        classLiked = false;
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getClassTrainerInfo();
+    getIsLiked();
+  }
+
   @override
   Widget build(BuildContext context) {
     var iconDistance = MediaQuery.of(context).size.width - (26 * 2) - 45;
@@ -133,10 +212,12 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                     bottom: 20,
                     left: 20,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        classTitle(widget.classItem.className, titleBoxWidth),
+                        SizedBox(
+                            width: 224,
+                            child: Flexible(
+                                child: classTitle(widget.classItem.className))),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 2.0),
                           child: classSubHeader(
@@ -151,22 +232,55 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                     right: 20,
                     child: Row(
                       children: [
-                        GestureDetector(
-                          child: SvgPicture.asset(
-                            classLiked
-                                ? 'assets/icons/generalIcons/favouriteFill.svg'
-                                : 'assets/icons/generalIcons/favouriteEmpty.svg',
-                            color: classLiked ? strawberry : snow,
-                            height: 18,
-                            width: 18,
-                          ),
-                          onTap: () {
-                            setState(() {
-                              classLiked = !classLiked;
-                              HapticFeedback.mediumImpact();
-                            });
-                          },
-                        )
+                        if (widget.classItem.classTrainerID ==
+                            widget.userInstance.userID)
+                          GestureDetector(
+                            child: Icon(
+                              Icons.edit,
+                              color: snow,
+                              size: 26,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(0, 0),
+                                  blurRadius: 8.0,
+                                  color: jetBlack60,
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  fullscreenDialog: true,
+                                  builder: (context) => CreateClassSelectType(
+                                        isTypeSelected: true,
+                                        classTemplate: widget.classItem,
+                                        isEditMode: true,
+                                      )));
+                            },
+                          )
+                        else
+                          GestureDetector(
+                            child: Icon(
+                              classLiked
+                                  ? Icons.favorite_rounded
+                                  : Icons.favorite_outline_rounded,
+                              color: classLiked ? strawberry : snow,
+                              size: 26,
+                              shadows: <Shadow>[
+                                Shadow(
+                                  offset: Offset(0, 0),
+                                  blurRadius: 8.0,
+                                  color: jetBlack60,
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              setState(() {
+                                classLiked = !classLiked;
+                                HapticFeedback.mediumImpact();
+                              });
+                              handleLikedPress();
+                            },
+                          )
                       ],
                     ),
                   ),
@@ -181,21 +295,25 @@ class _ProfileClassCard extends State<ProfileClassCard> {
 }
 
 //Class Type and Title
-Widget classTitle(classTitle, fixedWidth) {
-  return SizedBox(
-    width: fixedWidth,
-    child: AutoSizeText(
-      classTitle,
-      minFontSize: 16,
-      style: TextStyle(
+Widget classTitle(
+  classTitle,
+) {
+  return Text(
+    classTitle,
+    style: TextStyle(
         fontSize: 16,
         fontFamily: 'SFDisplay',
         fontWeight: FontWeight.w600,
         color: snow,
-      ),
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
-    ),
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(0, 0),
+            blurRadius: 8.0,
+            color: jetBlack80,
+          ),
+        ]),
+    maxLines: 2,
+    overflow: TextOverflow.ellipsis,
   );
 }
 
@@ -205,9 +323,16 @@ Widget classSubHeader(classLocation) {
     classLocation,
     style: TextStyle(
         color: bone80,
-        fontSize: 12,
+        fontSize: 13,
         fontWeight: FontWeight.w500,
-        fontFamily: 'SFDisplay'),
+        fontFamily: 'SFDisplay',
+        shadows: <Shadow>[
+          Shadow(
+            offset: Offset(0, 0),
+            blurRadius: 8.0,
+            color: jetBlack80,
+          ),
+        ]),
   );
 }
 
@@ -218,20 +343,33 @@ Widget classPrice(classPrice) {
       Text(
         '\$${oCcy.format(classPrice.round())}',
         style: TextStyle(
-          color: strawberry,
-          fontSize: 18,
-          fontFamily: 'SFDisplay',
-          fontWeight: FontWeight.w600,
-        ),
+            color: snow,
+            fontSize: 18,
+            fontFamily: 'SFDisplay',
+            fontWeight: FontWeight.w600,
+            shadows: <Shadow>[
+              Shadow(
+                offset: Offset(0, 0),
+                blurRadius: 8.0,
+                color: jetBlack80,
+              ),
+            ]),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 1.0),
-        child: Text(' /session',
+        child: Text(' session',
             style: TextStyle(
-                color: snow,
+                color: bone,
                 fontFamily: 'SFDisplay',
-                fontSize: 12,
-                fontWeight: FontWeight.w400)),
+                fontSize: 15,
+                fontWeight: FontWeight.w400,
+                shadows: <Shadow>[
+                  Shadow(
+                    offset: Offset(0, 0),
+                    blurRadius: 8.0,
+                    color: jetBlack80,
+                  ),
+                ])),
       )
     ],
   );

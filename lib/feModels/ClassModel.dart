@@ -36,6 +36,7 @@ class Class {
   late List<Schedule> classTimes;
   late List<String> classCategories;
   File? profileImageTempHolder;
+  bool isEditMode = false;
 
   Class({
     required this.classID,
