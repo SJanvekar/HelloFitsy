@@ -61,20 +61,21 @@ class FITSY extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        color: snow,
-        debugShowCheckedModeBanner: false,
-        title: 'Fitsy',
-        theme: ThemeData(
-          textTheme: Theme.of(context).textTheme.apply(),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-        ),
-        //Place comment on what the changes were if changed for testing purposes
-        //Example:
-        //SignIn(); -> RatingPopup();
+      color: snow,
+      debugShowCheckedModeBanner: false,
+      title: 'Fitsy',
+      theme: ThemeData(
+        textTheme: Theme.of(context).textTheme.apply(),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+      ),
+      //Place comment on what the changes were if changed for testing purposes
+      //Example:
+      //SignIn(); -> RatingPopup();
 
-        home: SignIn());
+      home: SignIn(),
+    );
   }
 }
 

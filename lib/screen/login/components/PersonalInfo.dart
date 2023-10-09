@@ -6,6 +6,7 @@ import 'package:balance/Constants.dart';
 
 import 'package:balance/example.dart';
 import 'package:balance/feModels/AuthModel.dart';
+import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
@@ -426,32 +427,31 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
 //User First + Last Name input
   Widget textInputFullName() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            bottom: 5.0,
-            left: 2.0,
-          ),
-          child: Text(
-            'Name',
-            style: logInPageTextInputTitle,
-          ),
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+        color: bone80,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 15.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              HelloFitsy.user,
+              color: jetBlack60,
+              size: 20,
+            ),
+            Expanded(
+                child: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: textFieldFullName(),
+            )),
+          ],
         ),
-        Container(
-          height: 60,
-          decoration: BoxDecoration(
-              color: snow,
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: jetBlack40)),
-          child: Center(
-              child: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: textFieldFullName(),
-          )),
-        ),
-      ],
+      ),
     );
   }
 
@@ -469,7 +469,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           fontWeight: FontWeight.w500),
       decoration: InputDecoration.collapsed(
         border: InputBorder.none,
-        hintText: 'Enter your first & last name',
+        hintText: 'Fullname',
         hintStyle: const TextStyle(
           fontFamily: 'SFDisplay',
           color: jetBlack40,

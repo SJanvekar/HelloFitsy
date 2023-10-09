@@ -62,7 +62,7 @@ void onSubmitSignInField(context) {
             height: 35,
             decoration: BoxDecoration(
                 color: strawberry,
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
                     color: jetBlack.withOpacity(0.01),
@@ -105,27 +105,18 @@ Widget textInputUsername() {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      // Padding(
-      //   padding: const EdgeInsets.only(
-      //     bottom: 5.0,
-      //     left: 2.0,
-      //   ),
-      //   child: Text(
-      //     'Username',
-      //     style: logInPageTextInputTitle,
-      //   ),
-      // ),
       Container(
         height: 60,
         decoration: BoxDecoration(
-            color: snow,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: jetBlack40)),
+          color: bone80,
+          borderRadius: BorderRadius.circular(20),
+          // border: Border.all(color: jetBlack20)
+        ),
         child: Row(
           children: [
             const Padding(
-              padding: EdgeInsets.only(left: 10.0),
-              child: Icon(HelloFitsy.user, color: jetBlack40, size: 20),
+              padding: EdgeInsets.only(left: 15.0),
+              child: Icon(HelloFitsy.user, color: jetBlack60, size: 20),
             ),
             Expanded(
               child: Padding(
@@ -136,16 +127,16 @@ Widget textInputUsername() {
                     style: const TextStyle(
                         overflow: TextOverflow.fade,
                         fontFamily: 'SFDisplay',
-                        color: jetBlack80,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
+                        color: jetBlack,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
                     // ignore: prefer_const_constructors
                     decoration: InputDecoration.collapsed(
                       border: InputBorder.none,
                       hintText: 'Username',
                       hintStyle: const TextStyle(
                         fontFamily: 'SFDisplay',
-                        color: shark,
+                        color: jetBlack40,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
@@ -323,7 +314,7 @@ class _SignInState extends State<SignIn> {
                   children: [
                     typeFace(MediaQuery.of(context).size.height * 0.08),
                     Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
+                      padding: const EdgeInsets.only(top: 20, bottom: 15),
                       child: textInputUsername(),
                     ),
                     Column(
@@ -342,23 +333,20 @@ class _SignInState extends State<SignIn> {
                         Container(
                           height: 60,
                           decoration: BoxDecoration(
-                              color: snow,
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(color: jetBlack40)),
+                            color: bone80,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
                           child: Row(
                             children: [
                               Padding(
-                                padding: EdgeInsets.only(left: 8),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.only(left: 5, right: 10),
-                                  child: Center(
-                                      child: SvgPicture.asset(
-                                    'assets/icons/generalIcons/lock.svg',
-                                    color: jetBlack40,
-                                    width: 18,
-                                  )),
-                                ),
+                                padding:
+                                    const EdgeInsets.only(left: 15, right: 10),
+                                child: Center(
+                                    child: SvgPicture.asset(
+                                  'assets/icons/generalIcons/lock.svg',
+                                  color: jetBlack60,
+                                  width: 18,
+                                )),
                               ),
                               Expanded(
                                 child: TextField(
@@ -369,15 +357,15 @@ class _SignInState extends State<SignIn> {
                                   style: const TextStyle(
                                       overflow: TextOverflow.fade,
                                       fontFamily: 'SFDisplay',
-                                      color: jetBlack80,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700),
+                                      color: jetBlack,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500),
                                   decoration: InputDecoration.collapsed(
                                     border: InputBorder.none,
                                     hintText: 'Password',
                                     hintStyle: const TextStyle(
                                       fontFamily: 'SFDisplay',
-                                      color: shark,
+                                      color: jetBlack40,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -472,86 +460,6 @@ class _SignInState extends State<SignIn> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
-    );
-  }
-
-  Widget successfulSignInTemp() {
-    return Container(
-      height: 50,
-      width: 323,
-      decoration: BoxDecoration(
-          color: snow,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: jetBlack.withOpacity(0.01),
-              spreadRadius: 0,
-              blurRadius: 38,
-              offset: Offset(0, 24), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.06),
-              spreadRadius: 0,
-              blurRadius: 46,
-              offset: Offset(0, 9), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.10),
-              spreadRadius: 0,
-              blurRadius: 15,
-              offset: Offset(0, 11), // changes position of shadow
-            ),
-          ]),
-      child: Center(
-          child: Text(
-        'Successful login 😁',
-        style: TextStyle(
-            color: strawberry,
-            fontSize: 15,
-            fontFamily: 'SFDisplay',
-            letterSpacing: 0.5,
-            fontWeight: FontWeight.w600),
-      )),
-    );
-  }
-
-  Widget unsuccessfulSignInTemp() {
-    return Container(
-      height: 50,
-      width: 323,
-      decoration: BoxDecoration(
-          color: snow,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: jetBlack.withOpacity(0.01),
-              spreadRadius: 0,
-              blurRadius: 38,
-              offset: Offset(0, 24), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.06),
-              spreadRadius: 0,
-              blurRadius: 46,
-              offset: Offset(0, 9), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.10),
-              spreadRadius: 0,
-              blurRadius: 15,
-              offset: Offset(0, 11), // changes position of shadow
-            ),
-          ]),
-      child: Center(
-          child: Text(
-        'Incorrect username or password  👀 ',
-        style: TextStyle(
-            color: Color(0xff7A7D81),
-            fontSize: 15,
-            fontFamily: 'SFDisplay',
-            letterSpacing: 0.5,
-            fontWeight: FontWeight.w600),
-      )),
     );
   }
 }

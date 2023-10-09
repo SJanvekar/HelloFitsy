@@ -12,24 +12,21 @@ class ForgotPasswordPage extends StatelessWidget {
 //Email
   Widget textInputEmail(BuildContext context) {
     return Container(
-      height: 50,
+      height: 60,
       decoration: BoxDecoration(
-        color: bone60,
+        color: bone80,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 10),
-              child: Center(
-                  child: SvgPicture.asset(
-                'assets/icons/generalIcons/mail.svg',
-                width: 18,
-                color: jetBlack40,
-              )),
-            ),
+            padding: const EdgeInsets.only(left: 15, right: 10),
+            child: Center(
+                child: SvgPicture.asset(
+              'assets/icons/generalIcons/mail.svg',
+              width: 18,
+              color: jetBlack60,
+            )),
           ),
           Expanded(
             child: TextFormField(
@@ -44,15 +41,15 @@ class ForgotPasswordPage extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               style: const TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: jetBlack80,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700),
+                  color: jetBlack,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
               decoration: InputDecoration.collapsed(
                 border: InputBorder.none,
                 hintText: 'Email',
                 hintStyle: const TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark,
+                  color: jetBlack40,
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),

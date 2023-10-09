@@ -1,14 +1,14 @@
 import 'dart:convert';
-
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/PARQ.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
+import 'package:balance/screen/notifications/Notifications.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:balance/sharedWidgets/noticeDisclaimer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -160,7 +160,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   height: 44,
                 ),
 
-                //Notifications & Chat & Create Class
+                //Notifications Icon
                 actions: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -178,9 +178,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           ),
                         ),
                         onTap: () {
-                          // Navigator.of(context).push(CupertinoPageRoute(
-                          //     fullscreenDialog: true,
-                          //     builder: (context) => CreateClassType()));
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => Notifications()));
                         },
                       ),
                     ],
