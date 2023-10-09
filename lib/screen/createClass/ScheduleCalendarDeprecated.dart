@@ -201,15 +201,7 @@ class _ScheduleCalendarOG extends State<ScheduleCalendarOG> {
                 left: 0,
               ),
               child: TextButton(
-                onPressed: () {
-                  print("Back");
-                  Navigator.of(context).pop(CupertinoPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => CreateClassSelectType(
-                            isTypeSelected: true,
-                            classTemplate: classTemplate,
-                          )));
-                },
+                onPressed: () {},
                 child: Text("Back", style: logInPageNavigationButtons),
               ),
             ),

@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 import 'package:sliver_tools/sliver_tools.dart';
-import '../login/components/categorySelect_bloc.dart';
 import 'createClassStep4WhatYouWillNeed.dart';
 
 class CreateClassCategory extends StatefulWidget {
@@ -24,10 +23,21 @@ class CreateClassCategory extends StatefulWidget {
 
 class _CreateClassCategory extends State<CreateClassCategory> {
   //variables
-
   List<String> selectedCategories = [];
   int i = allCategories.length;
-  final categorySelectBloc = CategorySelectBloc();
+//----------
+  @override
+  void initState() {
+    super.initState();
+    checkSelectedCategories();
+  }
+
+  void checkSelectedCategories() {
+    for (var category in allCategories) {
+      category.categoryLiked =
+          classTemplate.classCategories.contains(category.categoryName);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

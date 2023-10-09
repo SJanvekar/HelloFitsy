@@ -3,8 +3,8 @@ import 'package:balance/sharedWidgets/PageDivider.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/material.dart';
 
-class classMoreActions extends StatelessWidget {
-  classMoreActions({
+class UserMoreActions extends StatelessWidget {
+  UserMoreActions({
     Key? key,
   }) : super(key: key);
 

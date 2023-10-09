@@ -8,7 +8,6 @@ var UserFollowerSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        unique: true
     },
 
     //User ID
@@ -16,7 +15,6 @@ var UserFollowerSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        unique: true
     },
 })
 

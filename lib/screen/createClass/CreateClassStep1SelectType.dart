@@ -17,35 +17,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
 
 class CreateClassSelectType extends StatefulWidget {
-  CreateClassSelectType(
-      {Key? key, required this.isTypeSelected, required this.classTemplate})
-      : super(key: key);
-
-  bool isTypeSelected = false;
+  CreateClassSelectType({
+    Key? key,
+    required this.isEditMode,
+    required this.isTypeSelected,
+    required this.classTemplate,
+  }) : super(key: key);
+  bool isEditMode;
+  bool isTypeSelected;
   Class classTemplate;
 
   @override
   State<CreateClassSelectType> createState() => _CreateClassSelectType();
 }
 
-Class classTemplate = Class(
-    classID: '',
-    className: '',
-    classDescription: '',
-    classType: ClassType.Solo,
-    classLocationName: '',
-    classLatitude: 0,
-    classLongitude: 0,
-    classOverallRating: 0,
-    classReviewsAmount: 0,
-    classPrice: 0,
-    classTrainerID: '',
-    classTimes: [],
-    updatedClassTimes: [],
-    canceledClassTimes: [],
-    classUserRequirements: '',
-    classWhatToExpect: '',
-    classImageUrl: '');
+late Class classTemplate;
 
 // enum ClassType { solo, group, virtual }
 
@@ -58,7 +44,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
   Color _currentBorderColorVirtual = snow;
   Color _currentTextColorVirtual = jetBlack;
 
-  void _ButtonOnPressed(classType) {
+  void _buttonOnPressed(classType) {
     setState(() {
       _currentBorderColorSolo = snow;
       _currentTextColorSolo = jetBlack;
@@ -83,10 +69,39 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
     });
   }
 
+  void checkClassTemplateValues() {
+    if (widget.isEditMode) {
+      classTemplate = widget.classTemplate;
+      widget.classTemplate.isEditMode = widget.isEditMode;
+      _buttonOnPressed(widget.classTemplate.classType);
+    } else {
+      classTemplate = Class(
+        classID: '',
+        className: '',
+        classDescription: '',
+        classType: ClassType.Solo,
+        classLocationName: '',
+        classLatitude: 0,
+        classLongitude: 0,
+        classOverallRating: 0,
+        classReviewsAmount: 0,
+        classPrice: 0,
+        classTrainerID: '',
+        classTimes: [],
+        updatedClassTimes: [],
+        canceledClassTimes: [],
+        classUserRequirements: '',
+        classWhatToExpect: '',
+        classImageUrl: '',
+      );
+    }
+  }
+
   //----------
   @override
   void initState() {
     super.initState();
+    checkClassTemplateValues();
   }
 
   @override
@@ -99,6 +114,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
           //Body
           Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 26.0, top: 30),
@@ -154,7 +170,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       ),
                       onTap: () => {
                         setState(() {
-                          _ButtonOnPressed(ClassType.Solo);
+                          _buttonOnPressed(ClassType.Solo);
                           HapticFeedback.mediumImpact();
                           classTemplate.classType = ClassType.Solo;
                           widget.isTypeSelected = true;
@@ -196,7 +212,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                         ),
                         onTap: () => {
                           setState(() {
-                            _ButtonOnPressed(ClassType.Group);
+                            _buttonOnPressed(ClassType.Group);
                             HapticFeedback.mediumImpact();
                             classTemplate.classType = ClassType.Group;
                             widget.isTypeSelected = true;
@@ -237,7 +253,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       ),
                       onTap: () => {
                         setState(() {
-                          _ButtonOnPressed(ClassType.Virtual);
+                          _buttonOnPressed(ClassType.Virtual);
                           HapticFeedback.selectionClick();
                           classTemplate.classType = ClassType.Virtual;
                           widget.isTypeSelected = true;
@@ -261,7 +277,8 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                               if (widget.isTypeSelected == true)
                                 {
                                   Navigator.of(context).push(CupertinoPageRoute(
-                                      fullscreenDialog: true,
+                                      fullscreenDialog:
+                                          !widget.classTemplate.isEditMode,
                                       builder: (context) =>
                                           CreateClassDescription(
                                               classTemplate: classTemplate)))

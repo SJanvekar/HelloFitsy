@@ -59,8 +59,198 @@ Future uploadImage() async {
 }
 
 class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
-  //variables
+  var titleController = TextEditingController();
+  var costController = TextEditingController();
+  var locationController = TextEditingController();
 
+  //----------
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.classTemplate.className;
+    costController.text = widget.classTemplate.classPrice.toString();
+    locationController.text = widget.classTemplate.classLocationName;
+  }
+
+  Widget ClassTitle(Class template) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 15,
+          left: 30,
+          right: 30,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'What is your class called?',
+              style: sectionTitlesClassCreation,
+            ),
+            Container(
+                padding: EdgeInsets.only(top: 0),
+                decoration: BoxDecoration(color: snow),
+                child: TextField(
+                  controller: titleController,
+                  maxLength: 100,
+                  maxLengthEnforcement: MaxLengthEnforcement.none,
+                  autocorrect: true,
+                  cursorColor: ocean,
+                  maxLines: null,
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: jetBlack,
+                      fontSize: 16.5,
+                      fontWeight: FontWeight.w500),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Start typing here',
+                    hintStyle: const TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: shark60,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  onChanged: (val) {
+                    template.className = val;
+                  },
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget ClassCost(Class template) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 30,
+          right: 30,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'How much does your class cost?',
+              style: sectionTitlesClassCreation,
+            ),
+            Container(
+                padding: EdgeInsets.only(top: 0),
+                decoration: BoxDecoration(color: snow),
+                child: TextField(
+                  controller: costController,
+                  maxLength: 30,
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: true, decimal: true),
+                  maxLengthEnforcement: MaxLengthEnforcement.none,
+                  autocorrect: true,
+                  cursorColor: ocean,
+                  maxLines: null,
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: jetBlack,
+                      fontSize: 16.5,
+                      fontWeight: FontWeight.w500),
+                  decoration: InputDecoration(
+                    prefix: Text(
+                      "\$ ",
+                      style: TextStyle(
+                          fontFamily: 'SFDisplay',
+                          color: jetBlack80,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    border: InputBorder.none,
+                    hintText: 'Start typing here',
+                    hintStyle: const TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: shark60,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  onChanged: (val) {
+                    if (val == ' ') {
+                      var price = double.parse(val);
+                      template.classPrice = price;
+                    } else {
+                      return;
+                    }
+                  },
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget ClassLocation(Class template) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 30,
+          right: 30,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Where is your class located?',
+              style: sectionTitlesClassCreation,
+            ),
+            Container(
+                padding: EdgeInsets.only(top: 0),
+                decoration: BoxDecoration(color: snow),
+                child: TextField(
+                  controller: locationController,
+                  maxLength: 80,
+                  maxLengthEnforcement: MaxLengthEnforcement.none,
+                  autocorrect: true,
+                  cursorColor: ocean,
+                  maxLines: null,
+                  textCapitalization: TextCapitalization.sentences,
+                  textInputAction: TextInputAction.done,
+                  textAlign: TextAlign.left,
+                  style: const TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: jetBlack,
+                      fontSize: 16.5,
+                      fontWeight: FontWeight.w500),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Start typing here',
+                    hintStyle: const TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: shark60,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  onChanged: (val) {
+                    //HARD CODED - MUST CHANGE
+                    template.classLocationName = 'NA';
+                    template.classLatitude = 0;
+                    template.classLongitude = 0;
+                  },
+                )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  //variables
   @override
   Widget build(BuildContext context) {
     void createClass() async {
@@ -189,181 +379,6 @@ Widget pageTitle() {
             style: logInPageTitle,
             textAlign: TextAlign.center,
           )),
-    ),
-  );
-}
-
-Widget ClassTitle(Class template) {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        top: 15,
-        left: 30,
-        right: 30,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'What is your class called?',
-            style: sectionTitlesClassCreation,
-          ),
-          Container(
-              padding: EdgeInsets.only(top: 0),
-              decoration: BoxDecoration(color: snow),
-              child: TextField(
-                maxLength: 100,
-                maxLengthEnforcement: MaxLengthEnforcement.none,
-                autocorrect: true,
-                cursorColor: ocean,
-                maxLines: null,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.done,
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: jetBlack,
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Start typing here',
-                  hintStyle: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: shark60,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                onChanged: (val) {
-                  template.className = val;
-                },
-              )),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget ClassCost(Class template) {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 30,
-        right: 30,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'How much does your class cost?',
-            style: sectionTitlesClassCreation,
-          ),
-          Container(
-              padding: EdgeInsets.only(top: 0),
-              decoration: BoxDecoration(color: snow),
-              child: TextField(
-                maxLength: 30,
-                keyboardType: TextInputType.numberWithOptions(
-                    signed: true, decimal: true),
-                maxLengthEnforcement: MaxLengthEnforcement.none,
-                autocorrect: true,
-                cursorColor: ocean,
-                maxLines: null,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.done,
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: jetBlack,
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                  prefix: Text(
-                    "\$ ",
-                    style: TextStyle(
-                        fontFamily: 'SFDisplay',
-                        color: jetBlack80,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  border: InputBorder.none,
-                  hintText: 'Start typing here',
-                  hintStyle: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: shark60,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                onChanged: (val) {
-                  if (val == ' ') {
-                    var price = double.parse(val);
-                    template.classPrice = price;
-                  } else {
-                    return;
-                  }
-                },
-              )),
-        ],
-      ),
-    ),
-  );
-}
-
-Widget ClassLocation(Class template) {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 30,
-        right: 30,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Where is your class located?',
-            style: sectionTitlesClassCreation,
-          ),
-          Container(
-              padding: EdgeInsets.only(top: 0),
-              decoration: BoxDecoration(color: snow),
-              child: TextField(
-                maxLength: 80,
-                maxLengthEnforcement: MaxLengthEnforcement.none,
-                autocorrect: true,
-                cursorColor: ocean,
-                maxLines: null,
-                textCapitalization: TextCapitalization.sentences,
-                textInputAction: TextInputAction.done,
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: jetBlack,
-                    fontSize: 16.5,
-                    fontWeight: FontWeight.w500),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Start typing here',
-                  hintStyle: const TextStyle(
-                    fontFamily: 'SFDisplay',
-                    color: shark60,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                onChanged: (val) {
-                  //HARD CODED - MUST CHANGE
-                  template.classLocationName = 'NA';
-                  template.classLatitude = 0;
-                  template.classLongitude = 0;
-                },
-              )),
-        ],
-      ),
     ),
   );
 }

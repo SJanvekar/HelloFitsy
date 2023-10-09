@@ -371,9 +371,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       final classItem = allClasses[index];
-                      return HomeClassItem(
-                        classItem: classItem,
-                        userInstance: widget.userInstance,
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 25.0),
+                        child: HomeClassItem(
+                          classItem: classItem,
+                          userInstance: widget.userInstance,
+                        ),
                       );
                     },
                     childCount: allClasses.length,
