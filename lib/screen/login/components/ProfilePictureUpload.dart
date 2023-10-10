@@ -193,14 +193,14 @@ Widget pageTitle() {
 
 Widget pageText() {
   return Padding(
-    padding: const EdgeInsets.only(top: 5),
+    padding: const EdgeInsets.only(top: 5, left: 26.0, right: 26.0),
     child: RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
         style: logInPageBodyText,
         children: [
           TextSpan(
-            text: 'Connect with trainers on a more personal level ',
+            text: 'Connect with trainers on a more personal level',
           )
         ],
       ),

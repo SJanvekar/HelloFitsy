@@ -43,8 +43,8 @@ class StripeRequests {
   //Create payment intent
   newPaymentIntent(
     String? customerID,
-    double paymentAmount,
-    double fitsyFee,
+    int paymentAmount,
+    int fitsyFee,
     String accountID,
   ) async {
     try {
@@ -57,7 +57,7 @@ class StripeRequests {
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } catch (e) {
-      print("Stripe Payment Intent Creation Error: ${e}");
+      print("Stripe Payment Intent Creation Error (Test): ${e}");
     }
   }
 }

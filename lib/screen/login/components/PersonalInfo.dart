@@ -99,11 +99,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 ),
                 child: TextButton(
                   onPressed: () {
-                    print("Cancel");
                     Navigator.of(context).pop(CupertinoPageRoute(
                         fullscreenDialog: true, builder: (context) => Login()));
                   },
-                  child: Text("Cancel", style: logInPageNavigationButtons),
+                  child: Text("Back", style: logInPageNavigationButtons),
                 ),
               ),
             ],
@@ -119,8 +118,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
               pageTitle(),
               pageText(),
 
-              //Trainer or Trainee selection
-
               //User text input fields
               Padding(
                 padding: const EdgeInsets.only(
@@ -128,11 +125,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   left: 26.0,
                   right: 26.0,
                 ),
-                child: textInputFullName(),
+                child: Column(
+                  children: [
+                    textInputFullName(),
+                  ],
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 15,
+                  top: 20,
                   left: 26.0,
                   right: 26.0,
                 ),
@@ -140,7 +141,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 15,
+                  top: 20,
                   left: 26.0,
                   right: 26.0,
                 ),
@@ -148,7 +149,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 15,
+                  top: 20,
                   left: 26.0,
                   right: 26.0,
                 ),
@@ -156,7 +157,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 15,
+                  top: 20,
                   left: 26.0,
                   right: 26.0,
                 ),
@@ -174,14 +175,16 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 buttonText: "Continue",
               ),
               onTap: () => {
-                    if (widget.authTemplate.password == passwordConfirmed)
-                      {passwordCheck = true}
-                    else
-                      {
-                        print(
-                            'Not the same, original: ${widget.authTemplate.password}, confirmed: $passwordConfirmed'),
-                        passwordCheck = false
-                      },
+                    //Removing PW confirmation for quicker flow
+
+                    // if (widget.authTemplate.password == passwordConfirmed)
+                    //   {passwordCheck = true}
+                    // else
+                    //   {
+                    //     print(
+                    //         'Not the same, original: ${widget.authTemplate.password}, confirmed: $passwordConfirmed'),
+                    //     passwordCheck = false
+                    //   },
                     if (widget.authTemplate.userEmail == null)
                       {emailValid = false}
                     else
@@ -189,7 +192,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                         emailValid = EmailValidator.validate(
                             widget.authTemplate.userEmail)
                       },
-                    if (passwordCheck && emailValid)
+                    if (emailValid && !showError)
                       {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProfilePictureUpload(
@@ -251,19 +254,22 @@ class _PersonalInfoState extends State<PersonalInfo> {
                               )),
                             ))),
                       }
-                    else if (!passwordCheck)
-                      {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Padding(
-                            padding: const EdgeInsets.only(bottom: 320.0),
-                            child: passwordCheckSnackbar(),
-                          ),
-                          behavior: SnackBarBehavior.floating,
-                          duration: Duration(seconds: 2),
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                        ))
-                      }
+
+                    //Removing PW confirmation for quicker flow
+
+                    // else if (!passwordCheck)
+                    //   {
+                    //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    //       content: Padding(
+                    //         padding: const EdgeInsets.only(bottom: 320.0),
+                    //         child: passwordCheckSnackbar(),
+                    //       ),
+                    //       behavior: SnackBarBehavior.floating,
+                    //       duration: Duration(seconds: 2),
+                    //       backgroundColor: Colors.transparent,
+                    //       elevation: 0,
+                    //     ))
+                    //   }
                   }),
         ),
       ),
@@ -276,25 +282,21 @@ class _PersonalInfoState extends State<PersonalInfo> {
     return Column(
       children: [
         Container(
-          height: 50,
+          height: 60,
           decoration: BoxDecoration(
-            color: bone60,
+            color: bone80,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 8),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 22, right: 10),
-                  child: Center(
-                      child: SvgPicture.asset(
-                    'assets/icons/generalIcons/lock.svg',
-                    width: 20,
-                    height: 25,
-                    color: jetBlack40,
-                  )),
-                ),
+                padding: const EdgeInsets.only(left: 15, right: 10),
+                child: Center(
+                    child: SvgPicture.asset(
+                  'assets/icons/generalIcons/lock.svg',
+                  width: 20,
+                  color: jetBlack60,
+                )),
               ),
               Expanded(
                 child: TextField(
@@ -304,15 +306,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   style: const TextStyle(
                       overflow: TextOverflow.fade,
                       fontFamily: 'SFDisplay',
-                      color: jetBlack80,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700),
+                      color: jetBlack,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500),
                   decoration: InputDecoration.collapsed(
                     border: InputBorder.none,
                     hintText: 'Password',
                     hintStyle: const TextStyle(
                       fontFamily: 'SFDisplay',
-                      color: shark,
+                      color: jetBlack40,
                       fontSize: 15,
                       fontWeight: FontWeight.w500,
                     ),
@@ -340,74 +342,74 @@ class _PersonalInfoState extends State<PersonalInfo> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 15),
-          child: Container(
-            height: 50,
-            decoration: BoxDecoration(
-              color: bone60,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 8),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 22, right: 10),
-                    child: Center(
-                        child: SvgPicture.asset(
-                      'assets/icons/generalIcons/lock.svg',
-                      width: 21,
-                      height: 25,
-                      color: jetBlack40,
-                    )),
-                  ),
-                ),
-                Expanded(
-                  child: TextField(
-                    //Toggle this on and off with the guesture detector on the eyeOff icon
-                    obscureText: _passwordConfirmVisibility,
-                    autocorrect: true,
-                    style: const TextStyle(
-                        overflow: TextOverflow.fade,
-                        fontFamily: 'SFDisplay',
-                        color: jetBlack80,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700),
-                    decoration: InputDecoration.collapsed(
-                      border: InputBorder.none,
-                      hintText: 'Confirm Password',
-                      hintStyle: const TextStyle(
-                        fontFamily: 'SFDisplay',
-                        color: shark,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    onChanged: (val) {
-                      passwordConfirmed = val;
-                    },
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(right: 20, left: 10),
+        // Padding(
+        //   padding: const EdgeInsets.only(top: 15),
+        //   child: Container(
+        //     height: 50,
+        //     decoration: BoxDecoration(
+        //       color: bone60,
+        //       borderRadius: BorderRadius.circular(20),
+        //     ),
+        //     child: Row(
+        //       children: [
+        //         Padding(
+        //           padding: EdgeInsets.only(left: 8),
+        //           child: Padding(
+        //             padding: const EdgeInsets.only(left: 22, right: 10),
+        //             child: Center(
+        //                 child: SvgPicture.asset(
+        //               'assets/icons/generalIcons/lock.svg',
+        //               width: 21,
+        //               height: 25,
+        //               color: jetBlack40,
+        //             )),
+        //           ),
+        //         ),
+        //         Expanded(
+        //           child: TextField(
+        //             //Toggle this on and off with the guesture detector on the eyeOff icon
+        //             obscureText: _passwordConfirmVisibility,
+        //             autocorrect: true,
+        //             style: const TextStyle(
+        //                 overflow: TextOverflow.fade,
+        //                 fontFamily: 'SFDisplay',
+        //                 color: jetBlack80,
+        //                 fontSize: 15,
+        //                 fontWeight: FontWeight.w700),
+        //             decoration: InputDecoration.collapsed(
+        //               border: InputBorder.none,
+        //               hintText: 'Confirm Password',
+        //               hintStyle: const TextStyle(
+        //                 fontFamily: 'SFDisplay',
+        //                 color: shark,
+        //                 fontSize: 15,
+        //                 fontWeight: FontWeight.w500,
+        //               ),
+        //             ),
+        //             onChanged: (val) {
+        //               passwordConfirmed = val;
+        //             },
+        //             textInputAction: TextInputAction.done,
+        //           ),
+        //         ),
+        //         Padding(
+        //             padding: const EdgeInsets.only(right: 20, left: 10),
 
-                    //Switch the eyeOff icon to the eye Icon on Tap
-                    child: GestureDetector(
-                      child: SvgPicture.asset(
-                        _showHideIconConfirm,
-                        color: _eyeIconColorConfirmPassword,
-                        height: _showHideIconHeightConfirm,
-                      ),
-                      onTap: () {
-                        _changePasswordConfirmVisibility();
-                      },
-                    ))
-              ],
-            ),
-          ),
-        ),
+        //             //Switch the eyeOff icon to the eye Icon on Tap
+        //             child: GestureDetector(
+        //               child: SvgPicture.asset(
+        //                 _showHideIconConfirm,
+        //                 color: _eyeIconColorConfirmPassword,
+        //                 height: _showHideIconHeightConfirm,
+        //               ),
+        //               onTap: () {
+        //                 _changePasswordConfirmVisibility();
+        //               },
+        //             ))
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
@@ -425,37 +427,73 @@ class _PersonalInfoState extends State<PersonalInfo> {
     );
   }
 
-//User First + Last Name input
-  Widget textInputFullName() {
-    return Container(
-      height: 60,
-      decoration: BoxDecoration(
-        color: bone80,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 15.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+  Widget pageText() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 5, left: 26.0, right: 26.0),
+      child: RichText(
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          style: logInPageBodyText,
           children: [
-            Icon(
-              HelloFitsy.user,
-              color: jetBlack60,
-              size: 20,
-            ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: textFieldFullName(),
-            )),
+            TextSpan(
+              text: 'Connect with trainers on a more personal level',
+            )
           ],
         ),
       ),
     );
   }
 
-//FastName
+//User First + Last Name input
+  bool showError = false;
+  Widget textInputFullName() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Container(
+          height: 60,
+          decoration: BoxDecoration(
+              color: bone80,
+              borderRadius: BorderRadius.circular(20),
+              border: showError
+                  ? Border.all(color: strawberry)
+                  : Border.all(color: Colors.transparent)),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  HelloFitsy.user,
+                  color: jetBlack60,
+                  size: 20,
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10.0,
+                  ),
+                  child: textFieldFullName(),
+                )),
+              ],
+            ),
+          ),
+        ),
+        if (showError)
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 5.0,
+              right: 5.0,
+            ),
+            child: Text('Please enter your fullname*', style: errorText),
+          )
+      ],
+    );
+  }
+
+//FullName
   Widget textFieldFullName() {
     return TextField(
       autocorrect: true,
@@ -467,7 +505,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
           color: jetBlack,
           fontSize: 16,
           fontWeight: FontWeight.w500),
-      decoration: InputDecoration.collapsed(
+      decoration: InputDecoration(
+        errorStyle: TextStyle(color: strawberry),
         border: InputBorder.none,
         hintText: 'Fullname',
         hintStyle: const TextStyle(
@@ -478,35 +517,23 @@ class _PersonalInfoState extends State<PersonalInfo> {
         ),
       ),
       onChanged: (val) {
-        widget.userTemplate.firstName = val;
-      },
-      textInputAction: TextInputAction.next,
-    );
-  }
+        //Split Val (First name and last name)
+        List<String> nameParts = val.split(' ');
 
-//LastName
-  Widget textInputLastName() {
-    return TextField(
-      autocorrect: true,
-      textCapitalization: TextCapitalization.sentences,
-      style: TextStyle(
-          overflow: TextOverflow.fade,
-          fontFamily: 'SFDisplay',
-          color: jetBlack80,
-          fontSize: 15,
-          fontWeight: FontWeight.w700),
-      decoration: InputDecoration.collapsed(
-        border: InputBorder.none,
-        hintText: '',
-        hintStyle: TextStyle(
-          fontFamily: 'SFDisplay',
-          color: shark,
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      onChanged: (val) {
-        widget.userTemplate.lastName = val;
+        //If both names are provided
+        if (nameParts.length >= 2) {
+          setState(() {
+            widget.userTemplate.firstName = nameParts[0];
+            widget.userTemplate.lastName = nameParts.sublist(1).join(' ');
+            showError = false;
+          });
+        }
+        //if only one name is provided
+        else if (nameParts.length == 1) {
+          setState(() {
+            showError = true;
+          });
+        }
       },
       textInputAction: TextInputAction.next,
     );
@@ -515,24 +542,19 @@ class _PersonalInfoState extends State<PersonalInfo> {
 //Username
   Widget textInputUsername() {
     return Container(
-      height: 50,
+      height: 60,
       decoration: BoxDecoration(
-        color: bone60,
+        color: bone80,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 10),
-              child: Center(
-                  child: SvgPicture.asset(
-                'assets/icons/generalIcons/user.svg',
-                height: 22.5,
-                width: 18.0,
-                color: jetBlack40,
-              )),
+            padding: const EdgeInsets.only(left: 15, right: 10),
+            child: Icon(
+              HelloFitsy.user,
+              color: jetBlack60,
+              size: 20,
             ),
           ),
           Expanded(
@@ -541,15 +563,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
               style: const TextStyle(
                   overflow: TextOverflow.fade,
                   fontFamily: 'SFDisplay',
-                  color: jetBlack80,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700),
+                  color: jetBlack,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
               decoration: InputDecoration.collapsed(
                 border: InputBorder.none,
                 hintText: 'Username',
                 hintStyle: const TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark,
+                  color: jetBlack40,
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
@@ -568,27 +590,24 @@ class _PersonalInfoState extends State<PersonalInfo> {
 //Email
   Widget textInputEmailOrPhone(BuildContext context, bool isEmail) {
     return Container(
-      height: 50,
+      height: 60,
       decoration: BoxDecoration(
-        color: bone60,
+        color: bone80,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 8),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 10),
-              child: Center(
-                  child: SvgPicture.asset(
-                //HARD CODED - MUST CHANGE replace with phone icon asset
-                isEmail
-                    ? 'assets/icons/generalIcons/mail.svg'
-                    : 'assets/icons/generalIcons/mail.svg',
-                width: 18,
-                color: jetBlack40,
-              )),
-            ),
+            padding: const EdgeInsets.only(left: 15, right: 10),
+            child: Center(
+                child: SvgPicture.asset(
+              //HARD CODED - MUST CHANGE replace with phone icon asset
+              isEmail
+                  ? 'assets/icons/generalIcons/mail.svg'
+                  : 'assets/icons/generalIcons/phone.svg',
+              width: 18,
+              color: jetBlack60,
+            )),
           ),
           Expanded(
             child: TextField(
@@ -596,15 +615,15 @@ class _PersonalInfoState extends State<PersonalInfo> {
               style: const TextStyle(
                   overflow: TextOverflow.fade,
                   fontFamily: 'SFDisplay',
-                  color: jetBlack80,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700),
+                  color: jetBlack,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500),
               decoration: InputDecoration.collapsed(
                 border: InputBorder.none,
                 hintText: isEmail ? 'Email' : 'Phone',
                 hintStyle: const TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark,
+                  color: jetBlack40,
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                 ),
@@ -662,7 +681,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 child: Padding(
                   padding: EdgeInsets.only(left: 30.0, right: 30.0),
                   child: Text(
-                    'This email will not be shared with any person or organization, it is for authentication and verification purposes only',
+                    'This information will not be shared with any person or organization, it is for authentication and verification purposes only',
                     style: TextStyle(
                       fontFamily: 'SFDisplay',
                       color: jetBlack60,
@@ -703,27 +722,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget passwordCheckSnackbar() {
-    return Container(
-      height: 50,
-      width: 323,
-      decoration: BoxDecoration(
-        color: strawberry,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Center(
-          child: Text(
-        'Your passwords do not match, please try again.',
-        style: TextStyle(
-            color: snow,
-            fontSize: 15,
-            fontFamily: 'SFDisplay',
-            letterSpacing: 0.5,
-            fontWeight: FontWeight.w500),
-      )),
     );
   }
 }

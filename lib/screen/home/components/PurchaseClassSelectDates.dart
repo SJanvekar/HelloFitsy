@@ -67,7 +67,7 @@ var paymentIntent;
 late String client_secret;
 
 //Temporarily no fitsy commission
-var fitsyFee = 0.00;
+var fitsyFee = 0;
 
 //Initialize the list for times for this class
 List<classTimes> availableTimes = availableTimesTemp;
@@ -86,10 +86,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
 
   Future<void> createPaymentIntent() async {
     try {
-      print(widget.classItem.classPrice);
       final response = await StripeRequests().newPaymentIntent(
           widget.userInstance.stripeCustomerID,
-          10,
+          100,
           fitsyFee,
           widget.trainerStripeAccountID);
 

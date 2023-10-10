@@ -101,8 +101,8 @@ const logInPageNavigationButtons = TextStyle(
 );
 const logInPageTextInputTitle = TextStyle(
     fontFamily: 'SFDisplay',
-    color: jetBlack80,
-    fontSize: 14.5,
+    color: jetBlack60,
+    fontSize: 15,
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.none);
 
@@ -121,6 +121,14 @@ const logInPageBodyStrawberry = TextStyle(
     decoration: TextDecoration.none);
 
 //GENERAL FONTS
+
+const errorText = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: strawberry,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    decoration: TextDecoration.none);
+
 const disclaimerTitle = TextStyle(
     fontFamily: 'SFDisplay',
     color: jetBlack,
