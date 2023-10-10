@@ -4,41 +4,51 @@ const ClassPurchased = require('../models/ClassPurchased');
 var functions = {
 
     //Add New Class fnc
-    addNewClassPurchased: function (req, res){
-        var newClassPurchased = ClassPurchased({
-            StartDate: req.body.StartDate,
-            EndDate: req.body.EndDate,
+    addNewClassPurchased: async function (req, res) {
+        if ((!req.body.ClassID || !req.body.UserID || !req.body.StartDate)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        const newClassTimes = {
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.StartDate + 'Z'),
+            EndDate: new Date(req.body.EndDate + 'Z'),
             Recurrence: req.body.Recurrence,
-            ClassName: req.body.ClassName,
-            ClassImageUrl: req.body.ClassImageUrl,
-            ClassType: req.body.ClassType,
-            ClassTrainer: req.body.ClassTrainer,
-            PurchasedUser: req.body.PurchasedUser,
+        }
+        var newClassPurchased = ClassPurchased({
+            ClassID: req.body.ClassID,
+            UserID: req.body.UserID,
+            ClassTimes: newClassTimes,
         });
-        newClassPurchased.save(function (err, newClassPurchased){
-            if(err){
-                res.json({success: false, msg: err})
-            }
-            else {
-                res.json({success: true, msg: 'Successfully saved'})
-            }
-        })
+        try {
+            await newClassPurchased.save()
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+        console.log("Successfully saved Class Purchased")
+        return res.json({success: true})
     },
 
     // Get Class Information
-    getPurchasedClassSchedule: function (req, res) {
-        ClassPurchased.find({Class: {$in:req.query.ClassID}}, function (err, classScheduleArray) {
-            if (err) {
-                console.log(err)
-                return res.json({success: false, msg: err})
-            } else {
-                return classPromiseAsync(classScheduleArray).then(parsedResponse => 
-                    //RESPONSE string is an array of classes
-                    res.json({success: true, 
-                        classScheduleArray: parsedResponse,
-                    }))
-            }
-        })
+    getClassPurchased: async function (req, res) {
+        if ((!req.query.ClassID || !req.query.UserID)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        try {
+            classPurchasedArray = await ClassPurchased.find({$and:[
+                {'UserID': new mongoose.Types.ObjectId(req.query.UserID)} , 
+                {'ClassID': new mongoose.Types.ObjectId(req.query.ClassID)}]})
+        } catch (err) { 
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+        if (classPurchasedArray && classPurchasedArray.length > 0) {
+            console.log("Successfully found Purchased classes")
+            return res.json({success: true, classPurchased: classPurchasedArray})
+        } else {
+            console.log("Something strange happened or there's no purchased classes")
+            return res.json({success: false, msg: "Couldn't get purchased classes"})
+        }
     },
 }
 

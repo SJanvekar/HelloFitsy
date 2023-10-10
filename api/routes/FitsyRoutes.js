@@ -33,7 +33,7 @@ router.get('/dashboard', (req, res) =>{
 
   //Class Schedule routes
     //Get information for a class schedule
-    router.get('/getSchedule', classPurchasedController.getPurchasedClassSchedule)
+    router.get('/getClassPurchased', classPurchasedController.getClassPurchased)
 
   //Follower routes
     //Get current user's follower list
@@ -82,8 +82,8 @@ router.get('/dashboard', (req, res) =>{
     //Remove Class Liked
     router.post('/removeClassLiked', classLikedController.removeClassLiked)
 
-  //Class Schedule routes
-    router.post('/addClassSchedule', classPurchasedController.addNewClassPurchased)
+  //Class Purchased routes
+    router.post('/addClassPurchased', classPurchasedController.addNewClassPurchased)
 
   //Follower routes
     //Add New Follower
