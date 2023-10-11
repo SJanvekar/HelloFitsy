@@ -295,38 +295,10 @@ class _MainPageState extends State<MainPage>
               items: <BottomNavigationBarItem>[
                 //Home
                 BottomNavigationBarItem(
-                    icon: GestureDetector(
-                      child: Icon(
-                        Icons.add_box_rounded,
-                        color: jetBlack80,
-                        size: 23,
-                      ),
-
-                      //OnTap Open a bottom modal sheet for trianers to add classes
-                      onTap: () {
-                        HapticFeedback.selectionClick();
-                        Timer(Duration(milliseconds: 100), () {
-                          showCupertinoModalPopup(
-                            context: context,
-                            useRootNavigator: true,
-                            semanticsDismissible: true,
-                            barrierDismissible: true,
-                            barrierColor: jetBlack60,
-                            builder: (context) {
-                              return Container(
-                                color: Colors.transparent,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.75,
-                                child: CreateClassSelectType(
-                                  isEditMode: false,
-                                  isTypeSelected: false,
-                                  classTemplate: classTemplate,
-                                ),
-                              );
-                            },
-                          );
-                        });
-                      },
+                    icon: Icon(
+                      HelloFitsy.home,
+                      color: jetBlack80,
+                      size: 20,
                     ),
                     activeIcon: Icon(
                       HelloFitsy.home,

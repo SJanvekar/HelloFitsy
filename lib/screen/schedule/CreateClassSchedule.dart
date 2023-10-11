@@ -61,8 +61,10 @@ List<Class> allClasses = [];
 List<String> trainerIDList = [];
 bool isEditMode = false;
 DateTime _focusedDay = DateTime.now();
-var _formattedDate;
-var _focusedDateStartTimes = [];
+
+//Event Changer Enum
+
+enum EventChanger { single, all }
 
 //Class Placeholder until a class gets selected
 Widget selectClassPlaceholder() {
@@ -134,6 +136,9 @@ Widget selectClassListItem(image, className) {
 }
 
 class _ScheduleCalendar extends State<ScheduleCalendar> {
+  //Event Changer variables
+  EventChanger? _character = EventChanger.single;
+
   //On load function
   void initState() {
     super.initState();
@@ -147,10 +152,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     trainerIDList.clear();
     //Add the userID to trainerIDList
     trainerIDList.add(widget.userInstance.userID);
-    print(trainerIDList);
+
     //Get classes for this trainer
     getClassFeed(trainerIDList);
-    print(_selectedDays);
   }
 
   //Functions -----------------------------------------------------------------
@@ -256,9 +260,31 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
             selectedStartTime, selectedEndTime, selectedRecurrenceType.name)
         .then((val) {
       if (val.data['success']) {
-        print("Successfully edited class schedule");
+        print("Successfully edited class schedules");
+
+        allClasses.clear();
+        //Get classes for this trainer
+        getClassFeed(trainerIDList);
       } else {
-        print("Saving class schedule edit failed: ${val.data['msg']}");
+        print("Saving class schedules edit failed: ${val.data['msg']}");
+      }
+    });
+  }
+
+  void changeClassScheduleSingle() async {
+    ClassRequests()
+        .addUpdatedClassSchedule(selectedClassID, selectedStartTime,
+            selectedEndTime, selectedRecurrenceType.name)
+        .then((val) {
+      if (val.data['success']) {
+        print("Successfully added an instance of updated class schedules");
+
+        allClasses.clear();
+        //Get classes for this trainer
+        getClassFeed(trainerIDList);
+      } else {
+        print(
+            "Adding update class schedule instance edit failed: ${val.data['msg']}");
       }
     });
   }
@@ -269,15 +295,114 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
             selectedStartTime, selectedEndTime, selectedRecurrenceType.name)
         .then((val) {
       if (val.data['success']) {
-        print("Successfully deleted class schedule");
+        print("Successfully deleted class schedules");
+        allClasses.clear();
+        //Get classes for this trainer
+        getClassFeed(trainerIDList);
       } else {
-        print("Deleting class schedule failed: ${val.data['msg']}");
+        print("Deleting class schedules failed: ${val.data['msg']}");
       }
     });
   }
 
+  void deleteClassScheduleSingle() async {
+    ClassRequests()
+        .addCancelledClassSchedule(selectedClassID, selectedStartTime,
+            selectedEndTime, selectedRecurrenceType.name)
+        .then((val) {
+      if (val.data['success']) {
+        print("Successfully deleted selected class schedule");
+        allClasses.clear();
+        //Get classes for this trainer
+        getClassFeed(trainerIDList);
+      } else {
+        print("Deleting selected class schedule failed: ${val.data['msg']}");
+      }
+    });
+  }
+
+  //Edit schedule confirmation
+  eventSingleOrFutureUpdate(context, StateSetter baseSetState) {
+    return StatefulBuilder(builder: (context, eventChangerState) {
+      return Container(
+        padding: EdgeInsets.all(30),
+        decoration: BoxDecoration(
+            shape: BoxShape.rectangle,
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: const [
+              BoxShadow(
+                  color: jetBlack20, offset: Offset(0, 5), blurRadius: 10),
+            ]),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: 5.0, right: 5.0, bottom: 15.0),
+              child: Text(
+                'Update changes for this event or all future events?',
+                style: BodyTextFontBold80,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            ListTile(
+              title: const Text('This event', style: profileBodyTextFont),
+              leading: Radio<EventChanger>(
+                value: EventChanger.single,
+                groupValue: _character,
+                onChanged: (EventChanger? value) {
+                  eventChangerState(() {
+                    _character = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title:
+                  const Text('All future events', style: profileBodyTextFont),
+              leading: Radio<EventChanger>(
+                value: EventChanger.all,
+                groupValue: _character,
+                onChanged: (EventChanger? value) {
+                  eventChangerState(() {
+                    _character = value;
+                  });
+                },
+              ),
+            ),
+            SizedBox(height: 20),
+            GestureDetector(
+                child: BodyButton(
+                    buttonColor: strawberry,
+                    textColor: snow,
+                    buttonText: 'Done'),
+                //Log out function
+                onTap: () => {
+                      HapticFeedback.selectionClick(),
+                      //Figure out whether this is an edit or delete action via isEditMode (True == Editing mode otherwise delete)
+                      isEditMode
+                          ? _character == EventChanger.single
+                              ? changeClassScheduleSingle()
+                              : changeClassSchedule()
+                          //If not edit mode
+                          : _character == EventChanger.single
+                              ? deleteClassScheduleSingle()
+                              : deleteClassSchedule(),
+
+                      //Reset Edit Mode (If true, this should always be false)
+                      isEditMode = false,
+
+                      Navigator.of(context).pop(),
+                    }),
+          ],
+        ),
+      );
+    });
+  }
+
   //Delete schedule confirmation
-  contentBox(context) {
+  contentBox(context, baseScreenState) {
     return Container(
       padding: EdgeInsets.all(30),
       decoration: BoxDecoration(
@@ -314,7 +439,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                           textColor: jetBlack,
                           buttonText: 'Cancel'),
                       onTap: () => {
-                            HapticFeedback.selectionClick(),
                             Navigator.of(context).pop(),
                           }),
                 ),
@@ -329,9 +453,26 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                           buttonText: 'Delete'),
                       //Log out function
                       onTap: () => {
-                            deleteClassSchedule(),
+                            HapticFeedback.selectionClick(),
+                            // deleteClassSchedule(),
                             Navigator.of(context).pop(),
-                            setState(() {})
+                            setState(() {}),
+                            //Update _character to eventChanger.single
+                            _character = EventChanger.single,
+                            //Show all or future events selector
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext eventChangerContext) {
+                                  return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    elevation: 0,
+                                    backgroundColor: Colors.transparent,
+                                    child: eventSingleOrFutureUpdate(
+                                        eventChangerContext, baseScreenState),
+                                  );
+                                })
                           }),
                 ),
               ],
@@ -425,14 +566,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       _focusedDay = focusedDay;
-      _formattedDate =
-          Jiffy.parseFromDateTime(_focusedDay).format(pattern: "MMMM do");
       _selectedDays.clear();
       _selectedDays.add(selectedDay);
 
       determineDaySchedule(allClasses, _selectedDays);
-      print('Map');
-      print(allClasses[0].classTimes.length);
+
       //Set start and end time to date selected
       startTime =
           DateTime(selectedDay.year, selectedDay.month, selectedDay.day);
@@ -440,7 +578,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     });
   }
 
-  void displayClassAndTimePicker() {
+  void displayClassAndTimePicker(StateSetter baseSetState) {
     String formatdates(DateTime dateToFormat) {
       String formattedDate = dateToFormat.toString();
       return Jiffy.parse(formattedDate).format(pattern: "MMMM do");
@@ -563,7 +701,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                                 .only(
                                                                 left: 10.0),
                                                         child: Text(
-                                                          'Start date',
+                                                          'Event start date',
                                                           style:
                                                               settingsDefaultHeaderText,
                                                         ),
@@ -817,9 +955,31 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                             selectedEndTime = endTime;
                                             selectedRecurrenceType =
                                                 recurrenceType;
-                                            changeClassSchedule();
+                                            // changeClassSchedule();
                                             Navigator.of(context).pop();
-                                            getClassFeed(trainerIDList);
+                                            //Update _character to eventChanger.single
+                                            _character = EventChanger.single;
+                                            //Show all or future events selector
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext
+                                                    eventChangerContext) {
+                                                  return Dialog(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15),
+                                                    ),
+                                                    elevation: 0,
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    child:
+                                                        eventSingleOrFutureUpdate(
+                                                            eventChangerContext,
+                                                            baseSetState),
+                                                  );
+                                                });
                                           },
                                         )
                                       : GestureDetector(
@@ -828,9 +988,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                               textColor: snow,
                                               buttonText: 'Add'),
                                           onTap: () {
-                                            addClassSchedule();
-                                            Navigator.of(context).pop();
-                                            getClassFeed(trainerIDList);
+                                            baseSetState(() {
+                                              addClassSchedule();
+                                              Navigator.of(context).pop();
+                                              getClassFeed(trainerIDList);
+                                            });
                                           },
                                         )
                                 ])
@@ -1096,7 +1258,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                         isClassSelected = false;
                         isEditMode = false;
                         recurrenceType = RecurrenceType.None;
-                        displayClassAndTimePicker();
+                        displayClassAndTimePicker(setState);
                       },
                     ),
                   )
@@ -1145,83 +1307,94 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                               //If an exception is thrown here, something went horribly wrong
                               final classItem =
                                   scheduledClassesMap[scheduleItem]!;
-                              return GestureDetector(
-                                child: Slidable(
-                                  endActionPane: ActionPane(
-                                      motion: ScrollMotion(),
-                                      children: [
-                                        //Edit Schedule
-                                        SlidableAction(
-                                          // An action can be bigger than the others.
-                                          flex: 2,
-                                          onPressed: (BuildContext context) {
-                                            selectedClassID = classItem.classID;
-                                            selectedClassName =
-                                                classItem.className;
-                                            selectedScheduleID =
-                                                scheduleItem.scheduleID;
-                                            isEditMode = true;
-                                            isClassSelected = true;
-                                            recurrenceType =
-                                                scheduleItem.recurrence;
-                                            startTime = scheduleItem.startDate;
-                                            endTime = scheduleItem.endDate;
-                                            displayClassAndTimePicker();
-                                          },
-                                          backgroundColor: bone,
-                                          foregroundColor: jetBlack,
-                                          icon: Icons.edit,
-                                          label: 'Edit',
-                                        ),
-                                        SlidableAction(
-                                          flex: 2,
-                                          onPressed: (BuildContext context) {
-                                            selectedClassID =
-                                                selectedClassName =
-                                                    classItem.classID;
-                                            selectedScheduleID =
-                                                scheduleItem.scheduleID;
-                                            selectedStartTime =
-                                                scheduleItem.startDate;
-                                            selectedEndTime =
-                                                scheduleItem.endDate;
-                                            selectedRecurrenceType =
-                                                scheduleItem.recurrence;
-                                            selectedClassName =
-                                                classItem.className;
-                                            selectedClassImageUrl =
-                                                classItem.classImageUrl;
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return Dialog(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15),
-                                                    ),
-                                                    elevation: 0,
-                                                    backgroundColor:
-                                                        Colors.transparent,
-                                                    child: contentBox(context),
-                                                  );
-                                                });
-                                          },
-                                          backgroundColor: strawberry,
-                                          foregroundColor: snow,
-                                          icon: Icons.delete,
-                                          label: 'Delete',
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(10),
-                                              bottomRight: Radius.circular(10)),
-                                        ),
-                                      ]),
-                                  child: ScheduledClassTile(
-                                    classItem: classItem,
-                                    scheduleItem: scheduleItem,
-                                    userInstance: widget.userInstance,
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 10.0),
+                                child: GestureDetector(
+                                  child: Slidable(
+                                    endActionPane: ActionPane(
+                                        motion: ScrollMotion(),
+                                        children: [
+                                          //Edit Schedule
+                                          SlidableAction(
+                                            // An action can be bigger than the others.
+                                            flex: 2,
+                                            onPressed: (BuildContext context) {
+                                              selectedClassID =
+                                                  classItem.classID;
+                                              selectedClassImageUrl =
+                                                  classItem.classImageUrl;
+                                              selectedClassName =
+                                                  classItem.className;
+                                              selectedScheduleID =
+                                                  scheduleItem.scheduleID;
+                                              isEditMode = true;
+                                              isClassSelected = true;
+                                              recurrenceType =
+                                                  scheduleItem.recurrence;
+                                              startTime =
+                                                  scheduleItem.startDate;
+                                              endTime = scheduleItem.endDate;
+                                              displayClassAndTimePicker(
+                                                  setState);
+                                            },
+                                            backgroundColor: bone,
+                                            foregroundColor: jetBlack,
+                                            icon: Icons.edit,
+                                            label: 'Edit',
+                                          ),
+                                          SlidableAction(
+                                            flex: 2,
+                                            onPressed: (BuildContext context) {
+                                              selectedClassID =
+                                                  selectedClassName =
+                                                      classItem.classID;
+                                              selectedScheduleID =
+                                                  scheduleItem.scheduleID;
+                                              selectedStartTime =
+                                                  scheduleItem.startDate;
+                                              selectedEndTime =
+                                                  scheduleItem.endDate;
+                                              selectedRecurrenceType =
+                                                  scheduleItem.recurrence;
+                                              selectedClassName =
+                                                  classItem.className;
+                                              selectedClassImageUrl =
+                                                  classItem.classImageUrl;
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext
+                                                      contentBoxContext) {
+                                                    return Dialog(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                      ),
+                                                      elevation: 0,
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      child: contentBox(
+                                                          contentBoxContext,
+                                                          setState),
+                                                    );
+                                                  });
+                                            },
+                                            backgroundColor: strawberry,
+                                            foregroundColor: snow,
+                                            icon: Icons.delete,
+                                            label: 'Delete',
+                                            borderRadius: BorderRadius.only(
+                                                topRight: Radius.circular(10),
+                                                bottomRight:
+                                                    Radius.circular(10)),
+                                          ),
+                                        ]),
+                                    child: ScheduledClassTile(
+                                      classItem: classItem,
+                                      scheduleItem: scheduleItem,
+                                      userInstance: widget.userInstance,
+                                    ),
                                   ),
                                 ),
                               );

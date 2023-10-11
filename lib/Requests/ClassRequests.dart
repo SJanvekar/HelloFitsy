@@ -28,7 +28,7 @@ class ClassRequests {
             "Categories": classModel.classCategories,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -42,7 +42,7 @@ class ClassRequests {
           "ClassTrainer": encodedArray,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -55,7 +55,7 @@ class ClassRequests {
           "SearchIndex": searchIndex,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -73,7 +73,7 @@ class ClassRequests {
           "Recurrence": recurrence,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -93,7 +93,7 @@ class ClassRequests {
           "NewRecurrence": newRecurrence,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -112,7 +112,7 @@ class ClassRequests {
           "Recurrence": recurrence,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -130,7 +130,7 @@ class ClassRequests {
           "Recurrence": recurrence,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -149,7 +149,7 @@ class ClassRequests {
           "Recurrence": recurrence,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -167,7 +167,7 @@ class ClassRequests {
           "Recurrence": recurrence,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -186,7 +186,7 @@ class ClassRequests {
           "Recurrence": recurrence,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }

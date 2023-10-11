@@ -164,7 +164,7 @@ var functions = {
 
     //Add New Updated Schedule function
     addUpdatedClassTimes: async function (req, res) {
-        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+        if ((!req.body.ClassID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
@@ -188,7 +188,7 @@ var functions = {
 
     //Remove UpdatedSchedule function
     removeUpdatedClassTimes: async function (req, res) {
-        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+        if ((!req.body.ClassID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
@@ -209,7 +209,7 @@ var functions = {
 
     //Add New Cancelled Schedule function
     addCancelledClassTimes: async function (req, res) {
-        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+        if ((!req.body.ClassID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
@@ -233,7 +233,7 @@ var functions = {
 
     //Remove Cancelled Schedule function
     removeCancelledClassTimes: async function (req, res) {
-        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+        if ((!req.body.ClassID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
             return res.json({success: false, msg: 'Missing Information'})
         }
         const newClassTimes = {
