@@ -40,7 +40,8 @@ class Schedule {
       : scheduleID = json['_id'],
         startDate = DateTime.parse(json['StartDate']).toLocal(),
         endDate = DateTime.parse(json['EndDate']).toLocal(),
-        recurrence = stringToRecurrenceType(json['Recurrence'][0]);
+        recurrence = stringToRecurrenceType(
+            json['Recurrence'] == null ? "None" : json['Recurrence'][0]);
 
   Map<String, dynamic> toJson() => {
         '_id': scheduleID,
@@ -145,12 +146,13 @@ class Class {
       };
 }
 
-List<Schedule> parseClassTimes(dynamic testString) {
-  if (testString == null) {
+List<Schedule> parseClassTimes(dynamic dateTimeString) {
+  print(dateTimeString);
+  if (dateTimeString == null) {
     return [];
   }
   List<Schedule> allSchedules = [];
-  (testString as List<dynamic>).forEach((element) {
+  (dateTimeString as List<dynamic>).forEach((element) {
     allSchedules.add(Schedule.fromJson(element));
   });
   return allSchedules;
@@ -173,8 +175,9 @@ ClassType stringToClassType(String string) {
 
 //Semi-hardcoded casting from String to RecurrenceType,
 //not optimal but the best I can think of right now
-RecurrenceType stringToRecurrenceType(String string) {
-  switch (string) {
+RecurrenceType stringToRecurrenceType(String recurrenceString) {
+  // print(recurrenceString);
+  switch (recurrenceString) {
     case "None":
       return RecurrenceType.None;
     case "Daily":
