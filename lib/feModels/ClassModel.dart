@@ -147,7 +147,6 @@ class Class {
 }
 
 List<Schedule> parseClassTimes(dynamic dateTimeString) {
-  print(dateTimeString);
   if (dateTimeString == null) {
     return [];
   }
@@ -176,7 +175,6 @@ ClassType stringToClassType(String string) {
 //Semi-hardcoded casting from String to RecurrenceType,
 //not optimal but the best I can think of right now
 RecurrenceType stringToRecurrenceType(String recurrenceString) {
-  // print(recurrenceString);
   switch (recurrenceString) {
     case "None":
       return RecurrenceType.None;
