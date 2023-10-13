@@ -5,6 +5,7 @@ import 'package:balance/Authentication/authService.dart';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
@@ -802,7 +803,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -812,7 +813,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -824,7 +825,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -869,7 +870,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -879,7 +880,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -891,7 +892,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -969,7 +970,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(

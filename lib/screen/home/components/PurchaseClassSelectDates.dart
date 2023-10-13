@@ -5,6 +5,7 @@ import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

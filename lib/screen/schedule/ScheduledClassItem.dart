@@ -1,4 +1,5 @@
 import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:flutter/material.dart';

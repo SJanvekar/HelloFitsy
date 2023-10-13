@@ -124,6 +124,11 @@ var ClassSchema = new Schema({
         EndDate: {
             type: Date,
         },
+
+        ScheduleReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        }
     }],
 
     //Class Schedules that the user decides to cancel
@@ -137,6 +142,11 @@ var ClassSchema = new Schema({
         EndDate: {
             type: Date,
         },
+
+        ScheduleReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        }
     }],
 
     //Categories (Linked)
