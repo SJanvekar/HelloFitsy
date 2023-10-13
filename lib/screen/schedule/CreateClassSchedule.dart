@@ -177,6 +177,27 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   //Check if a class should be scheduled based on recurrence
   void shouldScheduleClass(Class classItem, DateTime selectedDay) {
+    //Check if there are any updated class schedules for the associated date for this classItem and reduce it into a managable list
+    List<Schedule> selectedDayClassTimes =
+        classItem.updatedClassTimes.where((updatedClassTime) {
+      final DateTime updateClassStartDate = updatedClassTime.startDate;
+      return updateClassStartDate.day == selectedDay.day &&
+          updateClassStartDate.month == selectedDay.month &&
+          updateClassStartDate.year == selectedDay.year;
+    }).toList();
+
+    //Loop through our new list and store the dates that have been updated for the assoicated schedule
+    for (Schedule updatedClassTimeInstance in selectedDayClassTimes) {
+      final DateTime updateClassStartDate = updatedClassTimeInstance.startDate;
+      if (updateClassStartDate.day == selectedDay.day &&
+          updateClassStartDate.month == selectedDay.month &&
+          updateClassStartDate.year == selectedDay.year) {
+        print('something test');
+        print(updatedClassTimeInstance.startDate);
+        print(updatedClassTimeInstance.endDate);
+      }
+    }
+
     for (Schedule classTime in classItem.classTimes) {
       final DateTime startDate = classTime.startDate;
       final RecurrenceType recurrence = classTime.recurrence;
@@ -248,6 +269,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         .then((val) {
       if (val.data['success']) {
         print("Successfully added class schedule");
+        allClasses.clear();
+        //Get classes for this trainer
+        getClassFeed(trainerIDList);
       } else {
         print("Saving class schedule failed: ${val.data['msg']}");
       }
@@ -383,12 +407,46 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       //Figure out whether this is an edit or delete action via isEditMode (True == Editing mode otherwise delete)
                       isEditMode
                           ? _character == EventChanger.single
-                              ? changeClassScheduleSingle()
-                              : changeClassSchedule()
+                              ? {
+                                  //Set Start time & End time to focused day (Since we are only changing this event)
+                                  selectedStartTime = DateTime(
+                                      _focusedDay.year,
+                                      _focusedDay.month,
+                                      _focusedDay.day,
+                                      selectedStartTime.hour,
+                                      selectedStartTime.minute),
+                                  selectedEndTime = DateTime(
+                                      _focusedDay.year,
+                                      _focusedDay.month,
+                                      _focusedDay.day,
+                                      selectedEndTime.hour,
+                                      selectedEndTime.minute),
+
+                                  //Call update class schedule (updated class)
+                                  changeClassScheduleSingle()
+                                }
+                              : {changeClassSchedule()}
                           //If not edit mode
                           : _character == EventChanger.single
-                              ? deleteClassScheduleSingle()
-                              : deleteClassSchedule(),
+                              ? {
+                                  //Set Start time & End time to focused day (Since we are only changing this event)
+                                  startTime = DateTime(
+                                      _focusedDay.year,
+                                      _focusedDay.month,
+                                      _focusedDay.day,
+                                      startTime.hour,
+                                      startTime.minute),
+                                  endTime = DateTime(
+                                      _focusedDay.year,
+                                      _focusedDay.month,
+                                      _focusedDay.day,
+                                      endTime.hour,
+                                      endTime.minute),
+
+                                  //Call delete class schedule (cancelled class)
+                                  deleteClassScheduleSingle()
+                                }
+                              : {deleteClassSchedule()},
 
                       //Reset Edit Mode (If true, this should always be false)
                       isEditMode = false,
@@ -598,7 +656,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
           return StatefulBuilder(
             builder:
                 (BuildContext context, StateSetter setModalSheetPage2State) {
-              String startDateFormatted = formatdates(startTime);
+              String originalStartDateFormatted = formatdates(startTime);
+              String currentEventDateFormatted = formatdates(_focusedDay);
               String startTimeFormatted = formatTimes(startTime);
               String endTimeFormatted = formatTimes(endTime);
 
@@ -668,68 +727,57 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                   SizedBox(height: 25),
                                   Column(
                                     children: [
-                                      GestureDetector(
-                                          child: Container(
-                                            height: 60,
-                                            decoration: BoxDecoration(
-                                              color: bone80,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                topRight: Radius.circular(20),
-                                                bottomRight: Radius.circular(0),
-                                                bottomLeft: Radius.circular(0),
-                                              ),
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Row(
-                                                    children: [
-                                                      Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 20.0),
-                                                          child: Icon(
-                                                            HelloFitsy.calendar,
-                                                            size: 21.5,
-                                                            color: jetBlack,
-                                                          )),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 10.0),
-                                                        child: Text(
-                                                          'Event start date',
-                                                          style:
-                                                              settingsDefaultHeaderText,
-                                                        ),
-                                                      ),
-                                                      Spacer(),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 20.0),
-                                                        child: Text(
-                                                          startDateFormatted,
-                                                          style: popUpMenuText,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
+                                      Container(
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: bone80,
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                            bottomRight: Radius.circular(0),
+                                            bottomLeft: Radius.circular(0),
                                           ),
-                                          onTap: () {
-                                            displayTimePicker(
-                                                true,
-                                                true,
-                                                setModalSheetPage2State,
-                                                context);
-                                          }),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 20.0),
+                                                      child: Icon(
+                                                        HelloFitsy.calendar,
+                                                        size: 21.5,
+                                                        color: jetBlack,
+                                                      )),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10.0),
+                                                    child: Text(
+                                                      'Class date',
+                                                      style:
+                                                          settingsDefaultHeaderText,
+                                                    ),
+                                                  ),
+                                                  Spacer(),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 20.0),
+                                                    child: Text(
+                                                      currentEventDateFormatted,
+                                                      style: popUpMenuText,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                       PageDivider(
                                         leftPadding: 0,
                                         rightPadding: 0,
@@ -754,7 +802,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -764,7 +812,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -776,7 +824,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -821,7 +869,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -831,7 +879,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -843,7 +891,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -921,7 +969,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
@@ -1092,10 +1140,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                   ),
                   onTap: () {
                     Navigator.of(context).pop();
-                    modalsetState(() {
-                      print(startTime);
-                      print(endTime);
-                    });
+                    modalsetState(() {});
                   },
                 )
               ],
@@ -1346,8 +1391,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                             flex: 2,
                                             onPressed: (BuildContext context) {
                                               selectedClassID =
-                                                  selectedClassName =
-                                                      classItem.classID;
+                                                  classItem.classID;
                                               selectedScheduleID =
                                                   scheduleItem.scheduleID;
                                               selectedStartTime =
