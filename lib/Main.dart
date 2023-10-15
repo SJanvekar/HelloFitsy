@@ -104,7 +104,7 @@ class _MainPageState extends State<MainPage>
     classTrainerID: '',
     classTimes: [],
     updatedClassTimes: [],
-    canceledClassTimes: [],
+    cancelledClassTimes: [],
     classUserRequirements: '',
     classWhatToExpect: '',
     classImageUrl: '',

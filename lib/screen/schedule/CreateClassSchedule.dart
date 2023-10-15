@@ -178,30 +178,12 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   //Check if a class should be scheduled based on recurrence
   void shouldScheduleClass(Class classItem, DateTime selectedDay) {
-    //Check if there are any updated class schedules for the associated date for this classItem and reduce it into a managable list
-    List<Schedule> selectedDayClassTimes =
-        classItem.updatedClassTimes.where((updatedClassTime) {
-      final DateTime updateClassStartDate = updatedClassTime.startDate;
-      return updateClassStartDate.day == selectedDay.day &&
-          updateClassStartDate.month == selectedDay.month &&
-          updateClassStartDate.year == selectedDay.year;
-    }).toList();
-
-    //Loop through our new list and store the dates that have been updated for the assoicated schedule
-    for (Schedule updatedClassTimeInstance in selectedDayClassTimes) {
-      final DateTime updateClassStartDate = updatedClassTimeInstance.startDate;
-      if (updateClassStartDate.day == selectedDay.day &&
-          updateClassStartDate.month == selectedDay.month &&
-          updateClassStartDate.year == selectedDay.year) {
-        print('something test');
-        print(updatedClassTimeInstance.startDate);
-        print(updatedClassTimeInstance.endDate);
-      }
-    }
+    classItem.classTimes.sort((a, b) => a.startDate.compareTo(b.startDate));
 
     for (Schedule classTime in classItem.classTimes) {
       final DateTime startDate = classTime.startDate;
       final RecurrenceType recurrence = classTime.recurrence;
+      final String scheduleID = classTime.scheduleID;
 
       //Find the difference between the currently selected date and the start date
       int daysBetween(DateTime from, DateTime to) {
@@ -212,43 +194,88 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
       final int dateDifference = daysBetween(startDate, selectedDay);
 
-      //First check if today is the original start date
-      if (startDate.day == selectedDay.day &&
-          startDate.month == selectedDay.month &&
-          startDate.year == selectedDay.year) {
-        scheduledClassesMap[classTime] = classItem;
-        continue;
-      }
+      //Check if there are any updated class schedules for the associated on the selected date
+      List<Schedule> updatedSelectedDayClassTimeInstances =
+          classItem.updatedClassTimes.where((updatedClassTime) {
+        final DateTime updatedClassStartDate = updatedClassTime.startDate;
+        return updatedClassStartDate.day == selectedDay.day &&
+            updatedClassStartDate.month == selectedDay.month &&
+            updatedClassStartDate.year == selectedDay.year &&
+            updatedClassTime.scheduleReference == classTime.scheduleID;
+      }).toList();
 
-      //Second check the recurrance if it is anything other than none (None is handled with the above check)
-      if (recurrence == RecurrenceType.Daily &&
-          dateDifference % 1 == 0 &&
-          dateDifference != 0) {
-        scheduledClassesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.Weekly &&
-          dateDifference % 7 == 0 &&
-          dateDifference != 0) {
-        scheduledClassesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.BiWeekly &&
-          dateDifference % 14 == 0 &&
-          dateDifference != 0) {
-        scheduledClassesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.Monthly &&
-          startDate.month != selectedDay.month &&
-          startDate.day == selectedDay.day) {
-        scheduledClassesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.Yearly &&
-          startDate.year != selectedDay.year &&
-          startDate.month == selectedDay.month &&
-          startDate.day == selectedDay.day) {
-        scheduledClassesMap[classTime] = classItem;
-        continue;
+      //Check if there are any cancelled class schedules for the associated schedule on the selected date
+      List<Schedule> cancelledSelectedDayClassTimeInstances =
+          classItem.cancelledClassTimes.where((cancelledClassTime) {
+        final DateTime cancelledClassStartDate = cancelledClassTime.startDate;
+        return cancelledClassStartDate.day == selectedDay.day &&
+            cancelledClassStartDate.month == selectedDay.month &&
+            cancelledClassStartDate.year == selectedDay.year &&
+            cancelledClassTime.scheduleReference == classTime.scheduleID;
+      }).toList();
+
+      if (cancelledSelectedDayClassTimeInstances.isEmpty) {
+        //Check Updated selected days
+        if (updatedSelectedDayClassTimeInstances.isNotEmpty) {
+          scheduledClassesMap[updatedSelectedDayClassTimeInstances[0]] =
+              classItem;
+        } else {
+          //First check if today is the original start date
+          if (startDate.day == selectedDay.day &&
+              startDate.month == selectedDay.month &&
+              startDate.year == selectedDay.year) {
+            scheduledClassesMap[classTime] = classItem;
+            continue;
+          }
+
+          //Second check the recurrance if it is anything other than none (None is handled with the above check)
+          if (recurrence == RecurrenceType.Daily &&
+              dateDifference % 1 == 0 &&
+              dateDifference != 0) {
+            scheduledClassesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.Weekly &&
+              dateDifference % 7 == 0 &&
+              dateDifference != 0) {
+            scheduledClassesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.BiWeekly &&
+              dateDifference % 14 == 0 &&
+              dateDifference != 0) {
+            scheduledClassesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.Monthly &&
+              startDate.month != selectedDay.month &&
+              startDate.day == selectedDay.day) {
+            scheduledClassesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.Yearly &&
+              startDate.year != selectedDay.year &&
+              startDate.month == selectedDay.month &&
+              startDate.day == selectedDay.day) {
+            scheduledClassesMap[classTime] = classItem;
+            continue;
+          }
+        }
+      } else {
+        scheduledClassesMap[cancelledSelectedDayClassTimeInstances[0]] =
+            classItem;
+        cancelledSelectedDayClassTimeInstances[0].isCancelled = true;
       }
     }
+  }
+
+//Schedule list organizer
+  Map<Schedule, Class> sortedClassScheduleMap(
+      Map<Schedule, Class> scheduledClassesMapRaw) {
+    // Get the map entries and sort them based on keys (DateTime objects).
+    final sortedEntries = scheduledClassesMap.entries.toList()
+      ..sort((a, b) => a.key.startDate.hour.compareTo(b.key.startDate.hour));
+
+    // Create a new map from the sorted entries.
+    final sortedMap = Map.fromEntries(sortedEntries);
+
+    return sortedMap;
   }
 
 //Determine Today's Schedule
@@ -259,6 +286,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     for (var selectedDay in selectedDays) {
       for (var classItem in allClasses) {
         shouldScheduleClass(classItem, selectedDay);
+
+        //Organize classes by date
+        scheduledClassesMap = sortedClassScheduleMap(scheduledClassesMap);
       }
     }
   }
@@ -266,7 +296,11 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void addClassSchedule() async {
     ClassRequests()
         .addClassSchedule(
-            selectedClassID, startTime, endTime, recurrenceType.name)
+      selectedClassID,
+      startTime,
+      endTime,
+      recurrenceType.name,
+    )
         .then((val) {
       if (val.data['success']) {
         print("Successfully added class schedule");
@@ -281,8 +315,13 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   void changeClassSchedule() async {
     ClassRequests()
-        .changeClassSchedule(selectedClassID, selectedScheduleID,
-            selectedStartTime, selectedEndTime, selectedRecurrenceType.name)
+        .changeClassSchedule(
+      selectedClassID,
+      selectedScheduleID,
+      selectedStartTime,
+      selectedEndTime,
+      selectedRecurrenceType.name,
+    )
         .then((val) {
       if (val.data['success']) {
         print("Successfully edited class schedules");
@@ -298,8 +337,13 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   void changeClassScheduleSingle() async {
     ClassRequests()
-        .addUpdatedClassSchedule(selectedClassID, selectedStartTime,
-            selectedEndTime, selectedRecurrenceType.name)
+        .addUpdatedClassSchedule(
+      selectedClassID,
+      selectedScheduleID,
+      selectedStartTime,
+      selectedEndTime,
+      selectedRecurrenceType.name,
+    )
         .then((val) {
       if (val.data['success']) {
         print("Successfully added an instance of updated class schedules");
@@ -309,15 +353,20 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         getClassFeed(trainerIDList);
       } else {
         print(
-            "Adding update class schedule instance edit failed: ${val.data['msg']}");
+            "Adding updated class schedule instance edit failed: ${val.data['msg']}");
       }
     });
   }
 
   void deleteClassSchedule() async {
     ClassRequests()
-        .removeClassSchedule(selectedClassID, selectedScheduleID,
-            selectedStartTime, selectedEndTime, selectedRecurrenceType.name)
+        .removeClassSchedule(
+      selectedClassID,
+      selectedScheduleID,
+      selectedStartTime,
+      selectedEndTime,
+      selectedRecurrenceType.name,
+    )
         .then((val) {
       if (val.data['success']) {
         print("Successfully deleted class schedules");
@@ -332,8 +381,13 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   void deleteClassScheduleSingle() async {
     ClassRequests()
-        .addCancelledClassSchedule(selectedClassID, selectedStartTime,
-            selectedEndTime, selectedRecurrenceType.name)
+        .addCancelledClassSchedule(
+      selectedClassID,
+      selectedScheduleID,
+      selectedStartTime,
+      selectedEndTime,
+      selectedRecurrenceType.name,
+    )
         .then((val) {
       if (val.data['success']) {
         print("Successfully deleted selected class schedule");
@@ -431,13 +485,13 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                           : _character == EventChanger.single
                               ? {
                                   //Set Start time & End time to focused day (Since we are only changing this event)
-                                  startTime = DateTime(
+                                  selectedStartTime = DateTime(
                                       _focusedDay.year,
                                       _focusedDay.month,
                                       _focusedDay.day,
                                       startTime.hour,
                                       startTime.minute),
-                                  endTime = DateTime(
+                                  selectedEndTime = DateTime(
                                       _focusedDay.year,
                                       _focusedDay.month,
                                       _focusedDay.day,
@@ -803,7 +857,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -813,7 +867,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -825,7 +879,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -870,7 +924,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -880,7 +934,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -892,7 +946,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                    .only(
+                                                                .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -970,7 +1024,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                      .only(
+                                                                  .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(

@@ -8,12 +8,15 @@ class Schedule {
   RecurrenceType recurrence;
   String? scheduleReference;
   late bool isSelected = false;
+  late bool isBooked = true;
+  late bool isCancelled = false;
 
-  Schedule(
-      {required this.scheduleID,
-      required this.startDate,
-      required this.endDate,
-      required this.recurrence});
+  Schedule({
+    required this.scheduleID,
+    required this.startDate,
+    required this.endDate,
+    required this.recurrence,
+  });
 
   //below two functions for '==' and hashcode are necessary to avoid conflicts
   //when using the Schedule object in a map where Schedule is the key

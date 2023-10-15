@@ -89,7 +89,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
         classTrainerID: '',
         classTimes: [],
         updatedClassTimes: [],
-        canceledClassTimes: [],
+        cancelledClassTimes: [],
         classUserRequirements: '',
         classWhatToExpect: '',
         classImageUrl: '',

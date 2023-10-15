@@ -98,8 +98,13 @@ class ClassRequests {
     }
   }
 
-  removeClassSchedule(String classID, String scheduleID, DateTime startDate,
-      DateTime endDate, String recurrence) async {
+  removeClassSchedule(
+    String classID,
+    String scheduleID,
+    DateTime startDate,
+    DateTime endDate,
+    String recurrence,
+  ) async {
     try {
       return await dio.post(
         '$urlDomain/removeClassTimes',
@@ -117,13 +122,19 @@ class ClassRequests {
     }
   }
 
-  addUpdatedClassSchedule(String classID, DateTime startDate, DateTime endDate,
-      String recurrence) async {
+  addUpdatedClassSchedule(
+    String classID,
+    String scheduleID,
+    DateTime startDate,
+    DateTime endDate,
+    String recurrence,
+  ) async {
     try {
       return await dio.post(
         '$urlDomain/addUpdatedClassTimes',
         data: {
           "ClassID": classID,
+          "ScheduleReference": scheduleID,
           "StartDate":
               DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
           "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
@@ -135,8 +146,13 @@ class ClassRequests {
     }
   }
 
-  removeUpdatedClassSchedule(String classID, String scheduleID,
-      DateTime startDate, DateTime endDate, String recurrence) async {
+  removeUpdatedClassSchedule(
+    String classID,
+    String scheduleID,
+    DateTime startDate,
+    DateTime endDate,
+    String recurrence,
+  ) async {
     try {
       return await dio.post(
         '$urlDomain/removeUpdatedClassTimes',
@@ -154,13 +170,19 @@ class ClassRequests {
     }
   }
 
-  addCancelledClassSchedule(String classID, DateTime startDate,
-      DateTime endDate, String recurrence) async {
+  addCancelledClassSchedule(
+    String classID,
+    String scheduleID,
+    DateTime startDate,
+    DateTime endDate,
+    String recurrence,
+  ) async {
     try {
       return await dio.post(
         '$urlDomain/addCancelledClassTimes',
         data: {
           "ClassID": classID,
+          "ScheduleReference": scheduleID,
           "StartDate":
               DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
           "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
@@ -172,8 +194,13 @@ class ClassRequests {
     }
   }
 
-  removeCancelledClassSchedule(String classID, String scheduleID,
-      DateTime startDate, DateTime endDate, String recurrence) async {
+  removeCancelledClassSchedule(
+    String classID,
+    String scheduleID,
+    DateTime startDate,
+    DateTime endDate,
+    String recurrence,
+  ) async {
     try {
       return await dio.post(
         '$urlDomain/removeCancelledClassTimes',

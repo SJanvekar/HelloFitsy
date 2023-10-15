@@ -24,7 +24,7 @@ class Class {
   String classTrainerID;
   late List<Schedule> classTimes;
   late List<Schedule> updatedClassTimes;
-  late List<Schedule> canceledClassTimes;
+  late List<Schedule> cancelledClassTimes;
   late List<String> classCategories;
   File? profileImageTempHolder;
   bool isEditMode = false;
@@ -47,7 +47,7 @@ class Class {
     required this.classPrice,
     required this.classTimes,
     required this.updatedClassTimes,
-    required this.canceledClassTimes,
+    required this.cancelledClassTimes,
 
     //Trainer Info
     required this.classTrainerID,
@@ -70,7 +70,7 @@ class Class {
         classPrice = json['ClassPrice'].toDouble(),
         classTimes = parseClassTimes(json['ClassTimes']),
         updatedClassTimes = parseClassTimes(json['UpdatedClassTimes']),
-        canceledClassTimes = parseClassTimes(json['CanceledClassTimes']),
+        cancelledClassTimes = parseClassTimes(json['CancelledClassTimes']),
         classCategories = List<String>.from(json['Categories']),
         classTrainerID = json['ClassTrainerID'];
 
@@ -95,8 +95,8 @@ class Class {
             json.encode(classTimes.map((element) => element.toJson()).toList()),
         'UpdatedClassTimes': json.encode(
             updatedClassTimes.map((element) => element.toJson()).toList()),
-        'CanceledClassTimes': json.encode(
-            canceledClassTimes.map((element) => element.toJson()).toList()),
+        'CancelledClassTimes': json.encode(
+            cancelledClassTimes.map((element) => element.toJson()).toList()),
         'Categories': json.encode(classCategories),
         'ClassTrainerID': classTrainerID
       };
