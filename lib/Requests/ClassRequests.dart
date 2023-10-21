@@ -206,7 +206,7 @@ class ClassRequests {
         '$urlDomain/removeCancelledClassTimes',
         data: {
           "ClassID": classID,
-          "ScheduleID": scheduleID,
+          "ScheduleReference": scheduleID,
           "StartDate":
               DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
           "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
