@@ -19,7 +19,7 @@ class ScheduledClassTile extends StatelessWidget {
 
   Class classItem;
   User userInstance;
-  Schedule scheduleItem;
+  BaseSchedule scheduleItem;
 
 //------Widgets------
 
@@ -59,58 +59,95 @@ class ScheduledClassTile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        scheduleItem.isCancelled
-            ? Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
-                    child: ClipOval(
-                      child: Container(
-                        height: 10,
-                        width: 10,
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                          color: strawberry,
-                        ),
-                      ),
+        if (scheduleItem is CancelledSchedule)
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: ClipOval(
+                  child: Container(
+                    height: 10,
+                    width: 10,
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: strawberry,
                     ),
                   ),
-                  Text(
-                    'Cancelled',
-                    style: TextStyle(
-                        color: strawberry,
-                        fontFamily: 'SFRounded',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              )
-            : Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
-                    child: ClipOval(
-                      child: Container(
-                        height: 10,
-                        width: 10,
-                        alignment: Alignment.centerLeft,
-                        decoration: BoxDecoration(
-                          color: scheduleItem.isBooked ? emerald : strawberry,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    scheduleItem.isBooked ? 'Available' : 'Booked',
-                    style: TextStyle(
-                        color: scheduleItem.isBooked ? emerald : strawberry,
-                        fontFamily: 'SFRounded',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
+                ),
               ),
-        if (scheduleItem.recurrence == RecurrenceType.BiWeekly)
+              Text(
+                'Cancelled',
+                style: TextStyle(
+                    color: strawberry,
+                    fontFamily: 'SFRounded',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          )
+        else if (scheduleItem is UpdatedSchedule)
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: ClipOval(
+                  child: Container(
+                    height: 10,
+                    width: 10,
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: (scheduleItem as UpdatedSchedule).isBooked
+                          ? emerald
+                          : strawberry,
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                (scheduleItem as UpdatedSchedule).isBooked
+                    ? 'Available'
+                    : 'Booked',
+                style: TextStyle(
+                    color: (scheduleItem as UpdatedSchedule).isBooked
+                        ? emerald
+                        : strawberry,
+                    fontFamily: 'SFRounded',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          )
+        else if (scheduleItem is Schedule)
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 5.0),
+                child: ClipOval(
+                  child: Container(
+                    height: 10,
+                    width: 10,
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      color: (scheduleItem as Schedule).isBooked
+                          ? emerald
+                          : strawberry,
+                    ),
+                  ),
+                ),
+              ),
+              Text(
+                (scheduleItem as Schedule).isBooked ? 'Available' : 'Booked',
+                style: TextStyle(
+                    color: (scheduleItem as Schedule).isBooked
+                        ? emerald
+                        : strawberry,
+                    fontFamily: 'SFRounded',
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        if ((scheduleItem as Schedule).recurrence == RecurrenceType.BiWeekly)
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: Text(
@@ -122,7 +159,7 @@ class ScheduledClassTile extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: Text(
-              scheduleItem.recurrence.name,
+              (scheduleItem as Schedule).recurrence.name,
               style: buttonText1Jetblack80,
             ),
           ),
