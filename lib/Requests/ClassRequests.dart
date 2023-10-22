@@ -59,22 +59,4 @@ class ClassRequests {
       print(e);
     }
   }
-
-  addClassSchedule(String classID, DateTime startDate, DateTime endDate,
-      String recurrence) async {
-    try {
-      return await dio.post(
-        '$urlDomain/addClassTimes',
-        data: {
-          "ClassID": classID,
-          "StartDate":
-              DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
-          "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
-          "Recurrence": recurrence,
-        },
-      );
-    } on DioException catch (e) {
-      print(e);
-    }
-  }
 }

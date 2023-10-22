@@ -142,19 +142,25 @@ var functions = {
 
     //Remove Schedule function
     removeClassTimes: async function (req, res) {
-        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence)) {
+        if ((!req.body.ClassID || !req.body.ScheduleID 
+            // || !req.body.StartDate || !req.body.EndDate || !req.body.Recurrence
+            )) {
             return res.json({success: false, msg: 'Missing Information'})
         }
-        const newClassTimes = {
-            //Add Z for signalling UTC time
-            StartDate: new Date(req.body.StartDate + 'Z'),
-            EndDate: new Date(req.body.EndDate + 'Z'),
-            Recurrence: req.body.Recurrence,
-        }
+        // const newClassTimes = {
+        //     //Add Z for signalling UTC time
+        //     StartDate: new Date(req.body.StartDate + 'Z'),
+        //     EndDate: new Date(req.body.EndDate + 'Z'),
+        //     Recurrence: req.body.Recurrence,
+        // }
         try {
+            // result = await Class.updateOne(
+            //     {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+            //     { $pull: { ClassTimes: newClassTimes } })
             result = await Class.updateOne(
-                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
-                { $pull: { ClassTimes: newClassTimes } })
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID)},
+                { $pull: { ClassTimes: { _id : new mongoose.Types.ObjectId(req.body.ScheduleID)} } }
+            )
         } catch (err) {
             return res.json({success: false, msg: err})
         }
@@ -188,19 +194,25 @@ var functions = {
 
     //Remove UpdatedSchedule function
     removeUpdatedClassTimes: async function (req, res) {
-        if ((!req.body.ClassID || !req.body.StartDate || !req.body.EndDate || !req.body.ScheduleReference)) {
+        if ((!req.body.ClassID || !req.body.ScheduleID
+            // || !req.body.StartDate || !req.body.EndDate || !req.body.ScheduleReference
+            )) {
             return res.json({success: false, msg: 'Missing Information'})
         }
-        const newClassTimes = {
-            //Add Z for signalling UTC time
-            StartDate: new Date(req.body.StartDate + 'Z'),
-            EndDate: new Date(req.body.EndDate + 'Z'),
-            ScheduleReference: new mongoose.Types.ObjectId(req.body.ScheduleReference)
-        }
+        // const newClassTimes = {
+        //     //Add Z for signalling UTC time
+        //     StartDate: new Date(req.body.StartDate + 'Z'),
+        //     EndDate: new Date(req.body.EndDate + 'Z'),
+        //     ScheduleReference: new mongoose.Types.ObjectId(req.body.ScheduleReference)
+        // }
         try {
-            await Class.updateOne(
-                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
-                { $pull: { UpdatedClassTimes: newClassTimes } })
+            // await Class.updateOne(
+            //     {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+            //     { $pull: { UpdatedClassTimes: newClassTimes } })
+            result = await Class.updateOne(
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID)},
+                { $pull: { UpdatedClassTimes: { _id : new mongoose.Types.ObjectId(req.body.ScheduleID)} } }
+            )
         } catch (err) {
             return res.json({success: false, msg: err})
         }
@@ -233,19 +245,25 @@ var functions = {
 
     //Remove Cancelled Schedule function
     removeCancelledClassTimes: async function (req, res) {
-        if ((!req.body.ClassID || !req.body.StartDate || !req.body.EndDate || !req.body.ScheduleReference)) {
+        if ((!req.body.ClassID || !req.body.ScheduleID 
+            // || req.body.StartDate || !req.body.EndDate || !req.body.ScheduleReference
+            )) {
             return res.json({success: false, msg: 'Missing Information'})
         }
-        const newClassTimes = {
-            //Add Z for signalling UTC time
-            StartDate: new Date(req.body.StartDate + 'Z'),
-            EndDate: new Date(req.body.EndDate + 'Z'),
-            ScheduleReference: new mongoose.Types.ObjectId(req.body.ScheduleReference),
-        }
+        // const newClassTimes = {
+        //     //Add Z for signalling UTC time
+        //     StartDate: new Date(req.body.StartDate + 'Z'),
+        //     EndDate: new Date(req.body.EndDate + 'Z'),
+        //     ScheduleReference: new mongoose.Types.ObjectId(req.body.ScheduleReference),
+        // }
         try {
-            await Class.updateOne(
-                {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
-                { $pull: { CancelledClassTimes: newClassTimes } })
+            // await Class.updateOne(
+            //     {_id: new mongoose.Types.ObjectId(req.body.ClassID), 'ClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+            //     { $pull: { CancelledClassTimes: newClassTimes } })
+            result = await Class.updateOne(
+                {_id: new mongoose.Types.ObjectId(req.body.ClassID)},
+                { $pull: { CancelledClassTimes: { _id : new mongoose.Types.ObjectId(req.body.ScheduleID)} } }
+            )
         } catch (err) {
             return res.json({success: false, msg: err})
         }

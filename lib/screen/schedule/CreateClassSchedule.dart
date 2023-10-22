@@ -295,7 +295,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   }
 
   void addClassSchedule() async {
-    ClassRequests()
+    ScheduleRequests()
         .addClassSchedule(
       selectedClassID,
       startTime,
@@ -359,9 +359,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         .removeClassSchedule(
       selectedClassID,
       selectedScheduleID,
-      selectedStartTime,
-      selectedEndTime,
-      selectedRecurrenceType.name,
+      // selectedStartTime,
+      // selectedEndTime,
+      // selectedRecurrenceType.name,
     )
         .then((val) {
       if (val.data['success']) {
@@ -393,8 +393,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   void rescheduleClassSchedule() async {
     ScheduleRequests()
-        .removeCancelledClassSchedule(selectedClassID, selectedScheduleID,
-            selectedStartTime, selectedEndTime)
+        .removeCancelledClassSchedule(
+      selectedClassID, selectedScheduleID,
+      // selectedStartTime, selectedEndTime
+    )
         .then((val) {
       if (val.data['success']) {
         print("Successfully reinstated selected class schedule");

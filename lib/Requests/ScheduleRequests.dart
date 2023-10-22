@@ -7,6 +7,24 @@ import '../feModels/ClassModel.dart';
 class ScheduleRequests {
   Dio dio = new Dio();
 
+  addClassSchedule(String classID, DateTime startDate, DateTime endDate,
+      String recurrence) async {
+    try {
+      return await dio.post(
+        '$urlDomain/addClassTimes',
+        data: {
+          "ClassID": classID,
+          "StartDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
+          "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
+          "Recurrence": recurrence,
+        },
+      );
+    } on DioException catch (e) {
+      print(e);
+    }
+  }
+
   changeClassSchedule(String classID, String scheduleID, DateTime newStartDate,
       DateTime newEndDate, String newRecurrence) async {
     try {
@@ -30,9 +48,9 @@ class ScheduleRequests {
   removeClassSchedule(
     String classID,
     String scheduleID,
-    DateTime startDate,
-    DateTime endDate,
-    String recurrence,
+    // DateTime startDate,
+    // DateTime endDate,
+    // String recurrence,
   ) async {
     try {
       return await dio.post(
@@ -40,10 +58,10 @@ class ScheduleRequests {
         data: {
           "ClassID": classID,
           "ScheduleID": scheduleID,
-          "StartDate":
-              DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
-          "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
-          "Recurrence": recurrence,
+          // "StartDate":
+          //     DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
+          // "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
+          // "Recurrence": recurrence,
         },
       );
     } on DioException catch (e) {
@@ -76,8 +94,8 @@ class ScheduleRequests {
   removeUpdatedClassSchedule(
     String classID,
     String scheduleID,
-    DateTime startDate,
-    DateTime endDate,
+    // DateTime startDate,
+    // DateTime endDate,
   ) async {
     try {
       return await dio.post(
@@ -85,9 +103,9 @@ class ScheduleRequests {
         data: {
           "ClassID": classID,
           "ScheduleID": scheduleID,
-          "StartDate":
-              DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
-          "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
+          // "StartDate":
+          //     DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
+          // "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
         },
       );
     } on DioException catch (e) {
@@ -120,18 +138,18 @@ class ScheduleRequests {
   removeCancelledClassSchedule(
     String classID,
     String scheduleID,
-    DateTime startDate,
-    DateTime endDate,
+    // DateTime startDate,
+    // DateTime endDate,
   ) async {
     try {
       return await dio.post(
         '$urlDomain/removeCancelledClassTimes',
         data: {
           "ClassID": classID,
-          "ScheduleReference": scheduleID,
-          "StartDate":
-              DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
-          "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
+          "ScheduleID": scheduleID,
+          // "StartDate":
+          //     DateFormat("yyyy-MM-ddTHH:mm:ss").format(startDate.toUtc()),
+          // "EndDate": DateFormat("yyyy-MM-ddTHH:mm:ss").format(endDate.toUtc()),
         },
       );
     } on DioException catch (e) {

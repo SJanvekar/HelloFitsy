@@ -147,22 +147,23 @@ class ScheduledClassTile extends StatelessWidget {
               ),
             ],
           ),
-        if ((scheduleItem as Schedule).recurrence == RecurrenceType.BiWeekly)
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: Text(
-              'Bi-Weekly',
-              style: buttonText1Jetblack80,
+        if (scheduleItem is Schedule)
+          if ((scheduleItem as Schedule).recurrence == RecurrenceType.BiWeekly)
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Text(
+                'Bi-Weekly',
+                style: buttonText1Jetblack80,
+              ),
+            )
+          else
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Text(
+                (scheduleItem as Schedule).recurrence.name,
+                style: buttonText1Jetblack80,
+              ),
             ),
-          )
-        else
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: Text(
-              (scheduleItem as Schedule).recurrence.name,
-              style: buttonText1Jetblack80,
-            ),
-          ),
       ],
     );
   }
