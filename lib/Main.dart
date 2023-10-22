@@ -105,6 +105,7 @@ class _MainPageState extends State<MainPage>
     classTimes: [],
     updatedClassTimes: [],
     cancelledClassTimes: [],
+    classCategories: [],
     classUserRequirements: '',
     classWhatToExpect: '',
     classImageUrl: '',

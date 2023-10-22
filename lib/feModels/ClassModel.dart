@@ -42,6 +42,7 @@ class Class {
     required this.classLongitude,
     required this.classOverallRating,
     required this.classReviewsAmount,
+    required this.classCategories,
 
     //Good after this point
     required this.classPrice,

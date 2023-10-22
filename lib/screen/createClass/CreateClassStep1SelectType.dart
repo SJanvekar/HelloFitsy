@@ -90,6 +90,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
         classTimes: [],
         updatedClassTimes: [],
         cancelledClassTimes: [],
+        classCategories: [],
         classUserRequirements: '',
         classWhatToExpect: '',
         classImageUrl: '',
@@ -117,7 +118,9 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 26.0, top: 30),
+            padding: const EdgeInsets.only(
+              left: 26.0,
+            ),
             child: GestureDetector(
               child: Text("Cancel", style: logInPageNavigationButtons),
               onTap: () {
@@ -133,7 +136,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
 
               //Class Type selection
               Padding(
-                padding: const EdgeInsets.only(left: 26, right: 26, top: 50),
+                padding: const EdgeInsets.only(left: 26, right: 26, top: 35),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,7 +183,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
 
                     //Group selection
                     Padding(
-                      padding: const EdgeInsets.only(top: 40.0, bottom: 40.0),
+                      padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
                       child: GestureDetector(
                         child: AnimatedContainer(
                           height: 85.0,
@@ -261,29 +264,33 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       },
                     ),
                     //Bottom Navigation Bar
-                    GestureDetector(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 30,
-                            bottom: 46,
+                    Positioned(
+                      bottom: 45,
+                      child: GestureDetector(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 30,
+                            ),
+                            child: FooterButton(
+                              buttonColor: strawberry,
+                              buttonText: 'Continue',
+                              textColor: snow,
+                            ),
                           ),
-                          child: FooterButton(
-                            buttonColor: strawberry,
-                            buttonText: 'Continue',
-                            textColor: snow,
-                          ),
-                        ),
-                        onTap: () => {
-                              if (widget.isTypeSelected == true)
-                                {
-                                  Navigator.of(context).push(CupertinoPageRoute(
-                                      fullscreenDialog:
-                                          !widget.classTemplate.isEditMode,
-                                      builder: (context) =>
-                                          CreateClassDescription(
-                                              classTemplate: classTemplate)))
-                                }
-                            }),
+                          onTap: () => {
+                                if (widget.isTypeSelected == true)
+                                  {
+                                    Navigator.of(context).push(
+                                        CupertinoPageRoute(
+                                            fullscreenDialog: !widget
+                                                .classTemplate.isEditMode,
+                                            builder: (context) =>
+                                                CreateClassDescription(
+                                                    classTemplate:
+                                                        classTemplate)))
+                                  }
+                              }),
+                    ),
                   ],
                 ),
               ),
