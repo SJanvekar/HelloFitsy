@@ -63,6 +63,8 @@ List<Class> allClasses = [];
 List<String> trainerIDList = [];
 bool isEditMode = false;
 DateTime _focusedDay = DateTime.now();
+List<UpdatedSchedule> updatedSelectedDayClassTimeInstances = [];
+List<CancelledSchedule> cancelledSelectedDayClassTimeInstances = [];
 
 //Event Changer Enum
 
@@ -194,9 +196,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       }
 
       final int dateDifference = daysBetween(startDate, selectedDay);
-
       //Check if there are any updated class schedules for the associated on the selected date
-      List<UpdatedSchedule> updatedSelectedDayClassTimeInstances =
+      updatedSelectedDayClassTimeInstances.clear();
+      updatedSelectedDayClassTimeInstances =
           classItem.updatedClassTimes.where((updatedClassTime) {
         final DateTime updatedClassStartDate = updatedClassTime.startDate;
         return updatedClassStartDate.day == selectedDay.day &&
@@ -206,7 +208,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       }).toList();
 
       //Check if there are any cancelled class schedules for the associated schedule on the selected date
-      List<CancelledSchedule> cancelledSelectedDayClassTimeInstances =
+      cancelledSelectedDayClassTimeInstances.clear();
+      cancelledSelectedDayClassTimeInstances =
           classItem.cancelledClassTimes.where((cancelledClassTime) {
         final DateTime cancelledClassStartDate = cancelledClassTime.startDate;
         return cancelledClassStartDate.day == selectedDay.day &&
@@ -259,6 +262,9 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
           }
         }
       } else {
+        //Do nothing
+
+        //Deprecated
         // scheduledClassesMap[cancelledSelectedDayClassTimeInstances[0]] =
         //     classItem;
         // cancelledSelectedDayClassTimeInstances[0].isCancelled = true;
@@ -298,8 +304,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     ScheduleRequests()
         .addClassSchedule(
       selectedClassID,
-      startTime,
-      endTime,
+      selectedStartTime,
+      selectedEndTime,
       recurrenceType.name,
     )
         .then((val) {
@@ -359,9 +365,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         .removeClassSchedule(
       selectedClassID,
       selectedScheduleID,
-      // selectedStartTime,
-      // selectedEndTime,
-      // selectedRecurrenceType.name,
     )
         .then((val) {
       if (val.data['success']) {
@@ -371,6 +374,30 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
         getClassFeed(trainerIDList);
       } else {
         print("Deleting class schedules failed: ${val.data['msg']}");
+      }
+    });
+  }
+
+  void removeUpdatedSchedule(String? newScheduleID) async {
+    ScheduleRequests()
+        .removeUpdatedClassSchedule(
+      selectedClassID,
+      selectedScheduleID,
+    )
+        .then((val) {
+      if (val.data['success']) {
+        print("Successfully deleted updated class schedule");
+        allClasses.clear();
+        //Get classes for this trainer
+        getClassFeed(trainerIDList);
+        selectedScheduleID = newScheduleID ?? '';
+        if (_character == EventChanger.single) {
+          cancelClassSchedule();
+        } else {
+          deleteClassSchedule();
+        }
+      } else {
+        print("Deleting updated class schedules failed: ${val.data['msg']}");
       }
     });
   }
@@ -394,8 +421,8 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   void rescheduleClassSchedule() async {
     ScheduleRequests()
         .removeCancelledClassSchedule(
-      selectedClassID, selectedScheduleID,
-      // selectedStartTime, selectedEndTime
+      selectedClassID,
+      selectedScheduleID,
     )
         .then((val) {
       if (val.data['success']) {
@@ -465,57 +492,66 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                     textColor: snow,
                     buttonText: 'Done'),
                 //Log out function
-                onTap: () => {
-                      HapticFeedback.selectionClick(),
-
-                      //Check if edit mode
-                      isEditMode
-                          ? _character == EventChanger.single
-                              ? {
-                                  //Set Start time & End time to focused day (Since we are only changing this event)
-                                  selectedStartTime = DateTime(
-                                      _focusedDay.year,
-                                      _focusedDay.month,
-                                      _focusedDay.day,
-                                      selectedStartTime.hour,
-                                      selectedStartTime.minute),
-                                  selectedEndTime = DateTime(
-                                      _focusedDay.year,
-                                      _focusedDay.month,
-                                      _focusedDay.day,
-                                      selectedEndTime.hour,
-                                      selectedEndTime.minute),
-
-                                  //Call update class schedule (updated class)
-                                  changeClassScheduleSingle()
-                                }
-                              : {
-                                  changeClassSchedule(),
-                                }
-                          : _character == EventChanger.single
-                              ? {
-                                  //Set Start time & End time to focused day (Since we are only changing this event)
-                                  selectedStartTime = DateTime(
-                                      _focusedDay.year,
-                                      _focusedDay.month,
-                                      _focusedDay.day,
-                                      selectedStartTime.hour,
-                                      selectedStartTime.minute),
-                                  selectedEndTime = DateTime(
-                                      _focusedDay.year,
-                                      _focusedDay.month,
-                                      _focusedDay.day,
-                                      selectedEndTime.hour,
-                                      selectedEndTime.minute),
-
-                                  //Call update class schedule (updated class)
-                                  cancelClassSchedule()
-                                }
-                              : {
-                                  deleteClassSchedule(),
-                                },
-                      Navigator.of(context).pop(),
-                    }),
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  //Set Start time & End time to focused day (Since we are only changing this event)
+                  selectedStartTime = DateTime(
+                      _focusedDay.year,
+                      _focusedDay.month,
+                      _focusedDay.day,
+                      startTime.hour,
+                      startTime.minute);
+                  selectedEndTime = DateTime(
+                      _focusedDay.year,
+                      _focusedDay.month,
+                      _focusedDay.day,
+                      endTime.hour,
+                      endTime.minute);
+                  //Check if edit mode
+                  if (isEditMode) {
+                    if (_character == EventChanger.single) {
+                      //Call update class schedule (updated class)
+                      changeClassScheduleSingle();
+                    } else {
+                      changeClassSchedule();
+                    }
+                  } else {
+                    if (_character == EventChanger.single) {
+                      //Cancelling a single instance of schedule
+                      UpdatedSchedule? matchingSchedule;
+                      if (updatedSelectedDayClassTimeInstances
+                          .any((scheduleItem) {
+                        if (scheduleItem.scheduleID == selectedScheduleID) {
+                          matchingSchedule = scheduleItem;
+                          return true;
+                        }
+                        return false;
+                      })) {
+                        removeUpdatedSchedule(
+                            matchingSchedule!.scheduleReference);
+                      } else {
+                        cancelClassSchedule();
+                      }
+                    } else {
+                      //Cancelling a single instance of schedule
+                      UpdatedSchedule? matchingSchedule;
+                      if (updatedSelectedDayClassTimeInstances
+                          .any((scheduleItem) {
+                        if (scheduleItem.scheduleID == selectedScheduleID) {
+                          matchingSchedule = scheduleItem;
+                          return true;
+                        }
+                        return false;
+                      })) {
+                        removeUpdatedSchedule(
+                            matchingSchedule!.scheduleReference);
+                      } else {
+                        deleteClassSchedule();
+                      }
+                    }
+                  }
+                  Navigator.of(context).pop();
+                }),
           ],
         ),
       );
@@ -572,7 +608,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       //Log out function
                       onTap: () => {
                             HapticFeedback.selectionClick(),
-                            isEditMode == false,
+                            isEditMode = false,
                             Navigator.of(context).pop(),
                             //Show all or future events selector
                             showDialog(
@@ -1252,6 +1288,18 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                               buttonText: 'Add'),
                                           onTap: () {
                                             baseSetState(() {
+                                              selectedStartTime = DateTime(
+                                                  _focusedDay.year,
+                                                  _focusedDay.month,
+                                                  _focusedDay.day,
+                                                  startTime.hour,
+                                                  startTime.minute);
+                                              selectedEndTime = DateTime(
+                                                  _focusedDay.year,
+                                                  _focusedDay.month,
+                                                  _focusedDay.day,
+                                                  endTime.hour,
+                                                  endTime.minute);
                                               addClassSchedule();
                                               Navigator.of(context).pop();
                                               getClassFeed(trainerIDList);
@@ -1592,8 +1640,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                   scheduleItem.scheduleID;
                                               isEditMode = true;
                                               isClassSelected = true;
-                                              // recurrenceType =
-                                              //     scheduleItem.recurrence;
+                                              if (scheduleItem is Schedule) {
+                                                recurrenceType =
+                                                    scheduleItem.recurrence;
+                                              }
                                               startTime =
                                                   scheduleItem.startDate;
                                               endTime = scheduleItem.endDate;
@@ -1608,7 +1658,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                           SlidableAction(
                                             flex: 2,
                                             onPressed: (BuildContext context) {
-                                              isEditMode == false;
+                                              isEditMode = false;
                                               selectedClassID =
                                                   classItem.classID;
                                               selectedScheduleID =
@@ -1617,8 +1667,10 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                   scheduleItem.startDate;
                                               selectedEndTime =
                                                   scheduleItem.endDate;
-                                              // selectedRecurrenceType =
-                                              //     scheduleItem.recurrence;
+                                              if (scheduleItem is Schedule) {
+                                                selectedRecurrenceType =
+                                                    scheduleItem.recurrence;
+                                              }
                                               selectedClassName =
                                                   classItem.className;
                                               selectedClassImageUrl =
