@@ -180,6 +180,28 @@ var functions = {
                         msg: result})
     },
 
+    //Change New Schedule function
+    changeUpdatedClassTimes: async function (req, res) {
+        if ((!req.body.ClassID || !req.body.ScheduleID || !req.body.NewStartDate || !req.body.NewEndDate || !req.body.ScheduleReference)) {
+            return res.json({success: false, msg: 'Missing Information'})
+        }
+        const newClassTimes = {
+            //Add Z for signalling UTC time
+            StartDate: new Date(req.body.NewStartDate + 'Z'),
+            EndDate: new Date(req.body.NewEndDate + 'Z'),
+            ScheduleReference: new mongoose.Types.ObjectId(req.body.ScheduleReference)
+        }
+        try {
+            await Class.updateOne({_id: new mongoose.Types.ObjectId(req.body.ClassID),
+                'UpdatedClassTimes._id': new mongoose.Types.ObjectId(req.body.ScheduleID)},
+                { $set: { 'UpdatedClassTimes.$': newClassTimes 
+            }})
+        } catch (err) {
+            return res.json({success: false, msg: "Failed on changing schedule: " + err})
+        }
+        return res.json({success: true, msg: 'Successfully changed class schedule'})
+    },
+
     //Remove UpdatedSchedule function
     removeUpdatedClassTimes: async function (req, res) {
         if ((!req.body.ClassID || !req.body.ScheduleID)) {

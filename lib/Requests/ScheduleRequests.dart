@@ -84,6 +84,30 @@ class ScheduleRequests {
     }
   }
 
+  changeUpdatedClassSchedule(
+      String classID,
+      String? scheduleID,
+      DateTime newStartDate,
+      DateTime newEndDate,
+      String? scheduleReference) async {
+    try {
+      return await dio.post(
+        '$urlDomain/changeUpdatedClassTimes',
+        data: {
+          "ClassID": classID,
+          "ScheduleID": scheduleID,
+          "NewStartDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(newStartDate.toUtc()),
+          "NewEndDate":
+              DateFormat("yyyy-MM-ddTHH:mm:ss").format(newEndDate.toUtc()),
+          "ScheduleReference": scheduleReference,
+        },
+      );
+    } on DioException catch (e) {
+      print(e);
+    }
+  }
+
   removeUpdatedClassSchedule(
     String classID,
     String scheduleID,

@@ -261,13 +261,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
             continue;
           }
         }
-      } else {
-        //Do nothing
-
-        //Deprecated
-        // scheduledClassesMap[cancelledSelectedDayClassTimeInstances[0]] =
-        //     classItem;
-        // cancelledSelectedDayClassTimeInstances[0].isCancelled = true;
       }
     }
   }
@@ -342,7 +335,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
     });
   }
 
-  void changeClassScheduleSingle() async {
+  void addClassScheduleSingle() async {
     ScheduleRequests()
         .addUpdatedClassSchedule(selectedClassID, selectedScheduleID,
             selectedStartTime, selectedEndTime)
@@ -356,6 +349,25 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
       } else {
         print(
             "Adding updated class schedule instance edit failed: ${val.data['msg']}");
+      }
+    });
+  }
+
+  void changeUpdatedClassSchedule(
+      String? scheduleID, String? scheduleReference) async {
+    ScheduleRequests()
+        .changeUpdatedClassSchedule(selectedClassID, scheduleID,
+            selectedStartTime, selectedEndTime, scheduleReference)
+        .then((val) {
+      if (val.data['success']) {
+        print("Successfully changed updated class schedule");
+
+        allClasses.clear();
+        //Get classes for this trainer
+        getClassFeed(trainerIDList);
+      } else {
+        print(
+            "Changing updated class schedules edit failed: ${val.data['msg']}");
       }
     });
   }
@@ -495,6 +507,16 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 onTap: () {
                   HapticFeedback.selectionClick();
                   //Set Start time & End time to focused day (Since we are only changing this event)
+                  UpdatedSchedule? matchingSchedule;
+                  bool isUpdatedScheduleSelected =
+                      updatedSelectedDayClassTimeInstances.any((scheduleItem) {
+                    if (scheduleItem.scheduleID == selectedScheduleID) {
+                      matchingSchedule = scheduleItem;
+                      return true;
+                    }
+                    return false;
+                  });
+
                   selectedStartTime = DateTime(
                       _focusedDay.year,
                       _focusedDay.month,
@@ -511,22 +533,19 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                   if (isEditMode) {
                     if (_character == EventChanger.single) {
                       //Call update class schedule (updated class)
-                      changeClassScheduleSingle();
+                      if (isUpdatedScheduleSelected) {
+                        changeUpdatedClassSchedule(matchingSchedule?.scheduleID,
+                            matchingSchedule?.scheduleReference);
+                      } else {
+                        addClassScheduleSingle();
+                      }
                     } else {
                       changeClassSchedule();
                     }
                   } else {
                     if (_character == EventChanger.single) {
                       //Cancelling a single instance of schedule
-                      UpdatedSchedule? matchingSchedule;
-                      if (updatedSelectedDayClassTimeInstances
-                          .any((scheduleItem) {
-                        if (scheduleItem.scheduleID == selectedScheduleID) {
-                          matchingSchedule = scheduleItem;
-                          return true;
-                        }
-                        return false;
-                      })) {
+                      if (isUpdatedScheduleSelected) {
                         removeUpdatedSchedule(
                             matchingSchedule!.scheduleReference);
                       } else {
@@ -534,15 +553,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       }
                     } else {
                       //Cancelling a single instance of schedule
-                      UpdatedSchedule? matchingSchedule;
-                      if (updatedSelectedDayClassTimeInstances
-                          .any((scheduleItem) {
-                        if (scheduleItem.scheduleID == selectedScheduleID) {
-                          matchingSchedule = scheduleItem;
-                          return true;
-                        }
-                        return false;
-                      })) {
+                      if (isUpdatedScheduleSelected) {
                         removeUpdatedSchedule(
                             matchingSchedule!.scheduleReference);
                       } else {
@@ -1053,7 +1064,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -1063,7 +1074,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'Start time',
@@ -1075,7 +1086,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           startTimeFormatted,
@@ -1120,7 +1131,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 20.0),
                                                         child: SvgPicture.asset(
                                                           'assets/icons/generalIcons/clock.svg',
@@ -1130,7 +1141,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 left: 10.0),
                                                         child: Text(
                                                           'End time',
@@ -1142,7 +1153,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .only(
+                                                                    .only(
                                                                 right: 20.0),
                                                         child: Text(
                                                           endTimeFormatted,
@@ -1220,7 +1231,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                         Padding(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(
+                                                                      .only(
                                                                   left: 5.0),
                                                           child:
                                                               SvgPicture.asset(
