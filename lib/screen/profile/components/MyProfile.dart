@@ -220,7 +220,7 @@ class _PersonalProfileState extends State<PersonalProfile>
               padding: const EdgeInsets.only(left: 5.0, right: 5.0),
               child: Text(
                 'Are you sure you want to log out?',
-                style: BodyTextFontBold80,
+                style: bodyTextFontBold80,
                 textAlign: TextAlign.center,
               ),
             ),

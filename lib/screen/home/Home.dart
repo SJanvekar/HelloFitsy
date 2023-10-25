@@ -47,7 +47,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    print(widget.userInstance.isStripeDetailsSubmitted);
     getUserFollowing();
     Future.delayed(Duration(milliseconds: 150), () {
       setState(() {});
@@ -110,7 +109,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     ClassRequests().getClass(followingUsernames).then((val) async {
       //get logged in user's following list
       if (val.data['success']) {
-        print('successful get class feed');
         (val.data['classArray'] as List<dynamic>).forEach((element) {
           allClasses.add(Class.fromJson(element));
         });

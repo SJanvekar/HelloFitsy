@@ -60,7 +60,8 @@ dependencies:
   flutter_slidable: ^3.0.0
   easy_debounce: ^2.0.3
   go_router: ^10.1.2
-  flutter_survey: ^0.1.4
+  flutter_survey:
+    path: FITSY_Dependencies/flutter_survey-1.0.4-hijacked
   url_launcher: ^6.1.14
   loading_animation_widget: ^1.2.0+4
   flutter_stripe: ^9.4.0

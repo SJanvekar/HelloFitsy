@@ -1,4 +1,4 @@
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -70,7 +70,7 @@ class ReviewCard extends StatelessWidget {
           padding: const EdgeInsets.only(top: 10.0),
           child: Text(
             'By: ' + 'Salman Janvekar',
-            style: BodyTextFontBold80,
+            style: bodyTextFontBold80,
           ),
         ),
       ],
