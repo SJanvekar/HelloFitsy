@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:balance/constants.dart';
 import 'package:dio/dio.dart';
+import 'package:intl/intl.dart';
 import '../feModels/ClassModel.dart';
 
 class ClassRequests {
@@ -27,7 +28,7 @@ class ClassRequests {
             "Categories": classModel.classCategories,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -41,7 +42,7 @@ class ClassRequests {
           "ClassTrainer": encodedArray,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }
@@ -54,7 +55,7 @@ class ClassRequests {
           "SearchIndex": searchIndex,
         },
       );
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       print(e);
     }
   }

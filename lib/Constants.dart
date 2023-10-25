@@ -108,9 +108,9 @@ const logInPageBodyStrawberry = TextStyle(
 
 //GENERAL FONTS
 const disclaimerTitle = TextStyle(
-    fontFamily: 'SFDisplay',
     color: jetBlack,
-    fontSize: 20,
+    fontFamily: 'SFDisplay',
+    fontSize: 17,
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.none);
 
@@ -287,7 +287,7 @@ const buttonText2snow = TextStyle(
   fontWeight: FontWeight.w600,
   decoration: TextDecoration.none,
 );
-const BodyTextFontBold80 = TextStyle(
+const bodyTextFontBold80 = TextStyle(
     color: jetBlack80,
     fontFamily: 'SFDisplay',
     fontSize: 14.5,
