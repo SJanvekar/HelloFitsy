@@ -99,7 +99,20 @@ router.get('/dashboard', (req, res) =>{
     router.post('/removeClassLiked', classLikedController.removeClassLiked)
 
   //Class Purchased routes
+    //Add Class Purchased
     router.post('/addClassPurchased', classPurchasedController.addNewClassPurchased)
+    //Add Class Purchased Update Schedule
+    router.post('/addClassPurchasedUpdatedSchedule', classPurchasedController.addClassPurchasedUpdatedSchedule)
+    //Change Class Purchased Update Schedule
+    router.post('/changeClassPurchasedUpdatedSchedule', classPurchasedController.changeClassPurchasedUpdatedSchedule)
+    //Add Class Purchased Cancelled Schedule
+    router.post('/addClassPurchasedCancelledSchedule', classPurchasedController.addClassPurchasedCancelledSchedule)
+    //Add Class Purchased Missed
+    router.post('/addClassPurchasedMissed', classPurchasedController.addClassPurchasedMissed)
+    //Add Class Purchased Cancelled
+    router.post('/addClassPurchasedCancelled', classPurchasedController.addClassPurchasedCancelled)
+    //Add Class Purchased Cancellation Reason
+    router.post('/addClassPurchasedCancelReason', classPurchasedController.addClassPurchasedCancelReason)
 
   //Follower routes
     //Add New Follower
