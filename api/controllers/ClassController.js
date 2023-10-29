@@ -1,6 +1,5 @@
 const { default: mongoose } = require('mongoose')
 var Class = require('../models/Class')
-const Schedule = require('../models/Schedule')
 // var jwt = require('jwt-simple')
 
 var functions = {

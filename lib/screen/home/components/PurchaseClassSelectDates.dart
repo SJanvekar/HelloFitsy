@@ -40,7 +40,9 @@ class PurchaseClassSelectDates extends StatefulWidget {
 //Schedule Vars
 List<Class> currentClass = [];
 List<String> trainerIDList = [];
-Map<Schedule, Class> availableTimesMap = {};
+Map<BaseSchedule, Class> availableTimesMap = {};
+List<UpdatedSchedule> updatedSelectedDayClassTimeInstances = [];
+List<CancelledSchedule> cancelledSelectedDayClassTimeInstances = [];
 
 //Stripe Vars
 var paymentIntent;
@@ -91,11 +93,15 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
     for (var selectedDay in selectedDays) {
       for (var classItem in currentClass) {
         shouldScheduleClass(classItem, selectedDay);
+
+        //Organize classes by date
+        availableTimesMap = sortedClassScheduleMap(availableTimesMap);
       }
     }
   }
 
   void shouldScheduleClass(Class classItem, DateTime selectedDay) {
+    classItem.classTimes.sort((a, b) => a.startDate.compareTo(b.startDate));
     for (Schedule classTime in classItem.classTimes) {
       final DateTime startDate = classTime.startDate;
       final RecurrenceType recurrence = classTime.recurrence;
@@ -107,45 +113,86 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
         return (to.difference(from).inHours / 24).round();
       }
 
+      updatedSelectedDayClassTimeInstances.clear();
+      updatedSelectedDayClassTimeInstances =
+          classItem.updatedClassTimes.where((updatedClassTime) {
+        final DateTime updatedClassStartDate = updatedClassTime.startDate;
+        return updatedClassStartDate.day == selectedDay.day &&
+            updatedClassStartDate.month == selectedDay.month &&
+            updatedClassStartDate.year == selectedDay.year &&
+            updatedClassTime.scheduleReference == classTime.scheduleID;
+      }).toList();
+
+      //Check if there are any cancelled class schedules for the associated schedule on the selected date
+      cancelledSelectedDayClassTimeInstances.clear();
+      cancelledSelectedDayClassTimeInstances =
+          classItem.cancelledClassTimes.where((cancelledClassTime) {
+        final DateTime cancelledClassStartDate = cancelledClassTime.startDate;
+        return cancelledClassStartDate.day == selectedDay.day &&
+            cancelledClassStartDate.month == selectedDay.month &&
+            cancelledClassStartDate.year == selectedDay.year &&
+            cancelledClassTime.scheduleReference == classTime.scheduleID;
+      }).toList();
+
       final int dateDifference = daysBetween(startDate, selectedDay);
+      if (cancelledSelectedDayClassTimeInstances.isEmpty) {
+        //Check Updated selected days
+        if (updatedSelectedDayClassTimeInstances.isNotEmpty) {
+          availableTimesMap[updatedSelectedDayClassTimeInstances[0]] =
+              classItem;
+        } else {
+          //First check if today is the original start date
+          if (startDate.day == selectedDay.day &&
+              startDate.month == selectedDay.month &&
+              startDate.year == selectedDay.year) {
+            availableTimesMap[classTime] = classItem;
+            continue;
+          }
 
-      //First check if today is the original start date
-      if (startDate.day == selectedDay.day &&
-          startDate.month == selectedDay.month &&
-          startDate.year == selectedDay.year) {
-        availableTimesMap[classTime] = classItem;
-        continue;
-      }
-
-      //Second check the recurrance if it is anything other than none (None is handled with the above check)
-      if (recurrence == RecurrenceType.Daily &&
-          dateDifference % 1 == 0 &&
-          dateDifference != 0) {
-        availableTimesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.Weekly &&
-          dateDifference % 7 == 0 &&
-          dateDifference != 0) {
-        availableTimesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.BiWeekly &&
-          dateDifference % 14 == 0 &&
-          dateDifference != 0) {
-        availableTimesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.Monthly &&
-          startDate.month != selectedDay.month &&
-          startDate.day == selectedDay.day) {
-        availableTimesMap[classTime] = classItem;
-        continue;
-      } else if (recurrence == RecurrenceType.Yearly &&
-          startDate.year != selectedDay.year &&
-          startDate.month == selectedDay.month &&
-          startDate.day == selectedDay.day) {
-        availableTimesMap[classTime] = classItem;
-        continue;
+          //Second check the recurrance if it is anything other than none (None is handled with the above check)
+          if (recurrence == RecurrenceType.Daily &&
+              dateDifference % 1 == 0 &&
+              dateDifference != 0) {
+            availableTimesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.Weekly &&
+              dateDifference % 7 == 0 &&
+              dateDifference != 0) {
+            availableTimesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.BiWeekly &&
+              dateDifference % 14 == 0 &&
+              dateDifference != 0) {
+            availableTimesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.Monthly &&
+              startDate.month != selectedDay.month &&
+              startDate.day == selectedDay.day) {
+            availableTimesMap[classTime] = classItem;
+            continue;
+          } else if (recurrence == RecurrenceType.Yearly &&
+              startDate.year != selectedDay.year &&
+              startDate.month == selectedDay.month &&
+              startDate.day == selectedDay.day) {
+            availableTimesMap[classTime] = classItem;
+            continue;
+          }
+        }
       }
     }
+  }
+
+//Schedule list organizer
+  Map<BaseSchedule, Class> sortedClassScheduleMap(
+      Map<BaseSchedule, Class> scheduledClassesMapRaw) {
+    // Get the map entries and sort them based on keys (DateTime objects).
+    final sortedEntries = availableTimesMap.entries.toList()
+      ..sort((a, b) => a.key.startDate.hour.compareTo(b.key.startDate.hour));
+
+    // Create a new map from the sorted entries.
+    final sortedMap = Map.fromEntries(sortedEntries);
+
+    return sortedMap;
   }
 
 //Stripe Functions ------------------------------------------------------------
@@ -310,7 +357,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
   void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
       HapticFeedback.selectionClick();
-      _focusedDay = focusedDay;
+      _focusedDay = selectedDay;
       _formattedDate =
           Jiffy.parseFromDateTime(_focusedDay).format(pattern: "MMMM do");
       _selectedDays.clear();
