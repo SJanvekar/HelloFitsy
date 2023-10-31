@@ -6,6 +6,7 @@ import 'dart:math';
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
+import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
@@ -56,6 +57,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   String trainerStripeAccountID = '';
   String trainerBio = '';
   late User user;
+  late User classTrainerInstance;
 
   void getClassTrainerInfo() async {
     UserRequests()
@@ -69,11 +71,41 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         trainerLastName = val.data['LastName'] ?? '';
         trainerStripeAccountID = val.data['StripeAccountID'] ?? '';
         trainerBio = val.data['UserBio'] ?? '';
+        checkTrainerStripeAccountIsFullySetUp();
       } else {
         print('error getting class trainer info: ${val.data['msg']}');
       }
       setState(() {});
     });
+  }
+
+  //Check trainer details submitted
+  void checkTrainerStripeAccountIsFullySetUp() async {
+    if (trainerStripeAccountID != '') {
+      UserRequests().getUserInfo(trainerUserID).then((val) async {
+        if (val.data['success']) {
+          classTrainerInstance = User.fromJson(val.data['user']);
+
+          StripeRequests()
+              .retrieveStripeAccount(classTrainerInstance.stripeAccountID)
+              .then((val) async {
+            if (val.data['success']) {
+              final accountDetails = val.data['account'];
+              // Check if 'details_submitted' exists in the response
+              if (accountDetails != null &&
+                  accountDetails.containsKey('details_submitted')) {
+                final isStripeDetailsSubmitted =
+                    accountDetails['details_submitted'];
+                classTrainerInstance.isStripeDetailsSubmitted =
+                    isStripeDetailsSubmitted;
+              }
+            }
+          });
+        } else {
+          print('There has been an error retrieving the trainer instance');
+        }
+      });
+    }
   }
 
   void getIsLiked() async {
@@ -113,7 +145,6 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   @override
   void initState() {
     super.initState();
-    print(showFullTextDesc);
     _scrollController = ScrollController()
       ..addListener(() {
         setState(() {
@@ -124,6 +155,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         });
       });
     getClassTrainerInfo();
+
     getIsLiked();
     setState(() {});
   }
@@ -1018,6 +1050,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                             classItem: widget.classItem,
                             userInstance: widget.userInstance,
                             trainerStripeAccountID: trainerStripeAccountID,
+                            classTrainerInstance: classTrainerInstance,
                           );
                         });
                   });

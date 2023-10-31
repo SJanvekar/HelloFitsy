@@ -1,5 +1,5 @@
 import 'dart:collection';
-
+import 'dart:convert';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
@@ -7,6 +7,7 @@ import 'package:balance/constants.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
@@ -15,7 +16,6 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../../../sharedWidgets/loginFooterButton.dart';
 import '../../../sharedWidgets/pageDivider.dart';
 
@@ -24,10 +24,12 @@ class PurchaseClassSelectDates extends StatefulWidget {
       {Key? key,
       required this.classItem,
       required this.userInstance,
-      required this.trainerStripeAccountID})
+      required this.trainerStripeAccountID,
+      required this.classTrainerInstance})
       : super(key: key);
 
   User userInstance;
+  User classTrainerInstance;
   Class classItem;
   String trainerStripeAccountID;
 
@@ -37,6 +39,7 @@ class PurchaseClassSelectDates extends StatefulWidget {
 }
 
 //Variables
+
 //Schedule Vars
 List<Class> currentClass = [];
 List<String> trainerIDList = [];
@@ -48,7 +51,7 @@ List<CancelledSchedule> cancelledSelectedDayClassTimeInstances = [];
 var paymentIntent;
 late String client_secret;
 //Temporarily no fitsy commission
-var fitsyFee = 0.00;
+int fitsyFee = 0;
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
@@ -90,8 +93,8 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
       List<Class> currentClass, Set<DateTime> selectedDays) {
     availableTimesMap.clear();
 
-    for (var selectedDay in selectedDays) {
-      for (var classItem in currentClass) {
+    for (DateTime selectedDay in selectedDays) {
+      for (Class classItem in currentClass) {
         shouldScheduleClass(classItem, selectedDay);
 
         //Organize classes by date
@@ -199,12 +202,11 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
 
   Future<void> createPaymentIntent() async {
     try {
-      print(widget.classItem.classPrice);
       final response = await StripeRequests().newPaymentIntent(
           widget.userInstance.stripeCustomerID,
-          10,
-          fitsyFee,
-          widget.trainerStripeAccountID);
+          (widget.classItem.classPrice * 100).round(),
+          (fitsyFee * 100).round(),
+          widget.classTrainerInstance.stripeAccountID);
 
       if (response.data['success']) {
         // Store customerID & paymentIntent object
@@ -608,12 +610,23 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                           padding: const EdgeInsets.only(left: 0.0, right: 0.0),
                           child: GestureDetector(
                             child: FooterButton(
-                              buttonColor: strawberry,
-                              buttonText: 'Purchase Class',
+                              buttonColor: widget.classTrainerInstance
+                                      .isStripeDetailsSubmitted
+                                  ? strawberry
+                                  : strawberry40,
+                              buttonText: widget.classTrainerInstance
+                                      .isStripeDetailsSubmitted
+                                  ? 'Purchase Class'
+                                  : 'Class Unavailable',
                               textColor: snow,
                             ),
                             onTap: () => {
-                              makePayment(),
+                              if (widget.classTrainerInstance
+                                  .isStripeDetailsSubmitted)
+                                {
+                                  makePayment(),
+                                }
+
                               // Navigator.of(context).pop()
                             },
                           ),
