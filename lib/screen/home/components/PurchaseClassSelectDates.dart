@@ -47,7 +47,7 @@ List<String> trainerIDList = [];
 Map<BaseSchedule, Class> availableTimesMap = {};
 List<UpdatedSchedule> updatedSelectedDayClassTimeInstances = [];
 List<CancelledSchedule> cancelledSelectedDayClassTimeInstances = [];
-final events = LinkedHashMap<Schedule, List<Event>>(
+final events = LinkedHashMap<DateTime, List<Event>>(
   equals: (a, b) => a == b,
   hashCode: (s) => s.hashCode,
 );
@@ -88,7 +88,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
       } else {
         print('error get class feed: ${val.data['msg']}');
       }
-      determineDaySchedule(currentClass, _selectedDays);
+      // determineDaySchedule(currentClass, _selectedDays);
       setState(() {});
     });
   }
@@ -109,6 +109,10 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
   }
 
   List<Event> _getClassesForDay(DateTime day) {
+    for (Class classItem in currentClass) {
+      shouldScheduleClass(classItem, day);
+    }
+    // WHATTHEFUCK(currentClass, day);
     return events[day] ?? [];
   }
 
@@ -150,6 +154,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
       if (cancelledSelectedDayClassTimeInstances.isEmpty) {
         //Check Updated selected days
         if (updatedSelectedDayClassTimeInstances.isNotEmpty) {
+          if (events[selectedDay] == null) {
+            events[selectedDay] = [Event(classItem.className)];
+          }
           availableTimesMap[updatedSelectedDayClassTimeInstances[0]] =
               classItem;
         } else {
@@ -157,6 +164,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
           if (startDate.day == selectedDay.day &&
               startDate.month == selectedDay.month &&
               startDate.year == selectedDay.year) {
+            if (events[selectedDay] == null) {
+              events[selectedDay] = [Event(classItem.className)];
+            }
             availableTimesMap[classTime] = classItem;
             continue;
           }
@@ -165,27 +175,42 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
           if (recurrence == RecurrenceType.Daily &&
               dateDifference % 1 == 0 &&
               dateDifference != 0) {
+            if (events[selectedDay] == null) {
+              events[selectedDay] = [Event(classItem.className)];
+            }
             availableTimesMap[classTime] = classItem;
             continue;
           } else if (recurrence == RecurrenceType.Weekly &&
               dateDifference % 7 == 0 &&
               dateDifference != 0) {
+            if (events[selectedDay] == null) {
+              events[selectedDay] = [Event(classItem.className)];
+            }
             availableTimesMap[classTime] = classItem;
             continue;
           } else if (recurrence == RecurrenceType.BiWeekly &&
               dateDifference % 14 == 0 &&
               dateDifference != 0) {
+            if (events[selectedDay] == null) {
+              events[selectedDay] = [Event(classItem.className)];
+            }
             availableTimesMap[classTime] = classItem;
             continue;
           } else if (recurrence == RecurrenceType.Monthly &&
               startDate.month != selectedDay.month &&
               startDate.day == selectedDay.day) {
+            if (events[selectedDay] == null) {
+              events[selectedDay] = [Event(classItem.className)];
+            }
             availableTimesMap[classTime] = classItem;
             continue;
           } else if (recurrence == RecurrenceType.Yearly &&
               startDate.year != selectedDay.year &&
               startDate.month == selectedDay.month &&
               startDate.day == selectedDay.day) {
+            if (events[selectedDay] == null) {
+              events[selectedDay] = [Event(classItem.className)];
+            }
             availableTimesMap[classTime] = classItem;
             continue;
           }
