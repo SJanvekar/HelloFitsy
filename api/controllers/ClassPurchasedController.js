@@ -6,7 +6,7 @@ var functions = {
     //Add New Class Purchased
     addNewClassPurchased: async function (req, res) {
         if ((!req.body.ClassID || !req.body.UserID || !req.body.StartDate || !req.body.EndDate || !req.body.DateBooked || !req.body.PricePaid)) {
-            return res.json({success: false, msg: 'Missing Information'})
+            return res.json({success: false, msg: 'Missing Information'}) 
         }
         const newClassTimes = {
             //Add Z for signalling UTC time

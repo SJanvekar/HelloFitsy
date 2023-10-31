@@ -5,6 +5,7 @@ import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/EventModel.dart';
 import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,10 @@ List<String> trainerIDList = [];
 Map<BaseSchedule, Class> availableTimesMap = {};
 List<UpdatedSchedule> updatedSelectedDayClassTimeInstances = [];
 List<CancelledSchedule> cancelledSelectedDayClassTimeInstances = [];
+final events = LinkedHashMap<Schedule, List<Event>>(
+  equals: (a, b) => a == b,
+  hashCode: (s) => s.hashCode,
+);
 
 //Stripe Vars
 var paymentIntent;
@@ -85,19 +90,23 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
     });
   }
 
-  //Determine today's schedule
+  //Determine the selected day's schedule
   void determineDaySchedule(
       List<Class> currentClass, Set<DateTime> selectedDays) {
     availableTimesMap.clear();
 
-    for (var selectedDay in selectedDays) {
-      for (var classItem in currentClass) {
+    for (DateTime selectedDay in selectedDays) {
+      for (Class classItem in currentClass) {
         shouldScheduleClass(classItem, selectedDay);
 
         //Organize classes by date
         availableTimesMap = sortedClassScheduleMap(availableTimesMap);
       }
     }
+  }
+
+  List<Event> _getClassesForDay(DateTime day) {
+    return events[day] ?? [];
   }
 
   void shouldScheduleClass(Class classItem, DateTime selectedDay) {
@@ -454,6 +463,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                     },
                     onDaySelected: _onDaySelected,
                     daysOfWeekStyle: calendarDaysOfWeek,
+                    eventLoader: (day) {
+                      return _getClassesForDay(day);
+                    },
                   ),
                   const SizedBox(height: 20),
                   Padding(
