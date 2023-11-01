@@ -52,11 +52,20 @@ final events = LinkedHashMap<DateTime, List<Event>>(
   hashCode: (s) => s.hashCode,
 );
 
+//variables
+DateTime _focusedDay = DateTime.now();
+var _formattedDate;
+var _focusedDateStartTimes = [];
 //Stripe Vars
 var paymentIntent;
 late String client_secret;
 //Temporarily no fitsy commission
 int fitsyFee = 0;
+
+final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
+  equals: isSameDay,
+  hashCode: getHashCode,
+);
 
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
@@ -303,16 +312,6 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
     }
   }
 
-//variables
-  DateTime _focusedDay = DateTime.now();
-  var _formattedDate;
-  var _focusedDateStartTimes = [];
-
-  final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
-    equals: isSameDay,
-    hashCode: getHashCode,
-  );
-
   CalendarStyle calendarStyle = CalendarStyle(
       selectedDecoration: BoxDecoration(
           color: strawberry, borderRadius: BorderRadius.circular(10.0)),
@@ -522,6 +521,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                                 (context, index) {
                                   final classTime =
                                       availableTimesMap.keys.elementAt(index);
+                                  //The below aren't used, are they needed?
                                   final classItem =
                                       availableTimesMap[classTime]!;
                                   TextStyle startTimeStyle = classStartTime;
