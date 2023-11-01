@@ -79,6 +79,8 @@ router.get('/dashboard', (req, res) =>{
     router.post('/removeClassTimes', classController.removeClassTimes)
     //Add Updated Class Schedule
     router.post('/addUpdatedClassTimes', classController.addUpdatedClassTimes)
+    //Change Updated Class Schedule
+    router.post('/changeUpdatedClassTimes', classController.changeUpdatedClassTimes)
     //Remove Updated Class Schedule
     router.post('/removeUpdatedClassTimes', classController.removeUpdatedClassTimes)
     //Add Cancelled Class Schedule

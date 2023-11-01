@@ -23,8 +23,8 @@ class Class {
   int classReviewsAmount;
   String classTrainerID;
   late List<Schedule> classTimes;
-  late List<Schedule> updatedClassTimes;
-  late List<Schedule> cancelledClassTimes;
+  late List<UpdatedSchedule> updatedClassTimes;
+  late List<CancelledSchedule> cancelledClassTimes;
   late List<String> classCategories;
   File? profileImageTempHolder;
   bool isEditMode = false;
@@ -69,9 +69,11 @@ class Class {
         classOverallRating = json['ClassOverallRating'].toDouble(),
         classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
-        classTimes = parseClassTimes(json['ClassTimes']),
-        updatedClassTimes = parseClassTimes(json['UpdatedClassTimes']),
-        cancelledClassTimes = parseClassTimes(json['CancelledClassTimes']),
+        classTimes = Schedule.parseClassTimes(json['ClassTimes']),
+        updatedClassTimes =
+            UpdatedSchedule.parseClassTimes(json['UpdatedClassTimes']),
+        cancelledClassTimes =
+            CancelledSchedule.parseClassTimes(json['CancelledClassTimes']),
         classCategories = List<String>.from(json['Categories']),
         classTrainerID = json['ClassTrainerID'];
 
@@ -101,17 +103,6 @@ class Class {
         'Categories': json.encode(classCategories),
         'ClassTrainerID': classTrainerID
       };
-}
-
-List<Schedule> parseClassTimes(dynamic dateTimeString) {
-  if (dateTimeString == null) {
-    return [];
-  }
-  List<Schedule> allSchedules = [];
-  (dateTimeString as List<dynamic>).forEach((element) {
-    allSchedules.add(Schedule.fromJson(element));
-  });
-  return allSchedules;
 }
 
 //Semi-hardcoded casting from String to ClassType,
