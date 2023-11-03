@@ -21,13 +21,13 @@ import '../../../sharedWidgets/loginFooterButton.dart';
 import '../../../sharedWidgets/pageDivider.dart';
 
 class PurchaseClassSelectDates extends StatefulWidget {
-  PurchaseClassSelectDates(
-      {Key? key,
-      required this.classItem,
-      required this.userInstance,
-      required this.trainerStripeAccountID,
-      required this.classTrainerInstance})
-      : super(key: key);
+  PurchaseClassSelectDates({
+    Key? key,
+    required this.classItem,
+    required this.userInstance,
+    required this.trainerStripeAccountID,
+    required this.classTrainerInstance,
+  }) : super(key: key);
 
   User userInstance;
   User classTrainerInstance;
@@ -62,6 +62,9 @@ late String client_secret;
 //Temporarily no fitsy commission
 int fitsyFee = 0;
 
+//Current Selected Start Date for class
+DateTime currentSelection = DateTime.now();
+
 final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
   equals: isSameDay,
   hashCode: getHashCode,
@@ -74,10 +77,15 @@ int getHashCode(DateTime key) {
 class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
   void initState() {
     super.initState();
-    _selectedDays.add(_focusedDay);
+
     //Clear all lists and maps
+    availableTimesMap.clear();
+    _selectedDays.clear();
+    _focusedDay = DateTime.now();
+    _selectedDays.add(_focusedDay);
     currentClass.clear();
     trainerIDList.add(widget.classItem.classTrainerID);
+    events.clear();
     getClass(trainerIDList);
   }
 
@@ -97,7 +105,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
       } else {
         print('error get class feed: ${val.data['msg']}');
       }
-      // determineDaySchedule(currentClass, _selectedDays);
+      determineDaySchedule(currentClass, _selectedDays);
       setState(() {});
     });
   }
@@ -241,6 +249,8 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
     return sortedMap;
   }
 
+//Class Purchase Functions
+
 //Stripe Functions ------------------------------------------------------------
 
   Future<void> createPaymentIntent() async {
@@ -313,6 +323,10 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
   }
 
   CalendarStyle calendarStyle = CalendarStyle(
+      markerSizeScale: 0.15,
+      canMarkersOverflow: false,
+      markerDecoration:
+          BoxDecoration(color: strawberry, shape: BoxShape.circle),
       selectedDecoration: BoxDecoration(
           color: strawberry, borderRadius: BorderRadius.circular(10.0)),
       todayTextStyle: TextStyle(
@@ -398,6 +412,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
       _selectedDays.clear();
       _selectedDays.add(selectedDay);
       determineDaySchedule(currentClass, _selectedDays);
+      availableTimesMap.forEach((baseSchedule, classItem) {
+        baseSchedule.isSelected = false;
+      });
     });
   }
 
@@ -521,12 +538,6 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                                 (context, index) {
                                   final classTime =
                                       availableTimesMap.keys.elementAt(index);
-                                  //The below aren't used, are they needed?
-                                  final classItem =
-                                      availableTimesMap[classTime]!;
-                                  TextStyle startTimeStyle = classStartTime;
-                                  TextStyle endTimeStyle = classEndTime;
-                                  Color timeContainerColor = bone;
                                   return StatefulBuilder(
                                     builder: (BuildContext context,
                                         StateSetter selectTimeState) {
@@ -576,12 +587,26 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                                             ),
                                           ),
                                           onTap: () {
+                                            currentSelection = DateTime(
+                                                _focusedDay.year,
+                                                _focusedDay.month,
+                                                _focusedDay.day,
+                                                classTime.startDate.hour,
+                                                classTime.startDate.minute);
+
+                                            availableTimesMap.forEach(
+                                                (baseSchedule, classItem) {
+                                              if (baseSchedule.startDate !=
+                                                  currentSelection) {
+                                                baseSchedule.isSelected = false;
+                                              }
+                                            });
                                             HapticFeedback.selectionClick();
                                             selectTimeState(() {
-                                              print(classTime.startDate);
-                                              print(classTime.endDate);
                                               classTime.isSelected =
                                                   !classTime.isSelected;
+                                              setState(() {});
+                                              print(currentSelection);
                                             });
                                           },
                                         ),
@@ -619,7 +644,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                           child: GestureDetector(
                             child: FooterButton(
                               buttonColor: strawberry,
-                              buttonText: 'Book Class',
+                              buttonText: 'Book',
                               textColor: snow,
                             ),
                             onTap: () => {
@@ -653,8 +678,8 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                                   : strawberry40,
                               buttonText: widget.classTrainerInstance
                                       .isStripeDetailsSubmitted
-                                  ? 'Purchase Class'
-                                  : 'Class Unavailable',
+                                  ? 'Purchase'
+                                  : 'Unavailable',
                               textColor: snow,
                             ),
                             onTap: () => {

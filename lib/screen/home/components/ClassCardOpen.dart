@@ -2,7 +2,6 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
@@ -16,7 +15,6 @@ import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/UserMoreActions.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
-import 'package:balance/sharedWidgets/moreClassInfoModal.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCardPublic.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';
@@ -25,7 +23,6 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart' as localized;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../feModels/ClassModel.dart';
 import '../../../sharedWidgets/classMoreActions.dart';
@@ -260,26 +257,30 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       color: snow,
       child: Row(
         children: [
-          classRating(),
+          // classRating(),
+          // Padding(
+          //     padding: EdgeInsets.only(
+          //       left: 5,
+          //       right: 5,
+          //     ),
+          //     child: ClipOval(
+          //       child: Container(
+          //         color: jetBlack,
+          //         height: 3,
+          //         width: 3,
+          //       ),
+          //     )),
+
           Padding(
-              padding: EdgeInsets.only(
-                left: 5,
-                right: 5,
-              ),
-              child: ClipOval(
-                child: Container(
+            padding: const EdgeInsets.only(left: .0),
+            child: Text(
+              widget.classItem.classLocationName,
+              style: TextStyle(
                   color: jetBlack,
-                  height: 3,
-                  width: 3,
-                ),
-              )),
-          Text(
-            widget.classItem.classLocationName,
-            style: TextStyle(
-                color: jetBlack,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                fontFamily: 'SFDisplay'),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  fontFamily: 'SFDisplay'),
+            ),
           ),
         ],
       ),
@@ -740,7 +741,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [classTrainer()],
+                        children: [
+                          classTrainer(),
+                        ],
                       ),
                     ),
                   );
@@ -878,7 +881,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             child: Row(
               //HARD CODED - MUST CHANGE replace with classOverallRating
               children: [
-                if (5.0 > 4.7) highlyRatedClassBadge(),
+                //DEPRECATED for MVP
+                // if (5.0 > 4.7) highlyRatedClassBadge(),
               ],
             ),
           ),
@@ -886,10 +890,11 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             padding: const EdgeInsets.only(top: 5.0, left: 26.0, right: 26.0),
             child: classTitle(),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8, left: 26.0, right: 26.0),
-            child: classSubHeader(),
-          ),
+          if (widget.classItem.classLocationName != 'NA')
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 26.0, right: 26.0),
+              child: classSubHeader(),
+            ),
           Padding(
             padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
             child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
@@ -900,7 +905,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             padding: const EdgeInsets.only(left: 26.0, right: 26.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: const [
                 Text(
                   "About this class",
                   style: sectionTitles,
@@ -922,7 +927,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             padding: const EdgeInsets.only(left: 26.0, right: 26.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: const [
                 Text(
                   "What to expect",
                   style: sectionTitles,
@@ -945,7 +950,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             padding: const EdgeInsets.only(left: 26.0, right: 26.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: const [
                 Text(
                   "What you'll need",
                   style: sectionTitles,
@@ -976,42 +981,45 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
           Padding(
               padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
               child: classTrainerSpotlight()),
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
-            child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
-          ),
 
-          //Class Reviews
-          Padding(
-            padding: const EdgeInsets.only(left: 26.0, right: 26.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Reviews",
-                  style: sectionTitles,
-                ),
-                GestureDetector(
-                  child: Text(
-                    'See all',
-                    style: TextStyle(
-                      color: ocean,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  // onTap:
-                  //Implement expanded review view for classes here
-                )
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
-            child:
-                classReviews(), // The reviews list needs to be implemented (Horizontal)
-          ),
+          //DEPRECATED for MVP
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+          //   child: PageDivider(leftPadding: 26.0, rightPadding: 26.0),
+          // ),
+
+          // //Class Reviews
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //     children: [
+          //       Text(
+          //         "Reviews",
+          //         style: sectionTitles,
+          //       ),
+          //       GestureDetector(
+          //         child: Text(
+          //           'See all',
+          //           style: TextStyle(
+          //             color: ocean,
+          //             fontFamily: 'SFDisplay',
+          //             fontSize: 15,
+          //             fontWeight: FontWeight.w500,
+          //           ),
+          //         ),
+          //         // onTap:
+          //         //Implement expanded review view for classes here
+          //       )
+          //     ],
+          //   ),
+          // ),
+
+          // Padding(
+          //   padding: EdgeInsets.only(top: 15, left: 26.0, right: 26.0),
+          //   child:
+          //       classReviews(), // The reviews list needs to be implemented (Horizontal)
+          // ),
           SizedBox(
             height: 35,
           )
@@ -1029,33 +1037,51 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
               top: 14,
               bottom: 46,
             ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 26.0, right: 26.0),
-              child: GestureDetector(
-                child: FooterButton(
-                  buttonColor: strawberry,
-                  buttonText: 'Purchase Class',
-                  textColor: snow,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 26.0, top: 2),
+                  child: Text(
+                      '\$${widget.classItem.classPrice.toStringAsFixed(2)} CAD',
+                      style: sectionTitlesH2),
                 ),
-                onTap: () {
-                  HapticFeedback.lightImpact();
-                  Timer(Duration(milliseconds: 150), () {
-                    showCupertinoModalPopup(
-                        semanticsDismissible: true,
-                        barrierDismissible: true,
-                        barrierColor: jetBlack60,
-                        context: context,
-                        builder: (BuildContext builder) {
-                          return PurchaseClassSelectDates(
-                            classItem: widget.classItem,
-                            userInstance: widget.userInstance,
-                            trainerStripeAccountID: trainerStripeAccountID,
-                            classTrainerInstance: classTrainerInstance,
-                          );
+                Text(
+                  ' /class',
+                  style: profileBodyTextFont,
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                    child: GestureDetector(
+                      child: FooterButton(
+                        buttonColor: strawberry,
+                        buttonText: 'Find times',
+                        textColor: snow,
+                      ),
+                      onTap: () {
+                        HapticFeedback.lightImpact();
+                        Timer(Duration(milliseconds: 150), () {
+                          showCupertinoModalPopup(
+                              semanticsDismissible: true,
+                              barrierDismissible: true,
+                              barrierColor: jetBlack60,
+                              context: context,
+                              builder: (BuildContext builder) {
+                                return PurchaseClassSelectDates(
+                                  classItem: widget.classItem,
+                                  userInstance: widget.userInstance,
+                                  trainerStripeAccountID:
+                                      trainerStripeAccountID,
+                                  classTrainerInstance: classTrainerInstance,
+                                );
+                              });
                         });
-                  });
-                },
-              ),
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
           )),
     );
