@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:balance/Requests/ClassPurchasedRequests.dart';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
@@ -61,6 +62,8 @@ var paymentIntent;
 late String client_secret;
 //Temporarily no fitsy commission
 int fitsyFee = 0;
+DateTime selectedStartTime = DateTime.now();
+DateTime selectedEndTime = DateTime.now();
 
 final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
   equals: isSameDay,
@@ -102,6 +105,26 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
     });
   }
 
+  //Get Classes for the trainer
+  void addClassPurchased() async {
+    ClassPurchasedRequests()
+        .addClassPurchased(
+            widget.classItem.classID,
+            widget.userInstance.userID,
+            selectedStartTime,
+            selectedEndTime,
+            DateTime.now(),
+            widget.classItem.classPrice)
+        .then((val) async {
+      if (val.data['success']) {
+        print('successful add class purchased');
+      } else {
+        print('error add class purchased: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
+
   //Determine the selected day's schedule
   void determineDaySchedule(
       List<Class> currentClass, Set<DateTime> selectedDays) {
@@ -121,7 +144,6 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
     for (Class classItem in currentClass) {
       shouldScheduleClass(classItem, day);
     }
-    // WHATTHEFUCK(currentClass, day);
     return events[day] ?? [];
   }
 
@@ -577,9 +599,10 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                                           ),
                                           onTap: () {
                                             HapticFeedback.selectionClick();
+                                            selectedStartTime =
+                                                classTime.startDate;
+                                            selectedEndTime = classTime.endDate;
                                             selectTimeState(() {
-                                              print(classTime.startDate);
-                                              print(classTime.endDate);
                                               classTime.isSelected =
                                                   !classTime.isSelected;
                                             });
@@ -623,7 +646,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates> {
                               textColor: snow,
                             ),
                             onTap: () => {
-                              //TODO: Add SCHEDULE ADD FUNCTION HERE
+                              addClassPurchased(),
                               Navigator.of(context).pop()
                             },
                           ),

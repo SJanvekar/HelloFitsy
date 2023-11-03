@@ -9,6 +9,7 @@ class ClassPurchasedRequests {
   addClassPurchased(String classID, String userID, DateTime startDate,
       DateTime endDate, DateTime dateBooked, double pricePaid) async {
     try {
+      //TODO: Implement federal and provincial tax rates for price paid
       return await dio.post('$urlDomain/addClassPurchased',
           data: {
             "ClassID": classID,
@@ -133,7 +134,7 @@ class ClassPurchasedRequests {
   }
 
   //Get Class Purchased
-  getClassPurchased(String classID, String userID) async {
+  getClassPurchased(String? classID, String? userID) async {
     try {
       return await dio.get('$urlDomain/getClassPurchased',
           queryParameters: {
