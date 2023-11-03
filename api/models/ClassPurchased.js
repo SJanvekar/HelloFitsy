@@ -31,15 +31,15 @@ var ClassPurchasedSchema = new Schema({
 
 
         //Recurrence Type
-        // Recurrence: {
-        //     type: [{
+        Recurrence: {
+            type: [{
 
-        //     type: String,
-        //         enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
-        //         }],
+            type: String,
+                enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
+                }],
 
-        //     default: ['None'],
-        // },
+            default: ['None'],
+        },
     }],
 
     //Class Schedules that the user decides to update
