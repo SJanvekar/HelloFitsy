@@ -66,6 +66,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   flutter_stripe: ^9.4.0
   transparent_image: ^2.0.1
+  firebase_messaging: ^14.7.3
 
 dev_dependencies:
   dependency_validator: ^3.0.0
