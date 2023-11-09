@@ -1027,29 +1027,35 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
       ]),
       //Bottom Navigation Bar
       bottomNavigationBar: Container(
-          height: 110,
+          height: MediaQuery.of(context).size.height * 0.12,
           decoration: BoxDecoration(
               border: Border(
             top: BorderSide(color: bone, width: 1),
           )),
           child: Padding(
             padding: const EdgeInsets.only(
-              top: 14,
-              bottom: 46,
+              top: 10,
+              bottom: 10,
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 26.0, top: 2),
-                  child: Text(
-                      '\$${widget.classItem.classPrice.toStringAsFixed(2)} CAD',
-                      style: sectionTitlesH2),
-                ),
-                Text(
-                  ' /class',
-                  style: profileBodyTextFont,
-                ),
+                if (widget.classItem.classPrice != 0)
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 26.0, top: 2),
+                        child: Text(
+                            '\$${widget.classItem.classPrice.toStringAsFixed(2)} CAD',
+                            style: sectionTitlesH2),
+                      ),
+                      Text(
+                        ' /class',
+                        style: profileBodyTextFont,
+                      ),
+                    ],
+                  ),
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 26.0, right: 26.0),
