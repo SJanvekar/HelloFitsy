@@ -6,7 +6,7 @@ var functions = {
     //Add New Class Purchased
     addNewClassPurchased: async function (req, res) {
         if ((!req.body.ClassID || !req.body.UserID || !req.body.StartDate || !req.body.EndDate || !req.body.DateBooked || !req.body.PricePaid)) {
-            return res.json({success: false, msg: 'Missing Information'})
+            return res.json({success: false, msg: 'Missing Information'}) 
         }
         const newClassTimes = {
             //Add Z for signalling UTC time
@@ -154,13 +154,27 @@ var functions = {
 
     // Get Class Information
     getClassPurchased: async function (req, res) {
-        if ((!req.query.ClassID || !req.query.UserID)) {
+        if (!req.query.ClassID && !req.query.UserID) { //Both are missing, one ID is required
             return res.json({success: false, msg: 'Missing Information'})
+        } else if (req.query.ClassID && !req.query.UserID) { //ClassID exists but not UserID
+            const query = await ClassPurchased.find({
+                'ClassID': new mongoose.Types.ObjectId(req.query.ClassID)}
+            );
+        } else if (!req.query.ClassID && req.query.UserID) { //UserID exists but not ClassID
+            const query = await ClassPurchased.find({
+                'UserID': new mongoose.Types.ObjectId(req.query.UserID)}
+            );
+        } else { //Both ClassID and UserID existsconst query = await ClassPurchased.find({
+            const query = await ClassPurchased.find({
+                $and: [
+                    {'UserID': new mongoose.Types.ObjectId(req.query.UserID)},
+                    {'ClassID': new mongoose.Types.ObjectId(req.query.ClassID)}
+                ]
+            });
         }
+
         try {
-            classPurchasedArray = await ClassPurchased.find({$and:[
-                {'UserID': new mongoose.Types.ObjectId(req.query.UserID)} , 
-                {'ClassID': new mongoose.Types.ObjectId(req.query.ClassID)}]})
+            classPurchasedArray = await ClassPurchased.find(query)
         } catch (err) { 
             console.log(err)
             return res.json({success: false, msg: err})

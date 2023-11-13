@@ -270,22 +270,19 @@ Widget signInPartners() {
 }
 
 //Sign In Typeface
-Widget typeFace(topPadding) {
-  return Padding(
-    padding: EdgeInsets.only(top: topPadding),
-    child: Hero(
-      transitionOnUserGestures: true,
-      tag: 'typeface',
-      child: Container(
-          height: 140,
-          width: 190,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage(
-              "assets/images/Typeface.png",
-            ),
-          ))),
-    ),
+Widget typeFace() {
+  return Hero(
+    transitionOnUserGestures: true,
+    tag: 'typeface',
+    child: Container(
+        height: 140,
+        width: 190,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage(
+            "assets/images/Typeface.png",
+          ),
+        ))),
   );
 }
 
@@ -303,142 +300,139 @@ class _SignInState extends State<SignIn> {
             automaticallyImplyLeading: false,
           ),
           body: SingleChildScrollView(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 26.0, right: 26.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    typeFace(MediaQuery.of(context).size.height * 0.08),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 20),
-                      child: textInputUsername(),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+              child: Column(
+                children: [
+                  typeFace(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30, bottom: 20),
+                    child: textInputUsername(),
+                  ),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: bone60,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: bone60,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 8),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 21, right: 12),
-                              child: Center(
-                                  child: SvgPicture.asset(
-                                'assets/icons/generalIcons/lock.svg',
-                                color: jetBlack40,
-                                width: 18,
-                              )),
-                            ),
+                    child: Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 21, right: 12),
+                            child: Center(
+                                child: SvgPicture.asset(
+                              'assets/icons/generalIcons/lock.svg',
+                              color: jetBlack40,
+                              width: 18,
+                            )),
                           ),
-                          Expanded(
-                            child: TextField(
-                              textInputAction: TextInputAction.done,
-                              obscureText: true,
-                              textCapitalization: TextCapitalization.sentences,
-                              style: const TextStyle(
-                                  overflow: TextOverflow.fade,
-                                  fontFamily: 'SFDisplay',
-                                  color: jetBlack80,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w700),
-                              decoration: InputDecoration.collapsed(
-                                border: InputBorder.none,
-                                hintText: 'Password',
-                                hintStyle: const TextStyle(
-                                  fontFamily: 'SFDisplay',
-                                  color: shark,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                        ),
+                        Expanded(
+                          child: TextField(
+                            textInputAction: TextInputAction.done,
+                            obscureText: true,
+                            textCapitalization: TextCapitalization.sentences,
+                            style: const TextStyle(
+                                overflow: TextOverflow.fade,
+                                fontFamily: 'SFDisplay',
+                                color: jetBlack80,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700),
+                            decoration: InputDecoration.collapsed(
+                              border: InputBorder.none,
+                              hintText: 'Password',
+                              hintStyle: const TextStyle(
+                                fontFamily: 'SFDisplay',
+                                color: shark,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
                               ),
-                              focusNode: passwordFocusNode,
-                              onChanged: (val) {
-                                password = val;
-                              },
-                              onSubmitted: (value) {
-                                onSubmitSignInField(context);
-                              },
                             ),
+                            focusNode: passwordFocusNode,
+                            onChanged: (val) {
+                              password = val;
+                            },
+                            onSubmitted: (value) {
+                              onSubmitSignInField(context);
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    //TextInput Password
+                  ),
+                  //TextInput Password
 
-                    //forgot password
-                    GestureDetector(
-                      child: forgotPassword(),
+                  //forgot password
+                  GestureDetector(
+                    child: forgotPassword(),
+                    onTap: () {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => ForgotPasswordPage()));
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 25.0,
+                    ),
+                    child: GestureDetector(
+                      child: FooterButton(
+                          buttonColor: strawberry,
+                          textColor: snow,
+                          buttonText: 'Log in'),
                       onTap: () {
-                        Navigator.of(context).push(CupertinoPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => ForgotPasswordPage()));
+                        onSubmitSignInField(context);
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 35.0,
-                      ),
-                      child: GestureDetector(
-                        child: FooterButton(
-                            buttonColor: strawberry,
-                            textColor: snow,
-                            buttonText: 'Log in'),
-                        onTap: () {
-                          onSubmitSignInField(context);
-                        },
-                      ),
-                    ),
-                    orDivider(),
+                  ),
+                  orDivider(),
 
-                    //Sign in partners widget
-                    signInPartners(),
+                  //Sign in partners widget
+                  signInPartners(),
 
-                    //Sign Up if you don't have an account
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: RichText(
-                        text: TextSpan(
-                            text: 'Don\'t have an account? ',
-                            style: TextStyle(
-                              fontFamily: 'SFDisplay',
-                              color: jetBlack40,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'Sign up',
-                                  style: TextStyle(
-                                      fontFamily: 'SFDisplay',
-                                      color: ocean,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      decoration: TextDecoration.underline),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              fullscreenDialog: false,
-                                              builder: (context) =>
-                                                  PersonalInfo()));
-                                    })
-                            ],
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.of(context).push(CupertinoPageRoute(
-                                    fullscreenDialog: false,
-                                    builder: (context) => PersonalInfo()));
-                              }),
-                      ),
+                  //Sign Up if you don't have an account
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 30.0,
                     ),
-                  ],
-                ),
+                    child: RichText(
+                      text: TextSpan(
+                          text: 'Don\'t have an account? ',
+                          style: TextStyle(
+                            fontFamily: 'SFDisplay',
+                            color: jetBlack40,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Sign up',
+                                style: TextStyle(
+                                    fontFamily: 'SFDisplay',
+                                    color: ocean,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context).push(
+                                        CupertinoPageRoute(
+                                            fullscreenDialog: false,
+                                            builder: (context) =>
+                                                PersonalInfo()));
+                                  })
+                          ],
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  fullscreenDialog: false,
+                                  builder: (context) => PersonalInfo()));
+                            }),
+                    ),
+                  ),
+                ],
               ),
             ),
           )),

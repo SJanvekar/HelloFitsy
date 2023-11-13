@@ -293,6 +293,12 @@ const bodyTextFontBold80 = TextStyle(
     fontSize: 14.5,
     fontWeight: FontWeight.w600);
 
+const bodyTextFontBold60 = TextStyle(
+    color: jetBlack60,
+    fontFamily: 'SFDisplay',
+    fontSize: 14.5,
+    fontWeight: FontWeight.w600);
+
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
     color: jetBlack80,

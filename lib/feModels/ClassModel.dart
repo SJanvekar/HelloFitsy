@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:balance/feModels/ScheduleModel.dart';
-import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 
 // ignore: constant_identifier_names
 enum ClassType { Solo, Group, Virtual }
