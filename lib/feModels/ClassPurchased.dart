@@ -1,40 +1,28 @@
 // ignore: constant_identifier_names
+import 'package:balance/feModels/ScheduleModel.dart';
+
 enum RecurrenceType { None, Daily, Weekly, BiWeekly, Monthly, Yearly }
 
 // ignore: constant_identifier_names
 enum ClassType { Solo, Group, Virtual }
 
 class ClassSchedule {
-  DateTime startDate;
-  DateTime endDate;
-  RecurrenceType recurrence;
-  String classImageUrl;
-  String className;
-  double classPrice;
-  String classDescription;
-  String classWhatToExpect;
-  String classUserRequirements;
-  ClassType classType;
-  String classLocationName;
-  double classLatitude;
-  double classLongitude;
-  String classTrainer;
-  String? purchasedUser;
+  String classID;
+  String userID;
 
-  ClassSchedule({
-    required this.startDate,
-    required this.endDate,
-    required this.recurrence,
-    required this.classImageUrl,
-    required this.className,
-    required this.classPrice,
-    required this.classDescription,
-    required this.classWhatToExpect,
-    required this.classUserRequirements,
-    required this.classType,
-    required this.classLocationName,
-    required this.classLatitude,
-    required this.classLongitude,
-    required this.classTrainer,
-  });
+  late List<Schedule> classTimes;
+  List<UpdatedSchedule>? updatedClassTimes;
+  List<CancelledSchedule>? cancelledClassTimes;
+
+  DateTime dateBooked;
+  double pricePaid;
+  bool? isMissed;
+  bool? isCancelled;
+  String? cancellationReason;
+
+  ClassSchedule(
+      {required this.classID,
+      required this.userID,
+      required this.dateBooked,
+      required this.pricePaid});
 }

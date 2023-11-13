@@ -1,6 +1,5 @@
 const { default: mongoose } = require('mongoose')
 var Class = require('../models/Class')
-const Schedule = require('../models/Schedule')
 // var jwt = require('jwt-simple')
 
 var functions = {
@@ -114,8 +113,7 @@ var functions = {
         }
         //Success bool determined if matched and modified doc are both value 1
         return res.json({success: ((result.matchedCount === 1 && result.modifiedCount === 1) ? true : false), 
-                        msg: 'Successfully added class schedule'})
-        // return res.json({success: true, msg: 'Successfully added class schedule'})
+                        msg: result})
     },
 
     //Change New Schedule function

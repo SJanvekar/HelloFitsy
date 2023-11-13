@@ -50,12 +50,13 @@ createStripeAccountLink: async function (req, res) {
   //Create new Stripe Customer & Payment Intent
   newPaymentIntent: async function (req, res){
     try {
+
       //Payment intents require CustomerID, so create that first
       //CustomerID null check
-      
       var customerID;
-      if(req.body.customer== null){
-        customer = await fitsyStripe.customers.create();
+
+      if(req.body.customerID == null){
+        var customer = await fitsyStripe.customers.create();
         customerID = customer.id;
       } else {
         customerID = req.body.customerID
