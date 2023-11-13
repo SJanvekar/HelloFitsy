@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //http://localhost:8888
 //https://www.fitsy.ca
-const String urlDomain = 'http://localhost:8888';
+const String urlDomain = 'https://www.fitsy.ca';
 
 const String publishableStripeKey =
     'pk_test_51N1KMLHPTcKdqvMqmxEGhpnBnrFS7KKdymTmwZlByroml00eU2g0ocRutSqH2K4WFTAx2BAmxLPFpvwhCzsb7nC900JCQMgDCH';
@@ -289,6 +289,12 @@ const buttonText2snow = TextStyle(
 );
 const bodyTextFontBold80 = TextStyle(
     color: jetBlack80,
+    fontFamily: 'SFDisplay',
+    fontSize: 14.5,
+    fontWeight: FontWeight.w600);
+
+const bodyTextFontBold60 = TextStyle(
+    color: jetBlack60,
     fontFamily: 'SFDisplay',
     fontSize: 14.5,
     fontWeight: FontWeight.w600);

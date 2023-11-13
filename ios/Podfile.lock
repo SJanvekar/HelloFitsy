@@ -657,6 +657,7 @@ PODS:
     - Firebase/Messaging (= 10.16.0)
     - firebase_core
     - Flutter
+<<<<<<< HEAD
   - firebase_storage (11.4.1):
     - Firebase/Storage (= 10.16.0)
     - firebase_core
@@ -664,6 +665,11 @@ PODS:
   - FirebaseAppCheckInterop (10.17.0)
   - FirebaseAuthInterop (10.17.0)
   - FirebaseCore (10.16.0):
+=======
+  - FirebaseAppCheckInterop (10.17.0)
+  - FirebaseAuthInterop (10.17.0)
+  - FirebaseCore (10.15.0):
+>>>>>>> main
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
@@ -728,10 +734,10 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.12.0):
     - GoogleUtilities/Logger
-  - "gRPC-C++ (1.49.1)":
-    - "gRPC-C++/Implementation (= 1.49.1)"
-    - "gRPC-C++/Interface (= 1.49.1)"
-  - "gRPC-C++/Implementation (1.49.1)":
+  - "gRPC-C++ (1.50.1)":
+    - "gRPC-C++/Implementation (= 1.50.1)"
+    - "gRPC-C++/Interface (= 1.50.1)"
+  - "gRPC-C++/Implementation (1.50.1)":
     - abseil/base/base (= 1.20220623.0)
     - abseil/base/core_headers (= 1.20220623.0)
     - abseil/cleanup/cleanup (= 1.20220623.0)
@@ -914,6 +920,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
+<<<<<<< HEAD
   cloud_firestore: 8adb36c2bc754352c717984153ecd7e6c6898047
   Firebase: 25899099b77d255a636e3579c3d9dce10ec150d5
   firebase_core: 68027ba03585e3efe1608e35d3ab2777a64eabe9
@@ -934,6 +941,24 @@ SPEC CHECKSUMS:
   GoogleUtilities: 0759d1a57ebb953965c2dfe0ba4c82e95ccc2e34
   "gRPC-C++": 2df8cba576898bdacd29f0266d5236fa0e26ba6a
   gRPC-Core: a21a60aefc08c68c247b439a9ef97174b0c54f96
+=======
+  cloud_firestore: ac000d8c5a79d57dc69238ea06bb422880fb825e
+  Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
+  firebase_core: 77172d0a9d8d19d07606e24406e4c2fc14d3265b
+  firebase_storage: 0b51a488243202d5bed0d66415fea3425f2d3901
+  FirebaseAppCheckInterop: 534d033d8d0436b4ab066a8205013d271e18a2b9
+  FirebaseAuthInterop: 86bc376e41419f2dc05c16aa42fe8301171a93aa
+  FirebaseCore: 2cec518b43635f96afe7ac3a9c513e47558abd2e
+  FirebaseCoreExtension: 47720bb330d7041047c0935a34a3a4b92f818074
+  FirebaseCoreInternal: 2cf9202e226e3f78d2bf6d56c472686b935bfb7f
+  FirebaseFirestore: b4c0eaaf24efda5732ec21d9e6c788d083118ca6
+  FirebaseStorage: 1d4be239ea32fb3c0f3680a6f2b706d6cabe37f2
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
+  GoogleUtilities: 202e7a9f5128accd11160fb9c19612de1911aa19
+  "gRPC-C++": 0968bace703459fd3e5dcb0b2bed4c573dbff046
+  gRPC-Core: 17108291d84332196d3c8466b48f016fc17d816d
+>>>>>>> main
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
   image_picker_ios: 4a8aadfbb6dc30ad5141a2ce3832af9214a705b5
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
