@@ -657,13 +657,13 @@ PODS:
     - Firebase/Messaging (= 10.17.0)
     - firebase_core
     - Flutter
-  - firebase_storage (11.4.1):
-    - Firebase/Storage (= 10.16.0)
+  - firebase_storage (11.5.0):
+    - Firebase/Storage (= 10.17.0)
     - firebase_core
     - Flutter
   - FirebaseAppCheckInterop (10.17.0)
   - FirebaseAuthInterop (10.17.0)
-  - FirebaseCore (10.16.0):
+  - FirebaseCore (10.17.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/Logger (~> 7.8)
@@ -735,10 +735,10 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (7.12.0):
     - GoogleUtilities/Logger
-  - "gRPC-C++ (1.50.1)":
-    - "gRPC-C++/Implementation (= 1.50.1)"
-    - "gRPC-C++/Interface (= 1.50.1)"
-  - "gRPC-C++/Implementation (1.50.1)":
+  - "gRPC-C++ (1.49.1)":
+    - "gRPC-C++/Implementation (= 1.49.1)"
+    - "gRPC-C++/Interface (= 1.49.1)"
+  - "gRPC-C++/Implementation (1.49.1)":
     - abseil/base/base (= 1.20220623.0)
     - abseil/base/core_headers (= 1.20220623.0)
     - abseil/cleanup/cleanup (= 1.20220623.0)
@@ -923,11 +923,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
-  cloud_firestore: 8adb36c2bc754352c717984153ecd7e6c6898047
-  Firebase: 25899099b77d255a636e3579c3d9dce10ec150d5
-  firebase_core: 68027ba03585e3efe1608e35d3ab2777a64eabe9
-  firebase_messaging: e11ea61b449e6e39741b8a309ddab803ef1eb5cd
-  firebase_storage: 39292d9729a2840035c6156fcec73168c7c234d4
+  cloud_firestore: d76c02bf5967dc9131ab42fcc1088d0873581e28
+  Firebase: f4ac0b02927af9253ae094d23deecf0890da7374
+  firebase_core: efc9455611b8769fa90fbdae5da182600bd6901c
+  firebase_messaging: 9c697d1ecfe77edf15d995b5048906ffc994c96c
+  firebase_storage: 683f584f1d7606f41241095911a5798535baa791
   FirebaseAppCheckInterop: 534d033d8d0436b4ab066a8205013d271e18a2b9
   FirebaseAuthInterop: 86bc376e41419f2dc05c16aa42fe8301171a93aa
   FirebaseCore: 534544dd98cabcf4bf8598d88ec683b02319a528

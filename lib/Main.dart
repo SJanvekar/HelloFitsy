@@ -13,6 +13,7 @@ import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +28,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -158,10 +160,34 @@ class _MainPageState extends State<MainPage>
     setState(() {});
   }
 
+  // Future<void> scheduleNotification() async {
+  //   try {
+  //     DateTime scheduledTime = DateTime.utc(
+  //         2023, 11, 15, 12, 0, 0); // Example: November 15, 2023, at 12:00 UTC
+
+  //     await _firebaseMessaging.scheduleNotification(
+  //       const IOSNotification(
+  //         title: 'Scheduled Title',
+  //         body: 'Scheduled Body',
+  //       ),
+  //       scheduledTime,
+  //     );
+
+  //     print('Notification scheduled successfully!');
+  //   } catch (e) {
+  //     print('Error scheduling notification: $e');
+  //   }
+  // }
+
   //----------
 
   //Get User Information
   void getUserDetails() async {
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    _firebaseMessaging.requestPermission();
+
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    print(fcmToken);
     final sharedPrefs = await SharedPreferences.getInstance();
     User user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));

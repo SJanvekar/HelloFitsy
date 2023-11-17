@@ -13,9 +13,7 @@
 		<string>applinks:fitsy.ca</string>
 	</array>
 	<key>com.apple.developer.in-app-payments</key>
-	<array>
-		<string>merchant.ca.fitsy.fitsy</string>
-	</array>
+	<array/>
 	<key>com.apple.developer.networking.wifi-info</key>
 	<true/>
 </dict>
