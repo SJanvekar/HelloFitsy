@@ -32,7 +32,7 @@ var functions = {
 
         setTimeout(() => {
             console.log('This code runs after 5 seconds');
-          }, 5000);
+          }, 15000);
 
         const registrationToken = req.body.RegistrationToken;
 
