@@ -47,6 +47,7 @@ class Class {
     required this.classTimes,
     required this.updatedClassTimes,
     required this.cancelledClassTimes,
+    required this.classCategories,
 
     //Trainer Info
     required this.classTrainerID,
