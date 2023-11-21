@@ -35,7 +35,6 @@ var functions = {
             notification: {
                 title: 'Test notification sent by nodeJS server',
                 body: 'I can not believe this worked',
-                name: 'Test from Server'
             },
             token: registrationToken
         };
