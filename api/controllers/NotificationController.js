@@ -43,10 +43,12 @@ var functions = {
         firebaseMessaging.getMessaging(app).send(message)
             .then((response) => {
                 // Response is a message ID string.
-                console.log('Successfully sent message:', response);
+                
+                res.json({success: false, msg: 'Success'})
             })
             .catch((error) => {
-                console.log('Error sending message:', error);
+                
+                res.json({success: false, msg: 'Error thrown'})
             });
     },
 }

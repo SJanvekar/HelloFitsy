@@ -172,7 +172,16 @@ class _MainPageState extends State<MainPage>
     String? registrationToken = await futureRegistrationToken;
 
     print(futureRegistrationToken);
-    // NotificationRequests().addTestNotification(registrationToken ?? '');
+    NotificationRequests()
+        .addTestNotification(registrationToken ?? '')
+        .then((val) {
+      if (val.data['success']) {
+        print("Test Notification success: ${val.data['msg']}");
+      } else {
+        print("Test Notification failed: ${val.data['msg']}");
+      }
+    });
+    ;
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
     print(fcmToken);
