@@ -33,7 +33,7 @@ var functions = {
         setTimeout(() => {
             console.log('This code runs after 5 seconds');
           }, 5000);
-          
+
         const registrationToken = req.body.RegistrationToken;
 
         const message = {
@@ -41,7 +41,7 @@ var functions = {
                 title: 'Test notification sent by nodeJS server',
                 body: 'I can not believe this worked',
             },
-            token: registrationToken
+            token: 'd9a12_ew1Umsl2xZ2MaHI4:APA91bGcRkM7I55RyvmMq1RZO0VZzfTgJRDaFSPqj3n2DVAGE3KN-CWJRpJnN5Z9Mdxj-NVNb2jxfjvZTxpkIyf0Q9oJIi7DjX6N5vQXpT6MLs9ssRFWvGzdCstdsFYFOIvhYYPqdd5E'
         };
         
         firebaseMessaging.getMessaging(app).send(message)
