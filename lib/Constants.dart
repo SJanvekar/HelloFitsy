@@ -162,22 +162,28 @@ const dateSelectionTitle = TextStyle(
 );
 
 const classStartTime = TextStyle(
-    color: jetBlack,
-    fontFamily: 'SFRounded',
-    fontSize: 13,
-    fontWeight: FontWeight.w600);
+  color: jetBlack,
+  fontFamily: 'SFRounded',
+  fontSize: 13,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
 
 const classEndTime = TextStyle(
-    color: jetBlack40,
-    fontFamily: 'SFRounded',
-    fontSize: 13,
-    fontWeight: FontWeight.w600);
+  color: jetBlack40,
+  fontFamily: 'SFRounded',
+  fontSize: 13,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
 
 const classStartTimeSelected = TextStyle(
-    color: snow,
-    fontFamily: 'SFRounded',
-    fontSize: 13,
-    fontWeight: FontWeight.w600);
+  color: snow,
+  fontFamily: 'SFRounded',
+  fontSize: 13,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
 
 const classEndTimeSelected = TextStyle(
     color: snow,
@@ -288,23 +294,55 @@ const buttonText2snow = TextStyle(
   decoration: TextDecoration.none,
 );
 const bodyTextFontBold80 = TextStyle(
-    color: jetBlack80,
-    fontFamily: 'SFDisplay',
-    fontSize: 14.5,
-    fontWeight: FontWeight.w600);
+  color: jetBlack80,
+  fontFamily: 'SFDisplay',
+  fontSize: 14.5,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
 
 const bodyTextFontBold60 = TextStyle(
-    color: jetBlack60,
-    fontFamily: 'SFDisplay',
-    fontSize: 14.5,
-    fontWeight: FontWeight.w600);
+  color: jetBlack60,
+  fontFamily: 'SFDisplay',
+  fontSize: 14.5,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
 
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
-    color: jetBlack80,
-    fontFamily: 'SFDisplay',
-    fontSize: 14.5,
-    fontWeight: FontWeight.w400);
+  color: jetBlack80,
+  fontFamily: 'SFDisplay',
+  fontSize: 14.5,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.none,
+);
+
+//CHECKOUT SPECIFIC FONTS
+
+const checkoutHeader1 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack60,
+  fontSize: 16,
+  fontWeight: FontWeight.w500,
+  decoration: TextDecoration.none,
+);
+
+const checkoutSelectedDate = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 15,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const checkoutNumbers = TextStyle(
+  color: jetBlack,
+  fontFamily: 'SFDisplay',
+  fontSize: 15,
+  fontWeight: FontWeight.w500,
+  decoration: TextDecoration.none,
+);
 
 //TEXT BUTTON STYLES
 
