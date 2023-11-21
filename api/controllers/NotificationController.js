@@ -1,9 +1,9 @@
 // var Notification = require('../models/Notification')
-const initializeApp = require('firebase-admin');
+const admin = require('firebase-admin');
 const firebaseMessaging = require('firebase-admin/messaging');
 
-const app = initializeApp({
-    credential: initializeApp.credential.cert(process.env.GOOGLE_APPLICATION_CREDENTIALS),
+const app = admin.initializeApp({
+    credential: admin.credential.cert(process.env.GOOGLE_APPLICATION_CREDENTIALS),
 });
 
 var functions = {
