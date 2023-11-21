@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/Constants.dart';
+import 'package:balance/Requests/NotificationRequests.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
@@ -160,31 +161,17 @@ class _MainPageState extends State<MainPage>
     setState(() {});
   }
 
-  // Future<void> scheduleNotification() async {
-  //   try {
-  //     DateTime scheduledTime = DateTime.utc(
-  //         2023, 11, 15, 12, 0, 0); // Example: November 15, 2023, at 12:00 UTC
-
-  //     await _firebaseMessaging.scheduleNotification(
-  //       const IOSNotification(
-  //         title: 'Scheduled Title',
-  //         body: 'Scheduled Body',
-  //       ),
-  //       scheduledTime,
-  //     );
-
-  //     print('Notification scheduled successfully!');
-  //   } catch (e) {
-  //     print('Error scheduling notification: $e');
-  //   }
-  // }
-
   //----------
 
   //Get User Information
   void getUserDetails() async {
     final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
     _firebaseMessaging.requestPermission();
+    Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
+    String? registrationToken = await futureRegistrationToken;
+
+    print(futureRegistrationToken);
+    // NotificationRequests().addTestNotification(registrationToken ?? '');
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
     print(fcmToken);
