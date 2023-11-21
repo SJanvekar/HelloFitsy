@@ -29,6 +29,11 @@ var functions = {
         //     return res.json({success: false, msg: 'Missing Information'})
         // }
 
+
+        setTimeout(() => {
+            console.log('This code runs after 5 seconds');
+          }, 5000);
+          
         const registrationToken = req.body.RegistrationToken;
 
         const message = {
