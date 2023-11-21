@@ -43,7 +43,7 @@ var functions = {
             .then((response) => {
                 // Response is a message ID string.
                 
-                res.json({success: false, msg: 'Success'})
+                res.json({success: true, msg: response})
             })
             .catch((error) => {
                 
