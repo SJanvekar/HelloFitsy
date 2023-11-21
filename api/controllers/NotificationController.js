@@ -48,7 +48,7 @@ var functions = {
             })
             .catch((error) => {
                 
-                res.json({success: false, msg: 'Error thrown'})
+                res.json({success: false, msg: error})
             });
     },
 }
