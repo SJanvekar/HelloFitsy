@@ -43,8 +43,18 @@ var functions = {
             },
             token: 'd9a12_ew1Umsl2xZ2MaHI4:APA91bGcRkM7I55RyvmMq1RZO0VZzfTgJRDaFSPqj3n2DVAGE3KN-CWJRpJnN5Z9Mdxj-NVNb2jxfjvZTxpkIyf0Q9oJIi7DjX6N5vQXpT6MLs9ssRFWvGzdCstdsFYFOIvhYYPqdd5E'
         };
-        
-        firebaseMessaging.getMessaging(app).send(message)
+
+        // Calculate the date and time 10 minutes from now
+        const now = new Date();
+        const scheduledDate = new Date(now.getTime() + 10 * 60 * 1000); // 10 minutes from now
+
+        // Format the cron expression for the scheduled date and time
+        const cronExpression = `${scheduledDate.getMinutes()} ${scheduledDate.getHours()} 
+        ${scheduledDate.getDate()} ${scheduledDate.getMonth() + 1} *`;
+
+        // Schedule the task
+        const scheduledJob = cron.schedule(cronExpression, async () => {
+            firebaseMessaging.getMessaging(app).send(message)
             .then((response) => {
                 // Response is a message ID string.
                 
@@ -54,6 +64,11 @@ var functions = {
                 
                 res.json({success: false, msg: error})
             });
+            scheduledJob.stop(); // Stop the cron job after running it once
+        }, {
+            scheduled: true,
+            timezone: 'UTC', // Adjust the timezone if needed
+        });
     },
 }
 
