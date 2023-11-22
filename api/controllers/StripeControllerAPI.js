@@ -56,7 +56,7 @@ createStripeAccountLink: async function (req, res) {
       var customerID;
 
       if(req.body.customerID == null){
-        var customer = await fitsyStripe.customers.create();
+        const customer = await fitsyStripe.customers.create();
         customerID = customer.id;
       } else {
         customerID = req.body.customerID
