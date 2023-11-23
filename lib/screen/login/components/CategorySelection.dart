@@ -182,6 +182,10 @@ class _CategorySelectionState extends State<CategorySelection> {
   }
 
   void sendUserModel() {
+    // widget.userTemplate.userID = '';
+    widget.userTemplate.userBio = '';
+    widget.userTemplate.stripeAccountID = '';
+    widget.userTemplate.stripeCustomerID = '';
     //Auth Service Call
     AuthService()
         .signUp(widget.authTemplate, widget.userTemplate)
@@ -195,7 +199,7 @@ class _CategorySelectionState extends State<CategorySelection> {
         //One idea is to run getUser to handle shared pref exception.
         //Do this for all set/get instance.
         await sharedPrefs.setString(
-            'loggedUser', jsonEncode(widget.userTemplate.toJson()));
+            'loggedUser', jsonEncode(val.data['user'] ?? ''));
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MainPage()));
       } else {

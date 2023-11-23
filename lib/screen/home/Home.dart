@@ -90,6 +90,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   //Function - Get Following List
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
+    print(sharedPrefs.getString('loggedUser'));
     User user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
     FollowingRequests().getFollowingList(user.userID).then((val) async {

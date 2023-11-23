@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/home/home.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/createClass/createClassStep2Description.dart';
@@ -112,15 +113,42 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
           //Body
           Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 26.0, top: 30),
-            child: GestureDetector(
-              child: Text("Cancel", style: logInPageNavigationButtons),
-              onTap: () {
-                Navigator.of(context).pop();
-              },
+            padding: const EdgeInsets.only(left: 26.0, right: 26.0, top: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  child: Text("Cancel", style: logInPageNavigationButtons),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                GestureDetector(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Continue', style: doneTextButton),
+                      Icon(
+                        HelloFitsy.arrowright,
+                        size: 13,
+                        color: ocean,
+                      )
+                    ],
+                  ),
+                  onTap: () {
+                    if (widget.isTypeSelected == true) {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          fullscreenDialog: !widget.classTemplate.isEditMode,
+                          builder: (context) => CreateClassDescription(
+                              classTemplate: classTemplate)));
+                    }
+                  },
+                )
+              ],
             ),
           ),
           Column(
@@ -259,29 +287,29 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                       },
                     ),
                     //Bottom Navigation Bar
-                    GestureDetector(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 30,
-                            bottom: 46,
-                          ),
-                          child: FooterButton(
-                            buttonColor: strawberry,
-                            buttonText: 'Continue',
-                            textColor: snow,
-                          ),
-                        ),
-                        onTap: () => {
-                              if (widget.isTypeSelected == true)
-                                {
-                                  Navigator.of(context).push(CupertinoPageRoute(
-                                      fullscreenDialog:
-                                          !widget.classTemplate.isEditMode,
-                                      builder: (context) =>
-                                          CreateClassDescription(
-                                              classTemplate: classTemplate)))
-                                }
-                            }),
+                    // GestureDetector(
+                    //     child: Padding(
+                    //       padding: const EdgeInsets.only(
+                    //         top: 30,
+                    //         bottom: 46,
+                    //       ),
+                    //       child: FooterButton(
+                    //         buttonColor: strawberry,
+                    //         buttonText: 'Continue',
+                    //         textColor: snow,
+                    //       ),
+                    //     ),
+                    //     onTap: () => {
+                    //           if (widget.isTypeSelected == true)
+                    //             {
+                    //               Navigator.of(context).push(CupertinoPageRoute(
+                    //                   fullscreenDialog:
+                    //                       !widget.classTemplate.isEditMode,
+                    //                   builder: (context) =>
+                    //                       CreateClassDescription(
+                    //                           classTemplate: classTemplate)))
+                    //             }
+                    //         }),
                   ],
                 ),
               ),
