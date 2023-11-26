@@ -4,8 +4,6 @@ import 'package:balance/Constants.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/login/components/ForgotPassword.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
-import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,10 +52,10 @@ void onSubmitSignInField(context) {
           backgroundColor: Colors.transparent,
           elevation: 0,
           duration: Duration(milliseconds: 1500),
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height * 0.5,
-              left: 70.0,
-              right: 70.0),
+          // padding: EdgeInsets.only(
+          //     bottom: MediaQuery.of(context).size.height * 0.5,
+          //     left: 70.0,
+          //     right: 70.0),
           content: Container(
             height: 35,
             decoration: BoxDecoration(
@@ -272,22 +270,19 @@ Widget signInPartners() {
 }
 
 //Sign In Typeface
-Widget typeFace(topPadding) {
-  return Padding(
-    padding: EdgeInsets.only(top: topPadding),
-    child: Hero(
-      transitionOnUserGestures: true,
-      tag: 'typeface',
-      child: Container(
-          height: 140,
-          width: 190,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage(
-              "assets/images/Typeface.png",
-            ),
-          ))),
-    ),
+Widget typeFace() {
+  return Hero(
+    transitionOnUserGestures: true,
+    tag: 'typeface',
+    child: Container(
+        height: 140,
+        width: 190,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage(
+            "assets/images/Typeface.png",
+          ),
+        ))),
   );
 }
 
@@ -305,155 +300,153 @@ class _SignInState extends State<SignIn> {
             automaticallyImplyLeading: false,
           ),
           body: SingleChildScrollView(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 26.0, right: 26.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    typeFace(MediaQuery.of(context).size.height * 0.08),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20, bottom: 15),
-                      child: textInputUsername(),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Padding(
-                        //   padding: const EdgeInsets.only(
-                        //     bottom: 5.0,
-                        //     left: 2.0,
-                        //   ),
-                        //   child: Text(
-                        //     'Password',
-                        //     style: logInPageTextInputTitle,
-                        //   ),
-                        // ),
-                        Container(
-                          height: 60,
-                          decoration: BoxDecoration(
-                            color: bone80,
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, right: 10),
-                                child: Center(
-                                    child: SvgPicture.asset(
-                                  'assets/icons/generalIcons/lock.svg',
-                                  color: jetBlack60,
-                                  width: 18,
-                                )),
-                              ),
-                              Expanded(
-                                child: TextField(
-                                  textInputAction: TextInputAction.done,
-                                  obscureText: true,
-                                  textCapitalization:
-                                      TextCapitalization.sentences,
-                                  style: const TextStyle(
-                                      overflow: TextOverflow.fade,
-                                      fontFamily: 'SFDisplay',
-                                      color: jetBlack,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500),
-                                  decoration: InputDecoration.collapsed(
-                                    border: InputBorder.none,
-                                    hintText: 'Password',
-                                    hintStyle: const TextStyle(
-                                      fontFamily: 'SFDisplay',
-                                      color: jetBlack40,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  focusNode: passwordFocusNode,
-                                  onChanged: (val) {
-                                    password = val;
-                                  },
-                                  onSubmitted: (value) {
-                                    onSubmitSignInField(context);
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  typeFace(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 15),
+                    child: textInputUsername(),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Padding(
+                      //   padding: const EdgeInsets.only(
+                      //     bottom: 5.0,
+                      //     left: 2.0,
+                      //   ),
+                      //   child: Text(
+                      //     'Password',
+                      //     style: logInPageTextInputTitle,
+                      //   ),
+                      // ),
+                      Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: bone80,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                      ],
-                    ),
-                    //TextInput Password
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 10),
+                              child: Center(
+                                  child: SvgPicture.asset(
+                                'assets/icons/generalIcons/lock.svg',
+                                color: jetBlack60,
+                                width: 18,
+                              )),
+                            ),
+                            Expanded(
+                              child: TextField(
+                                textInputAction: TextInputAction.done,
+                                obscureText: true,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                style: const TextStyle(
+                                    overflow: TextOverflow.fade,
+                                    fontFamily: 'SFDisplay',
+                                    color: jetBlack,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                decoration: InputDecoration.collapsed(
+                                  border: InputBorder.none,
+                                  hintText: 'Password',
+                                  hintStyle: const TextStyle(
+                                    fontFamily: 'SFDisplay',
+                                    color: jetBlack40,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                focusNode: passwordFocusNode,
+                                onChanged: (val) {
+                                  password = val;
+                                },
+                                onSubmitted: (value) {
+                                  onSubmitSignInField(context);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  //TextInput Password
 
-                    //forgot password
-                    GestureDetector(
-                      child: forgotPassword(),
+                  //forgot password
+                  GestureDetector(
+                    child: forgotPassword(),
+                    onTap: () {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          fullscreenDialog: true,
+                          builder: (context) => ForgotPasswordPage()));
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 35.0,
+                    ),
+                    child: GestureDetector(
+                      child: FooterButton(
+                          buttonColor: strawberry,
+                          textColor: snow,
+                          buttonText: 'Log in'),
                       onTap: () {
-                        Navigator.of(context).push(CupertinoPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => ForgotPasswordPage()));
+                        onSubmitSignInField(context);
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        top: 35.0,
-                      ),
-                      child: GestureDetector(
-                        child: FooterButton(
-                            buttonColor: strawberry,
-                            textColor: snow,
-                            buttonText: 'Log in'),
-                        onTap: () {
-                          onSubmitSignInField(context);
-                        },
-                      ),
-                    ),
-                    orDivider(),
+                  ),
+                  orDivider(),
 
-                    //Sign in partners widget
-                    signInPartners(),
+                  //Sign in partners widget
+                  signInPartners(),
 
-                    //Sign Up if you don't have an account
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30.0),
-                      child: RichText(
-                        text: TextSpan(
-                            text: 'Don\'t have an account? ',
-                            style: TextStyle(
-                              fontFamily: 'SFDisplay',
-                              color: jetBlack40,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'Sign up',
-                                  style: TextStyle(
-                                      fontFamily: 'SFDisplay',
-                                      color: ocean,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      decoration: TextDecoration.underline),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      Navigator.of(context).push(
-                                          CupertinoPageRoute(
-                                              fullscreenDialog: false,
-                                              builder: (context) =>
-                                                  TrainerOrTrainee()));
-                                    })
-                            ],
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.of(context).push(CupertinoPageRoute(
-                                    fullscreenDialog: false,
-                                    builder: (context) => TrainerOrTrainee()));
-                              }),
-                      ),
+                  //Sign Up if you don't have an account
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: RichText(
+                      text: TextSpan(
+                          text: 'Don\'t have an account? ',
+                          style: TextStyle(
+                            fontFamily: 'SFDisplay',
+                            color: jetBlack40,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'Sign up',
+                                style: TextStyle(
+                                    fontFamily: 'SFDisplay',
+                                    color: ocean,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    decoration: TextDecoration.underline),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context).push(
+                                        CupertinoPageRoute(
+                                            fullscreenDialog: false,
+                                            builder: (context) =>
+                                                TrainerOrTrainee()));
+                                  })
+                          ],
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  fullscreenDialog: false,
+                                  builder: (context) => TrainerOrTrainee()));
+                            }),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           )),

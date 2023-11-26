@@ -218,15 +218,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        'See all',
-                        style: TextStyle(
-                          color: ocean,
-                          fontFamily: 'SFDisplay',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
+                      // Text(
+                      //   'See all',
+                      //   style: TextStyle(
+                      //     color: ocean,
+                      //     fontFamily: 'SFDisplay',
+                      //     fontWeight: FontWeight.w500,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -411,9 +410,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       },
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  //Notice to set up Stripe (If not already set up)
+                  if (widget.userInstance.userType == UserType.Trainer &&
+                      widget.userInstance.stripeAccountID != null &&
+                      widget.userInstance.isStripeDetailsSubmitted == false)
+                    const SizedBox(
+                      height: 5,
+                    ),
+
                   //Notice to set up Stripe (If not already set up)
                   if (widget.userInstance.userType == UserType.Trainer &&
                       widget.userInstance.stripeAccountID != null &&

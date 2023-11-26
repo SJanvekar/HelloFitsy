@@ -107,7 +107,8 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
   Widget build(BuildContext context) {
     return Material(
       color: snow,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15), topRight: Radius.circular(15)),
       child:
 
           //Body
@@ -248,43 +249,46 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                     ),
 
                     //Virtual selection
-                    GestureDetector(
-                      child: AnimatedContainer(
-                        height: 85,
-                        duration: Duration(milliseconds: 100),
-                        curve: Curves.linear,
-                        decoration: BoxDecoration(
-                          color: _currentBorderColorVirtual,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: SvgPicture.asset(
-                                "assets/icons/generalIcons/virtual.svg",
-                                color: _currentTextColorVirtual,
-                              ),
-                            ),
-                            Text('Virtual program',
-                                style: TextStyle(
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 45),
+                      child: GestureDetector(
+                        child: AnimatedContainer(
+                          height: 85,
+                          duration: Duration(milliseconds: 100),
+                          curve: Curves.linear,
+                          decoration: BoxDecoration(
+                            color: _currentBorderColorVirtual,
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: SvgPicture.asset(
+                                  "assets/icons/generalIcons/virtual.svg",
                                   color: _currentTextColorVirtual,
-                                  fontFamily: 'SFDisplay',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                ))
-                          ],
+                                ),
+                              ),
+                              Text('Virtual program',
+                                  style: TextStyle(
+                                    color: _currentTextColorVirtual,
+                                    fontFamily: 'SFDisplay',
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                  ))
+                            ],
+                          ),
                         ),
+                        onTap: () => {
+                          setState(() {
+                            _buttonOnPressed(ClassType.Virtual);
+                            HapticFeedback.selectionClick();
+                            classTemplate.classType = ClassType.Virtual;
+                            widget.isTypeSelected = true;
+                          })
+                        },
                       ),
-                      onTap: () => {
-                        setState(() {
-                          _buttonOnPressed(ClassType.Virtual);
-                          HapticFeedback.selectionClick();
-                          classTemplate.classType = ClassType.Virtual;
-                          widget.isTypeSelected = true;
-                        })
-                      },
                     ),
                     //Bottom Navigation Bar
                     // GestureDetector(

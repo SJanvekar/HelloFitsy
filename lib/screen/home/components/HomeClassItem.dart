@@ -327,7 +327,7 @@ class _HomeClassItem extends State<HomeClassItem> {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (BuildContext context) {
-                          return classMoreActions();
+                          return Wrap(children: [classMoreActions()]);
                         })
                   },
                 ),
