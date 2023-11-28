@@ -11,7 +11,6 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:fitsy.ca</string>
-		<string>applinks:localhost:8888</string>
 	</array>
 	<key>com.apple.developer.in-app-payments</key>
 	<array>

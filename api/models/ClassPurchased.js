@@ -2,71 +2,107 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var ClassPurchasedSchema = new Schema({
-    //Start Date
-    StartDate: {
-        type: Date,
-        required: true
-    },
-
-    //End Date
-    EndDate: {
-        type: Date,
-        required: true
-    },
-
-    //Recurrence Type
-    Recurrence: {
-        type: [{
-
-        type: String,
-            enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
-            }],
-
-        default: ['None'],
-        required: true,
-    },
 
     //Class ID
     ClassID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Class',
         required: true,
-        unique: true,
     },
 
-    //Class Name
-    ClassName: {
-        type: String,
-        required: true
-    },
-
-    //Class Name
-    ClassImageUrl: {
-        type: String,
-        required: true
-    },
-    
-    //Class Type
-    ClassType: {
-        type: [{
-
-        type: String,
-            enum: ['Solo', 'Group', 'Virtual']
-            }],
-
-        default: ['Solo'],
+    //Purchased User ID
+    UserID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
     },
 
-    //Class Trainer
-    ClassTrainer: {
-        type: String,
+    //Class Schedules
+    ClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+
+
+        //Recurrence Type
+        Recurrence: {
+            type: [{
+
+            type: String,
+                enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
+                }],
+
+            default: ['None'],
+        },
+    }],
+
+    //Class Schedules that the user decides to update
+    UpdatedClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+
+        ScheduleReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        }
+    }],
+
+    //Class Schedules that the user decides to cancel
+    CancelledClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+
+        ScheduleReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        }
+    }],
+
+    //Date Booked
+    DateBooked: {
+        type: Date,
         required: true,
     },
 
-    PurchasedUser: {
-        type: String,
-        required: false,
+    //Price Paid
+    PricePaid: {
+        type: Number,
+        required: true,
+    },
+
+    //Did trainee miss class
+    IsMissed: {
+        type: Boolean
+    },
+
+    //Did trainee cancell class
+    IsCancelled: {
+        type: Boolean
+    },
+
+    //Trainee's cancellation reason
+    CancellationReason: {
+        type: String
     }
 })
 

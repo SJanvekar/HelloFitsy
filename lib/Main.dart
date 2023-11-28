@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/Constants.dart';
+import 'package:balance/Requests/NotificationRequests.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
@@ -10,9 +11,10 @@ import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
-import 'package:balance/screen/profile/components/CreateClassSchedule.dart';
+import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +29,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -104,6 +107,9 @@ class _MainPageState extends State<MainPage>
     classPrice: 0,
     classTrainerID: '',
     classTimes: [],
+    updatedClassTimes: [],
+    cancelledClassTimes: [],
+    classCategories: [],
     classUserRequirements: '',
     classWhatToExpect: '',
     classImageUrl: '',
@@ -161,6 +167,25 @@ class _MainPageState extends State<MainPage>
 
   //Get User Information
   void getUserDetails() async {
+    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    _firebaseMessaging.requestPermission();
+    Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
+    String? registrationToken = await futureRegistrationToken;
+
+    print(futureRegistrationToken);
+    NotificationRequests()
+        .addTestNotification(registrationToken ?? '')
+        .then((val) {
+      if (val.data['success']) {
+        print("Test Notification success: ${val.data['msg']}");
+      } else {
+        print("Test Notification failed: ${val.data['msg']}");
+      }
+    });
+    ;
+
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    print(fcmToken);
     final sharedPrefs = await SharedPreferences.getInstance();
     User user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
@@ -250,7 +275,6 @@ class _MainPageState extends State<MainPage>
     //Else if the account is not empty for the trainer retrieve if details are submitted
     else if (userInstance.userType == UserType.Trainer &&
         userInstance.stripeAccountID != null) {
-      print(userInstance.stripeAccountID);
       StripeLogic().stripeDetailsSubmitted(userInstance);
     }
   }

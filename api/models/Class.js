@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Schedule = require('./Schedule');
 var Schema = mongoose.Schema;
 
 var ClassSchema = new Schema({
@@ -89,10 +88,65 @@ var ClassSchema = new Schema({
     },
 
     //Class Schedules
-    ClassTimes: {
-        type: [Schedule.schema],
-        required: false,
-    },
+    ClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+
+
+        //Recurrence Type
+        Recurrence: {
+            type: [{
+
+            type: String,
+                enum: ['None', 'Daily', 'Weekly', 'BiWeekly', 'Monthly', 'Yearly']
+                }],
+
+            default: ['None'],
+        },
+    }],
+
+    //Class Schedules that the user decides to update
+    UpdatedClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+
+        ScheduleReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        }
+    }],
+
+    //Class Schedules that the user decides to cancel
+    CancelledClassTimes: [{
+        //Start Date
+        StartDate: {
+            type: Date,
+        },
+
+        //End Date
+        EndDate: {
+            type: Date,
+        },
+
+        ScheduleReference: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+        }
+    }],
 
     //Categories (Linked)
     Categories: [{

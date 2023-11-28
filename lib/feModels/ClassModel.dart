@@ -1,22 +1,10 @@
 import 'dart:io';
-import 'dart:convert' as convert;
+import 'dart:convert';
 
-// ignore: constant_identifier_names
-enum RecurrenceType { None, Daily, Weekly, BiWeekly, Monthly, Yearly }
+import 'package:balance/feModels/ScheduleModel.dart';
 
 // ignore: constant_identifier_names
 enum ClassType { Solo, Group, Virtual }
-
-class Schedule {
-  DateTime startDate;
-  DateTime endDate;
-  RecurrenceType recurrence;
-
-  Schedule(
-      {required this.startDate,
-      required this.endDate,
-      required this.recurrence});
-}
 
 class Class {
   String classID;
@@ -34,6 +22,8 @@ class Class {
   int classReviewsAmount;
   String classTrainerID;
   late List<Schedule> classTimes;
+  late List<UpdatedSchedule> updatedClassTimes;
+  late List<CancelledSchedule> cancelledClassTimes;
   late List<String> classCategories;
   File? profileImageTempHolder;
   bool isEditMode = false;
@@ -55,6 +45,9 @@ class Class {
     //Good after this point
     required this.classPrice,
     required this.classTimes,
+    required this.updatedClassTimes,
+    required this.cancelledClassTimes,
+    required this.classCategories,
 
     //Trainer Info
     required this.classTrainerID,
@@ -75,6 +68,11 @@ class Class {
         classOverallRating = json['ClassOverallRating'].toDouble(),
         classReviewsAmount = json['ClassReviewsAmount'],
         classPrice = json['ClassPrice'].toDouble(),
+        classTimes = Schedule.parseClassTimes(json['ClassTimes']),
+        updatedClassTimes =
+            UpdatedSchedule.parseClassTimes(json['UpdatedClassTimes']),
+        cancelledClassTimes =
+            CancelledSchedule.parseClassTimes(json['CancelledClassTimes']),
         classCategories = List<String>.from(json['Categories']),
         classTrainerID = json['ClassTrainerID'];
 
@@ -92,11 +90,22 @@ class Class {
         'ClassRating': classOverallRating,
         'ClassReview': classReviewsAmount,
         'ClassPrice': classPrice,
+        //NOTE: have not confirmed if ClassTimes or Categories work for this,
+        //because there hasn't been a need to use Class.toJson() yet.
+        //If Class.toJson() fails, let me know. -Will
+        'ClassTimes':
+            json.encode(classTimes.map((element) => element.toJson()).toList()),
+        'UpdatedClassTimes': json.encode(
+            updatedClassTimes.map((element) => element.toJson()).toList()),
+        'CancelledClassTimes': json.encode(
+            cancelledClassTimes.map((element) => element.toJson()).toList()),
+        'Categories': json.encode(classCategories),
         'ClassTrainerID': classTrainerID
       };
 }
 
-//Semi-hardcoded casting from String to ClassType, not optimal but the best I can think of right now
+//Semi-hardcoded casting from String to ClassType,
+//not optimal but the best I can think of right now
 ClassType stringToClassType(String string) {
   switch (string) {
     case "Solo":

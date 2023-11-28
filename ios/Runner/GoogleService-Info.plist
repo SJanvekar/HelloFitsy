@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>1061982765527-9vt42atmr2mfhag69i808sf66nd16q5i.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.1061982765527-9vt42atmr2mfhag69i808sf66nd16q5i</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAd7-J-NBcKRWt7PPqg5h3-xgO9V2F5x14</string>
 	<key>GCM_SENDER_ID</key>
@@ -13,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>ca.fitsy.testing</string>
+	<string>ca.fitsy.prod</string>
 	<key>PROJECT_ID</key>
 	<string>fitsy-5wx21</string>
 	<key>STORAGE_BUCKET</key>
@@ -29,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1061982765527:ios:c9412b90c39326c2f3cb92</string>
+	<string>1:1061982765527:ios:ba031bd0b2b68ecdf3cb92</string>
 </dict>
 </plist>

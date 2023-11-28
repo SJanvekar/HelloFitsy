@@ -10,7 +10,99 @@ const { default: mongoose } = require('mongoose')
 const { use } = require('passport')
 
 var functions = {
-  
+
+//*****GET REQUESTS*****//
+
+    //Get trainer information for class
+    getClassTrainerInfo: async function (req, res) {
+        const classTrainerInfoAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('classTrainerInfoAsync returned null'))
+                }
+            })
+        }
+        if ((!req.query.UserID)) {
+            res.json({success: false, msg: 'Missing query parameter UserID'});
+        }
+        try {
+            user = await User.findOne({_id: new mongoose.Types.ObjectId(req.query.UserID)}, '_id ProfileImageURL FirstName LastName Username')
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+        return classTrainerInfoAsync(user).then(parsedResponse => 
+            res.json({success: true,
+                _id: parsedResponse._id, 
+                ProfileImageURL: parsedResponse.ProfileImageURL,
+                Username: parsedResponse.Username,
+                FirstName: parsedResponse.FirstName,
+                LastName: parsedResponse.LastName}))
+    },
+
+    // Get Information after log in
+    getLogInInfo: async function (req, res) {
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('userPromiseAsync returned null'))
+                }
+            })
+        }
+        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+            var token = req.headers.authorization.split(' ')[1]
+            var decodedtoken = jwt.decode(token, process.env.DATABASE_SECRET)
+            try {
+                user = await User.findOne({Auth: decodedtoken._id})
+            } catch (err) {
+                console.log(err)
+                return res.json({success: false, msg: err})
+            }
+            return userPromiseAsync(user).then(function (parsedResponse) {
+                if (parsedResponse instanceof Error) {
+                    return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
+                } else {
+                    return res.json({success: true, user: parsedResponse})
+                }
+            })
+        } else {
+            return res.json({success: false, msg: 'No Headers'})
+        }
+    },
+
+    // Search Trainers
+    searchTrainers: async function (req, res) {
+        try {
+            response = await User.aggregate([
+                {$search: {
+                    index: 'Username',
+                    text: {
+                        query: req.query.SearchIndex,
+                        path: 'Username',
+                        fuzzy: {}
+                    }
+                }},
+                {$match: {UserType: 'Trainer'}},
+            ])
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, errorCode: err.code})
+        }
+        return res.json({success: true, searchResults: response})
+    },
+
+//*****POST REQUESTS*****//
+
     //Add New User fnc
     addNew: async function (req, res) {
         const userPromiseAsync = (responseJSON) => {
