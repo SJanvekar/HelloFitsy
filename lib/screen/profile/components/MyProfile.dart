@@ -5,11 +5,9 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:balance/Constants.dart';
 import 'package:balance/Requests/ClassRequests.dart';
-import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/feModels/Categories.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
-import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/sharedWidgets/LoginFooterButton.dart';
 import 'package:balance/sharedWidgets/SpinnerPage.dart';
@@ -150,6 +148,16 @@ class _PersonalProfileState extends State<PersonalProfile>
   }
 
   @override
+  void didUpdateWidget(PersonalProfile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // This method is called whenever the widget is updated with a new instance.
+
+    // You can use this method to perform actions when the widget is updated.
+    print("Widget updated");
+    getSet2UserDetails();
+  }
+
+  @override
   void dispose() {
     // Dispose of the Ticker and the AnimationController
     controller.dispose();
@@ -160,9 +168,16 @@ class _PersonalProfileState extends State<PersonalProfile>
     final sharedPrefs = await SharedPreferences.getInstance();
     final user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
+    widget.userInstance.userName = user.userName;
+    widget.userInstance.firstName = user.firstName;
+    widget.userInstance.lastName = user.lastName;
+    widget.userInstance.userBio = user.userBio ?? '';
     widget.userInstance.profileImageURL = user.profileImageURL;
+    print(widget.userInstance.profileImageURL);
 
-    setState(() {});
+    setState(() {
+      print('Got user details');
+    });
   }
 
 //----------
@@ -399,38 +414,6 @@ class _PersonalProfileState extends State<PersonalProfile>
               controller: _scrollController,
               slivers: [
                 SliverAppBar(
-                  leading: GestureDetector(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 26.0,
-                        top: 11.5,
-                        bottom: 11.5,
-                      ),
-                      child: ClipOval(
-                          child: BackdropFilter(
-                        filter: new ImageFilter.blur(
-                          sigmaX: 1,
-                          sigmaY: 1,
-                        ),
-                        child: Container(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(color: iconCircleColor),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8.5, bottom: 8.5),
-                            child: SvgPicture.asset(
-                              'assets/icons/generalIcons/arrowLeft.svg',
-                              color: iconColor,
-                              height: 13,
-                              width: 6,
-                            ),
-                          ),
-                        ),
-                      )),
-                    ),
-                    onTap: () => {Navigator.of(context).pop()},
-                  ),
                   leadingWidth: 58,
                   automaticallyImplyLeading: false,
                   backgroundColor: snow,
@@ -593,8 +576,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                                         String? newBio;
 
                                         return StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSetter setEditProfileState) {
+                                          builder: (
+                                            BuildContext context,
+                                            StateSetter setEditProfileState,
+                                          ) {
                                             //Modal widgets + functions
 
                                             //Pick Image Function
@@ -605,7 +590,6 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                     .pickImage(
                                                         source: ImageSource
                                                             .gallery);
-                                                print(image?.path);
                                                 if (image == null) {
                                                   image = XFile(
                                                       'assets/images/profilePictureDefault.png');
@@ -649,6 +633,8 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                         .getDownloadURL();
 
                                                 newProfileImageURL = imageURL;
+                                                // print(newProfileImageURL);
+                                                print('Uploaded Image');
                                               } catch (e) {
                                                 print("Error: $e");
                                               }
@@ -886,70 +872,75 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                               const Duration(
                                                                   milliseconds:
                                                                       500), () {
-                                                            uploadImage();
-                                                            newProfileImageURL ??=
+                                                            uploadImage()
+                                                                .then((value) {
+                                                              // This block will be executed when the Future is completed successfully
+                                                              UserRequests()
+                                                                  .updateUserInformation(
+                                                                newProfileImageURL,
                                                                 widget
                                                                     .userInstance
-                                                                    .profileImageURL;
-                                                            newFirstName ??=
-                                                                widget
-                                                                    .userInstance
-                                                                    .firstName;
-                                                            newLastName ??=
-                                                                widget
-                                                                    .userInstance
-                                                                    .lastName;
-                                                            newUserName ??=
-                                                                widget
-                                                                    .userInstance
-                                                                    .userName;
-                                                            newBio ??= widget
-                                                                .userInstance
-                                                                .userBio;
-                                                            UserRequests()
-                                                                .updateUserInformation(
-                                                              newProfileImageURL,
-                                                              widget
-                                                                  .userInstance
-                                                                  .userID,
-                                                              newFirstName,
-                                                              newLastName,
-                                                              newUserName,
-                                                              newBio,
-                                                            )
-                                                                .then(
-                                                                    (val) async {
-                                                              if (val.data[
-                                                                  'success']) {
-                                                                final sharedPrefs =
-                                                                    await SharedPreferences
-                                                                        .getInstance();
-                                                                User user = User
-                                                                    .fromJson(jsonDecode(
-                                                                        sharedPrefs.getString('loggedUser') ??
-                                                                            ''));
-                                                                user.userName =
-                                                                    newUserName!;
-                                                                user.firstName =
-                                                                    newFirstName!;
-                                                                user.lastName =
-                                                                    newLastName!;
-                                                                user.userBio =
-                                                                    newBio!;
-                                                                user.profileImageURL =
-                                                                    newProfileImageURL!;
-                                                                await sharedPrefs.setString(
-                                                                    'loggedUser',
-                                                                    jsonEncode(user
-                                                                        .toJson()));
-                                                              } else {
+                                                                    .userID,
+                                                                newFirstName,
+                                                                newLastName,
+                                                                newUserName,
+                                                                newBio,
+                                                              )
+                                                                  .then(
+                                                                      (val) async {
                                                                 if (val.data[
-                                                                        'errorCode'] ==
-                                                                    duplicateKeycode) {
-                                                                  print(
-                                                                      'Unable to edit info, duplicate username');
+                                                                    'success']) {
+                                                                  final sharedPrefs =
+                                                                      await SharedPreferences
+                                                                          .getInstance();
+                                                                  User user = User.fromJson(
+                                                                      jsonDecode(
+                                                                          sharedPrefs.getString('loggedUser') ??
+                                                                              ''));
+                                                                  user.userName =
+                                                                      newUserName!;
+                                                                  user.firstName =
+                                                                      newFirstName!;
+                                                                  user.lastName =
+                                                                      newLastName!;
+                                                                  user.userBio =
+                                                                      newBio!;
+                                                                  user.profileImageURL =
+                                                                      newProfileImageURL!;
+                                                                  await sharedPrefs.setString(
+                                                                      'loggedUser',
+                                                                      jsonEncode(
+                                                                          user.toJson()));
+                                                                  getSet2UserDetails();
+                                                                } else {
+                                                                  if (val.data[
+                                                                          'errorCode'] ==
+                                                                      duplicateKeycode) {
+                                                                    print(
+                                                                        'Unable to edit info, duplicate username');
+                                                                  }
                                                                 }
-                                                              }
+                                                                print(
+                                                                    'After fetchData completed');
+                                                              });
+                                                              newProfileImageURL ??= widget
+                                                                  .userInstance
+                                                                  .profileImageURL;
+                                                              newFirstName ??=
+                                                                  widget
+                                                                      .userInstance
+                                                                      .firstName;
+                                                              newLastName ??=
+                                                                  widget
+                                                                      .userInstance
+                                                                      .lastName;
+                                                              newUserName ??=
+                                                                  widget
+                                                                      .userInstance
+                                                                      .userName;
+                                                              newBio ??= widget
+                                                                  .userInstance
+                                                                  .userBio;
                                                             });
                                                           });
                                                           Future.delayed(
@@ -958,7 +949,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                                       550), () {
                                                             Navigator.pop(
                                                                 context);
-                                                            setState(() {});
+                                                            setState(() {
+                                                              print(
+                                                                  'State set');
+                                                            });
                                                           });
                                                         },
                                                         child: Text("Done",
