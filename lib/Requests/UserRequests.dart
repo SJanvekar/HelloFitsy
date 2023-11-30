@@ -5,12 +5,13 @@ class UserRequests {
   Dio dio = new Dio();
 
   updateUserInformation(
-      String? profileImageURL,
-      String? userID,
-      String? firstName,
-      String? lastName,
-      String? newUserName,
-      String? bio) async {
+    String? profileImageURL,
+    String? userID,
+    String? firstName,
+    String? lastName,
+    String? newUserName,
+    String? bio,
+  ) async {
     try {
       return await dio.post('$urlDomain/updateUserInfo', data: {
         "UserID": userID,

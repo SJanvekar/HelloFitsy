@@ -186,26 +186,47 @@ class _CategorySelectionState extends State<CategorySelection> {
     widget.userTemplate.userBio = '';
     widget.userTemplate.stripeAccountID = '';
     widget.userTemplate.stripeCustomerID = '';
+
     //Auth Service Call
     AuthService()
         .signUp(widget.authTemplate, widget.userTemplate)
         .then((val) async {
-      if (val.data['success']) {
-        print('Successful user add');
+      try {
+        if (val.data['success']) {
+          print('Successful user add');
 
-        //Assign all userTemplate information to shared preferences for MainPage
-        final sharedPrefs = await SharedPreferences.getInstance();
-        //TODO: If sharedPrefs fails unexpectedly, have a failsafe.
-        //One idea is to run getUser to handle shared pref exception.
-        //Do this for all set/get instance.
-        await sharedPrefs.setString(
-            'loggedUser', jsonEncode(val.data['user'] ?? ''));
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MainPage()));
-      } else {
-        print("Sign up error: ${val.data['msg']}");
+          //Assign all userTemplate information to shared preferences for MainPage
+          final sharedPrefs = await SharedPreferences.getInstance();
+
+          // Safely encode user data and handle SharedPreferences exceptions
+          final userData = jsonEncode(val.data['user'] ?? '');
+          await _safeSetString(sharedPrefs, 'loggedUser', userData);
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => MainPage()));
+        } else {
+          print("Sign up error: ${val.data['msg']}");
+        }
+      } catch (e) {
+        print('Error: $e');
+        // Handle any exception that might occur during the process
       }
+    }).catchError((error) {
+      print('Error during sign up: $error');
+      // Handle errors during sign up process
     });
+  }
+
+// Function to safely set string in SharedPreferences with error handling
+  Future<void> _safeSetString(
+      SharedPreferences prefs, String key, String value) async {
+    try {
+      await prefs.setString(key, value);
+    } catch (e) {
+      print('Error setting SharedPreferences: $e');
+      // Handle any exception that might occur during SharedPreferences set operation
+      // For instance, consider fallback mechanisms or alternative approaches
+    }
   }
 }
 

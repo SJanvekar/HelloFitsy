@@ -167,25 +167,24 @@ class _MainPageState extends State<MainPage>
 
   //Get User Information
   void getUserDetails() async {
-    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-    _firebaseMessaging.requestPermission();
-    Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
-    String? registrationToken = await futureRegistrationToken;
+    // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    // _firebaseMessaging.requestPermission();
+    // Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
+    // String? registrationToken = await futureRegistrationToken;
 
-    print(futureRegistrationToken);
-    NotificationRequests()
-        .addTestNotification(registrationToken ?? '')
-        .then((val) {
-      if (val.data['success']) {
-        print("Test Notification success: ${val.data['msg']}");
-      } else {
-        print("Test Notification failed: ${val.data['msg']}");
-      }
-    });
-    ;
+    // print(futureRegistrationToken);
+    // NotificationRequests()
+    //     .addTestNotification(registrationToken ?? '')
+    //     .then((val) {
+    //   if (val.data['success']) {
+    //     print("Test Notification success: ${val.data['msg']}");
+    //   } else {
+    //     print("Test Notification failed: ${val.data['msg']}");
+    //   }
+    // });
 
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    print(fcmToken);
+    // final fcmToken = await FirebaseMessaging.instance.getToken();
+    // print(fcmToken);
     final sharedPrefs = await SharedPreferences.getInstance();
     User user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));

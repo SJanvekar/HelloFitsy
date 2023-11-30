@@ -640,6 +640,21 @@ class _PersonalProfileState extends State<PersonalProfile>
                                               }
                                             }
 
+                                            Future<void> _safeSetString(
+                                                SharedPreferences prefs,
+                                                String key,
+                                                String value) async {
+                                              try {
+                                                await prefs.setString(
+                                                    key, value);
+                                              } catch (e) {
+                                                print(
+                                                    'Error setting SharedPreferences: $e');
+                                                // Handle any exception that might occur during SharedPreferences set operation
+                                                // For instance, consider fallback mechanisms or alternative approaches
+                                              }
+                                            }
+
                                             //Textfield widgets
                                             //Edit First Name
                                             Widget editFirstName() {
@@ -877,84 +892,112 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                               // This block will be executed when the Future is completed successfully
                                                               UserRequests()
                                                                   .updateUserInformation(
-                                                                newProfileImageURL,
+                                                                newProfileImageURL ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .profileImageURL,
                                                                 widget
                                                                     .userInstance
                                                                     .userID,
-                                                                newFirstName,
-                                                                newLastName,
-                                                                newUserName,
-                                                                newBio,
+                                                                newFirstName ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .firstName,
+                                                                newLastName ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .lastName,
+                                                                newUserName ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .userName,
+                                                                newBio ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .userBio,
                                                               )
                                                                   .then(
                                                                       (val) async {
-                                                                if (val.data[
-                                                                    'success']) {
-                                                                  final sharedPrefs =
-                                                                      await SharedPreferences
-                                                                          .getInstance();
-                                                                  User user = User.fromJson(
-                                                                      jsonDecode(
-                                                                          sharedPrefs.getString('loggedUser') ??
-                                                                              ''));
-                                                                  user.userName =
-                                                                      newUserName!;
-                                                                  user.firstName =
-                                                                      newFirstName!;
-                                                                  user.lastName =
-                                                                      newLastName!;
-                                                                  user.userBio =
-                                                                      newBio!;
-                                                                  user.profileImageURL =
-                                                                      newProfileImageURL!;
-                                                                  await sharedPrefs.setString(
-                                                                      'loggedUser',
-                                                                      jsonEncode(
-                                                                          user.toJson()));
-                                                                  getSet2UserDetails();
-                                                                } else {
+                                                                try {
                                                                   if (val.data[
-                                                                          'errorCode'] ==
-                                                                      duplicateKeycode) {
-                                                                    print(
-                                                                        'Unable to edit info, duplicate username');
+                                                                      'success']) {
+                                                                    final sharedPrefs =
+                                                                        await SharedPreferences
+                                                                            .getInstance();
+                                                                    User user = User.fromJson(jsonDecode(
+                                                                        sharedPrefs.getString('loggedUser') ??
+                                                                            ''));
+                                                                    user.userName = newUserName ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .userName;
+                                                                    user.firstName = newFirstName ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .firstName;
+                                                                    user.lastName = newLastName ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .lastName;
+                                                                    user.userBio = newBio ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .userBio;
+                                                                    user.profileImageURL = newProfileImageURL ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .profileImageURL;
+                                                                    await _safeSetString(
+                                                                        sharedPrefs,
+                                                                        'loggedUser',
+                                                                        jsonEncode(
+                                                                            user.toJson()));
+                                                                    getSet2UserDetails();
+                                                                    await Future.delayed(
+                                                                        Duration(
+                                                                            milliseconds:
+                                                                                550),
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      setState(
+                                                                          () {
+                                                                        print(
+                                                                            'State set');
+                                                                      });
+                                                                    });
+                                                                  } else {
+                                                                    if (val.data[
+                                                                            'errorCode'] ==
+                                                                        duplicateKeycode) {
+                                                                      print(
+                                                                          'Unable to edit info, duplicate username');
+                                                                    }
                                                                   }
+                                                                  print(
+                                                                      'After fetchData completed');
+                                                                } catch (e) {
+                                                                  print(
+                                                                      'Error in updateUserInformation: $e');
+                                                                  // Handle any exception that might occur during the updateUserInformation process
                                                                 }
+                                                              }).catchError(
+                                                                      (error) {
                                                                 print(
-                                                                    'After fetchData completed');
+                                                                    'Error in updateUserInformation: $error');
+                                                                // Handle errors during updateUserInformation process
                                                               });
-                                                              newProfileImageURL ??= widget
-                                                                  .userInstance
-                                                                  .profileImageURL;
-                                                              newFirstName ??=
-                                                                  widget
-                                                                      .userInstance
-                                                                      .firstName;
-                                                              newLastName ??=
-                                                                  widget
-                                                                      .userInstance
-                                                                      .lastName;
-                                                              newUserName ??=
-                                                                  widget
-                                                                      .userInstance
-                                                                      .userName;
-                                                              newBio ??= widget
-                                                                  .userInstance
-                                                                  .userBio;
-                                                            });
-                                                          });
-                                                          Future.delayed(
-                                                              Duration(
-                                                                  milliseconds:
-                                                                      550), () {
-                                                            Navigator.pop(
-                                                                context);
-                                                            setState(() {
+                                                            }).catchError(
+                                                                    (error) {
                                                               print(
-                                                                  'State set');
+                                                                  'Error in uploadImage: $error');
+                                                              // Handle errors during uploadImage process
                                                             });
                                                           });
                                                         },
+
+// Function to safely set string in SharedPreferences with error handling
+
                                                         child: Text("Done",
                                                             style:
                                                                 doneTextButton),
