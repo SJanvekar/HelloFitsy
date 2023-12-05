@@ -996,8 +996,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                           });
                                                         },
 
-// Function to safely set string in SharedPreferences with error handling
-
+                                                        // Function to safely set string in SharedPreferences with error handling
                                                         child: Text("Done",
                                                             style:
                                                                 doneTextButton),

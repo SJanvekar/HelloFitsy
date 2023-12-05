@@ -192,7 +192,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   children: [
                     Icon(
                       Icons.more_horiz_rounded,
-                      color: iconColor,
+                      color: snow,
                       size: 25,
                     ),
                     Container(
@@ -208,7 +208,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                       backgroundColor: Colors.transparent,
                       context: context,
                       builder: (BuildContext context) {
-                        return UserMoreActions();
+                        return Wrap(children: [classMoreActions()]);
                       })
                 },
               ),
@@ -860,7 +860,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                           backgroundColor: Colors.transparent,
                           context: context,
                           builder: (BuildContext context) {
-                            return classMoreActions();
+                            return Wrap(children: [classMoreActions()]);
                           })
                     },
                   ),
