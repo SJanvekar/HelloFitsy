@@ -4,11 +4,13 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/Constants.dart';
 import 'package:balance/Requests/NotificationRequests.dart';
 import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/NotificationModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
+import 'package:balance/screen/login/components/PersonalInfo.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
@@ -19,14 +21,138 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
 import 'feModels/UserModel.dart';
 import 'package:go_router/go_router.dart';
 
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+final StreamController<NotificationModel> didReceiveLocalNotificationStream =
+    StreamController<NotificationModel>.broadcast();
+
+final StreamController<String?> selectNotificationStream =
+    StreamController<String?>.broadcast();
+
+String? selectedNotificationPayload;
+
+/// A notification action which triggers a App navigation event
+const String navigationActionId = 'id_1';
+
+/// Defines a iOS/MacOS notification category for text input actions.
+const String darwinNotificationCategoryText = 'textCategory';
+
+/// Defines a iOS/MacOS notification category for plain actions.
+const String darwinNotificationCategoryPlain = 'plainCategory';
+
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  // ignore: avoid_print
+  print('notification(${notificationResponse.id}) action tapped: '
+      '${notificationResponse.actionId} with'
+      ' payload: ${notificationResponse.payload}');
+  if (notificationResponse.input?.isNotEmpty ?? false) {
+    // ignore: avoid_print
+    print(
+        'notification action tapped with input: ${notificationResponse.input}');
+  }
+}
+
 void main() async {
+  // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
+
+  final List<DarwinNotificationCategory> darwinNotificationCategories =
+      <DarwinNotificationCategory>[
+    DarwinNotificationCategory(
+      darwinNotificationCategoryText,
+      actions: <DarwinNotificationAction>[
+        DarwinNotificationAction.text(
+          'text_1',
+          'Action 1',
+          buttonTitle: 'Send',
+          placeholder: 'Placeholder',
+        ),
+      ],
+    ),
+    DarwinNotificationCategory(
+      darwinNotificationCategoryPlain,
+      actions: <DarwinNotificationAction>[
+        DarwinNotificationAction.plain('id_1', 'Action 1'),
+        DarwinNotificationAction.plain(
+          'id_2',
+          'Action 2 (destructive)',
+          options: <DarwinNotificationActionOption>{
+            DarwinNotificationActionOption.destructive,
+          },
+        ),
+        DarwinNotificationAction.plain(
+          navigationActionId,
+          'Action 3 (foreground)',
+          options: <DarwinNotificationActionOption>{
+            DarwinNotificationActionOption.foreground,
+          },
+        ),
+        DarwinNotificationAction.plain(
+          'id_4',
+          'Action 4 (auth required)',
+          options: <DarwinNotificationActionOption>{
+            DarwinNotificationActionOption.authenticationRequired,
+          },
+        ),
+      ],
+      options: <DarwinNotificationCategoryOption>{
+        DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
+      },
+    )
+  ];
+
+  /// Note: permissions aren't requested here just to demonstrate that can be
+  /// done later
+  final DarwinInitializationSettings initializationSettingsDarwin =
+      DarwinInitializationSettings(
+    requestAlertPermission: false,
+    requestBadgePermission: false,
+    requestSoundPermission: false,
+    onDidReceiveLocalNotification:
+        (int id, String? title, String? body, String? payload) async {
+      didReceiveLocalNotificationStream.add(
+        NotificationModel(
+            title: title,
+            body: body,
+            sentAt: DateTime.now(),
+            receivedAt: DateTime.now()),
+      );
+    },
+    notificationCategories: darwinNotificationCategories,
+  );
+
+  final InitializationSettings initializationSettings = InitializationSettings(
+    iOS: initializationSettingsDarwin,
+    // macOS: initializationSettingsDarwin,
+  );
+
+  await flutterLocalNotificationsPlugin.initialize(
+    initializationSettings,
+    onDidReceiveNotificationResponse:
+        (NotificationResponse notificationResponse) {
+      switch (notificationResponse.notificationResponseType) {
+        case NotificationResponseType.selectedNotification:
+          selectNotificationStream.add(notificationResponse.payload);
+          break;
+        case NotificationResponseType.selectedNotificationAction:
+          if (notificationResponse.actionId == navigationActionId) {
+            selectNotificationStream.add(notificationResponse.payload);
+          }
+          break;
+      }
+    },
+    onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+  );
+
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
 
@@ -39,6 +165,18 @@ void main() async {
     routerConfig: router,
   ));
 }
+
+// void onDidReceiveNotificationResponse(
+//     NotificationResponse notificationResponse) async {
+//   final String? payload = notificationResponse.payload;
+//   if (notificationResponse.payload != null) {
+//     debugPrint('notification payload: $payload');
+//   }
+//   await Navigator.push(
+//     context,
+//     MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
+//   );
+// }
 
 /// This handles '/'.
 final router = GoRouter(
@@ -145,6 +283,11 @@ class _MainPageState extends State<MainPage>
       userInstance: userInstance,
     ));
 
+    //Request notification permissions
+    _requestPermissions();
+    //Navigate to specified page after bottom nav bar loads
+    _configureSelectNotificationSubject();
+
     //Animation Controller Set Up
     controller = AnimationController(
       vsync: this,
@@ -166,22 +309,21 @@ class _MainPageState extends State<MainPage>
 
   //Get User Information
   void getUserDetails() async {
-    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-    _firebaseMessaging.requestPermission();
-    Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
-    String? registrationToken = await futureRegistrationToken;
+    // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    // _firebaseMessaging.requestPermission();
+    // Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
+    // String? registrationToken = await futureRegistrationToken;
 
-    print(futureRegistrationToken);
-    NotificationRequests()
-        .addTestNotification(registrationToken ?? '')
-        .then((val) {
-      if (val.data['success']) {
-        print("Test Notification success: ${val.data['msg']}");
-      } else {
-        print("Test Notification failed: ${val.data['msg']}");
-      }
-    });
-    ;
+    // print(futureRegistrationToken);
+    // NotificationRequests()
+    //     .addTestNotification(registrationToken ?? '')
+    //     .then((val) {
+    //   if (val.data['success']) {
+    //     print("Test Notification success: ${val.data['msg']}");
+    //   } else {
+    //     print("Test Notification failed: ${val.data['msg']}");
+    //   }
+    // });
 
     final fcmToken = await FirebaseMessaging.instance.getToken();
     print(fcmToken);
@@ -288,6 +430,25 @@ class _MainPageState extends State<MainPage>
         _selectedIndex = index;
       });
     }
+  }
+
+  Future<void> _requestPermissions() async {
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  void _configureSelectNotificationSubject() {
+    selectNotificationStream.stream.listen((String? payload) async {
+      await Navigator.of(context).push(MaterialPageRoute<void>(
+        builder: (BuildContext context) => PersonalInfo(),
+      ));
+    });
   }
 
   @override
