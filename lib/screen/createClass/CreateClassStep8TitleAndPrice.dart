@@ -66,25 +66,38 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
   var titleController = TextEditingController();
   var costController = TextEditingController();
   var locationController = TextEditingController();
+  double currentLat = 43.651070;
+  double currentLong = -79.347015;
 
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(43.651070, -79.347015),
-    zoom: 12,
-  );
+  late CameraPosition _kCurrentLocation;
 
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  void getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low);
+    currentLat = position.latitude;
+    currentLong = position.longitude;
+  }
+
+  // static const CameraPosition _kLake = CameraPosition(
+  //     bearing: 192.8334901395799,
+  //     target: LatLng(37.43296265331129, -122.08832357078792),
+  //     tilt: 59.440717697143555,
+  //     zoom: 19.151926040649414);
 
   //----------
   @override
   void initState() {
     super.initState();
+
+    getCurrentLocation();
+
+    _kCurrentLocation = CameraPosition(
+      target: LatLng(currentLat, currentLong),
+      zoom: 12,
+    );
     titleController.text = widget.classTemplate.className;
     if (widget.classTemplate.classPrice == 0 &&
         widget.classTemplate.className.isNotEmpty) {
@@ -257,9 +270,9 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                 ),
               ),
               onChanged: (val) {
-                var addresses = [];
-                addresses.add(locationFromAddress(val));
-                print(addresses[0].toString());
+                // var addresses = [];
+                // addresses.add(locationFromAddress(val));
+                // print(addresses[0].toString());
               },
             ),
             Padding(
@@ -270,7 +283,7 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: GoogleMap(
                   mapType: MapType.terrain,
-                  initialCameraPosition: _kGooglePlex,
+                  initialCameraPosition: _kCurrentLocation,
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
                   },

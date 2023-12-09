@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
 import 'feModels/UserModel.dart';
@@ -27,6 +29,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -75,6 +78,37 @@ class FITSY extends StatelessWidget {
         //SignIn(); -> RatingPopup();
 
         home: SignIn());
+  }
+}
+
+//Permissions Enum
+enum PermissionGroup {
+  /// Android: Fine and Coarse Location
+  /// iOS: CoreLocation - Always
+  locationAlways,
+
+  /// Android: Fine and Coarse Location
+  /// iOS: CoreLocation - WhenInUse
+  locationWhenInUse
+}
+
+void checkPermissions() async {
+  // Check if permission is already granted
+  PermissionStatus permissionStatus = await Permission.location.request();
+
+  // Handle the permission status accordingly
+  if (permissionStatus.isGranted) {
+    // Permission already granted
+    print('Location permission granted');
+  } else if (permissionStatus.isDenied) {
+    // Permission denied
+    print('Location permission denied');
+  } else if (permissionStatus.isPermanentlyDenied) {
+    // Permission permanently denied
+
+    print('Location permission permanently denied');
+    // Open app settings to allow users to grant permission manually
+    openAppSettings();
   }
 }
 
@@ -128,6 +162,7 @@ class _MainPageState extends State<MainPage>
   @override
   void initState() {
     super.initState();
+
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
     //   SystemUiOverlay.top,
     // ]);
@@ -163,6 +198,24 @@ class _MainPageState extends State<MainPage>
 
   //Get User Information
   void getUserDetails() async {
+    // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+    // _firebaseMessaging.requestPermission();
+    // Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
+    // String? registrationToken = await futureRegistrationToken;
+
+    // print(futureRegistrationToken);
+    // NotificationRequests()
+    //     .addTestNotification(registrationToken ?? '')
+    //     .then((val) {
+    //   if (val.data['success']) {
+    //     print("Test Notification success: ${val.data['msg']}");
+    //   } else {
+    //     print("Test Notification failed: ${val.data['msg']}");
+    //   }
+    // });
+
+    // final fcmToken = await FirebaseMessaging.instance.getToken();
+    // print(fcmToken);
     final sharedPrefs = await SharedPreferences.getInstance();
     User user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
@@ -208,9 +261,10 @@ class _MainPageState extends State<MainPage>
       isFromSearch: false,
     ));
 
-    setState(() {
-      print('main set state 2');
-    });
+    //Request Permissions
+    checkPermissions();
+
+    setState(() {});
   }
 
   //Function - Show Alert Dialog
@@ -337,19 +391,24 @@ class _MainPageState extends State<MainPage>
                           Timer(Duration(milliseconds: 100), () {
                             showCupertinoModalPopup(
                               context: context,
-                              useRootNavigator: true,
-                              semanticsDismissible: true,
-                              barrierDismissible: true,
                               barrierColor: jetBlack60,
-                              builder: (context) {
-                                return Container(
-                                  color: Colors.transparent,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.75,
-                                  child: CreateClassSelectType(
-                                    isTypeSelected: false,
-                                    classTemplate: classTemplate,
-                                    isEditMode: false,
+                              builder: (BuildContext context) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the modal if tapped outside the content
+                                  },
+                                  child: Wrap(
+                                    children: [
+                                      CupertinoPopupSurface(
+                                        isSurfacePainted: true,
+                                        child: CreateClassSelectType(
+                                          isTypeSelected: false,
+                                          classTemplate: classTemplate,
+                                          isEditMode: false,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 );
                               },

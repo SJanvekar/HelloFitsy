@@ -50,12 +50,13 @@ createStripeAccountLink: async function (req, res) {
   //Create new Stripe Customer & Payment Intent
   newPaymentIntent: async function (req, res){
     try {
+
       //Payment intents require CustomerID, so create that first
       //CustomerID null check
-      
       var customerID;
-      if(req.body.customer== null){
-        customer = await fitsyStripe.customers.create();
+
+      if(req.body.customerID == null){
+        const customer = await fitsyStripe.customers.create();
         customerID = customer.id;
       } else {
         customerID = req.body.customerID
@@ -87,7 +88,7 @@ createStripeAccountLink: async function (req, res) {
         },
       });
 
-      res.json({ success: true, msg: 'Successfully created new payment intent', paymentIntent: paymentIntent, client_secret: paymentIntent.client_secret, customerID: customerID,});
+      res.json({ success: true, msg: 'Successfully created new payment intent', paymentIntent: paymentIntent, client_secret: paymentIntent.client_secret, customerID: customerID, ephemeralKey: ephemeralKey});
     } catch (err) {
       res.status(500).json({ success: false, msg: 'Error creating new payment intent', 
         error: err.message });

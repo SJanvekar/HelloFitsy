@@ -43,9 +43,9 @@ class StripeRequests {
   //Create payment intent
   newPaymentIntent(
     String? customerID,
-    double paymentAmount,
-    double fitsyFee,
-    String accountID,
+    int paymentAmount,
+    int fitsyFee,
+    String? accountID,
   ) async {
     try {
       return await dio.post('$urlDomain/newPaymentIntent',
@@ -57,7 +57,9 @@ class StripeRequests {
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } catch (e) {
-      print("Stripe Payment Intent Creation Error: ${e}");
+      print(
+        "Stripe Payment Intent Creation Error: ${e}",
+      );
     }
   }
 }

@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var Schedule = require('./Schedule');
 var Schema = mongoose.Schema;
 
 var ClassSchema = new Schema({

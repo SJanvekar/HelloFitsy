@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:balance/feModels/ScheduleModel.dart';
-import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 
 // ignore: constant_identifier_names
 enum ClassType { Solo, Group, Virtual }
@@ -42,13 +41,12 @@ class Class {
     required this.classLongitude,
     required this.classOverallRating,
     required this.classReviewsAmount,
-    required this.classCategories,
-
     //Good after this point
     required this.classPrice,
     required this.classTimes,
     required this.updatedClassTimes,
     required this.cancelledClassTimes,
+    required this.classCategories,
 
     //Trainer Info
     required this.classTrainerID,

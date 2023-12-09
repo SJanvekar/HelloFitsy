@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
+import 'package:balance/screen/createClass/CreateClassStep7ClassLocation.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
-import 'package:balance/screen/createClass/createClassStep7TitleAndPrice.dart';
+import 'package:balance/screen/createClass/createClassStep8TitleAndPrice.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/cupertino.dart';
@@ -162,12 +163,12 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                   switch (widget.classTemplate.classType) {
                     case ClassType.Solo:
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassTitleAndPrice(
+                          builder: (context) => SelectClassLocation(
                               classTemplate: widget.classTemplate)));
                       break;
                     case ClassType.Group:
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassTitleAndPrice(
+                          builder: (context) => SelectClassLocation(
                               classTemplate: widget.classTemplate)));
                       break;
                     case ClassType.Virtual:

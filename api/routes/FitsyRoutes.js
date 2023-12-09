@@ -6,6 +6,7 @@ const classLikedController = require('../controllers/ClassLikedController.js')
 const classPurchasedController = require('../controllers/ClassPurchasedController.js')
 const followerController = require('../controllers/FollowerController.js')
 const followingController = require('../controllers/FollowingController.js')
+const notificationController = require('../controllers/NotificationController.js')
 const stripeController = require('../controllers/StripeControllerAPI.js')
 const userController = require('../controllers/UserController.js')
 
@@ -33,7 +34,7 @@ router.get('/dashboard', (req, res) =>{
 
   //Class Schedule routes
     //Get information for a class schedule
-    router.get('/getSchedule', classPurchasedController.getPurchasedClassSchedule)
+    router.get('/getClassPurchased', classPurchasedController.getClassPurchased)
 
   //Follower routes
     //Get current user's follower list
@@ -98,8 +99,21 @@ router.get('/dashboard', (req, res) =>{
     //Remove Class Liked
     router.post('/removeClassLiked', classLikedController.removeClassLiked)
 
-  //Class Schedule routes
-    router.post('/addClassSchedule', classPurchasedController.addNewClassPurchased)
+  //Class Purchased routes
+    //Add Class Purchased
+    router.post('/addClassPurchased', classPurchasedController.addNewClassPurchased)
+    //Add Class Purchased Update Schedule
+    router.post('/addClassPurchasedUpdatedSchedule', classPurchasedController.addClassPurchasedUpdatedSchedule)
+    //Change Class Purchased Update Schedule
+    router.post('/changeClassPurchasedUpdatedSchedule', classPurchasedController.changeClassPurchasedUpdatedSchedule)
+    //Add Class Purchased Cancelled Schedule
+    router.post('/addClassPurchasedCancelledSchedule', classPurchasedController.addClassPurchasedCancelledSchedule)
+    //Add Class Purchased Missed
+    router.post('/addClassPurchasedMissed', classPurchasedController.addClassPurchasedMissed)
+    //Add Class Purchased Cancelled
+    router.post('/addClassPurchasedCancelled', classPurchasedController.addClassPurchasedCancelled)
+    //Add Class Purchased Cancellation Reason
+    router.post('/addClassPurchasedCancelReason', classPurchasedController.addClassPurchasedCancelReason)
 
   //Follower routes
     //Add New Follower
@@ -108,6 +122,10 @@ router.get('/dashboard', (req, res) =>{
   //Following routes
     //Add New Following
     router.post('/addFollowing', followingController.addFollowing)
+
+  //Notification routes
+    //Test notification
+    router.post('/addTestNotification', notificationController.addTestNotification)
 
   //Stripe routes
     // Create Express account
