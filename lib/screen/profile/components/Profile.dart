@@ -777,7 +777,7 @@ class _UserProfileState extends State<UserProfile> {
               SliverToBoxAdapter(
                 child: Center(
                   child: SizedBox(
-                    height: 84,
+                    height: 100,
                     child: ListView.builder(
                       primary: false,
                       scrollDirection: Axis.horizontal,

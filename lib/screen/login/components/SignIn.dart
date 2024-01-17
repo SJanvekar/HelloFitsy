@@ -125,6 +125,7 @@ Widget textInputUsername() {
           child: TextFormField(
               textInputAction: TextInputAction.next,
               textCapitalization: TextCapitalization.sentences,
+              cursorColor: ocean,
               style: const TextStyle(
                   overflow: TextOverflow.fade,
                   fontFamily: 'SFDisplay',
@@ -334,6 +335,7 @@ class _SignInState extends State<SignIn> {
                             textInputAction: TextInputAction.done,
                             obscureText: true,
                             textCapitalization: TextCapitalization.sentences,
+                            cursorColor: ocean,
                             style: const TextStyle(
                                 overflow: TextOverflow.fade,
                                 fontFamily: 'SFDisplay',

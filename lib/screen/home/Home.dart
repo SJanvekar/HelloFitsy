@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/PARQ.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
@@ -121,8 +119,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2);
-
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
 
@@ -194,6 +190,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   child: Text(
                     'Hi, ${widget.userInstance.firstName}',
                     style: const TextStyle(
+                      height: 1.2,
                       color: jetBlack,
                       fontFamily: 'SFDisplay',
                       fontSize: 24,
@@ -210,6 +207,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       Text(
                         'Check out your upcoming classes',
                         style: TextStyle(
+                          height: 1.2,
                           color: jetBlack,
                           fontFamily: 'SFDisplay',
                           fontSize: 15,
@@ -219,6 +217,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       Text(
                         'See all',
                         style: TextStyle(
+                          height: 1.2,
                           color: ocean,
                           fontFamily: 'SFDisplay',
                           fontSize: 15,
@@ -246,6 +245,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   child: Text(
                     'For you',
                     style: TextStyle(
+                      height: 1.2,
                       color: jetBlack,
                       fontFamily: 'SFDisplay',
                       fontSize: 18,

@@ -48,7 +48,8 @@ class UpcomingClassesItem extends StatelessWidget {
                               Jiffy.parse(now.toString())
                                   .format(pattern: "MMM do, yyy "),
                               style: TextStyle(
-                                  fontSize: 15,
+                                  height: 1.2,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w600,
                                   color: jetBlack80,
                                   fontFamily: 'SFRounded'),
@@ -63,7 +64,8 @@ class UpcomingClassesItem extends StatelessWidget {
                               child: Text(
                                 'Monday Evening Personal Training Session',
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    height: 1.2,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: jetBlack,
                                     fontFamily: 'SFDisplay'),
@@ -78,6 +80,7 @@ class UpcomingClassesItem extends StatelessWidget {
                               Text(
                                 'with Amanda',
                                 style: TextStyle(
+                                    height: 1.2,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     color: jetBlack40,

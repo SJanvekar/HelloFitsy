@@ -79,6 +79,7 @@ const defaultPadding = 10.0;
 
 //LOG IN SPECIFIC FONTS
 const logInPageTitle = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 26,
@@ -86,6 +87,7 @@ const logInPageTitle = TextStyle(
 );
 
 const logInPageNavigationButtons = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack80,
   fontSize: 17,
@@ -93,6 +95,7 @@ const logInPageNavigationButtons = TextStyle(
 );
 
 const logInPageBodyText = TextStyle(
+    height: 1.2,
     fontFamily: 'SFDisplay',
     color: jetBlack40,
     fontSize: 16,
@@ -100,6 +103,7 @@ const logInPageBodyText = TextStyle(
     decoration: TextDecoration.none);
 
 const logInPageBodyStrawberry = TextStyle(
+    height: 1.2,
     fontFamily: 'SFDisplay',
     color: strawberry,
     fontSize: 15,
@@ -108,6 +112,7 @@ const logInPageBodyStrawberry = TextStyle(
 
 //GENERAL FONTS
 const disclaimerTitle = TextStyle(
+    height: 1.2,
     color: jetBlack,
     fontFamily: 'SFDisplay',
     fontSize: 17,
@@ -115,6 +120,7 @@ const disclaimerTitle = TextStyle(
     decoration: TextDecoration.none);
 
 const pageTitles = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 24,
@@ -123,6 +129,7 @@ const pageTitles = TextStyle(
 );
 
 const homeFeedTitle = TextStyle(
+    height: 1.2,
     fontFamily: 'SFDisplay',
     color: jetBlack,
     fontSize: 15,
@@ -130,6 +137,7 @@ const homeFeedTitle = TextStyle(
     decoration: TextDecoration.none);
 
 const sectionTitles = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 19,
@@ -138,6 +146,7 @@ const sectionTitles = TextStyle(
 );
 
 const sectionTitlesH2 = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 16,
@@ -146,6 +155,7 @@ const sectionTitlesH2 = TextStyle(
 );
 
 const sectionTitlesClassCreation = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 19,
@@ -154,6 +164,7 @@ const sectionTitlesClassCreation = TextStyle(
 );
 
 const dateSelectionTitle = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 22.0,
@@ -162,6 +173,7 @@ const dateSelectionTitle = TextStyle(
 );
 
 const classStartTime = TextStyle(
+  height: 1.2,
   color: jetBlack,
   fontFamily: 'SFRounded',
   fontSize: 13,
@@ -170,6 +182,7 @@ const classStartTime = TextStyle(
 );
 
 const classEndTime = TextStyle(
+  height: 1.2,
   color: jetBlack40,
   fontFamily: 'SFRounded',
   fontSize: 13,
@@ -178,6 +191,7 @@ const classEndTime = TextStyle(
 );
 
 const classStartTimeSelected = TextStyle(
+  height: 1.2,
   color: snow,
   fontFamily: 'SFRounded',
   fontSize: 13,
@@ -186,12 +200,14 @@ const classStartTimeSelected = TextStyle(
 );
 
 const classEndTimeSelected = TextStyle(
+    height: 1.2,
     color: snow,
     fontFamily: 'SFRounded',
     fontSize: 13,
     fontWeight: FontWeight.w600);
 
 const settingsDefaultHeaderText = TextStyle(
+    height: 1.2,
     fontFamily: 'SFDisplay',
     color: jetBlack,
     fontSize: 16,
@@ -199,6 +215,7 @@ const settingsDefaultHeaderText = TextStyle(
     decoration: TextDecoration.none);
 
 const settingsDefaultSelectionText = TextStyle(
+    height: 1.2,
     fontFamily: 'SFDisplay',
     color: jetBlack60,
     fontSize: 16,
@@ -206,6 +223,7 @@ const settingsDefaultSelectionText = TextStyle(
     decoration: TextDecoration.none);
 
 const popUpMenuText = TextStyle(
+    height: 1.2,
     fontFamily: 'SFDisplay',
     color: jetBlack60,
     fontSize: 15,
@@ -213,12 +231,14 @@ const popUpMenuText = TextStyle(
     decoration: TextDecoration.none);
 
 const emptyListDisclaimerText = TextStyle(
+    height: 1.2,
     color: jetBlack40,
     fontFamily: 'SFDisplay',
     fontSize: 15,
     fontWeight: FontWeight.w400);
 
 const doneTextButton = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: ocean,
   fontSize: 17,
@@ -226,12 +246,14 @@ const doneTextButton = TextStyle(
 );
 
 const subheader1Font = TextStyle(
+    height: 1.2,
     color: jetBlack60,
     fontFamily: 'SFDisplay',
     fontSize: 16,
     fontWeight: FontWeight.w500);
 
 const roundedNumberStyle1LightShadow = TextStyle(
+  height: 1.2,
   fontFamily: 'SFRounded',
   color: snow,
   fontSize: 14,
@@ -247,6 +269,7 @@ const roundedNumberStyle1LightShadow = TextStyle(
 );
 
 const roundedNumberStyle1LightShadowUnderlined = TextStyle(
+  height: 1.2,
   fontFamily: 'SFRounded',
   color: snow,
   fontSize: 13,
@@ -263,6 +286,7 @@ const roundedNumberStyle1LightShadowUnderlined = TextStyle(
 );
 
 const roundedBodyTextStyle1 = TextStyle(
+  height: 1.2,
   fontFamily: 'SFRounded',
   color: snow,
   fontSize: 12,
@@ -271,6 +295,7 @@ const roundedBodyTextStyle1 = TextStyle(
 );
 
 const buttonText1Jetblack80 = TextStyle(
+  height: 1.2,
   fontFamily: 'SFRounded',
   color: jetBlack80,
   fontSize: 14,
@@ -279,6 +304,7 @@ const buttonText1Jetblack80 = TextStyle(
 );
 
 const buttonText3Jetblack40 = TextStyle(
+  height: 1.2,
   fontFamily: 'SFRounded',
   color: jetBlack40,
   fontSize: 14,
@@ -287,6 +313,7 @@ const buttonText3Jetblack40 = TextStyle(
 );
 
 const buttonText2snow = TextStyle(
+  height: 1.2,
   fontFamily: 'SFRounded',
   color: snow,
   fontSize: 14,
@@ -294,6 +321,7 @@ const buttonText2snow = TextStyle(
   decoration: TextDecoration.none,
 );
 const bodyTextFontBold80 = TextStyle(
+  height: 1.2,
   color: jetBlack80,
   fontFamily: 'SFDisplay',
   fontSize: 14.5,
@@ -302,6 +330,7 @@ const bodyTextFontBold80 = TextStyle(
 );
 
 const bodyTextFontBold60 = TextStyle(
+  height: 1.2,
   color: jetBlack60,
   fontFamily: 'SFDisplay',
   fontSize: 14.5,
@@ -311,6 +340,7 @@ const bodyTextFontBold60 = TextStyle(
 
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
+  height: 1.2,
   color: jetBlack80,
   fontFamily: 'SFDisplay',
   fontSize: 14.5,
@@ -321,6 +351,7 @@ const profileBodyTextFont = TextStyle(
 //CHECKOUT SPECIFIC FONTS
 
 const checkoutHeader1 = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack60,
   fontSize: 16,
@@ -329,6 +360,7 @@ const checkoutHeader1 = TextStyle(
 );
 
 const checkoutSelectedDate = TextStyle(
+  height: 1.2,
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 15,
@@ -337,6 +369,7 @@ const checkoutSelectedDate = TextStyle(
 );
 
 const checkoutNumbers = TextStyle(
+  height: 1.2,
   color: jetBlack,
   fontFamily: 'SFDisplay',
   fontSize: 15,

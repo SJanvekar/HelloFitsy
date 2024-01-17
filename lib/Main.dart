@@ -18,7 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
@@ -68,6 +67,7 @@ class FITSY extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Fitsy',
         theme: ThemeData(
+          useMaterial3: false,
           textTheme: Theme.of(context).textTheme.apply(),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
@@ -324,134 +324,128 @@ class _MainPageState extends State<MainPage>
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: false,
       child: Scaffold(
         body: _widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: Container(
-          height: 88,
-          decoration: const BoxDecoration(
-            color: snow,
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            hoverColor: Colors.transparent,
           ),
-          child: Theme(
-            data: Theme.of(context).copyWith(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-            ),
-            child: BottomNavigationBar(
-              elevation: 0,
-              backgroundColor: snow,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              type: BottomNavigationBarType.fixed,
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-              items: <BottomNavigationBarItem>[
-                //Home
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      HelloFitsy.home,
-                      color: jetBlack80,
-                      size: 20,
-                    ),
-                    activeIcon: Icon(
-                      HelloFitsy.home,
-                      color: strawberry,
-                      size: 20,
-                    ),
-                    label: ''),
+          child: BottomNavigationBar(
+            elevation: 0,
+            backgroundColor: snow,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            type: BottomNavigationBarType.fixed,
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            items: <BottomNavigationBarItem>[
+              //Home
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    HelloFitsy.home,
+                    color: jetBlack80,
+                    size: 20,
+                  ),
+                  activeIcon: Icon(
+                    HelloFitsy.home,
+                    color: strawberry,
+                    size: 20,
+                  ),
+                  label: ''),
 
-                //Search
+              //Search
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    HelloFitsy.search,
+                    color: jetBlack80,
+                    size: 20,
+                  ),
+                  activeIcon: Icon(
+                    HelloFitsy.search,
+                    color: strawberry,
+                    size: 20,
+                  ),
+                  label: ''),
+              if (userInstance.userType == UserType.Trainer)
+                //Add Class
                 BottomNavigationBarItem(
-                    icon: Icon(
-                      HelloFitsy.search,
-                      color: jetBlack80,
-                      size: 20,
-                    ),
-                    activeIcon: Icon(
-                      HelloFitsy.search,
-                      color: strawberry,
-                      size: 20,
-                    ),
-                    label: ''),
-                if (userInstance.userType == UserType.Trainer)
-                  //Add Class
-                  BottomNavigationBarItem(
-                      icon: GestureDetector(
-                        child: Icon(
-                          Icons.add_box_rounded,
-                          color: jetBlack80,
-                          size: 23,
-                        ),
-
-                        //OnTap Open a bottom modal sheet for trianers to add classes
-                        onTap: () {
-                          HapticFeedback.selectionClick();
-                          Timer(Duration(milliseconds: 100), () {
-                            showCupertinoModalPopup(
-                              context: context,
-                              barrierColor: jetBlack60,
-                              builder: (BuildContext context) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .pop(); // Close the modal if tapped outside the content
-                                  },
-                                  child: Wrap(
-                                    children: [
-                                      CupertinoPopupSurface(
-                                        isSurfacePainted: true,
-                                        child: CreateClassSelectType(
-                                          isTypeSelected: false,
-                                          classTemplate: classTemplate,
-                                          isEditMode: false,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          });
-                        },
-                      ),
-                      activeIcon: Icon(
+                    icon: GestureDetector(
+                      child: Icon(
                         Icons.add_box_rounded,
-                        color: strawberry,
+                        color: jetBlack80,
                         size: 23,
                       ),
-                      label: ''),
 
-                //Schedule
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      HelloFitsy.calendar,
-                      color: jetBlack80,
-                      size: 20,
+                      //OnTap Open a bottom modal sheet for trianers to add classes
+                      onTap: () {
+                        HapticFeedback.selectionClick();
+                        Timer(Duration(milliseconds: 100), () {
+                          showCupertinoModalPopup(
+                            context: context,
+                            barrierColor: jetBlack60,
+                            builder: (BuildContext context) {
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the modal if tapped outside the content
+                                },
+                                child: Wrap(
+                                  children: [
+                                    CupertinoPopupSurface(
+                                      isSurfacePainted: true,
+                                      child: CreateClassSelectType(
+                                        isTypeSelected: false,
+                                        classTemplate: classTemplate,
+                                        isEditMode: false,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        });
+                      },
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.calendar,
+                      Icons.add_box_rounded,
                       color: strawberry,
-                      size: 20,
+                      size: 23,
                     ),
                     label: ''),
 
-                //Profile
-                BottomNavigationBarItem(
-                    icon: Icon(
-                      HelloFitsy.user,
-                      color: jetBlack80,
-                      size: 20,
-                    ),
-                    activeIcon: Icon(
-                      HelloFitsy.user,
-                      color: strawberry,
-                      size: 20,
-                    ),
-                    label: ''),
-              ],
-            ),
+              //Schedule
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    HelloFitsy.calendar,
+                    color: jetBlack80,
+                    size: 20,
+                  ),
+                  activeIcon: Icon(
+                    HelloFitsy.calendar,
+                    color: strawberry,
+                    size: 20,
+                  ),
+                  label: ''),
+
+              //Profile
+              BottomNavigationBarItem(
+                  icon: Icon(
+                    HelloFitsy.user,
+                    color: jetBlack80,
+                    size: 20,
+                  ),
+                  activeIcon: Icon(
+                    HelloFitsy.user,
+                    color: strawberry,
+                    size: 20,
+                  ),
+                  label: ''),
+            ],
           ),
         ),
       ),

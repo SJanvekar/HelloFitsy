@@ -9,12 +9,12 @@ class BodyButton extends StatelessWidget {
   Color textColor;
   String buttonText;
 
-  BodyButton(
-      {Key? key,
-      required this.buttonColor,
-      required this.textColor,
-      required this.buttonText})
-      : super(key: key);
+  BodyButton({
+    Key? key,
+    required this.buttonColor,
+    required this.textColor,
+    required this.buttonText,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

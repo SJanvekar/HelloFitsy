@@ -1563,25 +1563,26 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                   ),
                 ),
                 actions: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 26.0),
-                    child: GestureDetector(
-                      child: SvgPicture.asset(
-                        'assets/icons/generalIcons/create.svg',
-                        color: jetBlack,
-                        height: 22,
-                        width: 22,
+                  if (widget.userInstance.userType == UserType.Trainer)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 26.0),
+                      child: GestureDetector(
+                        child: SvgPicture.asset(
+                          'assets/icons/generalIcons/create.svg',
+                          color: jetBlack,
+                          height: 22,
+                          width: 22,
+                        ),
+                        onTap: () {
+                          isClassSelected = false;
+                          isEditMode = false;
+                          startTime = DateTime.now();
+                          endTime = DateTime.now().add(Duration(hours: 1));
+                          recurrenceType = RecurrenceType.None;
+                          displayClassAndTimePicker(setState);
+                        },
                       ),
-                      onTap: () {
-                        isClassSelected = false;
-                        isEditMode = false;
-                        startTime = DateTime.now();
-                        endTime = DateTime.now().add(Duration(hours: 1));
-                        recurrenceType = RecurrenceType.None;
-                        displayClassAndTimePicker(setState);
-                      },
-                    ),
-                  )
+                    )
                 ]),
             MultiSliver(children: [
               Column(
