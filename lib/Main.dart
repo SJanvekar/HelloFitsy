@@ -28,130 +28,9 @@ import 'FirebaseOptions.dart';
 import 'feModels/UserModel.dart';
 import 'package:go_router/go_router.dart';
 
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-final StreamController<NotificationModel> didReceiveLocalNotificationStream =
-    StreamController<NotificationModel>.broadcast();
-
-final StreamController<String?> selectNotificationStream =
-    StreamController<String?>.broadcast();
-
-String? selectedNotificationPayload;
-
-/// A notification action which triggers a App navigation event
-const String navigationActionId = 'id_1';
-
-/// Defines a iOS/MacOS notification category for text input actions.
-const String darwinNotificationCategoryText = 'textCategory';
-
-/// Defines a iOS/MacOS notification category for plain actions.
-const String darwinNotificationCategoryPlain = 'plainCategory';
-
-@pragma('vm:entry-point')
-void notificationTapBackground(NotificationResponse notificationResponse) {
-  // ignore: avoid_print
-  print('notification(${notificationResponse.id}) action tapped: '
-      '${notificationResponse.actionId} with'
-      ' payload: ${notificationResponse.payload}');
-  if (notificationResponse.input?.isNotEmpty ?? false) {
-    // ignore: avoid_print
-    print(
-        'notification action tapped with input: ${notificationResponse.input}');
-  }
-}
-
 void main() async {
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
-
-  final List<DarwinNotificationCategory> darwinNotificationCategories =
-      <DarwinNotificationCategory>[
-    DarwinNotificationCategory(
-      darwinNotificationCategoryText,
-      actions: <DarwinNotificationAction>[
-        DarwinNotificationAction.text(
-          'text_1',
-          'Action 1',
-          buttonTitle: 'Send',
-          placeholder: 'Placeholder',
-        ),
-      ],
-    ),
-    DarwinNotificationCategory(
-      darwinNotificationCategoryPlain,
-      actions: <DarwinNotificationAction>[
-        DarwinNotificationAction.plain('id_1', 'Action 1'),
-        DarwinNotificationAction.plain(
-          'id_2',
-          'Action 2 (destructive)',
-          options: <DarwinNotificationActionOption>{
-            DarwinNotificationActionOption.destructive,
-          },
-        ),
-        DarwinNotificationAction.plain(
-          navigationActionId,
-          'Action 3 (foreground)',
-          options: <DarwinNotificationActionOption>{
-            DarwinNotificationActionOption.foreground,
-          },
-        ),
-        DarwinNotificationAction.plain(
-          'id_4',
-          'Action 4 (auth required)',
-          options: <DarwinNotificationActionOption>{
-            DarwinNotificationActionOption.authenticationRequired,
-          },
-        ),
-      ],
-      options: <DarwinNotificationCategoryOption>{
-        DarwinNotificationCategoryOption.hiddenPreviewShowTitle,
-      },
-    )
-  ];
-
-  /// Note: permissions aren't requested here just to demonstrate that can be
-  /// done later
-  final DarwinInitializationSettings initializationSettingsDarwin =
-      DarwinInitializationSettings(
-    requestAlertPermission: false,
-    requestBadgePermission: false,
-    requestSoundPermission: false,
-    onDidReceiveLocalNotification:
-        (int id, String? title, String? body, String? payload) async {
-      didReceiveLocalNotificationStream.add(
-        NotificationModel(
-            title: title,
-            body: body,
-            sentAt: DateTime.now(),
-            receivedAt: DateTime.now()),
-      );
-    },
-    notificationCategories: darwinNotificationCategories,
-  );
-
-  final InitializationSettings initializationSettings = InitializationSettings(
-    iOS: initializationSettingsDarwin,
-    // macOS: initializationSettingsDarwin,
-  );
-
-  await flutterLocalNotificationsPlugin.initialize(
-    initializationSettings,
-    onDidReceiveNotificationResponse:
-        (NotificationResponse notificationResponse) {
-      switch (notificationResponse.notificationResponseType) {
-        case NotificationResponseType.selectedNotification:
-          selectNotificationStream.add(notificationResponse.payload);
-          break;
-        case NotificationResponseType.selectedNotificationAction:
-          if (notificationResponse.actionId == navigationActionId) {
-            selectNotificationStream.add(notificationResponse.payload);
-          }
-          break;
-      }
-    },
-    onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
-  );
 
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
@@ -165,18 +44,6 @@ void main() async {
     routerConfig: router,
   ));
 }
-
-// void onDidReceiveNotificationResponse(
-//     NotificationResponse notificationResponse) async {
-//   final String? payload = notificationResponse.payload;
-//   if (notificationResponse.payload != null) {
-//     debugPrint('notification payload: $payload');
-//   }
-//   await Navigator.push(
-//     context,
-//     MaterialPageRoute<void>(builder: (context) => SecondScreen(payload)),
-//   );
-// }
 
 /// This handles '/'.
 final router = GoRouter(
@@ -283,10 +150,7 @@ class _MainPageState extends State<MainPage>
       userInstance: userInstance,
     ));
 
-    //Request notification permissions
-    _requestPermissions();
-    //Navigate to specified page after bottom nav bar loads
-    _configureSelectNotificationSubject();
+    NotificationRequests.initialize();
 
     //Animation Controller Set Up
     controller = AnimationController(
@@ -309,22 +173,6 @@ class _MainPageState extends State<MainPage>
 
   //Get User Information
   void getUserDetails() async {
-    // final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-    // _firebaseMessaging.requestPermission();
-    // Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
-    // String? registrationToken = await futureRegistrationToken;
-
-    // print(futureRegistrationToken);
-    // NotificationRequests()
-    //     .addTestNotification(registrationToken ?? '')
-    //     .then((val) {
-    //   if (val.data['success']) {
-    //     print("Test Notification success: ${val.data['msg']}");
-    //   } else {
-    //     print("Test Notification failed: ${val.data['msg']}");
-    //   }
-    // });
-
     final fcmToken = await FirebaseMessaging.instance.getToken();
     print(fcmToken);
     final sharedPrefs = await SharedPreferences.getInstance();
@@ -371,6 +219,23 @@ class _MainPageState extends State<MainPage>
       userInstance: userInstance,
       isFromSearch: false,
     ));
+
+    print("Showing notification");
+    await NotificationRequests.instance.addTestNotification(
+        _configureDidReceiveLocalNotificationSubject,
+        _configureSelectNotificationSubject);
+
+    // You may set the permission requests to "provisional" which allows the user to choose what type
+// of notifications they would like to receive once the user receives a notification.
+    // final notificationSettings =
+    //     await FirebaseMessaging.instance.requestPermission(provisional: true);
+
+// For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
+    final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    if (apnsToken != null) {
+      // APNS token is available, make FCM plugin API requests...
+      NotificationRequests.instance.addTestPushNotification(apnsToken);
+    }
 
     setState(() {
       print('main set state 2');
@@ -432,23 +297,36 @@ class _MainPageState extends State<MainPage>
     }
   }
 
-  Future<void> _requestPermissions() async {
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-          alert: true,
-          badge: true,
-          sound: true,
-        );
+  Future<void> _configureSelectNotificationSubject() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PersonalInfo()),
+    );
   }
 
-  void _configureSelectNotificationSubject() {
-    selectNotificationStream.stream.listen((String? payload) async {
-      await Navigator.of(context).push(MaterialPageRoute<void>(
-        builder: (BuildContext context) => PersonalInfo(),
-      ));
-    });
+  Future<void> _configureDidReceiveLocalNotificationSubject() async {
+    print("Triggering test notificaiton");
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Test Title Text"),
+        content: const Text("Test Context Text"),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () async {
+              Navigator.of(context, rootNavigator: true).pop();
+              await Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => PersonalInfo(),
+                ),
+              );
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      ),
+    );
   }
 
   @override

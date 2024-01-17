@@ -83,15 +83,15 @@ class UpcomingClassesItem extends StatelessWidget {
                                     color: jetBlack40,
                                     fontFamily: 'SFDisplay'),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 4.0),
-                                child: CircleAvatar(
-                                  radius: 8,
-                                  foregroundImage: NetworkImage(
-                                      'https://www.strongfitnessmag.com/wp-content/uploads/2021/04/Sydney-Cummings-on-set.jpg'),
-                                  backgroundColor: Colors.transparent,
-                                ),
-                              ),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(left: 4.0),
+                              //   child: CircleAvatar(
+                              //     radius: 8,
+                              //     foregroundImage: NetworkImage(
+                              //         'https://www.strongfitnessmag.com/wp-content/uploads/2021/04/Sydney-Cummings-on-set.jpg'),
+                              //     backgroundColor: Colors.transparent,
+                              //   ),
+                              // ),
                             ],
                           ),
                         ],
