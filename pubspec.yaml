@@ -67,6 +67,8 @@ dependencies:
   flutter_stripe: ^9.4.0
   transparent_image: ^2.0.1
   firebase_messaging: ^14.7.3
+  flutter_local_notifications: ^16.2.0
+  timezone: ^0.9.2
 
 dev_dependencies:
   dependency_validator: ^3.0.0

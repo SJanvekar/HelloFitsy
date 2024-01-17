@@ -4,11 +4,13 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/Constants.dart';
 import 'package:balance/Requests/NotificationRequests.dart';
 import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/NotificationModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
+import 'package:balance/screen/login/components/PersonalInfo.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
@@ -19,6 +21,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
@@ -26,7 +29,9 @@ import 'feModels/UserModel.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
+  // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
+
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
 
@@ -145,6 +150,8 @@ class _MainPageState extends State<MainPage>
       userInstance: userInstance,
     ));
 
+    NotificationRequests.initialize();
+
     //Animation Controller Set Up
     controller = AnimationController(
       vsync: this,
@@ -166,23 +173,6 @@ class _MainPageState extends State<MainPage>
 
   //Get User Information
   void getUserDetails() async {
-    final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-    _firebaseMessaging.requestPermission();
-    Future<String?> futureRegistrationToken = _firebaseMessaging.getToken();
-    String? registrationToken = await futureRegistrationToken;
-
-    print(futureRegistrationToken);
-    NotificationRequests()
-        .addTestNotification(registrationToken ?? '')
-        .then((val) {
-      if (val.data['success']) {
-        print("Test Notification success: ${val.data['msg']}");
-      } else {
-        print("Test Notification failed: ${val.data['msg']}");
-      }
-    });
-    ;
-
     final fcmToken = await FirebaseMessaging.instance.getToken();
     print(fcmToken);
     final sharedPrefs = await SharedPreferences.getInstance();
@@ -229,6 +219,23 @@ class _MainPageState extends State<MainPage>
       userInstance: userInstance,
       isFromSearch: false,
     ));
+
+    print("Showing notification");
+    await NotificationRequests.instance.addTestNotification(
+        _configureDidReceiveLocalNotificationSubject,
+        _configureSelectNotificationSubject);
+
+    // You may set the permission requests to "provisional" which allows the user to choose what type
+// of notifications they would like to receive once the user receives a notification.
+    // final notificationSettings =
+    //     await FirebaseMessaging.instance.requestPermission(provisional: true);
+
+// For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
+    final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+    if (apnsToken != null) {
+      // APNS token is available, make FCM plugin API requests...
+      NotificationRequests.instance.addTestPushNotification(apnsToken);
+    }
 
     setState(() {
       print('main set state 2');
@@ -288,6 +295,38 @@ class _MainPageState extends State<MainPage>
         _selectedIndex = index;
       });
     }
+  }
+
+  Future<void> _configureSelectNotificationSubject() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => PersonalInfo()),
+    );
+  }
+
+  Future<void> _configureDidReceiveLocalNotificationSubject() async {
+    print("Triggering test notificaiton");
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text("Test Title Text"),
+        content: const Text("Test Context Text"),
+        actions: <Widget>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () async {
+              Navigator.of(context, rootNavigator: true).pop();
+              await Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => PersonalInfo(),
+                ),
+              );
+            },
+            child: const Text('Ok'),
+          )
+        ],
+      ),
+    );
   }
 
   @override

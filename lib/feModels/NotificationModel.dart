@@ -1,15 +1,16 @@
-class Notification {
+class NotificationModel {
   String? notificationID;
-  String title;
-  String body;
+  String? title;
+  String? body;
   DateTime sentAt;
   DateTime receivedAt;
-  String deviceToken;
+  String? deviceToken;
 
-  Notification(
-      {required this.title,
-      required this.body,
-      required this.sentAt,
-      required this.receivedAt,
-      required this.deviceToken});
+  NotificationModel({
+    required this.title,
+    required this.body,
+    required this.sentAt,
+    required this.receivedAt,
+    // required this.deviceToken
+  });
 }

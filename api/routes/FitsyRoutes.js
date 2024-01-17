@@ -125,7 +125,7 @@ router.get('/dashboard', (req, res) =>{
 
   //Notification routes
     //Test notification
-    router.post('/addTestNotification', notificationController.addTestNotification)
+    router.post('/addTestPushNotification', notificationController.addTestPushNotification)
 
   //Stripe routes
     // Create Express account
