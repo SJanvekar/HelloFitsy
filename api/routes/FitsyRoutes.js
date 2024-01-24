@@ -123,9 +123,10 @@ router.get('/dashboard', (req, res) =>{
     //Add New Following
     router.post('/addFollowing', followingController.addFollowing)
 
-  // //Notification routes
-  //   //Test notification
-  //   router.post('/addTestNotification', notificationController.addTestNotification)
+
+  //Notification routes
+    //Test notification
+    router.post('/addTestPushNotification', notificationController.addTestPushNotification)
 
   //Stripe routes
     // Create Express account
