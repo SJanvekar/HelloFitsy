@@ -376,7 +376,7 @@ Widget pageTitle() {
           decoration: BoxDecoration(color: snow),
           child: Text(
             "Let’s add some finishing touches",
-            style: logInPageTitle,
+            style: logInPageTitleH3,
             textAlign: TextAlign.center,
           )),
     ),

@@ -5,7 +5,6 @@ import 'package:balance/Constants.dart';
 import 'package:balance/Requests/NotificationRequests.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/feModels/NotificationModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/Home.dart';
@@ -13,6 +12,7 @@ import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
 import 'package:balance/screen/login/components/PersonalInfo.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
+import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
@@ -22,7 +22,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
@@ -78,12 +77,13 @@ class FITSY extends StatelessWidget {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         hoverColor: Colors.transparent,
+        useMaterial3: false,
       ),
       //Place comment on what the changes were if changed for testing purposes
       //Example:
       //SignIn(); -> RatingPopup();
 
-      home: SignIn(),
+      home: TrainerOrTrainee(),
     );
   }
 }

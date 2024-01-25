@@ -359,7 +359,7 @@ Widget pageTitle() {
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Select a date and time',
-          style: logInPageTitle,
+          style: logInPageTitleH3,
           textAlign: TextAlign.center,
         )),
   );

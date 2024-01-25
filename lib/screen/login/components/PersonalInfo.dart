@@ -422,7 +422,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           decoration: BoxDecoration(color: snow),
           child: Text(
             'Tell us about yourself',
-            style: logInPageTitle,
+            style: logInPageTitleH3,
           )),
     );
   }

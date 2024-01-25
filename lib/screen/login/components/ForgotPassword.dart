@@ -114,7 +114,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   ),
                   child: Text(
                     'Forgot your password?',
-                    style: logInPageTitle,
+                    style: logInPageTitleH3,
                   ),
                 ),
                 Padding(

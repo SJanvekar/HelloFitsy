@@ -53,7 +53,7 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
             decoration: BoxDecoration(color: snow),
             child: Text(
               'What can clients expect from this class?',
-              style: logInPageTitle,
+              style: logInPageTitleH3,
               textAlign: TextAlign.center,
             )),
       ),

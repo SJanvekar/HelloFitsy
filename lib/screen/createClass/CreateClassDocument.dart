@@ -138,7 +138,7 @@ Widget pageTitle() {
           decoration: BoxDecoration(color: snow),
           child: Text(
             'Attach documents to the virtual class',
-            style: logInPageTitle,
+            style: logInPageTitleH3,
             textAlign: TextAlign.center,
           )),
     ),

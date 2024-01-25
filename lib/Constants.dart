@@ -84,19 +84,53 @@ const logInPageTitleH1 = TextStyle(
   color: jetBlack,
   fontSize: 28,
   fontWeight: FontWeight.w600,
+  height: 1.2,
 );
 
-const logInPageTitle = TextStyle(
+const logInPageTitleH2 = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 26,
   fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH3 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 24,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH4 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 22,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH5 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH5Disabled = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack20,
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
 );
 
 const logInPageNavigationButtons = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack80,
-  fontSize: 17,
+  fontSize: 18,
   fontWeight: FontWeight.w500,
 );
 const logInPageTextInputTitle = TextStyle(
@@ -107,11 +141,13 @@ const logInPageTextInputTitle = TextStyle(
     decoration: TextDecoration.none);
 
 const logInPageBodyText = TextStyle(
-    fontFamily: 'SFDisplay',
-    color: jetBlack60,
-    fontSize: 16.5,
-    fontWeight: FontWeight.w400,
-    decoration: TextDecoration.none);
+  fontFamily: 'SFDisplay',
+  color: jetBlack60,
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.none,
+  height: 1.2,
+);
 
 const logInPageBodyStrawberry = TextStyle(
     fontFamily: 'SFDisplay',

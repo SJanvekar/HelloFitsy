@@ -52,7 +52,7 @@ class _CreateClassDescription extends State<CreateClassDescription> {
             decoration: BoxDecoration(color: snow),
             child: Text(
               'Write a brief description of your class',
-              style: logInPageTitle,
+              style: logInPageTitleH3,
               textAlign: TextAlign.center,
             )),
       ),

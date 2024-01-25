@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/screen/login/components/CategorySelection.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
@@ -186,7 +186,7 @@ Widget pageTitle() {
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Upload a profile picture',
-          style: logInPageTitle,
+          style: logInPageTitleH3,
         )),
   );
 }

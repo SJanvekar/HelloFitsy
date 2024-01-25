@@ -4,6 +4,7 @@ import 'package:balance/Authentication/authService.dart';
 import 'package:balance/example.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/screen/login/components/CategorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
@@ -11,7 +12,6 @@ import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
@@ -40,48 +40,9 @@ User userTemplate = User(
   userName: '',
 );
 
-var passwordConfirmed;
-
-bool passwordCheck = false;
-bool emailValid = false;
-
 class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
-  //variables
-  double range = 0;
-  bool _buttonPressed = false;
-  // final passwordController = TextEditingController();
-  bool _passwordVisibility = true;
-  bool _passwordConfirmVisibility = true;
-  Color _currentBorderColorTrainee = strawberry;
-  Color _currentIconColorTrainee = snow;
-  Color _currentBorderColorTrainer = snow;
-  Color _currentIconColorTrainer = jetBlack40;
-  String _showHideIcon = 'assets/icons/generalIcons/hidePassword.svg';
-  String _showHideIconConfirm = 'assets/icons/generalIcons/hidePassword.svg';
-  double _showHideIconHeight = 18.0;
-  double _showHideIconHeightConfirm = 18.0;
-  Color _eyeIconColorPassword = jetBlack40;
-  Color _eyeIconColorConfirmPassword = jetBlack40;
-
-  void _ButtonOnPressed() {
-    setState(() {
-      if (_buttonPressed == true) {
-        _currentBorderColorTrainer = strawberry;
-        _currentIconColorTrainer = snow;
-        _currentBorderColorTrainee = snow;
-        _currentIconColorTrainee = jetBlack40;
-      } else {
-        _currentBorderColorTrainer = snow;
-        _currentIconColorTrainer = jetBlack40;
-        _currentBorderColorTrainee = strawberry;
-        _currentIconColorTrainee = snow;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    double boxWidth = ((MediaQuery.of(context).size.width) - 10 - (26 * 2)) / 2;
     return GestureDetector(
       child: Scaffold(
           backgroundColor: snow,
@@ -93,24 +54,24 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            title: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 0,
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      print("Cancel");
-                      Navigator.of(context).pop(CupertinoPageRoute(
-                          fullscreenDialog: true,
-                          builder: (context) => Login()));
-                    },
-                    child: Text("Cancel", style: logInPageNavigationButtons),
-                  ),
-                ),
-              ],
-            ),
+            // title: Row(
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(
+            //         left: 0,
+            //       ),
+            //       child: TextButton(
+            //         onPressed: () {
+            //           print("Cancel");
+            //           Navigator.of(context).pop(CupertinoPageRoute(
+            //               fullscreenDialog: true,
+            //               builder: (context) => Login()));
+            //         },
+            //         child: Text("Cancel", style: logInPageNavigationButtons),
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ),
 
           //Body
@@ -119,106 +80,121 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                pageTitle(),
-
-                //Trainer or Trainee selection
-                Padding(
-                  padding: EdgeInsets.only(bottom: 30),
-                  child: GestureDetector(
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 50),
-                      curve: Curves.linear,
-                      height: 175,
-                      width: 175,
-                      decoration: BoxDecoration(
-                          color: _currentBorderColorTrainer,
-                          borderRadius: BorderRadius.circular(40),
-                          border: Border.all(
-                            color: _currentBorderColorTrainer,
-                            width: 3,
-                          )),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width - (26 * 2),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          lineOne(),
                           Padding(
-                            padding: EdgeInsets.only(
-                              top: 18,
-                              bottom: 11,
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/icons/generalIcons/trainer.svg",
-                              color: _currentIconColorTrainer,
-                              height: 55,
-                            ),
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: lineTwo(),
                           ),
-                          Text('Trainer',
-                              style: TextStyle(
-                                color: _currentIconColorTrainer,
-                                fontFamily: 'SFDisplay',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ))
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0),
+                            child: lineThree(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8.0,
+                            ),
+                            child: lineFour(),
+                          ),
                         ],
                       ),
-                    ),
-                    onTap: () => {
-                      setState(() {
-                        _buttonPressed = true;
-                        _ButtonOnPressed();
-                        HapticFeedback.mediumImpact();
-                        userTemplate.userType = UserType.Trainer;
-                      })
-                    },
+                    ],
                   ),
                 ),
-                //Trainee selection
-                GestureDetector(
-                  child: AnimatedContainer(
-                    duration: Duration(milliseconds: 50),
-                    curve: Curves.linear,
-                    height: 175,
-                    width: 175,
-                    decoration: BoxDecoration(
-                        color: _currentBorderColorTrainee,
-                        borderRadius: BorderRadius.circular(40),
-                        border: Border.all(
-                            color: _currentBorderColorTrainee, width: 3)),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 18,
-                            bottom: 11,
+
+                //Trainer or Trainee selection
+                Column(
+                  children: [
+                    //Trainer
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        child: GestureDetector(
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 1000),
+                            curve: Curves.fastLinearToSlowEaseIn,
+                            height: userTemplate.userType == UserType.Trainer
+                                ? 175
+                                : 130,
+                            width: userTemplate.userType == UserType.Trainer
+                                ? MediaQuery.of(context).size.width - (26 * 2)
+                                : MediaQuery.of(context).size.width - (26 * 3),
+                            decoration: BoxDecoration(
+                              color: userTemplate.userType == UserType.Trainer
+                                  ? strawberry
+                                  : bone,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            child: Center(
+                              child: Text('I’m a personal trainer',
+                                  style: TextStyle(
+                                    color: userTemplate.userType ==
+                                            UserType.Trainer
+                                        ? snow
+                                        : jetBlack80,
+                                    fontFamily: 'SFDisplay',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  )),
+                            ),
                           ),
-                          child: Icon(
-                            HelloFitsy.user,
-                            color: _currentIconColorTrainee,
-                            size: 50,
+                          onTap: () => {
+                            setState(() {
+                              setState(() {
+                                HapticFeedback.mediumImpact();
+                                userTemplate.userType = UserType.Trainer;
+                              });
+                            })
+                          },
+                        ),
+                      ),
+                    ),
+
+                    //Trainee
+                    GestureDetector(
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 1000),
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        height: userTemplate.userType == UserType.Trainee
+                            ? 175
+                            : 130,
+                        width: userTemplate.userType == UserType.Trainee
+                            ? MediaQuery.of(context).size.width - (26 * 2)
+                            : MediaQuery.of(context).size.width - (26 * 3),
+                        decoration: BoxDecoration(
+                          color: userTemplate.userType == UserType.Trainee
+                              ? strawberry
+                              : bone,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'I want to find a personal trainer',
+                            style: TextStyle(
+                                color: userTemplate.userType == UserType.Trainee
+                                    ? snow
+                                    : jetBlack80,
+                                fontFamily: 'SFDisplay',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600),
                           ),
                         ),
-                        Text(
-                          'Trainee',
-                          style: TextStyle(
-                              color: _currentIconColorTrainee,
-                              fontFamily: 'SFDisplay',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
+                      ),
+                      onTap: () => {
+                        setState(() {
+                          HapticFeedback.mediumImpact();
+                          userTemplate.userType = UserType.Trainee;
+                        })
+                      },
                     ),
-                  ),
-                  onTap: () => {
-                    setState(() {
-                      _buttonPressed = false;
-                      _ButtonOnPressed();
-                      HapticFeedback.mediumImpact();
-
-                      userTemplate.userType = UserType.Trainee;
-                    })
-                  },
+                  ],
                 ),
               ],
             ),
@@ -233,7 +209,7 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
               ),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => PersonalInfo(
+                    builder: (context) => CategorySelection(
                         authTemplate: authTemplate,
                         userTemplate: userTemplate)));
               },
@@ -243,22 +219,52 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
     );
   }
 
-//Page title
-  Widget pageTitle() {
-    return Center(
-      child: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.only(
-              top: MediaQuery.of(context).size.height * 0.06,
-              left: 20,
-              right: 20,
-              bottom: 50.0),
-          decoration: BoxDecoration(color: snow),
-          child: Text(
-            'Which of the following describes you best?',
-            style: logInPageTitleH1,
-            textAlign: TextAlign.center,
-          )),
+//line One
+  Widget lineOne() {
+    return Container(
+      decoration: BoxDecoration(color: snow),
+      child: Text(
+        'Hi there!',
+        style: logInPageTitleH5Disabled,
+        textAlign: TextAlign.left,
+      ),
     );
+  }
+
+//line two
+  Widget lineTwo() {
+    return Container(
+        decoration: BoxDecoration(color: snow),
+        child: Text(
+          'Welome to Fitsy 😄',
+          style: logInPageTitleH5Disabled,
+          textAlign: TextAlign.left,
+        ));
+  }
+
+  //line three
+  Widget lineThree() {
+    return Container(
+        width: MediaQuery.of(context).size.width - (26 * 2),
+        decoration: BoxDecoration(color: snow),
+        child: Text(
+          'We’re proud of you for taking your first step to taking your fitness to the next level',
+          style: logInPageTitleH5Disabled,
+          textAlign: TextAlign.left,
+          softWrap: true,
+        ));
+  }
+
+  //line four
+  Widget lineFour() {
+    return Container(
+        width: MediaQuery.of(context).size.width - (26 * 2),
+        decoration: BoxDecoration(color: snow),
+        child: Text(
+          'Let’s get right into it, what would you say describes you best?',
+          style: logInPageTitleH3,
+          textAlign: TextAlign.left,
+          softWrap: true,
+        ));
   }
 }

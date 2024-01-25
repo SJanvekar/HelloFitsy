@@ -54,7 +54,7 @@ class _CreateClassWhatYouWillNeed extends State<CreateClassWhatYouWillNeed> {
             decoration: BoxDecoration(color: snow),
             child: Text(
               'Let clients know what they’re going to need',
-              style: logInPageTitle,
+              style: logInPageTitleH3,
               textAlign: TextAlign.center,
             )),
       ),
