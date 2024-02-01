@@ -9,7 +9,7 @@ import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/UserMoreActions.dart';
@@ -666,7 +666,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
                   child: Icon(
-                    HelloFitsy.arrowleft,
+                    FitsyIconsSet1.arrowleft,
                     color: iconColor,
                     size: 15,
                   ),

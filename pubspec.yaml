@@ -70,6 +70,8 @@ dependencies:
   firebase_messaging: ^14.7.3
   flutter_local_notifications: ^16.2.0
   timezone: ^0.9.2
+  country_picker: ^2.0.23
+  rive: ^0.12.4
 
 dev_dependencies:
   dependency_validator: ^3.0.0
@@ -101,7 +103,7 @@ flutter:
   fonts:
     - family: HelloFitsy
       fonts:
-        - asset: assets/fonts/HelloFitsy.ttf
+        - asset: assets/fonts/FitsyIconsSet1.ttf
     - family: SFRounded
       fonts:
         - asset: assets/fonts/SFRoundedRegular.otf

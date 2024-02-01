@@ -19,7 +19,7 @@ class FooterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 45,
+      height: 50,
       decoration: BoxDecoration(
           color: buttonColor, borderRadius: BorderRadius.circular(20)),
       child: Center(
@@ -27,9 +27,9 @@ class FooterButton extends StatelessWidget {
         buttonText,
         style: TextStyle(
             color: textColor,
-            fontSize: 15,
+            fontSize: 16,
             fontFamily: 'SFDisplay',
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
             decoration: TextDecoration.none),
       )),
     );

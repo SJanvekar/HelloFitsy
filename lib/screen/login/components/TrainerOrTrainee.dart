@@ -3,15 +3,15 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/example.dart';
 import 'package:balance/feModels/AuthModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/CategorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
@@ -54,106 +54,101 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            // title: Row(
-            //   children: [
-            //     Padding(
-            //       padding: const EdgeInsets.only(
-            //         left: 0,
-            //       ),
-            //       child: TextButton(
-            //         onPressed: () {
-            //           print("Cancel");
-            //           Navigator.of(context).pop(CupertinoPageRoute(
-            //               fullscreenDialog: true,
-            //               builder: (context) => Login()));
-            //         },
-            //         child: Text("Cancel", style: logInPageNavigationButtons),
-            //       ),
-            //     ),
-            //   ],
-            // ),
+            title: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    child: const Icon(
+                      Icons.close_rounded,
+                      color: jetBlack80,
+                      size: 25,
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
 
           //Body
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width - (26 * 2),
                   child: Row(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          lineOne(),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: lineTwo(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: lineThree(),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              top: 8.0,
-                            ),
-                            child: lineFour(),
-                          ),
-                        ],
-                      ),
+                      pageTitle(),
                     ],
                   ),
                 ),
+              ),
 
-                //Trainer or Trainee selection
-                Column(
-                  children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - (26 * 2),
+                  child: Row(
+                    children: [
+                      pageText(),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Trainer or Trainee selection
+              Center(
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  children: <Widget>[
                     //Trainer
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 20, bottom: 20),
-                        child: GestureDetector(
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 1000),
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            height: userTemplate.userType == UserType.Trainer
-                                ? 175
-                                : 130,
-                            width: userTemplate.userType == UserType.Trainer
-                                ? MediaQuery.of(context).size.width - (26 * 2)
-                                : MediaQuery.of(context).size.width - (26 * 3),
-                            decoration: BoxDecoration(
-                              color: userTemplate.userType == UserType.Trainer
-                                  ? strawberry
-                                  : bone,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Center(
-                              child: Text('I’m a personal trainer',
-                                  style: TextStyle(
-                                    color: userTemplate.userType ==
-                                            UserType.Trainer
-                                        ? snow
-                                        : jetBlack80,
-                                    fontFamily: 'SFDisplay',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  )),
-                            ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.04,
+                          bottom: 20),
+                      child: GestureDetector(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 1000),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          height: userTemplate.userType == UserType.Trainer
+                              ? 250
+                              : 180,
+                          width: userTemplate.userType == UserType.Trainer
+                              ? MediaQuery.of(context).size.width - (26 * 2)
+                              : MediaQuery.of(context).size.width - (26 * 3),
+                          decoration: BoxDecoration(
+                            color: userTemplate.userType == UserType.Trainer
+                                ? strawberry
+                                : bone,
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          onTap: () => {
-                            setState(() {
-                              setState(() {
-                                HapticFeedback.mediumImpact();
-                                userTemplate.userType = UserType.Trainer;
-                              });
-                            })
-                          },
+                          child: Center(
+                            child: Text('I’m a personal trainer',
+                                style: TextStyle(
+                                  color:
+                                      userTemplate.userType == UserType.Trainer
+                                          ? snow
+                                          : jetBlack80,
+                                  fontFamily: 'SFDisplay',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                          ),
                         ),
+                        onTap: () => {
+                          setState(() {
+                            setState(() {
+                              HapticFeedback.mediumImpact();
+                              userTemplate.userType = UserType.Trainer;
+                            });
+                          })
+                        },
                       ),
                     ),
 
@@ -163,8 +158,8 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                         duration: Duration(milliseconds: 1000),
                         curve: Curves.fastLinearToSlowEaseIn,
                         height: userTemplate.userType == UserType.Trainee
-                            ? 175
-                            : 130,
+                            ? 250
+                            : 180,
                         width: userTemplate.userType == UserType.Trainee
                             ? MediaQuery.of(context).size.width - (26 * 2)
                             : MediaQuery.of(context).size.width - (26 * 3),
@@ -196,16 +191,19 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(bottom: 55, left: 26.0, right: 26.0),
+            padding: const EdgeInsets.only(bottom: 45, left: 26.0, right: 26.0),
             child: GestureDetector(
-              child: FooterButton(
-                buttonColor: strawberry,
-                textColor: snow,
-                buttonText: "Continue",
+              child: Hero(
+                tag: 'Bottom',
+                child: FooterButton(
+                  buttonColor: strawberry,
+                  textColor: snow,
+                  buttonText: "Continue",
+                ),
               ),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -219,50 +217,27 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
     );
   }
 
-//line One
-  Widget lineOne() {
-    return Container(
-      decoration: BoxDecoration(color: snow),
-      child: Text(
-        'Hi there!',
-        style: logInPageTitleH5Disabled,
-        textAlign: TextAlign.left,
-      ),
-    );
-  }
-
-//line two
-  Widget lineTwo() {
-    return Container(
-        decoration: BoxDecoration(color: snow),
-        child: Text(
-          'Welome to Fitsy 😄',
-          style: logInPageTitleH5Disabled,
-          textAlign: TextAlign.left,
-        ));
-  }
-
-  //line three
-  Widget lineThree() {
+  //Page Title
+  Widget pageTitle() {
     return Container(
         width: MediaQuery.of(context).size.width - (26 * 2),
         decoration: BoxDecoration(color: snow),
         child: Text(
-          'We’re proud of you for taking your first step to taking your fitness to the next level',
-          style: logInPageTitleH5Disabled,
+          'Which of the following describes you best?',
+          style: logInPageTitleH2,
           textAlign: TextAlign.left,
           softWrap: true,
         ));
   }
 
-  //line four
-  Widget lineFour() {
+//Page Title
+  Widget pageText() {
     return Container(
         width: MediaQuery.of(context).size.width - (26 * 2),
         decoration: BoxDecoration(color: snow),
         child: Text(
-          'Let’s get right into it, what would you say describes you best?',
-          style: logInPageTitleH3,
+          'Select one of the following to help us personalize your in-app experience',
+          style: logInPageBodyText,
           textAlign: TextAlign.left,
           softWrap: true,
         ));

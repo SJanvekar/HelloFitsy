@@ -1,6 +1,9 @@
+import 'package:balance/fitsy_icons_set1_icons.dart';
+import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -10,12 +13,13 @@ class ForgotPasswordPage extends StatelessWidget {
 //------Widgets-------//
 
 //Email
-  Widget textInputEmail(BuildContext context) {
+  Widget textInputPhone(BuildContext context) {
     return Container(
       height: 60,
       decoration: BoxDecoration(
-        color: bone80,
+        color: snow,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: jetBlack40),
       ),
       child: Row(
         children: [
@@ -23,7 +27,7 @@ class ForgotPasswordPage extends StatelessWidget {
             padding: const EdgeInsets.only(left: 15, right: 10),
             child: Center(
                 child: SvgPicture.asset(
-              'assets/icons/generalIcons/mail.svg',
+              'assets/icons/generalIcons/phone.svg',
               width: 18,
               color: jetBlack60,
             )),
@@ -46,7 +50,7 @@ class ForgotPasswordPage extends StatelessWidget {
                   fontWeight: FontWeight.w500),
               decoration: InputDecoration.collapsed(
                 border: InputBorder.none,
-                hintText: 'Email',
+                hintText: 'Phone',
                 hintStyle: const TextStyle(
                   fontFamily: 'SFDisplay',
                   color: jetBlack40,
@@ -76,80 +80,82 @@ class ForgotPasswordPage extends StatelessWidget {
         backgroundColor: snow,
         automaticallyImplyLeading: false,
         title: Padding(
-          padding: const EdgeInsets.only(
-            left: 0,
-            right: 158,
-          ),
-          child: TextButton(
-            style: ButtonStyle(
-              overlayColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                if (states.contains(MaterialState.pressed)) {
-                  return Colors.transparent;
-                }
-                return snow;
-              }),
-            ),
-            onPressed: () {
-              print("Personal Information Pressed");
-              Navigator.of(context).pop();
-            },
-            child: Text("Cancel", style: logInPageNavigationButtons),
+          padding: const EdgeInsets.only(left: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                child: const Icon(
+                  Icons.close_rounded,
+                  color: jetBlack80,
+                  size: 25,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 26.0, right: 26.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+      body: Padding(
+        padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
               children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                ),
                 Padding(
                   padding: const EdgeInsets.only(
+                    top: 20.0,
                     bottom: 8.0,
                   ),
                   child: Text(
                     'Forgot your password?',
-                    style: logInPageTitleH3,
+                    style: logInPageTitleH2,
                   ),
                 ),
+              ],
+            ),
+            Row(
+              children: [
                 Padding(
                   padding: const EdgeInsets.only(
-                    bottom: 30.0,
+                    bottom: 10.0,
                   ),
                   child: Text(
                     'No problem, we’ve got you covered!',
                     style: logInPageBodyText,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 45.0,
-                  ),
-                  child: Text(
-                    'Please enter your email below and we’ll send you a link to reset your password.',
-                    textAlign: TextAlign.center,
-                    style: profileBodyTextFont,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 35.0),
-                  child: textInputEmail(context),
-                ),
-                GestureDetector(
-                  child: FooterButton(
-                      buttonColor: strawberry,
-                      textColor: snow,
-                      buttonText: 'Reset Password'),
-                  onTap: () => {},
-                )
               ],
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(
+                bottom: 30.0,
+              ),
+              child: Text(
+                'Please enter your phone number below, and we’ll get started with your password reset.',
+                textAlign: TextAlign.left,
+                style: logInPageBodyTextNote,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: textInputPhone(context),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 45.0),
+              child: GestureDetector(
+                child: FooterButton(
+                    buttonColor: strawberry,
+                    textColor: snow,
+                    buttonText: 'Reset Password'),
+                onTap: () => {},
+              ),
+            )
+          ],
         ),
       ),
     );

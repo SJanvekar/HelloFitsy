@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/Constants.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/ForgotPassword.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
@@ -52,10 +52,6 @@ void onSubmitSignInField(context) {
           backgroundColor: Colors.transparent,
           elevation: 0,
           duration: Duration(milliseconds: 1500),
-          // padding: EdgeInsets.only(
-          //     bottom: MediaQuery.of(context).size.height * 0.5,
-          //     left: 70.0,
-          //     right: 70.0),
           content: Container(
             height: 35,
             decoration: BoxDecoration(
@@ -106,15 +102,16 @@ Widget textInputUsername() {
       Container(
         height: 60,
         decoration: BoxDecoration(
-          color: bone80,
+          color: snow,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: jetBlack40),
           // border: Border.all(color: jetBlack20)
         ),
         child: Row(
           children: [
             const Padding(
               padding: EdgeInsets.only(left: 15.0),
-              child: Icon(HelloFitsy.user, color: jetBlack60, size: 20),
+              child: Icon(FitsyIconsSet1.user, color: jetBlack60, size: 20),
             ),
             Expanded(
               child: Padding(
@@ -161,15 +158,7 @@ Widget forgotPassword() {
         padding: EdgeInsets.only(
           top: 15,
         ),
-        child: Text(
-          'Forgot password?',
-          style: TextStyle(
-            fontFamily: 'SFDisplay',
-            color: jetBlack40,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        child: Text('Forgot password?', style: logInPageBodyTextNote),
       ),
     ],
   );
@@ -182,15 +171,7 @@ Widget orDivider() {
     child: Row(
       children: [
         Expanded(child: PageDivider(leftPadding: 0, rightPadding: 10.0)),
-        Text(
-          'OR',
-          style: TextStyle(
-            fontFamily: 'SFDisplay',
-            color: jetBlack40,
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        Text('OR', style: logInPageBodyTextNote),
         Expanded(child: PageDivider(leftPadding: 10.0, rightPadding: 0)),
       ],
     ),
@@ -208,20 +189,13 @@ Widget signInPartners() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 11),
+                padding: const EdgeInsets.only(right: 8, bottom: 5.0),
                 child: SvgPicture.asset(
                   'assets/icons/externalCompanyIcons/Apple.svg',
+                  height: 22,
                 ),
               ),
-              Text(
-                'Continue with Apple',
-                style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack40,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Text('Continue with Apple', style: logInPageBodyText),
             ],
           ),
           onTap: () async {
@@ -298,6 +272,33 @@ class _SignInState extends State<SignIn> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
+            title: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    child: Row(
+                      children: [
+                        Icon(
+                          FitsyIconsSet1.arrowleft,
+                          color: jetBlack60,
+                          size: 15,
+                        ),
+                        const Text(
+                          "Back",
+                          style: logInPageNavigationButtons,
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop(CupertinoPageRoute(
+                          fullscreenDialog: false,
+                          builder: (context) => SignIn()));
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
           body: SingleChildScrollView(
             child: Padding(
@@ -327,8 +328,9 @@ class _SignInState extends State<SignIn> {
                       Container(
                         height: 60,
                         decoration: BoxDecoration(
-                          color: bone80,
+                          color: snow,
                           borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: jetBlack40),
                         ),
                         child: Row(
                           children: [
@@ -416,8 +418,8 @@ class _SignInState extends State<SignIn> {
                           text: 'Don\'t have an account? ',
                           style: TextStyle(
                             fontFamily: 'SFDisplay',
-                            color: jetBlack40,
-                            fontSize: 14,
+                            color: jetBlack60,
+                            fontSize: 15,
                             fontWeight: FontWeight.w500,
                           ),
                           children: <TextSpan>[
@@ -426,7 +428,7 @@ class _SignInState extends State<SignIn> {
                                 style: TextStyle(
                                     fontFamily: 'SFDisplay',
                                     color: ocean,
-                                    fontSize: 14,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline),
                                 recognizer: TapGestureRecognizer()

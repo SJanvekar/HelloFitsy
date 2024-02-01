@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:balance/Constants.dart';
 import 'package:balance/feModels/AuthModel.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/CategorySelection.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
@@ -85,80 +86,142 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         backgroundColor: snow,
         automaticallyImplyLeading: false,
         title: Padding(
-          padding: const EdgeInsets.only(
-            left: 0,
-          ),
-          child: TextButton(
-            onPressed: () {
-              print("Back");
-              Navigator.of(context).pop(CupertinoPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) => PersonalInfo(
-                        authTemplate: authTemplate,
-                        userTemplate: userTemplate,
-                      )));
-            },
-            child: Text("Back", style: logInPageNavigationButtons),
+          padding: const EdgeInsets.only(left: 8),
+          child: Row(
+            children: [
+              GestureDetector(
+                child: Row(
+                  children: [
+                    Icon(
+                      FitsyIconsSet1.arrowleft,
+                      color: jetBlack60,
+                      size: 15,
+                    ),
+                    const Text(
+                      "Back",
+                      style: logInPageNavigationButtons,
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.of(context).pop(CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => TrainerOrTrainee()));
+                },
+              ),
+            ],
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Center(
-              child: Stack(
-            children: [
-              Container(
-                  child: Column(
-                children: [
-                  ClipOval(
-                    child: profilePictureImage != null
-                        ? Image.file(
-                            profilePictureImage!,
-                            width: 200,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            'assets/images/profilePictureDefault.png',
-                            height: 200,
-                            width: 200,
-                            scale: 0.8,
-                          ),
-                  ),
-                ],
+      body: Padding(
+        padding:
+            const EdgeInsets.only(top: 8, left: 26.0, right: 26.0, bottom: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(children: [
+              pageTitle(),
+              pageText(),
+            ]),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Center(
+                  child: GestureDetector(
+                child: Container(
+                    height: MediaQuery.of(context).size.height * 0.58,
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    decoration: BoxDecoration(
+                        color: snow,
+                        border: Border.all(
+                          strokeAlign: BorderSide.strokeAlignOutside,
+                          width: 1,
+                          color:
+                              profilePictureImage != null ? snow : jetBlack40,
+                        ),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        profilePictureImage != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.58,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.85,
+                                  child: FittedBox(
+                                    fit: BoxFit.cover,
+                                    child: Image.file(
+                                      profilePictureImage!,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Column(
+                                children: [
+                                  Icon(
+                                    FitsyIconsSet1.upload,
+                                    size: 30,
+                                    color: jetBlack60,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: Text(
+                                      'Click here to upload',
+                                      style: logInPageBodyText,
+                                    ),
+                                  )
+                                ],
+                              ),
+                      ],
+                    )),
+                onTap: () {
+                  pickImage(ImageSource.gallery);
+                },
               )),
-            ],
-          )),
-          pageTitle(),
-          Padding(
-            padding: EdgeInsets.only(bottom: bottomPadding),
-            child: pageText(),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 15.0, left: 26.0, right: 26.0),
-            child: GestureDetector(
-              child: FooterButton(
-                  buttonColor: ocean,
-                  textColor: snow,
-                  buttonText: 'Upload Picture'),
-              onTap: () => {
-                pickImage(ImageSource.gallery),
-              },
             ),
-          ),
-        ],
+            if (profilePictureImage != null)
+              const Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Center(
+                  child: Text(
+                    'Click your image to change it before continuing',
+                    style: logInPageBodyTextNote,
+                  ),
+                ),
+              )
+            // Padding(
+            //   padding: EdgeInsets.only(bottom: 15.0, left: 26.0, right: 26.0),
+            //   child: GestureDetector(
+            //     child: FooterButton(
+            //         buttonColor: ocean,
+            //         textColor: snow,
+            //         buttonText: 'Upload Picture'),
+            //     onTap: () => {
+            //       pickImage(ImageSource.gallery),
+            //     },
+            //   ),
+            // ),
+          ],
+        ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 55.0, left: 26.0, right: 26.0),
+        padding: const EdgeInsets.only(bottom: 45.0, left: 26.0, right: 26.0),
         child: GestureDetector(
-          child: FooterButton(
-              buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
+          child: Hero(
+            tag: 'Bottom',
+            child: FooterButton(
+                buttonColor: strawberry,
+                textColor: snow,
+                buttonText: 'Continue'),
+          ),
           onTap: () => {
             uploadImage(),
-            print(userTemplate.profileImageURL),
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CategorySelection(
+            Navigator.of(context).push(CupertinoPageRoute(
+                builder: (context) => PersonalInfo(
                     authTemplate: authTemplate, userTemplate: userTemplate)))
           },
         ),
@@ -179,31 +242,20 @@ Widget profileImage() {
   );
 }
 
+//Page title
 Widget pageTitle() {
-  return Center(
-    child: Container(
-        padding: EdgeInsets.only(top: 15),
-        decoration: BoxDecoration(color: snow),
-        child: Text(
-          'Upload a profile picture',
-          style: logInPageTitleH3,
-        )),
-  );
+  return Container(
+      decoration: BoxDecoration(color: snow),
+      child: Text(
+        'Give us a smile!',
+        style: logInPageTitleH1,
+      ));
 }
 
+//PageText
 Widget pageText() {
-  return Padding(
-    padding: const EdgeInsets.only(top: 5, left: 26.0, right: 26.0),
-    child: RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-        style: logInPageBodyText,
-        children: [
-          TextSpan(
-            text: 'Connect with trainers on a more personal level',
-          )
-        ],
-      ),
-    ),
+  return Text(
+    'Upload a profile picture to help your profile stand out ',
+    style: logInPageBodyText,
   );
 }

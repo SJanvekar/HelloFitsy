@@ -1,11 +1,11 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
 import 'package:balance/constants.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/notifications/components/upcomingClassNoti.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../hello_fitsy_icons.dart';
 
 class Notifications extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -81,7 +81,7 @@ class Notifications extends StatelessWidget {
                     children: [
                       //Icon: arrowLeft from the Fitsy icon ttf library
                       Icon(
-                        HelloFitsy.arrowleft,
+                        FitsyIconsSet1.arrowleft,
                         color: jetBlack80,
                         size: 14,
                       ),

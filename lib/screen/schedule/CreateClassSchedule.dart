@@ -8,12 +8,11 @@ import 'package:balance/Requests/ScheduleRequests.dart';
 import 'package:balance/example.dart';
 import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassTimeList.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/ClassCardOpen.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
@@ -1009,7 +1008,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                           const EdgeInsets.only(
                                                               left: 20.0),
                                                       child: Icon(
-                                                        HelloFitsy.calendar,
+                                                        FitsyIconsSet1.calendar,
                                                         size: 21.5,
                                                         color: jetBlack,
                                                       )),

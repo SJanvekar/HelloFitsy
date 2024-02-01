@@ -14,7 +14,7 @@ class PageDivider extends StatelessWidget {
         child: Container(
           height: 1,
           decoration: BoxDecoration(
-            color: shark40,
+            color: shark80,
             borderRadius: BorderRadius.circular(100),
           ),
         ),

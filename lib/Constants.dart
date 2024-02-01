@@ -142,8 +142,17 @@ const logInPageTextInputTitle = TextStyle(
 
 const logInPageBodyText = TextStyle(
   fontFamily: 'SFDisplay',
-  color: jetBlack60,
+  color: jetBlack80,
   fontSize: 16,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.none,
+  height: 1.2,
+);
+
+const logInPageBodyTextNote = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack80,
+  fontSize: 14,
   fontWeight: FontWeight.w400,
   decoration: TextDecoration.none,
   height: 1.2,
@@ -165,10 +174,19 @@ const errorText = TextStyle(
     fontWeight: FontWeight.w400,
     decoration: TextDecoration.none);
 
+const errorTextSnackBar = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: snow,
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.none,
+  height: 1.2,
+);
+
 const disclaimerTitle = TextStyle(
     color: jetBlack,
     fontFamily: 'SFDisplay',
-    fontSize: 17,
+    fontSize: 20,
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.none);
 

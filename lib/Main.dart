@@ -5,15 +5,15 @@ import 'package:balance/Constants.dart';
 import 'package:balance/Requests/NotificationRequests.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
+import 'package:balance/screen/login/StartPage.dart';
 import 'package:balance/screen/login/components/PersonalInfo.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
@@ -83,7 +83,7 @@ class FITSY extends StatelessWidget {
       //Example:
       //SignIn(); -> RatingPopup();
 
-      home: TrainerOrTrainee(),
+      home: StartPage(),
     );
   }
 }
@@ -382,12 +382,12 @@ class _MainPageState extends State<MainPage>
                 //Home
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.home,
+                      FitsyIconsSet1.home,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.home,
+                      FitsyIconsSet1.home,
                       color: strawberry,
                       size: 20,
                     ),
@@ -396,12 +396,12 @@ class _MainPageState extends State<MainPage>
                 //Search
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.search,
+                      FitsyIconsSet1.search,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.search,
+                      FitsyIconsSet1.search,
                       color: strawberry,
                       size: 20,
                     ),
@@ -449,12 +449,12 @@ class _MainPageState extends State<MainPage>
                 //Schedule
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.calendar,
+                      FitsyIconsSet1.calendar,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.calendar,
+                      FitsyIconsSet1.calendar,
                       color: strawberry,
                       size: 20,
                     ),
@@ -463,12 +463,12 @@ class _MainPageState extends State<MainPage>
                 //Profile
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.user,
+                      FitsyIconsSet1.user,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.user,
+                      FitsyIconsSet1.user,
                       color: strawberry,
                       size: 20,
                     ),
@@ -478,31 +478,6 @@ class _MainPageState extends State<MainPage>
           ),
         ),
       ),
-    );
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-      splash: Column(
-        children: [
-          Hero(
-              transitionOnUserGestures: true,
-              tag: 'typeface',
-              child: Image.asset(
-                'assets/images/Typeface.png',
-                height: 146,
-                width: 195,
-                color: snow,
-              )),
-        ],
-      ),
-      nextScreen: Login(),
-      backgroundColor: strawberry,
     );
   }
 }

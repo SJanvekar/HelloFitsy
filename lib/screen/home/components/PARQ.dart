@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/flutter_survey.dart';
@@ -116,7 +116,7 @@ class _ParQuestionnaire extends State<ParQuestionnaire> {
                   child: Row(
                     children: [
                       Icon(
-                        HelloFitsy.arrowleft,
+                        FitsyIconsSet1.arrowleft,
                         size: 13,
                         color: jetBlack80,
                       ),

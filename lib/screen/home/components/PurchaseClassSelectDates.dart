@@ -10,7 +10,7 @@ import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/EventModel.dart';
 import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/cupertino.dart';
@@ -521,7 +521,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
             automaticallyImplyLeading: false,
             leading: GestureDetector(
               child: Icon(
-                HelloFitsy.exit,
+                FitsyIconsSet1.exit,
                 color: jetBlack,
                 size: 12,
               ),
@@ -852,7 +852,7 @@ class CupertinoBookingDetailsPopup extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(top: 2.0),
                               child: Icon(
-                                HelloFitsy.arrowleft,
+                                FitsyIconsSet1.arrowleft,
                                 size: 14,
                                 color: jetBlack,
                               ),

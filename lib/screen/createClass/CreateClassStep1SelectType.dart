@@ -4,9 +4,9 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/home/home.dart';
-import 'package:balance/screen/login/login.dart';
+
 import 'package:balance/screen/createClass/createClassStep2Description.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
@@ -137,7 +137,7 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                     children: [
                       Text('Continue', style: doneTextButton),
                       Icon(
-                        HelloFitsy.arrowright,
+                        FitsyIconsSet1.arrowright,
                         size: 13,
                         color: ocean,
                       )

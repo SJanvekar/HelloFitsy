@@ -8,7 +8,6 @@ import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep2Description.dart';
 import 'package:balance/screen/createClass/createClassStep4WhatYouWillNeed.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';

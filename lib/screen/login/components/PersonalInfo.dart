@@ -1,22 +1,27 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
+import 'dart:convert';
 import 'dart:ffi';
-
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/Constants.dart';
-
+import 'package:balance/Main.dart';
 import 'package:balance/example.dart';
 import 'package:balance/feModels/AuthModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
-import 'package:balance/screen/login/login.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
+import 'package:balance/screen/login/StartPage.dart';
+import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
+import 'package:balance/sharedWidgets/BodyButton.dart';
+import 'package:balance/sharedWidgets/categories/AddRemoveButton.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../feModels/UserModel.dart';
 
 class PersonalInfo extends StatefulWidget {
@@ -39,20 +44,17 @@ class _PersonalInfoState extends State<PersonalInfo> {
   //variables
   double range = 0;
   bool _passwordVisibility = true;
-  bool _passwordConfirmVisibility = true;
   String _showHideIcon = 'assets/icons/generalIcons/hidePassword.svg';
-  String _showHideIconConfirm = 'assets/icons/generalIcons/hidePassword.svg';
   double _showHideIconHeight = 18.0;
-  double _showHideIconHeightConfirm = 18.0;
-  Color _eyeIconColorPassword = jetBlack40;
-  Color _eyeIconColorConfirmPassword = jetBlack40;
+  Color _eyeIconColorPassword = jetBlack60;
+  bool? checkedValue = false;
 
   void _changePasswordVisibility() {
     setState(() {
       _passwordVisibility = !_passwordVisibility;
       if (_passwordVisibility == true) {
         _showHideIcon = 'assets/icons/generalIcons/hidePassword.svg';
-        _eyeIconColorPassword = jetBlack40;
+        _eyeIconColorPassword = jetBlack60;
         _showHideIconHeight = 18.0;
       } else {
         _showHideIcon = 'assets/icons/generalIcons/showPassword.svg';
@@ -62,24 +64,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
     });
   }
 
-  void _changePasswordConfirmVisibility() {
-    setState(() {
-      _passwordConfirmVisibility = !_passwordConfirmVisibility;
-      if (_passwordConfirmVisibility == true) {
-        _showHideIconConfirm = 'assets/icons/generalIcons/hidePassword.svg';
-        _eyeIconColorConfirmPassword = jetBlack40;
-        _showHideIconHeightConfirm = 18.0;
-      } else {
-        _showHideIconConfirm = 'assets/icons/generalIcons/showPassword.svg';
-        _eyeIconColorConfirmPassword = strawberry;
-        _showHideIconHeightConfirm = 14.0;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double boxWidth = ((MediaQuery.of(context).size.width) - 10 - (26 * 2)) / 2;
+
     return GestureDetector(
       child: Scaffold(
         backgroundColor: snow,
@@ -91,79 +79,130 @@ class _PersonalInfoState extends State<PersonalInfo> {
           elevation: 0,
           backgroundColor: snow,
           automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 0,
-                ),
-                child: TextButton(
-                  onPressed: () {
+          title: Padding(
+            padding: const EdgeInsets.only(left: 8),
+            child: Row(
+              children: [
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      Icon(
+                        FitsyIconsSet1.arrowleft,
+                        color: jetBlack60,
+                        size: 15,
+                      ),
+                      const Text(
+                        "Back",
+                        style: logInPageNavigationButtons,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
                     Navigator.of(context).pop(CupertinoPageRoute(
-                        fullscreenDialog: true, builder: (context) => Login()));
+                        fullscreenDialog: true,
+                        builder: (context) => ProfilePictureUpload(
+                              authTemplate: authTemplate,
+                              userTemplate: userTemplate,
+                            )));
                   },
-                  child: Text("Back", style: logInPageNavigationButtons),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
 
         //Body
         body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              pageTitle(),
-              pageText(),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 26.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                pageTitle(),
+                pageText(),
 
-              //User text input fields
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 30,
-                  left: 26.0,
-                  right: 26.0,
+                //User text input fields
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  child: Column(
+                    children: [
+                      textInputFullName(),
+                    ],
+                  ),
                 ),
-                child: Column(
-                  children: [
-                    textInputFullName(),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  child: textInputUsername(),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 26.0,
-                  right: 26.0,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  child: textInputEmailOrPhone(context, true),
                 ),
-                child: textInputUsername(),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 26.0,
-                  right: 26.0,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  child: textInputEmailOrPhone(context, false),
                 ),
-                child: textInputEmailOrPhone(context, true),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 26.0,
-                  right: 26.0,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  child: textInputPasswordAndConfirm(),
                 ),
-                child: textInputEmailOrPhone(context, false),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                  left: 26.0,
-                  right: 26.0,
-                ),
-                child: textInputPasswordAndConfirm(),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: CheckboxListTile(
+                    contentPadding: EdgeInsets.zero,
+                    activeColor: ocean,
+                    title: Semantics(
+                      excludeSemantics: true,
+                      child: RichText(
+                          text: TextSpan(
+                        style: logInPageBodyTextNote,
+                        children: [
+                          TextSpan(
+                            text: "By pressing continue you agree with our ",
+                          ),
+                          TextSpan(
+                            text: "Terms & Conditions",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: ocean,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launchUrl(Uri.parse(
+                                    'https://fitsytermsandco.crd.co'));
+                              },
+                          ),
+                          TextSpan(
+                            text: " and ",
+                          ),
+                          TextSpan(
+                            text: "Privacy Policy",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: ocean,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                launchUrl(
+                                    Uri.parse('https://fitsyprivpol.crd.co'));
+                              },
+                          ),
+                        ],
+                      )),
+                    ),
+                    value: checkedValue,
+                    onChanged: (newValue) {
+                      setState(() {
+                        checkedValue = newValue;
+                      });
+                    },
+                    controlAffinity: ListTileControlAffinity
+                        .leading, //  <-- leading Checkbox
+                  ),
+                )
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: Padding(
@@ -172,7 +211,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               child: FooterButton(
                 buttonColor: strawberry,
                 textColor: snow,
-                buttonText: "Continue",
+                buttonText: "Finish",
               ),
               onTap: () => {
                     //Removing PW confirmation for quicker flow
@@ -194,10 +233,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                       },
                     if (emailValid && !showError)
                       {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfilePictureUpload(
-                                authTemplate: widget.authTemplate,
-                                userTemplate: widget.userTemplate))),
+                        sendUserModel(),
                       }
                     else if (!emailValid)
                       {
@@ -207,13 +243,13 @@ class _PersonalInfoState extends State<PersonalInfo> {
                             duration: Duration(milliseconds: 1500),
                             padding: EdgeInsets.only(
                                 bottom:
-                                    MediaQuery.of(context).size.height * 0.3,
+                                    MediaQuery.of(context).size.height * 0.01,
                                 left: 30.0,
                                 right: 30.0),
                             content: Container(
                               height: 65,
                               decoration: BoxDecoration(
-                                  color: strawberry,
+                                  color: jetBlack,
                                   borderRadius: BorderRadius.circular(15),
                                   boxShadow: [
                                     BoxShadow(
@@ -240,15 +276,10 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                   ]),
                               child: Center(
                                   child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: const EdgeInsets.all(10.0),
                                 child: Text(
                                   'You have entered an invalid email, please try again.',
-                                  style: TextStyle(
-                                      color: snow,
-                                      fontSize: 16,
-                                      fontFamily: 'SFDisplay',
-                                      letterSpacing: 0.5,
-                                      fontWeight: FontWeight.w400),
+                                  style: errorTextSnackBar,
                                   textAlign: TextAlign.center,
                                 ),
                               )),
@@ -277,6 +308,56 @@ class _PersonalInfoState extends State<PersonalInfo> {
     );
   }
 
+  //Send User Model
+
+  void sendUserModel() {
+    // widget.userTemplate.userID = '';
+    widget.userTemplate.userBio = '';
+    widget.userTemplate.stripeAccountID = '';
+    widget.userTemplate.stripeCustomerID = '';
+
+    //Auth Service Call
+    AuthService()
+        .signUp(widget.authTemplate, widget.userTemplate)
+        .then((val) async {
+      try {
+        if (val.data['success']) {
+          print('Successful user add');
+
+          //Assign all userTemplate information to shared preferences for MainPage
+          final sharedPrefs = await SharedPreferences.getInstance();
+
+          // Safely encode user data and handle SharedPreferences exceptions
+          final userData = jsonEncode(val.data['user'] ?? '');
+          await _safeSetString(sharedPrefs, 'loggedUser', userData);
+
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => MainPage()));
+        } else {
+          print("Sign up error: ${val.data['msg']}");
+        }
+      } catch (e) {
+        print('Error: $e');
+        // Handle any exception that might occur during the process
+      }
+    }).catchError((error) {
+      print('Error during sign up: $error');
+      // Handle errors during sign up process
+    });
+  }
+
+// Function to safely set string in SharedPreferences with error handling
+  Future<void> _safeSetString(
+      SharedPreferences prefs, String key, String value) async {
+    try {
+      await prefs.setString(key, value);
+    } catch (e) {
+      print('Error setting SharedPreferences: $e');
+      // Handle any exception that might occur during SharedPreferences set operation
+      // For instance, consider fallback mechanisms or alternative approaches
+    }
+  }
+
   //Password 1&2
   Widget textInputPasswordAndConfirm() {
     return Column(
@@ -284,8 +365,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
         Container(
           height: 60,
           decoration: BoxDecoration(
-            color: bone80,
+            color: snow,
             borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: jetBlack40),
           ),
           child: Row(
             children: [
@@ -416,27 +498,25 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   //Page title
   Widget pageTitle() {
-    return Center(
-      child: Container(
-          padding: EdgeInsets.only(top: 20),
-          decoration: BoxDecoration(color: snow),
-          child: Text(
-            'Tell us about yourself',
-            style: logInPageTitleH3,
-          )),
-    );
+    return Container(
+        padding: EdgeInsets.only(top: 8),
+        decoration: BoxDecoration(color: snow),
+        child: Text(
+          'Almost done!',
+          style: logInPageTitleH1,
+        ));
   }
 
   Widget pageText() {
     return Padding(
-      padding: const EdgeInsets.only(top: 5, left: 26.0, right: 26.0),
+      padding: const EdgeInsets.only(top: 5, right: 26.0),
       child: RichText(
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         text: TextSpan(
           style: logInPageBodyText,
           children: [
             TextSpan(
-              text: 'Connect with trainers on a more personal level',
+              text: 'Fill out the following to wrap up your personal profile',
             )
           ],
         ),
@@ -454,11 +534,12 @@ class _PersonalInfoState extends State<PersonalInfo> {
         Container(
           height: 60,
           decoration: BoxDecoration(
-              color: bone80,
-              borderRadius: BorderRadius.circular(20),
-              border: showError
-                  ? Border.all(color: strawberry)
-                  : Border.all(color: Colors.transparent)),
+            color: snow,
+            borderRadius: BorderRadius.circular(20),
+            border: showError
+                ? Border.all(color: strawberry)
+                : Border.all(color: jetBlack40),
+          ),
           child: Padding(
             padding: const EdgeInsets.only(left: 15.0),
             child: Row(
@@ -466,7 +547,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  HelloFitsy.user,
+                  FitsyIconsSet1.user,
                   color: jetBlack60,
                   size: 20,
                 ),
@@ -544,15 +625,16 @@ class _PersonalInfoState extends State<PersonalInfo> {
     return Container(
       height: 60,
       decoration: BoxDecoration(
-        color: bone80,
+        color: snow,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: jetBlack40),
       ),
       child: Row(
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 15, right: 10),
             child: Icon(
-              HelloFitsy.user,
+              FitsyIconsSet1.user,
               color: jetBlack60,
               size: 20,
             ),
@@ -592,8 +674,9 @@ class _PersonalInfoState extends State<PersonalInfo> {
     return Container(
       height: 60,
       decoration: BoxDecoration(
-        color: bone80,
+        color: snow,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: jetBlack40),
       ),
       child: Row(
         children: [
@@ -643,7 +726,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               child: GestureDetector(
                 child: SvgPicture.asset(
                     'assets/icons/generalIcons/information.svg',
-                    color: jetBlack40,
+                    color: jetBlack60,
                     height: 20,
                     width: 20),
                 onTap: () {
@@ -661,65 +744,45 @@ class _PersonalInfoState extends State<PersonalInfo> {
 //Email Info Box
   Widget informationDialog(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Container(
-        height: 225.0,
-        width: 280.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
-              child: Text(
-                'Privacy Notice',
-                style: disclaimerTitle,
+        height: MediaQuery.of(context).size.height * 0.25,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 25.0,
+                ),
+                child: Text(
+                  'Privacy Notice',
+                  style: logInPageTitleH4,
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                child: Center(
                   child: Text(
                     'This information will not be shared with any person or organization, it is for authentication and verification purposes only',
-                    style: TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: jetBlack60,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.center,
+                    style: logInPageBodyTextNote,
+                    textAlign: TextAlign.left,
                   ),
                 ),
               ),
-            ),
-            Padding(padding: EdgeInsets.only(top: 0.0)),
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 70, right: 70),
-                  child: Container(
-                    height: 35,
-                    width: 323,
-                    decoration: BoxDecoration(
-                        color: strawberry,
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Center(
-                        child: Text(
-                      'Confirm',
-                      style: TextStyle(
-                          color: snow,
-                          fontSize: 13,
-                          fontFamily: 'SFDisplay',
-                          letterSpacing: 0.5,
-                          fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                    )),
-                  ),
-                ))
-          ],
+              Padding(padding: EdgeInsets.only(top: 0.0)),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: BodyButton(
+                      buttonColor: strawberry,
+                      textColor: snow,
+                      buttonText: 'Confirm'))
+            ],
+          ),
         ),
       ),
     );
