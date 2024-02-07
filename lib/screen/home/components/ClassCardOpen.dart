@@ -666,9 +666,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
                   child: Icon(
-                    FitsyIconsSet1.arrowleft,
+                    Icons.close_rounded,
                     color: iconColor,
-                    size: 15,
+                    size: 22,
                   ),
                 ),
               )),

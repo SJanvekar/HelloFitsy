@@ -76,7 +76,6 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
 
   @override
   Widget build(BuildContext context) {
-    double bottomPadding = ((MediaQuery.of(context).size.width) / 2) - 20;
     return Scaffold(
       backgroundColor: snow,
       appBar: AppBar(
@@ -86,7 +85,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         backgroundColor: snow,
         automaticallyImplyLeading: false,
         title: Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding: const EdgeInsets.only(left: 0),
           child: Row(
             children: [
               GestureDetector(
@@ -115,7 +114,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
       ),
       body: Padding(
         padding:
-            const EdgeInsets.only(top: 8, left: 26.0, right: 26.0, bottom: 20),
+            const EdgeInsets.only(top: 8, left: 15.0, right: 15.0, bottom: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,8 +129,8 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
               child: Center(
                   child: GestureDetector(
                 child: Container(
-                    height: MediaQuery.of(context).size.height * 0.58,
-                    width: MediaQuery.of(context).size.width * 0.85,
+                    height: MediaQuery.of(context).size.height * 0.60,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     decoration: BoxDecoration(
                         color: snow,
                         border: Border.all(
@@ -151,7 +150,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.58,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.85,
+                                      MediaQuery.of(context).size.width * 0.9,
                                   child: FittedBox(
                                     fit: BoxFit.cover,
                                     child: Image.file(
@@ -168,7 +167,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                     color: jetBlack60,
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
+                                    padding: const EdgeInsets.only(top: 10.0),
                                     child: Text(
                                       'Click here to upload',
                                       style: logInPageBodyText,
@@ -209,7 +208,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 45.0, left: 26.0, right: 26.0),
+        padding: const EdgeInsets.only(bottom: 45.0, left: 15.0, right: 15.0),
         child: GestureDetector(
           child: Hero(
             tag: 'Bottom',

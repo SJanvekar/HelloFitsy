@@ -519,13 +519,16 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
             elevation: 0,
             title: Text('Select a date and time', style: sectionTitles),
             automaticallyImplyLeading: false,
-            leading: GestureDetector(
-              child: Icon(
-                FitsyIconsSet1.exit,
-                color: jetBlack,
-                size: 12,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.close_rounded,
+                  color: jetBlack,
+                  size: 22,
+                ),
+                onTap: () => {Navigator.of(context).pop()},
               ),
-              onTap: () => {Navigator.of(context).pop()},
             ),
           ),
           body: CustomScrollView(
@@ -655,7 +658,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
                                     right: 5.0,
                                   ),
                                   child: GestureDetector(
-                                    child: Container(
+                                    child: AnimatedContainer(
+                                      duration: Duration(milliseconds: 1500),
+                                      curve: Curves.fastLinearToSlowEaseIn,
                                       decoration: BoxDecoration(
                                         color: classTime.isSelected
                                             ? strawberry

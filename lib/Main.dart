@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/Constants.dart';
 import 'package:balance/Requests/NotificationRequests.dart';
 import 'package:balance/feModels/AuthModel.dart';
@@ -12,8 +11,6 @@ import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
 import 'package:balance/screen/login/StartPage.dart';
 import 'package:balance/screen/login/components/PersonalInfo.dart';
-import 'package:balance/screen/login/components/SignIn.dart';
-import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';

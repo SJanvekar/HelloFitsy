@@ -467,7 +467,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                     ),
                     titlePadding: EdgeInsets.zero,
                     title: Padding(
-                      padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                      padding: const EdgeInsets.only(
+                        left: 15.0,
+                        right: 15.0,
+                      ),
                       child: LayoutBuilder(
                         builder:
                             (BuildContext context, BoxConstraints constraints) {
@@ -1007,8 +1010,9 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                 body: Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 26.0,
-                                                          right: 26.0),
+                                                    left: 15.0,
+                                                    right: 15.0,
+                                                  ),
                                                   child: Container(
                                                     height:
                                                         MediaQuery.of(context)
@@ -1200,7 +1204,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 15.0, left: 26.0, right: 26.0),
+                      top: 15.0,
+                      left: 15.0,
+                      right: 15.0,
+                    ),
                     child: Text(
                       'About me',
                       style: sectionTitles,
@@ -1208,7 +1215,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 10.0, left: 26.0, right: 26.0),
+                      top: 10.0,
+                      left: 15.0,
+                      right: 15.0,
+                    ),
                     child: Text(
                       'Toronto, Ontario, Canada',
                       style: TextStyle(
@@ -1220,7 +1230,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 8.0, left: 26.0, right: 20.0),
+                        top: 8.0, left: 15.0, right: 20.0),
                     child: Text(widget.userInstance.userBio!,
                         style: profileBodyTextFont),
                   ),
@@ -1230,7 +1240,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Text(
                       "Your Interests",
                       style: sectionTitles,
@@ -1239,11 +1249,11 @@ class _PersonalProfileState extends State<PersonalProfile>
                   SliverToBoxAdapter(
                     child: Center(
                       child: SizedBox(
-                        height: 84,
+                        height: 90,
                         child: ListView.builder(
                           primary: false,
                           scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(left: 13, right: 13),
+                          padding: EdgeInsets.only(left: 10, right: 10),
                           itemCount: myInterestsFinal.length,
                           itemBuilder: (context, index) {
                             final likedInterests = myInterestsFinal[index];
@@ -1263,7 +1273,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   MultiSliver(children: [
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                          top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                       child: Text(
                         "Your Classes",
                         style: sectionTitles,
@@ -1274,7 +1284,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                         height: 340,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(left: 26.0, right: 26.0),
+                          padding: EdgeInsets.only(
+                            left: 15.0,
+                            right: 15.0,
+                          ),
                           itemCount: trainerClasses.length,
                           itemBuilder: (context, index) {
                             final trainerClassInfo = trainerClasses[index];
@@ -1292,7 +1305,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1319,7 +1332,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   if (savedClassesList.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                          left: 15.0, right: 15.0, top: 20.0, bottom: 20.0),
                       child: Column(
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
@@ -1367,7 +1380,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1394,7 +1407,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   if (savedClassesList.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                          left: 15.0, right: 15.0, top: 20.0, bottom: 20.0),
                       child: Column(
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
@@ -1447,7 +1460,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Text(
                       "Posted Reviews",
                       style: sectionTitles,
@@ -1456,7 +1469,10 @@ class _PersonalProfileState extends State<PersonalProfile>
 
                   //HARD CODED - MUST CHANGE
                   Padding(
-                    padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                    padding: const EdgeInsets.only(
+                      left: 15.0,
+                      right: 15.0,
+                    ),
                     child: ReviewCard(),
                   ),
                   SizedBox(

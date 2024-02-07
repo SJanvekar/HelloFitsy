@@ -1522,7 +1522,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   Widget build(BuildContext context) {
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
-    var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2) - 50;
 
     return Scaffold(
         backgroundColor: snow,
@@ -1550,7 +1549,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 //Title
                 flexibleSpace: Padding(
                   padding: EdgeInsets.only(
-                    left: 26,
+                    left: 15,
                     top: paddingTop,
                   ),
                   child: Column(
@@ -1591,7 +1590,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       Center(
                         child: Padding(
                           padding:
-                              EdgeInsets.only(left: 25, right: 25, top: 10),
+                              EdgeInsets.only(left: 15.0, right: 15.0, top: 10),
                           child: TableCalendar(
                             firstDay: DateTime.now(),
                             lastDay: DateTime.utc(2075, 12, 31),

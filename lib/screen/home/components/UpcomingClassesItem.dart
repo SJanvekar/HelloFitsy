@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 
 class UpcomingClassesItem extends StatelessWidget {
@@ -20,9 +18,12 @@ class UpcomingClassesItem extends StatelessWidget {
       children: [
         //Upcoming Class Card
         Padding(
-          padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+          padding: const EdgeInsets.only(
+            left: 15.0,
+            right: 15.0,
+          ),
           child: Container(
-            height: 100,
+            padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: bone60,
               borderRadius: BorderRadius.circular(15),
@@ -45,7 +46,7 @@ class UpcomingClassesItem extends StatelessWidget {
                             children: [
                               //Class Time //HARD CODED - MUST CHANGE
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 3.0),
+                                padding: const EdgeInsets.only(bottom: 0.0),
                                 child: Text(
                                   Jiffy.parse(now.toString())
                                       .format(pattern: "MMM do, yyy "),
@@ -59,14 +60,10 @@ class UpcomingClassesItem extends StatelessWidget {
 
                               //Class Title //HARD CODED - MUST CHANGE
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 3.0),
+                                padding: const EdgeInsets.only(bottom: 0.0),
                                 child: Text(
                                   'Monday Evening Personal Training Session',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: jetBlack,
-                                      fontFamily: 'SFDisplay'),
+                                  style: upcomingClassTitle,
                                   maxLines: 2,
                                 ),
                               ),

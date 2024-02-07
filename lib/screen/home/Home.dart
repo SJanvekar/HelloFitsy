@@ -190,7 +190,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               MultiSliver(children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 15.0),
+                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
                   child: Text(
                     'Hi, ${widget.userInstance.firstName}',
                     style: const TextStyle(
@@ -203,7 +203,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
-                      left: 26.0, right: 26.0, top: 2.0, bottom: 10.0),
+                      left: 15.0, right: 15.0, top: 2.0, bottom: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -241,7 +241,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 )),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 35.0),
+                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
                   child: Text(
                     'For you',
                     style: TextStyle(
@@ -260,8 +260,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) => Padding(
                         padding: const EdgeInsets.only(
-                          left: 26.0,
-                          right: 26.0,
+                          left: 15.0,
+                          right: 15.0,
                         ),
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
@@ -319,8 +319,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 else if (allClasses.isEmpty && !isLoading)
                   Padding(
                     padding: const EdgeInsets.only(
-                      left: 26.0,
-                      right: 26.0,
+                      left: 15.0,
+                      right: 15.0,
                       bottom: 20.0,
                     ),
                     child: Column(

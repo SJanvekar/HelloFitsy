@@ -54,23 +54,20 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
-            title: Padding(
-              padding: const EdgeInsets.only(left: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GestureDetector(
-                    child: const Icon(
-                      Icons.close_rounded,
-                      color: jetBlack80,
-                      size: 25,
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  child: const Icon(
+                    Icons.close_rounded,
+                    color: jetBlack80,
+                    size: 25,
                   ),
-                ],
-              ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
           ),
 
@@ -81,7 +78,7 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width - (26 * 2),
+                  width: MediaQuery.of(context).size.width - (15 * 2),
                   child: Row(
                     children: [
                       pageTitle(),
@@ -93,7 +90,7 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
               Padding(
                 padding: const EdgeInsets.only(top: 5.0),
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width - (26 * 2),
+                  width: MediaQuery.of(context).size.width - (15 * 2),
                   child: Row(
                     children: [
                       pageText(),
@@ -120,14 +117,16 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                               ? 250
                               : 180,
                           width: userTemplate.userType == UserType.Trainer
-                              ? MediaQuery.of(context).size.width - (26 * 2)
-                              : MediaQuery.of(context).size.width - (26 * 3),
+                              ? MediaQuery.of(context).size.width - (15 * 2)
+                              : MediaQuery.of(context).size.width - (15 * 3),
                           decoration: BoxDecoration(
-                            color: userTemplate.userType == UserType.Trainer
-                                ? strawberry
-                                : bone,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
+                              color: userTemplate.userType == UserType.Trainer
+                                  ? strawberry
+                                  : snow,
+                              borderRadius: BorderRadius.circular(30),
+                              border: Border.all(
+                                color: jetBlack20,
+                              )),
                           child: Center(
                             child: Text('I’m a personal trainer',
                                 style: TextStyle(
@@ -161,14 +160,16 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                             ? 250
                             : 180,
                         width: userTemplate.userType == UserType.Trainee
-                            ? MediaQuery.of(context).size.width - (26 * 2)
-                            : MediaQuery.of(context).size.width - (26 * 3),
+                            ? MediaQuery.of(context).size.width - (15 * 2)
+                            : MediaQuery.of(context).size.width - (15 * 3),
                         decoration: BoxDecoration(
-                          color: userTemplate.userType == UserType.Trainee
-                              ? strawberry
-                              : bone,
-                          borderRadius: BorderRadius.circular(30),
-                        ),
+                            color: userTemplate.userType == UserType.Trainee
+                                ? strawberry
+                                : snow,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(
+                              color: jetBlack20,
+                            )),
                         child: Center(
                           child: Text(
                             'I want to find a personal trainer',
@@ -195,7 +196,11 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
             ],
           ),
           bottomNavigationBar: Padding(
-            padding: const EdgeInsets.only(bottom: 45, left: 26.0, right: 26.0),
+            padding: const EdgeInsets.only(
+              bottom: 45,
+              left: 15.0,
+              right: 15.0,
+            ),
             child: GestureDetector(
               child: Hero(
                 tag: 'Bottom',
@@ -220,7 +225,7 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
   //Page Title
   Widget pageTitle() {
     return Container(
-        width: MediaQuery.of(context).size.width - (26 * 2),
+        width: MediaQuery.of(context).size.width - (15 * 2),
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Which of the following describes you best?',
@@ -233,7 +238,7 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
 //Page Title
   Widget pageText() {
     return Container(
-        width: MediaQuery.of(context).size.width - (26 * 2),
+        width: MediaQuery.of(context).size.width - (15 * 2),
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Select one of the following to help us personalize your in-app experience',

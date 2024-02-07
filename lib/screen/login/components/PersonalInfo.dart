@@ -66,7 +66,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
   @override
   Widget build(BuildContext context) {
-    double boxWidth = ((MediaQuery.of(context).size.width) - 10 - (26 * 2)) / 2;
+    double boxWidth = ((MediaQuery.of(context).size.width) - 10 - (15 * 2)) / 2;
 
     return GestureDetector(
       child: Scaffold(
@@ -80,7 +80,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           backgroundColor: snow,
           automaticallyImplyLeading: false,
           title: Padding(
-            padding: const EdgeInsets.only(left: 8),
+            padding: const EdgeInsets.only(left: 0),
             child: Row(
               children: [
                 GestureDetector(
@@ -114,7 +114,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
         //Body
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(left: 26.0),
+            padding: const EdgeInsets.only(left: 15.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -124,7 +124,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
 
                 //User text input fields
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  padding: const EdgeInsets.only(top: 30, right: 15.0),
                   child: Column(
                     children: [
                       textInputFullName(),
@@ -132,19 +132,19 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  padding: const EdgeInsets.only(top: 35, right: 15.0),
                   child: textInputUsername(),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  padding: const EdgeInsets.only(top: 35, right: 15.0),
                   child: textInputEmailOrPhone(context, true),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  padding: const EdgeInsets.only(top: 35, right: 15.0),
                   child: textInputEmailOrPhone(context, false),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, right: 26.0),
+                  padding: const EdgeInsets.only(top: 35, right: 15.0),
                   child: textInputPasswordAndConfirm(),
                 ),
                 Padding(
@@ -206,7 +206,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(bottom: 55, left: 26.0, right: 26.0),
+          padding: const EdgeInsets.only(bottom: 55, left: 15.0, right: 15.0),
           child: GestureDetector(
               child: FooterButton(
                 buttonColor: strawberry,
@@ -404,7 +404,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   onChanged: (val) {
                     widget.authTemplate.password = val;
                   },
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                 ),
               ),
               Padding(
@@ -616,7 +616,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
           });
         }
       },
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
     );
   }
 
@@ -661,7 +661,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               onChanged: (val) {
                 widget.userTemplate.userName = val;
               },
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
         ],
@@ -718,7 +718,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
                   widget.authTemplate.userPhone = val;
                 }
               },
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           Padding(

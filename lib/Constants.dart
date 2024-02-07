@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //http://localhost:8888
 //https://www.fitsy.ca
-const String urlDomain = 'http://localhost:8888';
+const String urlDomain = 'https://www.fitsy.ca';
 
 const String publishableStripeKey =
     'pk_test_51N1KMLHPTcKdqvMqmxEGhpnBnrFS7KKdymTmwZlByroml00eU2g0ocRutSqH2K4WFTAx2BAmxLPFpvwhCzsb7nC900JCQMgDCH';
@@ -198,12 +198,22 @@ const pageTitles = TextStyle(
   decoration: TextDecoration.none,
 );
 
-const homeFeedTitle = TextStyle(
-    fontFamily: 'SFDisplay',
-    color: jetBlack,
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    decoration: TextDecoration.none);
+const upcomingClassTitle = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+  height: 1.25,
+);
+
+const notificationDate = TextStyle(
+  color: jetBlack80,
+  fontFamily: 'SFRounded',
+  fontSize: 14.5,
+  fontWeight: FontWeight.w500,
+  decoration: TextDecoration.none,
+);
 
 const sectionTitles = TextStyle(
   fontFamily: 'SFDisplay',
@@ -387,7 +397,7 @@ const bodyTextFontBold60 = TextStyle(
 
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
-  color: jetBlack80,
+  color: Color(0xFF4C5156),
   fontFamily: 'SFDisplay',
   fontSize: 14.5,
   fontWeight: FontWeight.w400,

@@ -43,7 +43,7 @@ class _CategorySelectionState extends State<CategorySelection> {
         backgroundColor: snow,
         automaticallyImplyLeading: false,
         title: Padding(
-          padding: const EdgeInsets.only(left: 8),
+          padding: const EdgeInsets.only(left: 0),
           child: Row(
             children: [
               GestureDetector(
@@ -74,7 +74,7 @@ class _CategorySelectionState extends State<CategorySelection> {
         MultiSliver(children: [
           Padding(
             padding: const EdgeInsets.only(
-                top: 8, left: 26.0, right: 26.0, bottom: 20),
+                top: 8, left: 15.0, right: 15.0, bottom: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,7 +163,7 @@ class _CategorySelectionState extends State<CategorySelection> {
       ]),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(
-            bottom: 45.0, top: 10.0, left: 26.0, right: 26.0),
+            bottom: 45.0, top: 10.0, left: 15.0, right: 15.0),
         child: GestureDetector(
           child: Hero(
             tag: 'Bottom',

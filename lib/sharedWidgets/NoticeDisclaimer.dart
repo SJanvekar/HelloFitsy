@@ -20,7 +20,7 @@ class NoticeDisclaimer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width - (20 * 2);
+    var width = MediaQuery.of(context).size.width - (15 * 2);
     return Column(
       children: [
         //Notice Card
@@ -37,11 +37,10 @@ class NoticeDisclaimer extends StatelessWidget {
             borderRadius: BorderRadius.circular(15),
           ),
           child: Container(
-            height: 80,
             width: width,
             decoration: BoxDecoration(
               color: jetBlack,
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: BorderRadius.circular(10),
             ),
             child: Padding(
               padding: const EdgeInsets.only(left: 15, top: 12, bottom: 12),

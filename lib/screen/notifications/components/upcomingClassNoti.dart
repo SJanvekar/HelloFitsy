@@ -25,7 +25,7 @@ class UpcomingClassNotification extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+      padding: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
         children: [
           //Upcoming Class notification
@@ -35,6 +35,16 @@ class UpcomingClassNotification extends StatelessWidget {
               children: [
                 Row(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: CircleAvatar(
+                        radius: 33.0,
+                        child: CircleAvatar(
+                          backgroundImage: NetworkImage(notificationImage),
+                          radius: 33.0,
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(right: 10.0),
                       child: Column(
@@ -48,19 +58,19 @@ class UpcomingClassNotification extends StatelessWidget {
                               Text(
                                 notificationType,
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
                                     color: jetBlack80,
                                     fontFamily: 'SFDisplay'),
                               ),
 
                               Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 4.0, right: 4.0),
+                                    top: 2, left: 5.0, right: 5.0),
                                 child: ClipOval(
                                     child: Container(
-                                  height: 2,
-                                  width: 2,
+                                  height: 3,
+                                  width: 3,
                                   color: jetBlack60,
                                 )),
                               ),
@@ -70,9 +80,9 @@ class UpcomingClassNotification extends StatelessWidget {
                                 Jiffy.parse(notificationDate.toString())
                                     .format(pattern: "h:mm a"),
                                 style: TextStyle(
-                                    fontSize: 12,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
-                                    color: jetBlack60,
+                                    color: jetBlack80,
                                     fontFamily: 'SFRounded'),
                               ),
                             ],
@@ -86,7 +96,7 @@ class UpcomingClassNotification extends StatelessWidget {
                               child: Text(
                                 notificationMessage,
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 14.5,
                                     fontWeight: FontWeight.w500,
                                     color: jetBlack60,
                                     fontFamily: 'SFDisplay'),
@@ -99,28 +109,15 @@ class UpcomingClassNotification extends StatelessWidget {
                     )
                   ],
                 ),
-                if (notificationType == 'Upcoming class')
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: NetworkImage(notificationImage),
-                            fit: BoxFit.cover),
-                        borderRadius: BorderRadius.circular(5)),
-                  )
-                else
-                  ClipOval(
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(notificationImage),
-                              fit: BoxFit.cover),
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                  )
+                // Container(
+                //   height: 50,
+                //   width: 50,
+                //   decoration: BoxDecoration(
+                //       image: DecorationImage(
+                //           image: NetworkImage(notificationImage),
+                //           fit: BoxFit.cover),
+                //       borderRadius: BorderRadius.circular(5)),
+                // )
               ],
             ),
           ),

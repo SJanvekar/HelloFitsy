@@ -211,8 +211,7 @@ class _ProfileClassCard extends State<ProfileClassCard> {
                       children: [
                         SizedBox(
                             width: 224,
-                            child: Flexible(
-                                child: classTitle(widget.classItem.className))),
+                            child: classTitle(widget.classItem.className)),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 2.0),
                           child: classSubHeader(

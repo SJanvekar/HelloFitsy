@@ -86,10 +86,10 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
                   top: MediaQuery.of(context).size.height * 0.1),
               child: Center(
                   child: SizedBox(
-                      height: 200,
-                      width: 300,
-                      child:
-                          RiveAnimation.asset('assets/images/fitsy_v1-2.riv'))
+                height: 200,
+                width: 300,
+                child: RiveAnimation.asset('assets/images/fitsy_v1-2.riv'),
+              )
 
                   // Container(
                   //   padding: EdgeInsets.only(left: 30.0, right: 30.0),
@@ -112,7 +112,7 @@ class _StartPageState extends State<StartPage> with TickerProviderStateMixin {
             ),
             child: Padding(
               padding:
-                  const EdgeInsets.only(left: 26.0, right: 26.0, bottom: 70),
+                  const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 70),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.end,

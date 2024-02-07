@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors
 
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
 import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/notifications/components/upcomingClassNoti.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
@@ -18,14 +18,14 @@ class Notifications extends StatelessWidget {
       "message":
           "Youth Tennis Fundraiser Program by The Sick Kids Cancer Society",
       "image":
-          "https://warwick.ac.uk/services/sport/active/tennis/kids-tennis/banner.jpg",
+          "https://i.pinimg.com/736x/2c/6b/c5/2c6bc5e57e133271e39b56330bdfa18a.jpg",
     },
     {
       "time": "2023-07-13T09:41:18.000Z",
       "type": "New follower",
       "message": "Roger Federer started following you",
       "image":
-          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
+          "https://discussions.apple.com/content/attachment/6692d3b3-c2bb-43df-8b66-a2aa2563039b",
     },
     {
       "time": "2023-07-12T10:29:35.000Z",
@@ -33,7 +33,7 @@ class Notifications extends StatelessWidget {
       "message":
           "Roger Federer has cancelled their booking for Youth Tennis Fundraiser Program by The Sick Kids Cancer Society scheduled on Monday July 3rd 2023, 10:30 am",
       "image":
-          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
+          "https://i.pinimg.com/736x/a3/f8/a7/a3f8a71c30137f3d5c5642acc8df6a61.jpg",
     },
     {
       "time": "2023-06-17T12:29:35.000Z",
@@ -41,7 +41,7 @@ class Notifications extends StatelessWidget {
       "message":
           "Roger Federer has purchased Youth Tennis Fundraiser Program by The Sick Kids Cancer Society scheduled on Saturday July 1st 2023, 10:30 am",
       "image":
-          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
+          "https://i.pinimg.com/474x/1e/17/20/1e172053bba20cc6ed5a5075195e7239.jpg",
     },
     {
       "time": "2023-06-16T10:31:12.000Z",
@@ -49,7 +49,7 @@ class Notifications extends StatelessWidget {
       "message":
           "Roger Federer has posted a new class Youth Tennis Fundraiser Program by The Sick Kids Cancer Society",
       "image":
-          "https://static01.nyt.com/images/2022/09/15/sports/15federer-assess1/15federer-assess1-videoSixteenByNine3000.jpg",
+          "https://discussions.apple.com/content/attachment/6692d3b3-c2bb-43df-8b66-a2aa2563039b",
     },
   ];
 
@@ -69,26 +69,21 @@ class Notifications extends StatelessWidget {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 0,
+              GestureDetector(
+                child: Row(
+                  children: [
+                    //Icon: arrowLeft from the Fitsy icon ttf library
+                    Icon(
+                      FitsyIconsSet1.arrowleft,
+                      color: jetBlack80,
+                      size: 14,
+                    ),
+                    Text("Cancel", style: logInPageNavigationButtons),
+                  ],
                 ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Row(
-                    children: [
-                      //Icon: arrowLeft from the Fitsy icon ttf library
-                      Icon(
-                        FitsyIconsSet1.arrowleft,
-                        color: jetBlack80,
-                        size: 14,
-                      ),
-                      Text("Cancel", style: logInPageNavigationButtons),
-                    ],
-                  ),
-                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
               ),
             ],
           ),
@@ -108,7 +103,7 @@ class Notifications extends StatelessWidget {
               //Title
               flexibleSpace: Padding(
                 padding: EdgeInsets.only(
-                  left: 26,
+                  left: 15,
                   top: 0,
                 ),
                 child: Column(
@@ -160,8 +155,7 @@ class Notifications extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                            left: 26.0,
-                            top: 10.0,
+                            left: 15.0,
                             bottom: 0.0,
                           ),
                           child: Row(
@@ -170,31 +164,35 @@ class Notifications extends StatelessWidget {
                                 Center(
                                   child: Text(
                                     'Today',
-                                    style: classEndTime,
+                                    style: notificationDate,
                                   ),
                                 )
                               else if (isDateYesterday)
                                 Center(
                                   child: Text(
                                     'Yesterday',
-                                    style: classEndTime,
+                                    style: notificationDate,
                                   ),
                                 )
                               else
                                 Center(
                                   child: Text(
                                     date.formatDate(),
-                                    style: classEndTime,
+                                    style: notificationDate,
                                   ),
                                 ),
+                              Flexible(
+                                  child: PageDivider(
+                                leftPadding: 8,
+                                rightPadding: 0,
+                              ))
                             ],
                           ),
                         ),
-                        PageDivider(leftPadding: 26, rightPadding: 0),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 5.0,
-                            bottom: 10.0,
+                            top: 10.0,
+                            bottom: 15.0,
                           ),
                           child: Row(
                             children: [
@@ -206,19 +204,23 @@ class Notifications extends StatelessWidget {
                               )
                             ],
                           ),
-                        )
+                        ),
                       ]);
                 } else {
-                  return Padding(
-                      padding: EdgeInsets.only(
-                        bottom: 10.0,
-                      ),
-                      child: UpcomingClassNotification(
-                        notificationType: list[index]['type'],
-                        notificationDate: date,
-                        notificationMessage: list[index]['message'],
-                        notificationImage: list[index]['image'],
-                      ));
+                  return Column(
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.only(
+                            bottom: 10.0,
+                          ),
+                          child: UpcomingClassNotification(
+                            notificationType: list[index]['type'],
+                            notificationDate: date,
+                            notificationMessage: list[index]['message'],
+                            notificationImage: list[index]['image'],
+                          )),
+                    ],
+                  );
                 }
               },
               childCount: list.length,

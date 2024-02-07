@@ -63,7 +63,7 @@ class _Search extends State<Search> {
                   //Title
                   flexibleSpace: Padding(
                     padding: EdgeInsets.only(
-                      left: 26,
+                      left: 15,
                       top: paddingTop,
                     ),
                     child: Column(
@@ -84,8 +84,10 @@ class _Search extends State<Search> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.only(left: 26.0, right: 26.0),
+                            padding: const EdgeInsets.only(
+                              left: 15.0,
+                              right: 15.0,
+                            ),
                             child: Hero(
                               tag: 'SearchBar',
                               child: FitsySearchBar(
@@ -152,23 +154,21 @@ class _Search extends State<Search> {
 
                     //Empty ClassList (No search results)
                     Center(
-                        child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 120),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search_off_rounded,
-                              color: shark,
-                              size: 50,
-                            ),
-                            Text(
-                              'No trainers found',
-                              style: emptyListDisclaimerText,
-                            ),
-                          ],
-                        ),
+                        child: Padding(
+                      padding: EdgeInsets.only(top: 150),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.search_off_rounded,
+                            color: shark,
+                            size: 50,
+                          ),
+                          Text(
+                            'No trainers found',
+                            style: emptyListDisclaimerText,
+                          ),
+                        ],
                       ),
                     ))
                   else
@@ -214,23 +214,21 @@ class _Search extends State<Search> {
 
                     //Empty ClassList (No search results)
                     Center(
-                        child: Container(
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 150),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search_off_rounded,
-                              color: shark,
-                              size: 50,
-                            ),
-                            Text(
-                              'No classes found',
-                              style: emptyListDisclaimerText,
-                            ),
-                          ],
-                        ),
+                        child: Padding(
+                      padding: EdgeInsets.only(top: 150),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.search_off_rounded,
+                            color: shark,
+                            size: 50,
+                          ),
+                          Text(
+                            'No classes found',
+                            style: emptyListDisclaimerText,
+                          ),
+                        ],
                       ),
                     ))
                   else
