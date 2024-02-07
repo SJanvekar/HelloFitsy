@@ -208,7 +208,7 @@ Widget pageTitle() {
           decoration: BoxDecoration(color: snow),
           child: Text(
             'Select categories that this class falls under',
-            style: logInPageTitle,
+            style: logInPageTitleH3,
             textAlign: TextAlign.center,
           )),
     ),

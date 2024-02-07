@@ -1,14 +1,14 @@
 import 'dart:convert';
-
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
-import 'package:balance/feModels/FollowingModel.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/PARQ.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
+import 'package:balance/screen/notifications/Notifications.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:balance/sharedWidgets/noticeDisclaimer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -89,6 +89,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   //Function - Get Following List
   void getUserFollowing() async {
     final sharedPrefs = await SharedPreferences.getInstance();
+    print(sharedPrefs.getString('loggedUser'));
     User user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
     FollowingRequests().getFollowingList(user.userID).then((val) async {
@@ -158,7 +159,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   height: 44,
                 ),
 
-                //Notifications & Chat & Create Class
+                //Notifications Icon
                 actions: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -176,9 +177,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           ),
                         ),
                         onTap: () {
-                          // Navigator.of(context).push(CupertinoPageRoute(
-                          //     fullscreenDialog: true,
-                          //     builder: (context) => CreateClassType()));
+                          Navigator.of(context).push(CupertinoPageRoute(
+                              builder: (context) => Notifications()));
                         },
                       ),
                     ],
@@ -190,7 +190,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               MultiSliver(children: [
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 15.0),
+                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
                   child: Text(
                     'Hi, ${widget.userInstance.firstName}',
                     style: const TextStyle(
@@ -203,7 +203,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 const Padding(
                   padding: EdgeInsets.only(
-                      left: 26.0, right: 26.0, top: 2.0, bottom: 10.0),
+                      left: 15.0, right: 15.0, top: 2.0, bottom: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -216,15 +216,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Text(
-                        'See all',
-                        style: TextStyle(
-                          color: ocean,
-                          fontFamily: 'SFDisplay',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
+                      // Text(
+                      //   'See all',
+                      //   style: TextStyle(
+                      //     color: ocean,
+                      //     fontFamily: 'SFDisplay',
+                      //     fontWeight: FontWeight.w500,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -242,7 +241,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 )),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 26.0, right: 26.0, top: 35.0),
+                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
                   child: Text(
                     'For you',
                     style: TextStyle(
@@ -261,8 +260,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) => Padding(
                         padding: const EdgeInsets.only(
-                          left: 26.0,
-                          right: 26.0,
+                          left: 15.0,
+                          right: 15.0,
                         ),
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
@@ -320,8 +319,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 else if (allClasses.isEmpty && !isLoading)
                   Padding(
                     padding: const EdgeInsets.only(
-                      left: 26.0,
-                      right: 26.0,
+                      left: 15.0,
+                      right: 15.0,
                       bottom: 20.0,
                     ),
                     child: Column(
@@ -409,9 +408,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       },
                     ),
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  //Notice to set up Stripe (If not already set up)
+                  if (widget.userInstance.userType == UserType.Trainer &&
+                      widget.userInstance.stripeAccountID != null &&
+                      widget.userInstance.isStripeDetailsSubmitted == false)
+                    const SizedBox(
+                      height: 5,
+                    ),
+
                   //Notice to set up Stripe (If not already set up)
                   if (widget.userInstance.userType == UserType.Trainer &&
                       widget.userInstance.stripeAccountID != null &&

@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:balance/Constants.dart';
 import 'package:balance/Requests/NotificationRequests.dart';
+import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/feModels/NotificationModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/home/components/SetUpTrainerStripeAccount.dart';
+import 'package:balance/screen/login/StartPage.dart';
 import 'package:balance/screen/login/components/PersonalInfo.dart';
-import 'package:balance/screen/login/components/SignIn.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/screen/profile/components/MyProfile.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
@@ -21,7 +19,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
@@ -69,20 +66,22 @@ class FITSY extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        color: snow,
-        debugShowCheckedModeBanner: false,
-        title: 'Fitsy',
-        theme: ThemeData(
-          textTheme: Theme.of(context).textTheme.apply(),
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-        ),
-        //Place comment on what the changes were if changed for testing purposes
-        //Example:
-        //SignIn(); -> RatingPopup();
+      color: snow,
+      debugShowCheckedModeBanner: false,
+      title: 'Fitsy',
+      theme: ThemeData(
+        textTheme: Theme.of(context).textTheme.apply(),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        hoverColor: Colors.transparent,
+        useMaterial3: false,
+      ),
+      //Place comment on what the changes were if changed for testing purposes
+      //Example:
+      //SignIn(); -> RatingPopup();
 
-        home: SignIn());
+      home: StartPage(),
+    );
   }
 }
 
@@ -297,10 +296,30 @@ class _MainPageState extends State<MainPage>
     }
   }
 
+  //TEMP TAKE THIS OUT...///
+  Auth authTemplate = Auth(
+    userEmail: '',
+    userPhone: '',
+    password: '',
+  );
+
+  User userTemplate = User(
+    isActive: true,
+    userType: UserType.Trainee,
+    profileImageURL: '',
+    firstName: '',
+    lastName: '',
+    userName: '',
+  );
+
   Future<void> _configureSelectNotificationSubject() async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => PersonalInfo()),
+      MaterialPageRoute(
+          builder: (context) => PersonalInfo(
+                authTemplate: authTemplate,
+                userTemplate: userTemplate,
+              )),
     );
   }
 
@@ -318,7 +337,10 @@ class _MainPageState extends State<MainPage>
               Navigator.of(context, rootNavigator: true).pop();
               await Navigator.of(context).push(
                 MaterialPageRoute<void>(
-                  builder: (BuildContext context) => PersonalInfo(),
+                  builder: (BuildContext context) => PersonalInfo(
+                    authTemplate: authTemplate,
+                    userTemplate: userTemplate,
+                  ),
                 ),
               );
             },
@@ -341,10 +363,9 @@ class _MainPageState extends State<MainPage>
             color: snow,
           ),
           child: Theme(
-            data: Theme.of(context).copyWith(
+            data: ThemeData(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              hoverColor: Colors.transparent,
             ),
             child: BottomNavigationBar(
               elevation: 0,
@@ -358,12 +379,12 @@ class _MainPageState extends State<MainPage>
                 //Home
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.home,
+                      FitsyIconsSet1.home,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.home,
+                      FitsyIconsSet1.home,
                       color: strawberry,
                       size: 20,
                     ),
@@ -372,12 +393,12 @@ class _MainPageState extends State<MainPage>
                 //Search
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.search,
+                      FitsyIconsSet1.search,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.search,
+                      FitsyIconsSet1.search,
                       color: strawberry,
                       size: 20,
                     ),
@@ -403,16 +424,13 @@ class _MainPageState extends State<MainPage>
                               barrierDismissible: true,
                               barrierColor: jetBlack60,
                               builder: (context) {
-                                return Container(
-                                  color: Colors.transparent,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.75,
-                                  child: CreateClassSelectType(
+                                return Wrap(children: [
+                                  CreateClassSelectType(
+                                    isEditMode: false,
                                     isTypeSelected: false,
                                     classTemplate: classTemplate,
-                                    isEditMode: false,
                                   ),
-                                );
+                                ]);
                               },
                             );
                           });
@@ -428,12 +446,12 @@ class _MainPageState extends State<MainPage>
                 //Schedule
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.calendar,
+                      FitsyIconsSet1.calendar,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.calendar,
+                      FitsyIconsSet1.calendar,
                       color: strawberry,
                       size: 20,
                     ),
@@ -442,12 +460,12 @@ class _MainPageState extends State<MainPage>
                 //Profile
                 BottomNavigationBarItem(
                     icon: Icon(
-                      HelloFitsy.user,
+                      FitsyIconsSet1.user,
                       color: jetBlack80,
                       size: 20,
                     ),
                     activeIcon: Icon(
-                      HelloFitsy.user,
+                      FitsyIconsSet1.user,
                       color: strawberry,
                       size: 20,
                     ),
@@ -457,31 +475,6 @@ class _MainPageState extends State<MainPage>
           ),
         ),
       ),
-    );
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-      splash: Column(
-        children: [
-          Hero(
-              transitionOnUserGestures: true,
-              tag: 'typeface',
-              child: Image.asset(
-                'assets/images/Typeface.png',
-                height: 146,
-                width: 195,
-                color: snow,
-              )),
-        ],
-      ),
-      nextScreen: Login(),
-      backgroundColor: strawberry,
     );
   }
 }

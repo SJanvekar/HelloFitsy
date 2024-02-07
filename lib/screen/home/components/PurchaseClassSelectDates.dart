@@ -10,7 +10,7 @@ import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/feModels/EventModel.dart';
 import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/schedule/CreateClassSchedule.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/cupertino.dart';
@@ -519,13 +519,16 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
             elevation: 0,
             title: Text('Select a date and time', style: sectionTitles),
             automaticallyImplyLeading: false,
-            leading: GestureDetector(
-              child: Icon(
-                HelloFitsy.exit,
-                color: jetBlack,
-                size: 12,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 12.0),
+              child: GestureDetector(
+                child: Icon(
+                  Icons.close_rounded,
+                  color: jetBlack,
+                  size: 22,
+                ),
+                onTap: () => {Navigator.of(context).pop()},
               ),
-              onTap: () => {Navigator.of(context).pop()},
             ),
           ),
           body: CustomScrollView(
@@ -655,7 +658,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
                                     right: 5.0,
                                   ),
                                   child: GestureDetector(
-                                    child: Container(
+                                    child: AnimatedContainer(
+                                      duration: Duration(milliseconds: 1500),
+                                      curve: Curves.fastLinearToSlowEaseIn,
                                       decoration: BoxDecoration(
                                         color: classTime.isSelected
                                             ? strawberry
@@ -852,7 +857,7 @@ class CupertinoBookingDetailsPopup extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.only(top: 2.0),
                               child: Icon(
-                                HelloFitsy.arrowleft,
+                                FitsyIconsSet1.arrowleft,
                                 size: 14,
                                 color: jetBlack,
                               ),

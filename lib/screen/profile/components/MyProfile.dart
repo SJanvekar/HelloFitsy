@@ -5,11 +5,9 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:balance/Constants.dart';
 import 'package:balance/Requests/ClassRequests.dart';
-import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/feModels/Categories.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
-import 'package:balance/screen/home/components/Search.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/sharedWidgets/LoginFooterButton.dart';
 import 'package:balance/sharedWidgets/SpinnerPage.dart';
@@ -150,6 +148,16 @@ class _PersonalProfileState extends State<PersonalProfile>
   }
 
   @override
+  void didUpdateWidget(PersonalProfile oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // This method is called whenever the widget is updated with a new instance.
+
+    // You can use this method to perform actions when the widget is updated.
+    print("Widget updated");
+    getSet2UserDetails();
+  }
+
+  @override
   void dispose() {
     // Dispose of the Ticker and the AnimationController
     controller.dispose();
@@ -160,9 +168,16 @@ class _PersonalProfileState extends State<PersonalProfile>
     final sharedPrefs = await SharedPreferences.getInstance();
     final user =
         User.fromJson(jsonDecode(sharedPrefs.getString('loggedUser') ?? ''));
+    widget.userInstance.userName = user.userName;
+    widget.userInstance.firstName = user.firstName;
+    widget.userInstance.lastName = user.lastName;
+    widget.userInstance.userBio = user.userBio ?? '';
     widget.userInstance.profileImageURL = user.profileImageURL;
+    print(widget.userInstance.profileImageURL);
 
-    setState(() {});
+    setState(() {
+      print('Got user details');
+    });
   }
 
 //----------
@@ -399,38 +414,6 @@ class _PersonalProfileState extends State<PersonalProfile>
               controller: _scrollController,
               slivers: [
                 SliverAppBar(
-                  leading: GestureDetector(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 26.0,
-                        top: 11.5,
-                        bottom: 11.5,
-                      ),
-                      child: ClipOval(
-                          child: BackdropFilter(
-                        filter: new ImageFilter.blur(
-                          sigmaX: 1,
-                          sigmaY: 1,
-                        ),
-                        child: Container(
-                          height: 32,
-                          width: 32,
-                          decoration: BoxDecoration(color: iconCircleColor),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8.5, bottom: 8.5),
-                            child: SvgPicture.asset(
-                              'assets/icons/generalIcons/arrowLeft.svg',
-                              color: iconColor,
-                              height: 13,
-                              width: 6,
-                            ),
-                          ),
-                        ),
-                      )),
-                    ),
-                    onTap: () => {Navigator.of(context).pop()},
-                  ),
                   leadingWidth: 58,
                   automaticallyImplyLeading: false,
                   backgroundColor: snow,
@@ -484,7 +467,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                     ),
                     titlePadding: EdgeInsets.zero,
                     title: Padding(
-                      padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                      padding: const EdgeInsets.only(
+                        left: 15.0,
+                        right: 15.0,
+                      ),
                       child: LayoutBuilder(
                         builder:
                             (BuildContext context, BoxConstraints constraints) {
@@ -593,8 +579,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                                         String? newBio;
 
                                         return StatefulBuilder(
-                                          builder: (BuildContext context,
-                                              StateSetter setEditProfileState) {
+                                          builder: (
+                                            BuildContext context,
+                                            StateSetter setEditProfileState,
+                                          ) {
                                             //Modal widgets + functions
 
                                             //Pick Image Function
@@ -605,7 +593,6 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                     .pickImage(
                                                         source: ImageSource
                                                             .gallery);
-                                                print(image?.path);
                                                 if (image == null) {
                                                   image = XFile(
                                                       'assets/images/profilePictureDefault.png');
@@ -649,8 +636,25 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                         .getDownloadURL();
 
                                                 newProfileImageURL = imageURL;
+                                                // print(newProfileImageURL);
+                                                print('Uploaded Image');
                                               } catch (e) {
                                                 print("Error: $e");
+                                              }
+                                            }
+
+                                            Future<void> _safeSetString(
+                                                SharedPreferences prefs,
+                                                String key,
+                                                String value) async {
+                                              try {
+                                                await prefs.setString(
+                                                    key, value);
+                                              } catch (e) {
+                                                print(
+                                                    'Error setting SharedPreferences: $e');
+                                                // Handle any exception that might occur during SharedPreferences set operation
+                                                // For instance, consider fallback mechanisms or alternative approaches
                                               }
                                             }
 
@@ -886,81 +890,116 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                               const Duration(
                                                                   milliseconds:
                                                                       500), () {
-                                                            uploadImage();
-                                                            newProfileImageURL ??=
+                                                            uploadImage()
+                                                                .then((value) {
+                                                              // This block will be executed when the Future is completed successfully
+                                                              UserRequests()
+                                                                  .updateUserInformation(
+                                                                newProfileImageURL ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .profileImageURL,
                                                                 widget
                                                                     .userInstance
-                                                                    .profileImageURL;
-                                                            newFirstName ??=
-                                                                widget
-                                                                    .userInstance
-                                                                    .firstName;
-                                                            newLastName ??=
-                                                                widget
-                                                                    .userInstance
-                                                                    .lastName;
-                                                            newUserName ??=
-                                                                widget
-                                                                    .userInstance
-                                                                    .userName;
-                                                            newBio ??= widget
-                                                                .userInstance
-                                                                .userBio;
-                                                            UserRequests()
-                                                                .updateUserInformation(
-                                                              newProfileImageURL,
-                                                              widget
-                                                                  .userInstance
-                                                                  .userID,
-                                                              newFirstName,
-                                                              newLastName,
-                                                              newUserName,
-                                                              newBio,
-                                                            )
-                                                                .then(
-                                                                    (val) async {
-                                                              if (val.data[
-                                                                  'success']) {
-                                                                final sharedPrefs =
-                                                                    await SharedPreferences
-                                                                        .getInstance();
-                                                                User user = User
-                                                                    .fromJson(jsonDecode(
+                                                                    .userID,
+                                                                newFirstName ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .firstName,
+                                                                newLastName ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .lastName,
+                                                                newUserName ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .userName,
+                                                                newBio ??
+                                                                    widget
+                                                                        .userInstance
+                                                                        .userBio,
+                                                              )
+                                                                  .then(
+                                                                      (val) async {
+                                                                try {
+                                                                  if (val.data[
+                                                                      'success']) {
+                                                                    final sharedPrefs =
+                                                                        await SharedPreferences
+                                                                            .getInstance();
+                                                                    User user = User.fromJson(jsonDecode(
                                                                         sharedPrefs.getString('loggedUser') ??
                                                                             ''));
-                                                                user.userName =
-                                                                    newUserName!;
-                                                                user.firstName =
-                                                                    newFirstName!;
-                                                                user.lastName =
-                                                                    newLastName!;
-                                                                user.userBio =
-                                                                    newBio!;
-                                                                user.profileImageURL =
-                                                                    newProfileImageURL!;
-                                                                await sharedPrefs.setString(
-                                                                    'loggedUser',
-                                                                    jsonEncode(user
-                                                                        .toJson()));
-                                                              } else {
-                                                                if (val.data[
-                                                                        'errorCode'] ==
-                                                                    duplicateKeycode) {
+                                                                    user.userName = newUserName ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .userName;
+                                                                    user.firstName = newFirstName ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .firstName;
+                                                                    user.lastName = newLastName ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .lastName;
+                                                                    user.userBio = newBio ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .userBio;
+                                                                    user.profileImageURL = newProfileImageURL ??
+                                                                        widget
+                                                                            .userInstance
+                                                                            .profileImageURL;
+                                                                    await _safeSetString(
+                                                                        sharedPrefs,
+                                                                        'loggedUser',
+                                                                        jsonEncode(
+                                                                            user.toJson()));
+                                                                    getSet2UserDetails();
+                                                                    await Future.delayed(
+                                                                        Duration(
+                                                                            milliseconds:
+                                                                                550),
+                                                                        () {
+                                                                      Navigator.pop(
+                                                                          context);
+                                                                      setState(
+                                                                          () {
+                                                                        print(
+                                                                            'State set');
+                                                                      });
+                                                                    });
+                                                                  } else {
+                                                                    if (val.data[
+                                                                            'errorCode'] ==
+                                                                        duplicateKeycode) {
+                                                                      print(
+                                                                          'Unable to edit info, duplicate username');
+                                                                    }
+                                                                  }
                                                                   print(
-                                                                      'Unable to edit info, duplicate username');
+                                                                      'After fetchData completed');
+                                                                } catch (e) {
+                                                                  print(
+                                                                      'Error in updateUserInformation: $e');
+                                                                  // Handle any exception that might occur during the updateUserInformation process
                                                                 }
-                                                              }
+                                                              }).catchError(
+                                                                      (error) {
+                                                                print(
+                                                                    'Error in updateUserInformation: $error');
+                                                                // Handle errors during updateUserInformation process
+                                                              });
+                                                            }).catchError(
+                                                                    (error) {
+                                                              print(
+                                                                  'Error in uploadImage: $error');
+                                                              // Handle errors during uploadImage process
                                                             });
                                                           });
-                                                          Future.delayed(
-                                                              Duration(
-                                                                  milliseconds:
-                                                                      550), () {
-                                                            Navigator.pop(
-                                                                context);
-                                                            setState(() {});
-                                                          });
                                                         },
+
+                                                        // Function to safely set string in SharedPreferences with error handling
                                                         child: Text("Done",
                                                             style:
                                                                 doneTextButton),
@@ -971,8 +1010,9 @@ class _PersonalProfileState extends State<PersonalProfile>
                                                 body: Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          left: 26.0,
-                                                          right: 26.0),
+                                                    left: 15.0,
+                                                    right: 15.0,
+                                                  ),
                                                   child: Container(
                                                     height:
                                                         MediaQuery.of(context)
@@ -1164,7 +1204,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 15.0, left: 26.0, right: 26.0),
+                      top: 15.0,
+                      left: 15.0,
+                      right: 15.0,
+                    ),
                     child: Text(
                       'About me',
                       style: sectionTitles,
@@ -1172,7 +1215,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 10.0, left: 26.0, right: 26.0),
+                      top: 10.0,
+                      left: 15.0,
+                      right: 15.0,
+                    ),
                     child: Text(
                       'Toronto, Ontario, Canada',
                       style: TextStyle(
@@ -1184,7 +1230,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 8.0, left: 26.0, right: 20.0),
+                        top: 8.0, left: 15.0, right: 20.0),
                     child: Text(widget.userInstance.userBio!,
                         style: profileBodyTextFont),
                   ),
@@ -1194,7 +1240,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Text(
                       "Your Interests",
                       style: sectionTitles,
@@ -1203,11 +1249,11 @@ class _PersonalProfileState extends State<PersonalProfile>
                   SliverToBoxAdapter(
                     child: Center(
                       child: SizedBox(
-                        height: 84,
+                        height: 90,
                         child: ListView.builder(
                           primary: false,
                           scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(left: 13, right: 13),
+                          padding: EdgeInsets.only(left: 10, right: 10),
                           itemCount: myInterestsFinal.length,
                           itemBuilder: (context, index) {
                             final likedInterests = myInterestsFinal[index];
@@ -1227,7 +1273,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   MultiSliver(children: [
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                          top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                       child: Text(
                         "Your Classes",
                         style: sectionTitles,
@@ -1238,7 +1284,10 @@ class _PersonalProfileState extends State<PersonalProfile>
                         height: 340,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(left: 26.0, right: 26.0),
+                          padding: EdgeInsets.only(
+                            left: 15.0,
+                            right: 15.0,
+                          ),
                           itemCount: trainerClasses.length,
                           itemBuilder: (context, index) {
                             final trainerClassInfo = trainerClasses[index];
@@ -1256,7 +1305,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1283,7 +1332,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   if (savedClassesList.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                          left: 15.0, right: 15.0, top: 20.0, bottom: 20.0),
                       child: Column(
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
@@ -1331,7 +1380,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 36.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1358,7 +1407,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                   if (savedClassesList.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(
-                          left: 26.0, right: 26.0, top: 20.0, bottom: 20.0),
+                          left: 15.0, right: 15.0, top: 20.0, bottom: 20.0),
                       child: Column(
                         // ignore: prefer_const_literals_to_create_immutables
                         children: [
@@ -1411,7 +1460,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                 MultiSliver(children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                        top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                     child: Text(
                       "Posted Reviews",
                       style: sectionTitles,
@@ -1420,7 +1469,10 @@ class _PersonalProfileState extends State<PersonalProfile>
 
                   //HARD CODED - MUST CHANGE
                   Padding(
-                    padding: const EdgeInsets.only(left: 26.0, right: 26.0),
+                    padding: const EdgeInsets.only(
+                      left: 15.0,
+                      right: 15.0,
+                    ),
                     child: ReviewCard(),
                   ),
                   SizedBox(

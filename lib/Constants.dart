@@ -78,26 +78,85 @@ const defaultPadding = 10.0;
 //Fonts
 
 //LOG IN SPECIFIC FONTS
-const logInPageTitle = TextStyle(
+
+const logInPageTitleH1 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 28,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH2 = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
   fontSize: 26,
   fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH3 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 24,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH4 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 22,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH5 = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
+);
+
+const logInPageTitleH5Disabled = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack20,
+  fontSize: 20,
+  fontWeight: FontWeight.w600,
+  height: 1.2,
 );
 
 const logInPageNavigationButtons = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack80,
-  fontSize: 17,
+  fontSize: 18,
   fontWeight: FontWeight.w500,
 );
+const logInPageTextInputTitle = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: jetBlack60,
+    fontSize: 15,
+    fontWeight: FontWeight.w600,
+    decoration: TextDecoration.none);
 
 const logInPageBodyText = TextStyle(
-    fontFamily: 'SFDisplay',
-    color: jetBlack40,
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    decoration: TextDecoration.none);
+  fontFamily: 'SFDisplay',
+  color: jetBlack80,
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.none,
+  height: 1.2,
+);
+
+const logInPageBodyTextNote = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack80,
+  fontSize: 14,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.none,
+  height: 1.2,
+);
 
 const logInPageBodyStrawberry = TextStyle(
     fontFamily: 'SFDisplay',
@@ -107,10 +166,27 @@ const logInPageBodyStrawberry = TextStyle(
     decoration: TextDecoration.none);
 
 //GENERAL FONTS
+
+const errorText = TextStyle(
+    fontFamily: 'SFDisplay',
+    color: strawberry,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    decoration: TextDecoration.none);
+
+const errorTextSnackBar = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: snow,
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+  decoration: TextDecoration.none,
+  height: 1.2,
+);
+
 const disclaimerTitle = TextStyle(
     color: jetBlack,
     fontFamily: 'SFDisplay',
-    fontSize: 17,
+    fontSize: 20,
     fontWeight: FontWeight.w600,
     decoration: TextDecoration.none);
 
@@ -122,12 +198,22 @@ const pageTitles = TextStyle(
   decoration: TextDecoration.none,
 );
 
-const homeFeedTitle = TextStyle(
-    fontFamily: 'SFDisplay',
-    color: jetBlack,
-    fontSize: 15,
-    fontWeight: FontWeight.w400,
-    decoration: TextDecoration.none);
+const upcomingClassTitle = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: jetBlack,
+  fontSize: 16,
+  fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+  height: 1.25,
+);
+
+const notificationDate = TextStyle(
+  color: jetBlack80,
+  fontFamily: 'SFRounded',
+  fontSize: 14.5,
+  fontWeight: FontWeight.w500,
+  decoration: TextDecoration.none,
+);
 
 const sectionTitles = TextStyle(
   fontFamily: 'SFDisplay',
@@ -311,7 +397,7 @@ const bodyTextFontBold60 = TextStyle(
 
 //PROFILE SPECIFIC FONTS
 const profileBodyTextFont = TextStyle(
-  color: jetBlack80,
+  color: Color(0xFF4C5156),
   fontFamily: 'SFDisplay',
   fontSize: 14.5,
   fontWeight: FontWeight.w400,

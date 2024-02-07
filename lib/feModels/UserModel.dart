@@ -40,8 +40,9 @@ class User {
         stripeCustomerID = json['StripeCustomerID'];
 
   Map<String, dynamic> toJson() => {
+        '_id': userID,
         'IsActive': isActive,
-        'UserType': userType.toString(),
+        'UserType': [userType.toString().split('.')[1]],
         'ProfileImageURL': profileImageURL,
         'FirstName': firstName,
         'LastName': lastName,

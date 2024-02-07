@@ -105,6 +105,19 @@ var functions = {
 
     //Add New User fnc
     addNew: async function (req, res) {
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('user parser returned null'))
+                }
+            })
+        }
+        
         if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
             return res.json({success: false, msg: 'Enter all fields'})
         }
@@ -135,7 +148,7 @@ var functions = {
             StripeCustomerID: req.body.StripeCustomerID
         });
         try {
-            await newUser.save()
+            savedUser = await newUser.save()
         } catch (err) {
             try {
                 Auth.deleteOne({UserEmail: savedAuth.UserEmail})
@@ -144,7 +157,18 @@ var functions = {
             }
             return res.send({success: false, msg: "Didn't save user, " + err})
         }
-        return res.send({success: true, msg: 'Successfully saved'})
+        return userPromiseAsync(savedUser).then( function (parsedResponse) {
+            //RESPONSE string is an array of classes
+            if (parsedResponse instanceof Error) {
+                return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
+            } else {
+                return res.json({success: true, 
+                    msg: 'Successfully saved', 
+                    user: parsedResponse,
+                })
+            }
+        })
+        return res.send({success: true, msg: 'Successfully saved', user: savedUser})
     },
 
     // Authenticate User fnc
@@ -316,6 +340,7 @@ var functions = {
             console.log(err)
             return res.json({success: false, errorCode: err.code})
         }
+        return res.json({ success: true });
     },
 
     //Update user stripe account ID on accountID creation (Stripe set up)

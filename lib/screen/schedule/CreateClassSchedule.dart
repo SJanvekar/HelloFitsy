@@ -8,12 +8,11 @@ import 'package:balance/Requests/ScheduleRequests.dart';
 import 'package:balance/example.dart';
 import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassTimeList.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/ClassCardOpen.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
@@ -1009,7 +1008,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                                                           const EdgeInsets.only(
                                                               left: 20.0),
                                                       child: Icon(
-                                                        HelloFitsy.calendar,
+                                                        FitsyIconsSet1.calendar,
                                                         size: 21.5,
                                                         color: jetBlack,
                                                       )),
@@ -1523,7 +1522,6 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
   Widget build(BuildContext context) {
     var paddingTop = MediaQuery.of(context).size.height * 0.028;
     var appHeaderSize = MediaQuery.of(context).size.height * 0.0775;
-    var searchBarWidth = MediaQuery.of(context).size.width - (26 * 2) - 50;
 
     return Scaffold(
         backgroundColor: snow,
@@ -1551,7 +1549,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                 //Title
                 flexibleSpace: Padding(
                   padding: EdgeInsets.only(
-                    left: 26,
+                    left: 15,
                     top: paddingTop,
                   ),
                   child: Column(
@@ -1592,7 +1590,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
                       Center(
                         child: Padding(
                           padding:
-                              EdgeInsets.only(left: 25, right: 25, top: 10),
+                              EdgeInsets.only(left: 15.0, right: 15.0, top: 10),
                           child: TableCalendar(
                             firstDay: DateTime.now(),
                             lastDay: DateTime.utc(2075, 12, 31),

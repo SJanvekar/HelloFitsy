@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:balance/Authentication/authService.dart';
-import 'package:balance/constants.dart';
+import 'package:balance/Constants.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/ForgotPassword.dart';
-import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
+import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,15 +52,11 @@ void onSubmitSignInField(context) {
           backgroundColor: Colors.transparent,
           elevation: 0,
           duration: Duration(milliseconds: 1500),
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height * 0.5,
-              left: 70.0,
-              right: 70.0),
           content: Container(
             height: 35,
             decoration: BoxDecoration(
                 color: strawberry,
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
                     color: jetBlack.withOpacity(0.01),
@@ -100,54 +96,55 @@ void onSubmitSignInField(context) {
 
 //TextInput Username/Email/Phone
 Widget textInputUsername() {
-  return Container(
-    height: 50,
-    decoration: BoxDecoration(
-      color: bone60,
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Padding(
-          padding: EdgeInsets.only(left: 8),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 10),
-            child: Center(
-                child: SvgPicture.asset(
-              'assets/icons/generalIcons/user.svg',
-              height: 22.5,
-              width: 18,
-              color: jetBlack40,
-            )),
-          ),
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: snow,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: jetBlack40),
+          // border: Border.all(color: jetBlack20)
         ),
-        Expanded(
-          child: TextFormField(
-              textInputAction: TextInputAction.next,
-              textCapitalization: TextCapitalization.sentences,
-              style: const TextStyle(
-                  overflow: TextOverflow.fade,
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack80,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700),
-              // ignore: prefer_const_constructors
-              decoration: InputDecoration.collapsed(
-                border: InputBorder.none,
-                hintText: 'Username',
-                hintStyle: const TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: shark,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
+        child: Row(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
+              child: Icon(FitsyIconsSet1.user, color: jetBlack60, size: 20),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextFormField(
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.none,
+                    style: const TextStyle(
+                        overflow: TextOverflow.fade,
+                        fontFamily: 'SFDisplay',
+                        color: jetBlack,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500),
+                    // ignore: prefer_const_constructors
+                    decoration: InputDecoration.collapsed(
+                      border: InputBorder.none,
+                      hintText: 'Username',
+                      hintStyle: const TextStyle(
+                        fontFamily: 'SFDisplay',
+                        color: jetBlack40,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    onChanged: (val) {
+                      account = val;
+                    }),
               ),
-              onChanged: (val) {
-                account = val;
-              }),
+            ),
+          ],
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }
 
@@ -161,15 +158,7 @@ Widget forgotPassword() {
         padding: EdgeInsets.only(
           top: 15,
         ),
-        child: Text(
-          'Forgot password?',
-          style: TextStyle(
-            fontFamily: 'SFDisplay',
-            color: jetBlack40,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
+        child: Text('Forgot password?', style: logInPageBodyTextNote),
       ),
     ],
   );
@@ -182,15 +171,7 @@ Widget orDivider() {
     child: Row(
       children: [
         Expanded(child: PageDivider(leftPadding: 0, rightPadding: 10.0)),
-        Text(
-          'OR',
-          style: TextStyle(
-            fontFamily: 'SFDisplay',
-            color: jetBlack40,
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        Text('OR', style: logInPageBodyTextNote),
         Expanded(child: PageDivider(leftPadding: 10.0, rightPadding: 0)),
       ],
     ),
@@ -208,20 +189,13 @@ Widget signInPartners() {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 11),
+                padding: const EdgeInsets.only(right: 8, bottom: 5.0),
                 child: SvgPicture.asset(
                   'assets/icons/externalCompanyIcons/Apple.svg',
+                  height: 22,
                 ),
               ),
-              Text(
-                'Continue with Apple',
-                style: TextStyle(
-                  fontFamily: 'SFDisplay',
-                  color: jetBlack40,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Text('Continue with Apple', style: logInPageBodyText),
             ],
           ),
           onTap: () async {
@@ -298,69 +272,113 @@ class _SignInState extends State<SignIn> {
             elevation: 0,
             backgroundColor: snow,
             automaticallyImplyLeading: false,
+            title: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    child: Row(
+                      children: [
+                        Icon(
+                          FitsyIconsSet1.arrowleft,
+                          color: jetBlack60,
+                          size: 15,
+                        ),
+                        const Text(
+                          "Back",
+                          style: logInPageNavigationButtons,
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop(CupertinoPageRoute(
+                          fullscreenDialog: false,
+                          builder: (context) => SignIn()));
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(left: 26.0, right: 26.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   typeFace(),
                   Padding(
-                    padding: const EdgeInsets.only(top: 30, bottom: 20),
+                    padding: const EdgeInsets.only(top: 20, bottom: 15),
                     child: textInputUsername(),
                   ),
-                  Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: bone60,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 8),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 21, right: 12),
-                            child: Center(
-                                child: SvgPicture.asset(
-                              'assets/icons/generalIcons/lock.svg',
-                              color: jetBlack40,
-                              width: 18,
-                            )),
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Padding(
+                      //   padding: const EdgeInsets.only(
+                      //     bottom: 5.0,
+                      //     left: 2.0,
+                      //   ),
+                      //   child: Text(
+                      //     'Password',
+                      //     style: logInPageTextInputTitle,
+                      //   ),
+                      // ),
+                      Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: snow,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(color: jetBlack40),
                         ),
-                        Expanded(
-                          child: TextField(
-                            textInputAction: TextInputAction.done,
-                            obscureText: true,
-                            textCapitalization: TextCapitalization.sentences,
-                            style: const TextStyle(
-                                overflow: TextOverflow.fade,
-                                fontFamily: 'SFDisplay',
-                                color: jetBlack80,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700),
-                            decoration: InputDecoration.collapsed(
-                              border: InputBorder.none,
-                              hintText: 'Password',
-                              hintStyle: const TextStyle(
-                                fontFamily: 'SFDisplay',
-                                color: shark,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 10),
+                              child: Center(
+                                  child: SvgPicture.asset(
+                                'assets/icons/generalIcons/lock.svg',
+                                color: jetBlack60,
+                                width: 18,
+                              )),
+                            ),
+                            Expanded(
+                              child: TextField(
+                                textInputAction: TextInputAction.done,
+                                obscureText: true,
+                                textCapitalization:
+                                    TextCapitalization.sentences,
+                                style: const TextStyle(
+                                    overflow: TextOverflow.fade,
+                                    fontFamily: 'SFDisplay',
+                                    color: jetBlack,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
+                                decoration: InputDecoration.collapsed(
+                                  border: InputBorder.none,
+                                  hintText: 'Password',
+                                  hintStyle: const TextStyle(
+                                    fontFamily: 'SFDisplay',
+                                    color: jetBlack40,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                focusNode: passwordFocusNode,
+                                onChanged: (val) {
+                                  password = val;
+                                },
+                                onSubmitted: (value) {
+                                  onSubmitSignInField(context);
+                                },
                               ),
                             ),
-                            focusNode: passwordFocusNode,
-                            onChanged: (val) {
-                              password = val;
-                            },
-                            onSubmitted: (value) {
-                              onSubmitSignInField(context);
-                            },
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   //TextInput Password
 
@@ -375,7 +393,7 @@ class _SignInState extends State<SignIn> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: 25.0,
+                      top: 35.0,
                     ),
                     child: GestureDetector(
                       child: FooterButton(
@@ -394,16 +412,14 @@ class _SignInState extends State<SignIn> {
 
                   //Sign Up if you don't have an account
                   Padding(
-                    padding: const EdgeInsets.only(
-                      top: 30.0,
-                    ),
+                    padding: const EdgeInsets.only(top: 30.0),
                     child: RichText(
                       text: TextSpan(
                           text: 'Don\'t have an account? ',
                           style: TextStyle(
                             fontFamily: 'SFDisplay',
-                            color: jetBlack40,
-                            fontSize: 14,
+                            color: jetBlack60,
+                            fontSize: 15,
                             fontWeight: FontWeight.w500,
                           ),
                           children: <TextSpan>[
@@ -412,7 +428,7 @@ class _SignInState extends State<SignIn> {
                                 style: TextStyle(
                                     fontFamily: 'SFDisplay',
                                     color: ocean,
-                                    fontSize: 14,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline),
                                 recognizer: TapGestureRecognizer()
@@ -421,14 +437,14 @@ class _SignInState extends State<SignIn> {
                                         CupertinoPageRoute(
                                             fullscreenDialog: false,
                                             builder: (context) =>
-                                                PersonalInfo()));
+                                                TrainerOrTrainee()));
                                   })
                           ],
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.of(context).push(CupertinoPageRoute(
                                   fullscreenDialog: false,
-                                  builder: (context) => PersonalInfo()));
+                                  builder: (context) => TrainerOrTrainee()));
                             }),
                     ),
                   ),
@@ -439,86 +455,6 @@ class _SignInState extends State<SignIn> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
-    );
-  }
-
-  Widget successfulSignInTemp() {
-    return Container(
-      height: 50,
-      width: 323,
-      decoration: BoxDecoration(
-          color: snow,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: jetBlack.withOpacity(0.01),
-              spreadRadius: 0,
-              blurRadius: 38,
-              offset: Offset(0, 24), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.06),
-              spreadRadius: 0,
-              blurRadius: 46,
-              offset: Offset(0, 9), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.10),
-              spreadRadius: 0,
-              blurRadius: 15,
-              offset: Offset(0, 11), // changes position of shadow
-            ),
-          ]),
-      child: Center(
-          child: Text(
-        'Successful login 😁',
-        style: TextStyle(
-            color: strawberry,
-            fontSize: 15,
-            fontFamily: 'SFDisplay',
-            letterSpacing: 0.5,
-            fontWeight: FontWeight.w600),
-      )),
-    );
-  }
-
-  Widget unsuccessfulSignInTemp() {
-    return Container(
-      height: 50,
-      width: 323,
-      decoration: BoxDecoration(
-          color: snow,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: jetBlack.withOpacity(0.01),
-              spreadRadius: 0,
-              blurRadius: 38,
-              offset: Offset(0, 24), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.06),
-              spreadRadius: 0,
-              blurRadius: 46,
-              offset: Offset(0, 9), // changes position of shadow
-            ),
-            BoxShadow(
-              color: jetBlack.withOpacity(0.10),
-              spreadRadius: 0,
-              blurRadius: 15,
-              offset: Offset(0, 11), // changes position of shadow
-            ),
-          ]),
-      child: Center(
-          child: Text(
-        'Incorrect username or password  👀 ',
-        style: TextStyle(
-            color: Color(0xff7A7D81),
-            fontSize: 15,
-            fontFamily: 'SFDisplay',
-            letterSpacing: 0.5,
-            fontWeight: FontWeight.w600),
-      )),
     );
   }
 }

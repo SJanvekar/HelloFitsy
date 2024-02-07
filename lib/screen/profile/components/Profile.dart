@@ -5,6 +5,7 @@ import 'package:balance/Requests/FollowerRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
@@ -509,14 +510,10 @@ class _UserProfileState extends State<UserProfile> {
                       height: 32,
                       width: 32,
                       decoration: BoxDecoration(color: iconCircleColor),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 8.5, bottom: 8.5),
-                        child: SvgPicture.asset(
-                          'assets/icons/generalIcons/arrowLeft.svg',
-                          color: iconColor,
-                          height: 13,
-                          width: 6,
-                        ),
+                      child: Icon(
+                        FitsyIconsSet1.arrowleft,
+                        color: iconColor,
+                        size: 14,
                       ),
                     ),
                   )),
@@ -566,7 +563,7 @@ class _UserProfileState extends State<UserProfile> {
                 titlePadding: EdgeInsets.zero,
                 title: Padding(
                   padding: const EdgeInsets.only(
-                    left: 26.0,
+                    left: 15.0,
                   ),
                   child: LayoutBuilder(
                     builder:
@@ -630,10 +627,10 @@ class _UserProfileState extends State<UserProfile> {
                                               else if (isUserFollowing == false)
                                                 {_followOnTap()}
                                             }),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 8),
-                                      child: contactTrainerButton(),
-                                    )
+                                    // Padding(
+                                    //   padding: EdgeInsets.only(left: 8),
+                                    //   child: contactTrainerButton(),
+                                    // )
                                   ],
                                 ),
                               )
@@ -690,7 +687,11 @@ class _UserProfileState extends State<UserProfile> {
             MultiSliver(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: 20.0, left: 26.0, right: 26.0),
+                  padding: EdgeInsets.only(
+                    top: 20.0,
+                    left: 15.0,
+                    right: 15.0,
+                  ),
                   child: Text(
                     'About ' + widget.trainerInstance.firstName,
                     // ${userFirstName}',
@@ -750,15 +751,14 @@ class _UserProfileState extends State<UserProfile> {
 
                 // Trainer Bio //HARD CODED - MUST CHANGE
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 8.0, left: 26.0, right: 20.0),
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    left: 15.0,
+                    right: 15.0,
+                  ),
                   child: Text(
                     widget.trainerInstance.userBio ?? '',
-                    style: TextStyle(
-                        color: jetBlack60,
-                        fontFamily: 'SFDisplay',
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400),
+                    style: profileBodyTextFont,
                   ),
                 ),
               ],
@@ -768,7 +768,7 @@ class _UserProfileState extends State<UserProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                    top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                 child: Text(
                   widget.trainerInstance.firstName + "'s Specialities",
                   style: sectionTitles,
@@ -777,7 +777,7 @@ class _UserProfileState extends State<UserProfile> {
               SliverToBoxAdapter(
                 child: Center(
                   child: SizedBox(
-                    height: 84,
+                    height: 90,
                     child: ListView.builder(
                       primary: false,
                       scrollDirection: Axis.horizontal,
@@ -800,7 +800,7 @@ class _UserProfileState extends State<UserProfile> {
             MultiSliver(children: [
               Padding(
                 padding: const EdgeInsets.only(
-                    top: 25.0, left: 26.0, right: 26.0, bottom: 15.0),
+                    top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
                 child: Text(
                   "Train with " + widget.trainerInstance.firstName,
                   style: sectionTitles,
@@ -811,7 +811,10 @@ class _UserProfileState extends State<UserProfile> {
                   height: 340,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(left: 26.0, right: 26.0),
+                    padding: EdgeInsets.only(
+                      left: 15.0,
+                      right: 15.0,
+                    ),
                     itemCount: trainerClasses.length,
                     itemBuilder: (context, index) {
                       final trainerClassInfo = trainerClasses[index];

@@ -12,7 +12,6 @@ import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep3WhatToExpect.dart';
 import 'package:balance/screen/home/Home.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
@@ -376,7 +375,7 @@ Widget pageTitle() {
           decoration: BoxDecoration(color: snow),
           child: Text(
             "Let’s add some finishing touches",
-            style: logInPageTitle,
+            style: logInPageTitleH3,
             textAlign: TextAlign.center,
           )),
     ),

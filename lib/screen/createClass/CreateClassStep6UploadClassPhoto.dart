@@ -199,7 +199,7 @@ Widget pageTitle() {
           decoration: BoxDecoration(color: snow),
           child: Text(
             'Upload a picture for your class',
-            style: logInPageTitle,
+            style: logInPageTitleH3,
             textAlign: TextAlign.center,
           )),
     ),

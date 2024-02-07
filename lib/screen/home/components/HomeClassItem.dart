@@ -283,8 +283,8 @@ class _HomeClassItem extends State<HomeClassItem> {
 
     return Padding(
       padding: const EdgeInsets.only(
-        left: 26.0,
-        right: 26.0,
+        left: 15.0,
+        right: 15.0,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,7 +327,7 @@ class _HomeClassItem extends State<HomeClassItem> {
                         backgroundColor: Colors.transparent,
                         context: context,
                         builder: (BuildContext context) {
-                          return classMoreActions();
+                          return Wrap(children: [classMoreActions()]);
                         })
                   },
                 ),

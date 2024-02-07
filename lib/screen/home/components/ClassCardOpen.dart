@@ -9,7 +9,7 @@ import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/hello_fitsy_icons.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/UserMoreActions.dart';
@@ -192,7 +192,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   children: [
                     Icon(
                       Icons.more_horiz_rounded,
-                      color: iconColor,
+                      color: snow,
                       size: 25,
                     ),
                     Container(
@@ -208,7 +208,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                       backgroundColor: Colors.transparent,
                       context: context,
                       builder: (BuildContext context) {
-                        return UserMoreActions();
+                        return Wrap(children: [classMoreActions()]);
                       })
                 },
               ),
@@ -666,9 +666,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                   width: 32,
                   decoration: BoxDecoration(color: iconCircleColor),
                   child: Icon(
-                    HelloFitsy.arrowleft,
+                    Icons.close_rounded,
                     color: iconColor,
-                    size: 15,
+                    size: 22,
                   ),
                 ),
               )),
@@ -860,7 +860,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                           backgroundColor: Colors.transparent,
                           context: context,
                           builder: (BuildContext context) {
-                            return classMoreActions();
+                            return Wrap(children: [classMoreActions()]);
                           })
                     },
                   ),

@@ -7,7 +7,6 @@ import 'package:balance/example.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassTimeList.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
-import 'package:balance/screen/login/login.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
@@ -359,7 +358,7 @@ Widget pageTitle() {
         decoration: BoxDecoration(color: snow),
         child: Text(
           'Select a date and time',
-          style: logInPageTitle,
+          style: logInPageTitleH3,
           textAlign: TextAlign.center,
         )),
   );
