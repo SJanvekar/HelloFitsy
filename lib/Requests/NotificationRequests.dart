@@ -236,7 +236,6 @@ class NotificationRequests {
 
   //Create Test Notification
   addTestPushNotification(String? fcmToken) async {
-    print(fcmToken);
     try {
       return await dio.get(
         '$urlDomain/addTestPushNotification',
