@@ -233,7 +233,11 @@ class _MainPageState extends State<MainPage>
     final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
     if (apnsToken != null) {
       // APNS token is available, make FCM plugin API requests...
-      NotificationRequests.instance.addTestPushNotification(apnsToken);
+      NotificationRequests.instance
+          .addTestPushNotification(apnsToken)
+          .then((val) async {
+        print(val.data['msg']);
+      });
     }
 
     setState(() {

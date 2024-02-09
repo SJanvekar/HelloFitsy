@@ -31,12 +31,7 @@ var functions = {
         //     return res.json({success: false, msg: 'Missing Information'})
         // }
 
-
-        setTimeout(() => {
-            console.log('This code runs after 5 seconds');
-          }, 15000);
-
-        const fcmToken = req.body.fcmToken;
+        const fcmToken = req.query.fcmToken;
         console.log(fcmToken);
 
         const message = {
@@ -75,11 +70,9 @@ var functions = {
         firebaseMessaging.getMessaging(app).send(message)
             .then((response) => {
                 // Response is a message ID string.
-                
                 res.json({success: true, msg: response})
             })
             .catch((error) => {
-                
                 res.json({success: false, msg: error})
             });
             // scheduledJob.stop(); 
