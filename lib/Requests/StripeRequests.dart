@@ -46,6 +46,7 @@ class StripeRequests {
     int paymentAmount,
     int fitsyFee,
     String? accountID,
+    String userEmail,
   ) async {
     try {
       return await dio.post('$urlDomain/newPaymentIntent',
@@ -54,6 +55,7 @@ class StripeRequests {
             'amount': paymentAmount,
             'fitsyFee': fitsyFee,
             'accountID': accountID,
+            "receipt_email": userEmail,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } catch (e) {

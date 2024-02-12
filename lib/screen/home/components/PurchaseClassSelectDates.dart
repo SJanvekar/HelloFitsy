@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:convert';
 import 'package:balance/Requests/ClassPurchasedRequests.dart';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/StripeRequests.dart';
@@ -11,8 +10,6 @@ import 'package:balance/feModels/EventModel.dart';
 import 'package:balance/feModels/ScheduleModel.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/fitsy_icons_set1_icons.dart';
-import 'package:balance/screen/schedule/CreateClassSchedule.dart';
-import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -341,7 +338,10 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
           widget.userInstance.stripeCustomerID,
           ((widget.classItem.classPrice * 1.13) * 100).round(),
           (fitsyFee * 100).round(),
-          widget.classTrainerInstance.stripeAccountID);
+          widget.classTrainerInstance.stripeAccountID,
+
+          //Hard Coded like a motherfucker, this needs to be changed - I need a backend function which retrieves the user email with the userID stored in shared prefs for the current user (Send reciept)
+          'salmanjanvekar@fitsy.ca');
 
       if (response.data['success']) {
         // Store customerID & paymentIntent object
