@@ -1,0 +1,30 @@
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var bcrypt = require('bcrypt');
+
+var validateEmail = function() {
+    var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return re.test(UserEmail)
+};
+
+var AppleUserSchema = new Schema({
+    //Unique User Email
+    UserEmail: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        index: true,
+        required: 'Email address is required',
+        // validate: [validateEmail, 'Please fill a valid email address'],
+    },
+
+    //User Full name
+    UserFullName: {
+        type: String,
+        required: true,
+        required: 'Phone number is required',
+    },
+})
+
+module.exports = mongoose.model('AppleUser', AppleUserSchema)

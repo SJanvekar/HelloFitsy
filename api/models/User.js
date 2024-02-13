@@ -60,7 +60,13 @@ var UserSchema = new Schema({
     Auth: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Auth',
-        required: true,
+        unique: true,
+    },
+
+    //Apple User Reference
+    AppleUser: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'AppleUser',
         unique: true,
     },
 
