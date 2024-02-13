@@ -101,112 +101,6 @@ var functions = {
         return res.json({success: true, searchResults: response})
     },
 
-//*****POST REQUESTS*****//
-
-    //Add New User fnc
-    addNew: async function (req, res) {
-        const userPromiseAsync = (responseJSON) => {
-            return new Promise((resolve, reject) => {
-                let responseString = JSON.stringify(responseJSON)
-                var user = User()
-                user = JSON.parse(responseString)
-                if (user) {
-                    resolve(user)
-                } else {
-                    reject(new Error('user parser returned null'))
-                }
-            })
-        }
-        
-        if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
-            return res.json({success: false, msg: 'Enter all fields'})
-        }
-        var newAuth = Auth({
-            UserEmail: req.body.UserEmail,
-            UserPhone: req.body.UserPhone,
-            Password: req.body.Password,
-        })
-        try {
-            savedAuth = await newAuth.save()
-        } catch (err) {
-            return res.send({success: false, msg: "Didn't save auth, " + err})
-        }
-        var newUser = User({
-            IsActive: req.body.IsActive,
-            UserType: req.body.UserType,
-            ProfileImageURL: req.body.ProfileImageURL,
-            FirstName: req.body.FirstName,
-            LastName: req.body.LastName,
-            Username: req.body.Username,
-            Auth: newAuth.id,
-            Categories: req.body.Categories,
-            LikedClasses: req.body.LikedClasses,
-            ClassHistory: req.body.ClassHistory,
-            Following: req.body.Following,
-            Followers: req.body.Followers,
-            StripeAccountID: req.body.StripeAccountID,
-            StripeCustomerID: req.body.StripeCustomerID
-        });
-        try {
-            savedUser = await newUser.save()
-        } catch (err) {
-            try {
-                Auth.deleteOne({UserEmail: savedAuth.UserEmail})
-            } catch (err) {
-                return res.send({success: false, msg: "Couldn't delete auth, something went horribly wrong, " + err})
-            }
-            return res.send({success: false, msg: "Didn't save user, " + err})
-        }
-        return userPromiseAsync(savedUser).then( function (parsedResponse) {
-            //RESPONSE string is an array of classes
-            if (parsedResponse instanceof Error) {
-                return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
-            } else {
-                return res.json({success: true, 
-                    msg: 'Successfully saved', 
-                    user: parsedResponse,
-                })
-            }
-        })
-        return res.send({success: true, msg: 'Successfully saved', user: savedUser})
-    },
-
-    // Authenticate User fnc
-    authenticate: async function(req, res) {
-        var newAuth = null;
-        var newUser = null;
-        try {
-            newAuth = await Auth.findOne({UserEmail: req.body.Username}); //Find user by email
-            newUser = await User.findOne({Username: req.body.Username}); //Find user by username
-        } catch (err) { //Something is horribly wrong
-            return res.json({success: false, msg: 'Something went wrong' + err})
-        }
-
-        if (newAuth == null) {
-            if (newUser == null) {
-                console.log("Error authenticating")
-                return res.status(403).send({success: false, msg: 'Incorrect username or email. Please try again.'})
-            } else {
-                try {
-                    newAuth = await Auth.findById(newUser.Auth)
-                } catch (err) {
-                    return res.json({success: false, msg: 'Something went wrong' + err})
-                }
-            }
-        }
-        newAuth.comparePassword(req.body.Password, function (err, isMatch) {
-            if (isMatch && !err) {
-                var token = jwt.encode(newAuth, process.env.DATABASE_SECRET)
-                return res.json({success: true, token: token})
-            } else {
-                console.log("Error Incorrect Password")
-                return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
-            }
-        })
-    },
-
-//*****GET REQUESTS*****//
-
     // Get Information after log in
     getLogInInfo: async function (req, res) {
         const userPromiseAsync = (responseJSON) => {
@@ -326,8 +220,159 @@ var functions = {
         return res.json({success: true, searchResults: response})
     },
 
+    getUserEmail: async function (req, res) {
+        const authPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var auth = Auth()
+                auth = JSON.parse(responseString)
+                if (auth) {
+                    resolve(auth.UserEmail)
+                } else {
+                    reject(new Error('userPromiseAsync returned null'))
+                }
+            })
+        }
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('userPromiseAsync returned null'))
+                }
+            })
+        }
+        if ((!req.query.UserID)) {
+            res.json({success: false, msg: 'Missing query parameter UserID'});
+        }
+        try {
+            user = await User.findOne({_id: new mongoose.Types.ObjectId(req.query.UserID)})
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+        var userModel = User()
+        userModel = userPromiseAsync(user)
+
+        try {
+            authResponseJSON = await Auth.findOne({_id: new mongoose.Types.ObjectId(user.Auth)})
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: err})
+        }
+
+        return authPromiseAsync(authResponseJSON).then(parsedResponse => 
+            res.json({success: true,
+                userEmail: parsedResponse}))
+    },
+
 //*****POST REQUESTS*****//
-  
+
+    //Add New User fnc
+    addNew: async function (req, res) {
+        const userPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var user = User()
+                user = JSON.parse(responseString)
+                if (user) {
+                    resolve(user)
+                } else {
+                    reject(new Error('user parser returned null'))
+                }
+            })
+        }
+        
+        if  ((!req.body.UserType) || (!req.body.FirstName) || (!req.body.LastName) || (!req.body.Username) || (!req.body.UserEmail) || (!req.body.Password)){
+            return res.json({success: false, msg: 'Enter all fields'})
+        }
+        var newAuth = Auth({
+            UserEmail: req.body.UserEmail,
+            UserPhone: req.body.UserPhone,
+            Password: req.body.Password,
+        })
+        try {
+            savedAuth = await newAuth.save()
+        } catch (err) {
+            return res.send({success: false, msg: "Didn't save auth, " + err})
+        }
+        var newUser = User({
+            IsActive: req.body.IsActive,
+            UserType: req.body.UserType,
+            ProfileImageURL: req.body.ProfileImageURL,
+            FirstName: req.body.FirstName,
+            LastName: req.body.LastName,
+            Username: req.body.Username,
+            Auth: newAuth.id,
+            Categories: req.body.Categories,
+            LikedClasses: req.body.LikedClasses,
+            ClassHistory: req.body.ClassHistory,
+            Following: req.body.Following,
+            Followers: req.body.Followers,
+            StripeAccountID: req.body.StripeAccountID,
+            StripeCustomerID: req.body.StripeCustomerID
+        });
+        try {
+            savedUser = await newUser.save()
+        } catch (err) {
+            try {
+                Auth.deleteOne({UserEmail: savedAuth.UserEmail})
+            } catch (err) {
+                return res.send({success: false, msg: "Couldn't delete auth, something went horribly wrong, " + err})
+            }
+            return res.send({success: false, msg: "Didn't save user, " + err})
+        }
+        return userPromiseAsync(savedUser).then( function (parsedResponse) {
+            //RESPONSE string is an array of classes
+            if (parsedResponse instanceof Error) {
+                return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
+            } else {
+                return res.json({success: true, 
+                    msg: 'Successfully saved', 
+                    user: parsedResponse,
+                })
+            }
+        })
+        return res.send({success: true, msg: 'Successfully saved', user: savedUser})
+    },
+
+    // Authenticate User fnc
+    authenticate: async function(req, res) {
+        var newAuth = null;
+        var newUser = null;
+        try {
+            newAuth = await Auth.findOne({UserEmail: req.body.Username}); //Find user by email
+            newUser = await User.findOne({Username: req.body.Username}); //Find user by username
+        } catch (err) { //Something is horribly wrong
+            return res.json({success: false, msg: 'Something went wrong' + err})
+        }
+
+        if (newAuth == null) {
+            if (newUser == null) {
+                console.log("Error authenticating")
+                return res.status(403).send({success: false, msg: 'Incorrect username or email. Please try again.'})
+            } else {
+                try {
+                    newAuth = await Auth.findById(newUser.Auth)
+                } catch (err) {
+                    return res.json({success: false, msg: 'Something went wrong' + err})
+                }
+            }
+        }
+        newAuth.comparePassword(req.body.Password, function (err, isMatch) {
+            if (isMatch && !err) {
+                var token = jwt.encode(newAuth, process.env.DATABASE_SECRET)
+                return res.json({success: true, token: token})
+            } else {
+                console.log("Error Incorrect Password")
+                return res.status(403).send({success: false, msg: 'The password you have entered is incorrect. Please try again.'})
+            }
+        })
+    },
+
     updateUserinfo: async function (req, res) {
         try {
             await User.findOneAndUpdate({'_id':  new mongoose.Types.ObjectId(req.body.UserID)}, 

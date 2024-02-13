@@ -62,6 +62,8 @@ router.get('/dashboard', (req, res) =>{
     router.get('/getUserInfo', userController.getUserInfo)
     //Search trainers
     router.get('/searchTrainers', userController.searchTrainers)
+    //Search trainers
+    router.get('/getUserEmail', userController.getUserEmail)
 
   router.get('/', (req, res) =>{
     res.send('I am up and running! -- Welcome to Fitsy')
@@ -126,7 +128,7 @@ router.get('/dashboard', (req, res) =>{
 
   //Notification routes
     //Test notification
-    router.post('/addTestPushNotification', notificationController.addTestPushNotification)
+    // router.post('/addTestPushNotification', notificationController.addTestPushNotification)
 
   //Stripe routes
     // Create Express account

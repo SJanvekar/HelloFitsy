@@ -99,4 +99,17 @@ class UserRequests {
       print(e);
     }
   }
+
+  getUserEmail(String userID) async {
+    try {
+      return await dio.get(
+        '$urlDomain/getUserEmail',
+        queryParameters: {
+          "UserID": userID,
+        },
+      );
+    } on DioError catch (e) {
+      print(e);
+    }
+  }
 }
