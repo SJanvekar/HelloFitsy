@@ -42,11 +42,11 @@ class PurchaseClassSelectDates extends StatefulWidget {
 }
 
 //Variables
+late String userEmail;
 
-//Schedule Vars
+//Schedule Variables
 List<Class> currentClass = [];
 List<String> trainerIDList = [];
-
 Map<BaseSchedule, Class> availableTimesMap = {};
 List<UpdatedSchedule> updatedSelectedDayClassTimeInstances = [];
 List<CancelledSchedule> cancelledSelectedDayClassTimeInstances = [];
@@ -118,6 +118,9 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
     events.clear();
     _isTitleVisible = false;
     _isBodyVisible = false;
+
+    //Retrieve the users' email
+    getUserEmail();
 
     //Animation Title Loading
     _timer1 = Timer(
@@ -328,20 +331,31 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
 
 //Class Purchase Functions
 
+//User Email Function
+
+  void getUserEmail() async {
+    UserRequests().getUserEmail(widget.userInstance.userID).then((val) async {
+      if (val.data['success']) {
+        userEmail = val.data['userEmail'] ?? '';
+        //Remove
+        print(userEmail);
+      } else {
+        print('error getting user email: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
+
 //Stripe Functions ------------------------------------------------------------
 
   Future<void> createPaymentIntent() async {
     try {
-      print('CustomerID widget');
-      print(widget.userInstance.stripeCustomerID);
       final response = await StripeRequests().newPaymentIntent(
           widget.userInstance.stripeCustomerID,
           ((widget.classItem.classPrice * 1.13) * 100).round(),
           (fitsyFee * 100).round(),
           widget.classTrainerInstance.stripeAccountID,
-
-          //Hard Coded like a motherfucker, this needs to be changed - I need a backend function which retrieves the user email with the userID stored in shared prefs for the current user (Send reciept)
-          'salmanjanvekar@fitsy.ca');
+          userEmail);
 
       if (response.data['success']) {
         // Store customerID & paymentIntent object
