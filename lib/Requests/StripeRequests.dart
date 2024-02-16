@@ -47,21 +47,41 @@ class StripeRequests {
     int fitsyFee,
     String? accountID,
     String userEmail,
+    String customerName,
   ) async {
-    try {
-      return await dio.post('$urlDomain/newPaymentIntent',
-          data: {
-            'customerID': customerID,
-            'amount': paymentAmount,
-            'fitsyFee': fitsyFee,
-            'accountID': accountID,
-            "receipt_email": userEmail,
-          },
-          options: Options(contentType: Headers.formUrlEncodedContentType));
-    } catch (e) {
-      print(
-        "Stripe Payment Intent Creation Error: ${e}",
-      );
+    if (customerID != null) {
+      try {
+        return await dio.post('$urlDomain/newPaymentIntent',
+            data: {
+              'customerID': customerID,
+              'amount': paymentAmount,
+              'fitsyFee': fitsyFee,
+              'accountID': accountID,
+              "receipt_email": userEmail,
+              "customerName": customerName,
+            },
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+      } catch (e) {
+        print(
+          "Stripe Payment Intent Creation Error: ${e}",
+        );
+      }
+    } else {
+      try {
+        return await dio.post('$urlDomain/newPaymentIntent',
+            data: {
+              'amount': paymentAmount,
+              'fitsyFee': fitsyFee,
+              'accountID': accountID,
+              "receipt_email": userEmail,
+              "customerName": customerName,
+            },
+            options: Options(contentType: Headers.formUrlEncodedContentType));
+      } catch (e) {
+        print(
+          "Stripe Payment Intent Creation Error: ${e}",
+        );
+      }
     }
   }
 }

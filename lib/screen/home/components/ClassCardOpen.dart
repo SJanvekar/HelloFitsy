@@ -9,10 +9,8 @@ import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
-import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
-import 'package:balance/sharedWidgets/UserMoreActions.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
@@ -55,6 +53,14 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   String trainerBio = '';
   late User user;
   late User classTrainerInstance;
+
+  //Test List for avatars
+  List RandomImages = [
+    'https://images.unsplash.com/photo-1597223557154-721c1cecc4b0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW4lMjBmYWNlfGVufDB8fDB8fA%3D%3D&w=1000&q=80',
+    'https://img.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg',
+    'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8ZmFjZXxlbnwwfHwwfHw%3D&w=1000&q=80',
+    'https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528'
+  ];
 
   void getClassTrainerInfo() async {
     UserRequests()
@@ -165,6 +171,30 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
   }
 
   //----------Widgets----------//
+//Overlapping avatars
+
+  Widget overlappingProfiles() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (int i = 0; i < RandomImages.length; i++)
+          Align(
+            widthFactor: 0.5,
+            // parent circle avatar.
+            // We defined this for better UI
+            child: CircleAvatar(
+              radius: 60,
+              backgroundColor: Colors.white,
+              // Child circle avatar
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(RandomImages[i]),
+              ),
+            ),
+          )
+      ],
+    );
+  }
 
   Widget classTrainer() {
     return Padding(

@@ -351,11 +351,13 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
   Future<void> createPaymentIntent() async {
     try {
       final response = await StripeRequests().newPaymentIntent(
-          widget.userInstance.stripeCustomerID,
-          ((widget.classItem.classPrice * 1.13) * 100).round(),
-          (fitsyFee * 100).round(),
-          widget.classTrainerInstance.stripeAccountID,
-          userEmail);
+        widget.userInstance.stripeCustomerID,
+        ((widget.classItem.classPrice * 1.13) * 100).round(),
+        (fitsyFee * 100).round(),
+        widget.classTrainerInstance.stripeAccountID,
+        userEmail,
+        ('${widget.userInstance.firstName} ${widget.userInstance.lastName}'),
+      );
 
       if (response.data['success']) {
         // Store customerID & paymentIntent object
@@ -401,8 +403,6 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
       await createPaymentIntent();
 
       await Future.delayed(Duration(milliseconds: 250), () {
-        print(widget.userInstance.stripeCustomerID);
-
         // STEP 2: Initialize Payment Sheet
         return Stripe.instance.initPaymentSheet(
           paymentSheetParameters: SetupPaymentSheetParameters(
