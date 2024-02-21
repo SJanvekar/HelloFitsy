@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
+import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
@@ -22,6 +23,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,13 +64,44 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
   var titleController = TextEditingController();
   var costController = TextEditingController();
   var locationController = TextEditingController();
+  double currentLat = 43.651070;
+  double currentLong = -79.347015;
+
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
+
+  late CameraPosition _kCurrentLocation;
+
+  void getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low);
+    currentLat = position.latitude;
+    currentLong = position.longitude;
+  }
+
+  // static const CameraPosition _kLake = CameraPosition(
+  //     bearing: 192.8334901395799,
+  //     target: LatLng(37.43296265331129, -122.08832357078792),
+  //     tilt: 59.440717697143555,
+  //     zoom: 19.151926040649414);
 
   //----------
   @override
   void initState() {
     super.initState();
+
+    getCurrentLocation();
+
+    _kCurrentLocation = CameraPosition(
+      target: LatLng(currentLat, currentLong),
+      zoom: 12,
+    );
     titleController.text = widget.classTemplate.className;
-    costController.text = widget.classTemplate.classPrice.toString();
+    if (widget.classTemplate.classPrice == 0 &&
+        widget.classTemplate.className.isNotEmpty) {
+      costController.text = widget.classTemplate.classPrice.toString();
+    }
+
     locationController.text = widget.classTemplate.classLocationName;
   }
 
@@ -208,41 +242,52 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
               'Where is your class located?',
               style: sectionTitlesClassCreation,
             ),
-            Container(
-                padding: EdgeInsets.only(top: 0),
-                decoration: BoxDecoration(color: snow),
-                child: TextField(
-                  controller: locationController,
-                  maxLength: 80,
-                  maxLengthEnforcement: MaxLengthEnforcement.none,
-                  autocorrect: true,
-                  cursorColor: ocean,
-                  maxLines: null,
-                  textCapitalization: TextCapitalization.sentences,
-                  textInputAction: TextInputAction.done,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: jetBlack,
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w500),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Start typing here',
-                    hintStyle: const TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: shark60,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  onChanged: (val) {
-                    //HARD CODED - MUST CHANGE
-                    template.classLocationName = 'NA';
-                    template.classLatitude = 0;
-                    template.classLongitude = 0;
+            TextField(
+              controller: locationController,
+              maxLength: 100,
+              maxLengthEnforcement: MaxLengthEnforcement.none,
+              autocorrect: true,
+              cursorColor: ocean,
+              maxLines: null,
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack,
+                  fontSize: 16.5,
+                  fontWeight: FontWeight.w500),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Enter an address',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: shark60,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              onChanged: (val) {
+                // var addresses = [];
+                // addresses.add(locationFromAddress(val));
+                // print(addresses[0].toString());
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: GoogleMap(
+                  mapType: MapType.terrain,
+                  initialCameraPosition: _kCurrentLocation,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
                   },
-                )),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -326,6 +371,9 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                 padding: const EdgeInsets.only(top: 35.0),
                 child: ClassLocation(widget.classTemplate),
               ),
+              SizedBox(
+                height: 40,
+              )
             ],
           ),
         ),

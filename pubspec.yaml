@@ -72,6 +72,8 @@ dependencies:
   timezone: ^0.9.2
   country_picker: ^2.0.23
   rive: ^0.12.4
+  google_maps_flutter: ^2.5.3
+  geolocator: ^11.0.0
 
 dev_dependencies:
   dependency_validator: ^3.0.0

@@ -92,8 +92,8 @@ class _CategorySelectionState extends State<CategorySelection> {
           SliverPadding(
             padding: EdgeInsets.only(
               top: 5,
-              left: 20,
-              right: 20,
+              left: 15,
+              right: 15,
             ),
             sliver: SliverGrid(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

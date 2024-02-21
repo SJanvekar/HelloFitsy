@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/createClass/createClassStep2Description.dart';
@@ -41,21 +42,17 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
 
 //Page title
   Widget pageTitle() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 46.5,
-          right: 46.5,
-        ),
-        child: Container(
-            padding: EdgeInsets.only(top: 25),
-            decoration: BoxDecoration(color: snow),
-            child: Text(
-              'What can clients expect from this class?',
-              style: logInPageTitleH3,
-              textAlign: TextAlign.center,
-            )),
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 15,
       ),
+      child: Container(
+          padding: EdgeInsets.only(top: 25),
+          decoration: BoxDecoration(color: snow),
+          child: Text(
+            'What can clients expect from this class?',
+            style: logInPageTitleH3,
+          )),
     );
   }
 
@@ -63,12 +60,12 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
     return Center(
       child: Padding(
         padding: const EdgeInsets.only(
-          left: 30,
-          right: 30,
+          left: 15,
+          right: 15,
           bottom: 45,
         ),
         child: Container(
-            padding: EdgeInsets.only(top: 25),
+            padding: EdgeInsets.only(top: 10),
             decoration: BoxDecoration(color: snow),
             child: TextField(
               controller: textController,
@@ -90,7 +87,7 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
                 hintText: 'Start typing here',
                 hintStyle: const TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark60,
+                  color: jetBlack40,
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
@@ -111,30 +108,35 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
 
         //AppBar
         appBar: AppBar(
-          toolbarHeight: 80,
+          toolbarHeight: 50,
           centerTitle: false,
           elevation: 0,
           backgroundColor: snow,
           automaticallyImplyLeading: false,
-          title: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 0,
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    print("Back");
-                    Navigator.of(context).pop(CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => CreateClassDescription(
-                              classTemplate: classTemplate,
-                            )));
+          title: Padding(
+            padding: const EdgeInsets.only(left: 0),
+            child: Row(
+              children: [
+                GestureDetector(
+                  child: Row(
+                    children: [
+                      Icon(
+                        FitsyIconsSet1.arrowleft,
+                        color: jetBlack60,
+                        size: 15,
+                      ),
+                      const Text(
+                        "Back",
+                        style: logInPageNavigationButtons,
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pop();
                   },
-                  child: Text("Back", style: logInPageNavigationButtons),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
 
@@ -155,18 +157,16 @@ class _CreateClassWhatToExpect extends State<CreateClassWhatToExpect> {
         ),
         //Bottom Navigation Bar
         bottomNavigationBar: Container(
-            height: 110,
             decoration: BoxDecoration(),
             child: Padding(
               padding: const EdgeInsets.only(
-                top: 14,
-                bottom: 46,
+                bottom: 55,
               ),
               child: GestureDetector(
                   child: Padding(
                     padding: const EdgeInsets.only(
-                      left: 26.0,
-                      right: 26.0,
+                      left: 15,
+                      right: 15,
                     ),
                     child: FooterButton(
                       buttonColor: strawberry,

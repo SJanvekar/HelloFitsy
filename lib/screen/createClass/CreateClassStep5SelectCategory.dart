@@ -1,4 +1,5 @@
 import 'package:balance/constants.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
@@ -43,56 +44,69 @@ class _CreateClassCategory extends State<CreateClassCategory> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: snow,
-
-      //AppBar
       appBar: AppBar(
-        toolbarHeight: 0,
+        toolbarHeight: 50,
+        centerTitle: false,
         elevation: 0,
         backgroundColor: snow,
-      ),
-
-      body: CustomScrollView(slivers: [
-        SliverAppBar(
-          toolbarHeight: 80,
-          pinned: false,
-          centerTitle: false,
-          elevation: 0,
-          backgroundColor: snow,
-          automaticallyImplyLeading: false,
-          title: Row(
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 0),
+          child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 0,
+              GestureDetector(
+                child: Row(
+                  children: [
+                    Icon(
+                      FitsyIconsSet1.arrowleft,
+                      color: jetBlack60,
+                      size: 15,
+                    ),
+                    const Text(
+                      "Back",
+                      style: logInPageNavigationButtons,
+                    ),
+                  ],
                 ),
-                child: TextButton(
-                  onPressed: () {
-                    print("Back");
-                    Navigator.of(context).pop(CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) => CreateClassWhatYouWillNeed(
-                            classTemplate: classTemplate)));
-                  },
-                  child: Text("Back", style: logInPageNavigationButtons),
-                ),
+                onTap: () {
+                  Navigator.of(context).pop(CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => CreateClassWhatYouWillNeed(
+                            classTemplate: classTemplate,
+                          )));
+                },
               ),
             ],
           ),
         ),
+      ),
+      body: CustomScrollView(slivers: [
         MultiSliver(children: [
-          pageTitle(),
-          SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              mainAxisSpacing: 0,
-              crossAxisSpacing: 0,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(children: [
+                pageTitle(),
+              ]),
+            ],
+          ),
+          SliverPadding(
+            padding: EdgeInsets.only(
+              top: 5,
+              left: 15,
+              right: 15,
             ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final category = allCategories[index];
-                return Padding(
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: GestureDetector(
+            sliver: SliverGrid(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                mainAxisSpacing: 15,
+                crossAxisSpacing: 15,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  final category = allCategories[index];
+                  return GestureDetector(
                     child: Stack(
                       children: [
                         ClipOval(
@@ -115,31 +129,36 @@ class _CreateClassCategory extends State<CreateClassCategory> {
                             ),
                           ),
                         ),
-                        category.categoryLiked
-                            ? Container(
-                                decoration: BoxDecoration(
-                                  color: jetBlack80,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Center(
-                                    child: SvgPicture.asset(
-                                  'assets/icons/generalIcons/circleClassSelected.svg',
-                                  height: 50,
-                                  width: 50,
-                                )),
-                              )
-                            : Container(),
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 1200),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          decoration: BoxDecoration(
+                            color: category.categoryLiked
+                                ? jetBlack80
+                                : Colors.transparent,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                              child: Icon(
+                            FitsyIconsSet1.checkmark,
+                            size: category.categoryLiked ? 40 : 0,
+                            color: snow,
+                          )),
+                        )
                       ],
                     ),
                     onTap: () {
-                      category.categoryLiked = !(category.categoryLiked);
-                      HapticFeedback.selectionClick();
-                      setState(() {});
+                      setState(() {
+                        category.categoryLiked = !(category.categoryLiked);
+                        HapticFeedback.selectionClick();
+                      });
+                      // categorySelectBloc.categoryLikedSink
+                      //     .add(category.categoryLiked);
                     },
-                  ),
-                );
-              },
-              childCount: allCategories.length,
+                  );
+                },
+                childCount: allCategories.length,
+              ),
             ),
           )
         ])
@@ -149,8 +168,8 @@ class _CreateClassCategory extends State<CreateClassCategory> {
         child: GestureDetector(
           child: Padding(
             padding: const EdgeInsets.only(
-              left: 26.0,
-              right: 26.0,
+              left: 15,
+              right: 15,
             ),
             child: FooterButton(
                 buttonColor: strawberry,
@@ -197,20 +216,16 @@ class _CreateClassCategory extends State<CreateClassCategory> {
 
 //Page title
 Widget pageTitle() {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
-      ),
-      child: Container(
-          padding: EdgeInsets.only(top: 25, bottom: 25.0),
-          decoration: BoxDecoration(color: snow),
-          child: Text(
-            'Select categories that this class falls under',
-            style: logInPageTitleH3,
-            textAlign: TextAlign.center,
-          )),
+  return Padding(
+    padding: const EdgeInsets.only(
+      left: 15,
     ),
+    child: Container(
+        padding: EdgeInsets.only(top: 25, bottom: 25.0),
+        decoration: BoxDecoration(color: snow),
+        child: Text(
+          'Select categories that this class falls under',
+          style: logInPageTitleH3,
+        )),
   );
 }

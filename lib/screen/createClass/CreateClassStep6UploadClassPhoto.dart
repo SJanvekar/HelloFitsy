@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:balance/constants.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
+import 'package:balance/screen/createClass/CreateClassStep7ClassLocation.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
-import 'package:balance/screen/createClass/createClassStep7TitleAndPrice.dart';
+import 'package:balance/screen/createClass/createClassStep8TitleAndPrice.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +25,7 @@ class CreateClassPicture extends StatefulWidget {
 
 class _CreateClassPicture extends State<CreateClassPicture> {
   File? image;
+  File? tempImage;
 
   //----------
   @override
@@ -34,17 +38,42 @@ class _CreateClassPicture extends State<CreateClassPicture> {
   @override
   Future pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
       if (image == null) {
-        final image = AssetImage('assets/images/profilePictureDefault.png');
+        image = XFile('assets/images/profilePictureDefault.png');
         return;
       }
 
-      final imageTemporary = File(image.path);
-      classTemplate.profileImageTempHolder = imageTemporary;
-      setState(() => this.image = imageTemporary);
+      setState(() {
+        if (image != null) {
+          tempImage = File(image.path);
+        }
+      });
     } on PlatformException catch (e) {
       print('Failed to pick image $e');
+    }
+  }
+
+  Future uploadImage() async {
+    if (tempImage == null) return;
+
+    try {
+      //Storage Reference
+      final firebaseStorage = FirebaseStorage.instance.ref();
+
+      //Create a reference to image
+      // print(tempImage!.path);
+      final profilePictureRef = firebaseStorage.child(tempImage!.path);
+
+      //Upload file. FILE MUST EXIST
+      await profilePictureRef.putFile(tempImage!);
+
+      final imageURL = await profilePictureRef.getDownloadURL();
+
+      classTemplate.classImageUrl = imageURL;
+    } catch (e) {
+      print("Error: $e");
     }
   }
 
@@ -53,105 +82,137 @@ class _CreateClassPicture extends State<CreateClassPicture> {
     return Scaffold(
       backgroundColor: snow,
       appBar: AppBar(
-        toolbarHeight: 0,
+        toolbarHeight: 50,
+        centerTitle: false,
         elevation: 0,
         backgroundColor: snow,
-      ),
-      body: CustomScrollView(physics: NeverScrollableScrollPhysics(), slivers: [
-        SliverAppBar(
-          toolbarHeight: 80,
-          pinned: false,
-          centerTitle: false,
-          elevation: 0,
-          backgroundColor: snow,
-          automaticallyImplyLeading: false,
-          title: Row(
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: const EdgeInsets.only(left: 0),
+          child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 0,
+              GestureDetector(
+                child: Row(
+                  children: [
+                    Icon(
+                      FitsyIconsSet1.arrowleft,
+                      color: jetBlack60,
+                      size: 15,
+                    ),
+                    const Text(
+                      "Back",
+                      style: logInPageNavigationButtons,
+                    ),
+                  ],
                 ),
-                child: TextButton(
-                  onPressed: () {
-                    print("Back");
-                    Navigator.of(context).pop(CupertinoPageRoute(
-                        fullscreenDialog: true,
-                        builder: (context) =>
-                            CreateClassCategory(classTemplate: classTemplate)));
-                  },
-                  child: Text("Back", style: logInPageNavigationButtons),
-                ),
+                onTap: () {
+                  Navigator.of(context).pop(CupertinoPageRoute(
+                      fullscreenDialog: true,
+                      builder: (context) => CreateClassCategory(
+                            classTemplate: classTemplate,
+                          )));
+                },
               ),
             ],
           ),
         ),
-        MultiSliver(children: [
-          pageTitle(),
-          if (widget.classTemplate.classImageUrl != '' && image == null)
-            Center(
-                child: Padding(
-              padding: EdgeInsets.only(left: 26, right: 26, top: 55),
-              child: Container(
-                  alignment: Alignment.center,
-                  width: double.maxFinite,
-                  height: 420,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      color: bone,
-                      image: DecorationImage(
-                          image:
-                              NetworkImage(widget.classTemplate.classImageUrl),
-                          fit: BoxFit.cover))),
-            ))
-          else
-            Center(
-                child: Padding(
-              padding: EdgeInsets.only(left: 26, right: 26, top: 55),
-              child: Container(
-                alignment: Alignment.center,
-                width: double.maxFinite,
-                height: 420,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: bone,
-                    image: image != null
-                        ? DecorationImage(
-                            image: FileImage(image!), fit: BoxFit.cover)
-                        : DecorationImage(
-                            image: AssetImage(
-                                'assets/images/createClass/uploadClassImage.png'),
-                            fit: BoxFit.contain)),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(
+          top: 8,
+          left: 15.0,
+          right: 15.0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Wrap(children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: pageTitle(),
               ),
-            )),
-        ])
-      ]),
+            ]),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Center(
+                  child: GestureDetector(
+                child: Container(
+                    height: MediaQuery.of(context).size.height * 0.60,
+                    width: MediaQuery.of(context).size.width * 0.92,
+                    decoration: BoxDecoration(
+                        color: snow,
+                        border: Border.all(
+                          strokeAlign: BorderSide.strokeAlignOutside,
+                          width: 1,
+                          color: tempImage != null ? snow : jetBlack40,
+                        ),
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        tempImage != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.60,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.92,
+                                  child: FittedBox(
+                                    fit: BoxFit.cover,
+                                    child: Image.file(
+                                      tempImage!,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : const Column(
+                                children: [
+                                  Icon(
+                                    FitsyIconsSet1.upload,
+                                    size: 30,
+                                    color: jetBlack60,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 10.0),
+                                    child: Text(
+                                      'Click here to upload',
+                                      style: logInPageBodyText,
+                                    ),
+                                  )
+                                ],
+                              ),
+                      ],
+                    )),
+                onTap: () {
+                  pickImage(ImageSource.gallery);
+                },
+              )),
+            ),
+            if (tempImage != null)
+              const Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Center(
+                  child: Text(
+                    'Click your image to change it before continuing',
+                    style: logInPageBodyTextNote,
+                  ),
+                ),
+              )
+          ],
+        ),
+      ),
       bottomNavigationBar: SizedBox(
-        height: 175,
+        height: 110,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                left: 26.0,
-                right: 26.0,
-                top: 15.0,
-                bottom: 15.0,
-              ),
-              child: GestureDetector(
-                child: FooterButton(
-                    buttonColor: ocean,
-                    textColor: snow,
-                    buttonText: 'Upload Picture'),
-                onTap: () => {
-                  pickImage(ImageSource.gallery),
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                bottom: 45.0,
-                left: 26.0,
-                right: 26.0,
+                left: 15.0,
+                right: 15.0,
+                bottom: 55.0,
               ),
               child: GestureDetector(
                 child: FooterButton(
@@ -162,12 +223,12 @@ class _CreateClassPicture extends State<CreateClassPicture> {
                   switch (widget.classTemplate.classType) {
                     case ClassType.Solo:
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassTitleAndPrice(
+                          builder: (context) => SelectClassLocation(
                               classTemplate: widget.classTemplate)));
                       break;
                     case ClassType.Group:
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => CreateClassTitleAndPrice(
+                          builder: (context) => SelectClassLocation(
                               classTemplate: widget.classTemplate)));
                       break;
                     case ClassType.Virtual:
@@ -188,20 +249,11 @@ class _CreateClassPicture extends State<CreateClassPicture> {
 
 //Page title
 Widget pageTitle() {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
-      ),
-      child: Container(
-          padding: EdgeInsets.only(top: 10),
-          decoration: BoxDecoration(color: snow),
-          child: Text(
-            'Upload a picture for your class',
-            style: logInPageTitleH3,
-            textAlign: TextAlign.center,
-          )),
-    ),
-  );
+  return Container(
+      padding: EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(color: snow),
+      child: const Text(
+        'Upload a picture for your class',
+        style: logInPageTitleH3,
+      ));
 }

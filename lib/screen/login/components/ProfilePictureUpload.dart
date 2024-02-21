@@ -121,7 +121,10 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           children: [
             Wrap(children: [
               pageTitle(),
-              pageText(),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: pageText(),
+              ),
             ]),
 
             Padding(
@@ -130,7 +133,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                   child: GestureDetector(
                 child: Container(
                     height: MediaQuery.of(context).size.height * 0.60,
-                    width: MediaQuery.of(context).size.width * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.92,
                     decoration: BoxDecoration(
                         color: snow,
                         border: Border.all(
@@ -150,7 +153,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.58,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.9,
+                                      MediaQuery.of(context).size.width * 0.92,
                                   child: FittedBox(
                                     fit: BoxFit.cover,
                                     child: Image.file(
