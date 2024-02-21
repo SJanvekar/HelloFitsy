@@ -3,8 +3,10 @@ import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/FollowingRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/constants.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/home/components/HomeClassItem.dart';
 import 'package:balance/screen/home/components/PARQ.dart';
+import 'package:balance/screen/home/components/UpcomingClassesFeed.dart';
 import 'package:balance/screen/home/components/UpcomingClassesItem.dart';
 import 'package:balance/screen/notifications/Notifications.dart';
 import 'package:balance/sharedWidgets/fitsySharedLogic/StripeLogic.dart';
@@ -206,17 +208,23 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   padding: EdgeInsets.only(
                       left: 15.0, right: 15.0, top: 2.0, bottom: 10.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'Check out your upcoming classes',
                         style: TextStyle(
-                          color: jetBlack,
-                          fontFamily: 'SFDisplay',
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
+                            color: jetBlack,
+                            fontFamily: 'SFDisplay',
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            decoration: TextDecoration.underline),
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 2.0),
+                        child: Icon(
+                          FitsyIconsSet1.arrowright,
+                          size: 10,
+                        ),
+                      )
                       // Text(
                       //   'See all',
                       //   style: TextStyle(
@@ -228,21 +236,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     ],
                   ),
                 ),
-                SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    return Padding(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                      ),
-                      child: UpcomingClassesItem(),
-                    );
-                  },
-                  childCount: 1,
-                )),
+                UpcomingClassesFeed(),
                 Padding(
                   padding:
-                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
+                      const EdgeInsets.only(left: 15.0, right: 15.0, top: 15.0),
                   child: Text(
                     'For you',
                     style: TextStyle(
@@ -372,7 +369,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     (BuildContext context, int index) {
                       final classItem = allClasses[index];
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 25.0),
+                        padding: const EdgeInsets.only(bottom: 20.0),
                         child: HomeClassItem(
                           classItem: classItem,
                           userInstance: widget.userInstance,

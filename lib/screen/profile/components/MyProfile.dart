@@ -1360,7 +1360,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                         shrinkWrap: true,
                         primary: false,
                         scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.only(left: 26, right: 26),
+                        padding: EdgeInsets.only(left: 15, right: 15),
                         itemCount: savedClassesList.length < 3
                             ? savedClassesList.length
                             : 3,
@@ -1370,8 +1370,8 @@ class _PersonalProfileState extends State<PersonalProfile>
                             classImageUrl: savedClasses.classImageUrl,
                             buttonBookOrRebookText: 'Book',
                             classTitle: savedClasses.className,
-                            classTrainer: trainerFirstName,
-                            classTrainerImageUrl: trainerImageURL,
+                            classItem: savedClasses,
+                            userInstance: widget.userInstance,
                           );
                         },
                       ),
@@ -1435,7 +1435,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                         shrinkWrap: true,
                         primary: false,
                         scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.only(left: 26, right: 26),
+                        padding: EdgeInsets.only(left: 15, right: 15),
                         itemCount: savedClassesList.length < 3
                             ? savedClassesList.length
                             : 3,
@@ -1448,8 +1448,8 @@ class _PersonalProfileState extends State<PersonalProfile>
                               classImageUrl: savedClasses.classImageUrl,
                               buttonBookOrRebookText: 'Book',
                               classTitle: savedClasses.className,
-                              classTrainer: trainerFirstName,
-                              classTrainerImageUrl: trainerImageURL,
+                              classItem: savedClasses,
+                              userInstance: widget.userInstance,
                             );
                           }
                         },

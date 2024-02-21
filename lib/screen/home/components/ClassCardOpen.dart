@@ -4,10 +4,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:balance/Constants.dart';
 import 'package:balance/Requests/ClassLikedRequests.dart';
 import 'package:balance/Requests/StripeRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
-import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
@@ -360,12 +360,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             final double maxWidth = constraints.maxWidth;
             final textSpan = TextSpan(
               text: widget.classItem.classDescription,
-              style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: profileBodyTextFont,
             );
 
             TextDirection? direction = TextDirection.ltr;
@@ -387,21 +382,14 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                     showFullTextDesc
                         ? widget.classItem.classDescription
                         : textSpan.toPlainText(),
-                    maxLines: showFullTextDesc ? 30 : 8, // Add this line
+                    maxLines: showFullTextDesc ? 30 : 7, // Add this line
                     overflow: TextOverflow.ellipsis,
+                    style: profileBodyTextFont,
                   ),
                 ),
                 GestureDetector(
-                  child: Text(
-                    showFullTextDesc ? 'See Less' : 'See More',
-                    style: TextStyle(
-                      color: ocean, // You can replace with your color
-                      decoration: TextDecoration.underline,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  child: Text(showFullTextDesc ? 'See Less' : 'See More',
+                      style: seeMoreText),
                   onTap: () {
                     setState(() {
                       HapticFeedback.selectionClick();
@@ -431,12 +419,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             final double maxWidth = constraints.maxWidth;
             final textSpan = TextSpan(
               text: widget.classItem.classWhatToExpect,
-              style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
+              style: profileBodyTextFont,
             );
 
             TextDirection? direction = TextDirection.ltr;
@@ -459,21 +442,15 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         ? widget.classItem.classWhatToExpect
                         : textSpan.toPlainText(),
                     maxLines:
-                        showFullTextWhatToExpect ? 30 : 8, // Add this line
+                        showFullTextWhatToExpect ? 30 : 7, // Add this line
                     overflow: TextOverflow.ellipsis,
+                    style: profileBodyTextFont,
                   ),
                 ),
                 GestureDetector(
                   child: Text(
-                    showFullTextWhatToExpect ? 'See Less' : 'See More',
-                    style: TextStyle(
-                      color: ocean, // You can replace with your color
-                      decoration: TextDecoration.underline,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                      showFullTextWhatToExpect ? 'See Less' : 'See More',
+                      style: seeMoreText),
                   onTap: () {
                     setState(() {
                       HapticFeedback.selectionClick();
@@ -492,7 +469,7 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
 // Text widget overflow checkers - Description
   bool showFullTextWhatYouWillNeed = false;
 
-// Class Desc
+// Class What you will need
   Widget classWhatYouWillNeed() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -502,13 +479,8 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
             assert(constraints.hasBoundedWidth);
             final double maxWidth = constraints.maxWidth;
             final textSpan = TextSpan(
+              style: profileBodyTextFont,
               text: widget.classItem.classUserRequirements,
-              style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
             );
 
             TextDirection? direction = TextDirection.ltr;
@@ -531,21 +503,15 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
                         ? widget.classItem.classUserRequirements
                         : textSpan.toPlainText(),
                     maxLines:
-                        showFullTextWhatYouWillNeed ? 30 : 8, // Add this line
+                        showFullTextWhatYouWillNeed ? 30 : 7, // Add this line
                     overflow: TextOverflow.ellipsis,
+                    style: profileBodyTextFont,
                   ),
                 ),
                 GestureDetector(
                   child: Text(
-                    showFullTextWhatYouWillNeed ? 'See Less' : 'See More',
-                    style: TextStyle(
-                      color: ocean, // You can replace with your color
-                      decoration: TextDecoration.underline,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                      showFullTextWhatYouWillNeed ? 'See Less' : 'See More',
+                      style: seeMoreText),
                   onTap: () {
                     setState(() {
                       HapticFeedback.selectionClick();
@@ -644,14 +610,9 @@ class _ClassCardOpenState extends State<ClassCardOpen> {
         Padding(
           padding: const EdgeInsets.only(top: 15.0),
           child: Text(
-            //Implement the Trainer bio here
-            trainerBio,
-            style: TextStyle(
-                fontFamily: 'SFDisplay',
-                color: jetBlack80,
-                fontSize: 14,
-                fontWeight: FontWeight.w500),
-          ),
+              //Implement the Trainer bio here
+              trainerBio,
+              style: profileBodyTextFont),
         ),
       ],
     );

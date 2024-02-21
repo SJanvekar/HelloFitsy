@@ -78,7 +78,7 @@ class Notifications extends StatelessWidget {
                       color: jetBlack80,
                       size: 14,
                     ),
-                    Text("Cancel", style: logInPageNavigationButtons),
+                    Text("Back", style: logInPageNavigationButtons),
                   ],
                 ),
                 onTap: () {
@@ -156,7 +156,6 @@ class Notifications extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.only(
                             left: 15.0,
-                            bottom: 0.0,
                           ),
                           child: Row(
                             children: [
@@ -181,18 +180,13 @@ class Notifications extends StatelessWidget {
                                     style: notificationDate,
                                   ),
                                 ),
-                              Flexible(
-                                  child: PageDivider(
-                                leftPadding: 8,
-                                rightPadding: 0,
-                              ))
                             ],
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 10.0,
-                            bottom: 15.0,
+                            top: 5.0,
+                            bottom: 10.0,
                           ),
                           child: Row(
                             children: [

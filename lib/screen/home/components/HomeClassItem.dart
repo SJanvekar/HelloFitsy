@@ -222,7 +222,7 @@ class _HomeClassItem extends State<HomeClassItem> {
               classReviews(),
               classTitle(widget.classItem.className, titleBoxWidth),
               Padding(
-                padding: const EdgeInsets.only(bottom: 5.0),
+                padding: const EdgeInsets.only(bottom: 0.0),
                 child: classSubHeader(widget.classItem.classLocationName),
               ),
               classPrice(widget.classItem.classPrice)
@@ -259,7 +259,7 @@ class _HomeClassItem extends State<HomeClassItem> {
 
                 //Like Counter -- This needs to be updated
                 Text(
-                  '105',
+                  'Like count',
                   style: roundedNumberStyle1LightShadow,
                 )
               ],

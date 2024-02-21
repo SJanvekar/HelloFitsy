@@ -1,4 +1,5 @@
 import 'package:balance/constants.dart';
+import 'package:balance/screen/home/components/upcomingClassMoreInfo.dart';
 import 'package:balance/screen/home/components/upcomingClassesItem.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,17 +18,24 @@ class UpcomingClassesFeed extends StatelessWidget {
     //     UpcomingClassesItem(),
     //   ]),
     // );
-    return Flexible(
-        child: ListView(children: [
-      ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          itemCount: 1,
-          itemBuilder: ((context, index) {
-            final classItem = classList[index];
-            return UpcomingClassesItem();
-          }))
-    ]));
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final classItem = classList[index];
+          return GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: UpcomingClassesItem(),
+            ),
+            onTap: () => {
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) =>
+                      UpcomingClassMoreInfo(classItem: classItem))),
+            },
+          );
+        },
+        childCount: 1,
+      ),
+    );
   }
 }

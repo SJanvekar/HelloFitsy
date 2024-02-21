@@ -58,7 +58,7 @@ class UpcomingClassNotification extends StatelessWidget {
                               Text(
                                 notificationType,
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     color: jetBlack80,
                                     fontFamily: 'SFDisplay'),
@@ -80,7 +80,7 @@ class UpcomingClassNotification extends StatelessWidget {
                                 Jiffy.parse(notificationDate.toString())
                                     .format(pattern: "h:mm a"),
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.w500,
                                     color: jetBlack80,
                                     fontFamily: 'SFRounded'),
@@ -96,7 +96,7 @@ class UpcomingClassNotification extends StatelessWidget {
                               child: Text(
                                 notificationMessage,
                                 style: TextStyle(
-                                    fontSize: 14.5,
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: jetBlack60,
                                     fontFamily: 'SFDisplay'),

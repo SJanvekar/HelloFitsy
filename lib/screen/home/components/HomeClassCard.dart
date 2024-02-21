@@ -261,7 +261,7 @@ class _HomeClassItem extends State<HomeClassItem> {
 
                 //Like Counter -- This needs to be updated
                 Text(
-                  '105',
+                  'Like count',
                   style: roundedNumberStyle1LightShadow,
                 )
               ],

@@ -1,4 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:balance/feModels/ClassModel.dart';
+import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/screen/home/components/PurchaseClassSelectDates.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import '../../constants.dart';
 
 class ClassItemCondensed1 extends StatelessWidget {
@@ -7,43 +12,65 @@ class ClassItemCondensed1 extends StatelessWidget {
     required this.classImageUrl,
     required this.buttonBookOrRebookText,
     required this.classTitle,
-    required this.classTrainer,
-    required this.classTrainerImageUrl,
+    required this.classItem,
+    required this.userInstance,
   }) : super(key: key);
 
   String classImageUrl;
   String buttonBookOrRebookText;
   String classTitle;
-  String classTrainer;
-  String classTrainerImageUrl;
-
-//Edit Profile button
-  Widget bookClassButton() {
-    return Container(
-      alignment: Alignment.center,
-      height: 35,
-      width: 75,
-      decoration: BoxDecoration(
-          color: jetBlack,
-          // border: Border.all(color: shark60),
-          borderRadius: BorderRadius.circular(20)),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-        child: Text(
-          buttonBookOrRebookText,
-          style: TextStyle(
-              color: snow,
-              fontFamily: 'SFDisplay',
-              fontSize: 13.0,
-              fontWeight: FontWeight.w600),
-        ),
-      ),
-    );
-  }
+  Class classItem;
+  User userInstance;
+  late User classTrainerInstance;
 
   @override
   Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width - (26 * 2);
+//Edit Profile button
+    Widget bookClassButton() {
+      return GestureDetector(
+        child: Container(
+          alignment: Alignment.center,
+          height: 35,
+          width: 75,
+          decoration: BoxDecoration(
+              color: jetBlack,
+              // border: Border.all(color: shark60),
+              borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: Text(
+              buttonBookOrRebookText,
+              style: TextStyle(
+                  color: snow,
+                  fontFamily: 'SFDisplay',
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.w600),
+            ),
+          ),
+        ),
+        onTap: () {
+          HapticFeedback.lightImpact();
+          Timer(Duration(milliseconds: 150), () {
+            showCupertinoModalPopup(
+                semanticsDismissible: true,
+                barrierDismissible: true,
+                barrierColor: jetBlack60,
+                context: context,
+                builder: (BuildContext builder) {
+                  return PurchaseClassSelectDates(
+                    classItem: classItem,
+                    userInstance: userInstance,
+                    trainerStripeAccountID:
+                        classTrainerInstance.stripeAccountID ?? '',
+                    classTrainerInstance: classTrainerInstance,
+                  );
+                });
+          });
+        },
+      );
+    }
+
+    var width = MediaQuery.of(context).size.width - (15 * 2);
     return Column(
       children: [
         //Upcoming Class Card
@@ -92,29 +119,6 @@ class ClassItemCondensed1 extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
-
-                        //Class Trainer
-                        Row(
-                          children: [
-                            Text(
-                              'with ' + classTrainer,
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: jetBlack40,
-                                  fontFamily: 'SFDisplay'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 4.0),
-                              child: CircleAvatar(
-                                radius: 8,
-                                foregroundImage:
-                                    NetworkImage(classTrainerImageUrl),
-                                backgroundColor: Colors.transparent,
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
