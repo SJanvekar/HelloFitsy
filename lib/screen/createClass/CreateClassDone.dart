@@ -1,7 +1,7 @@
 import 'package:balance/Main.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

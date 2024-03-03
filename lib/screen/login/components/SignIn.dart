@@ -4,7 +4,7 @@ import 'package:balance/Constants.dart';
 import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/ForgotPassword.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';

@@ -3,9 +3,10 @@ import 'package:balance/Constants.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/CategorySelection.dart';
+import 'package:balance/screen/login/components/ShareLocation.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -223,7 +224,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           onTap: () => {
             uploadImage(),
             Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) => PersonalInfo(
+                builder: (context) => ShareYourLocation(
                     authTemplate: authTemplate, userTemplate: userTemplate)))
           },
         ),

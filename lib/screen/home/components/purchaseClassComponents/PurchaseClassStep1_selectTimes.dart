@@ -1,6 +1,6 @@
 import 'package:balance/Constants.dart';
 import 'package:balance/screen/home/components/PurchaseClassSelectDates.dart';
-import 'package:balance/sharedWidgets/LoginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/PageDivider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:jiffy/jiffy.dart';

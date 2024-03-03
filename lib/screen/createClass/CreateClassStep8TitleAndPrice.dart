@@ -8,6 +8,8 @@ import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
 import 'package:balance/feModels/UserModel.dart';
+import 'package:balance/fitsy_icons_set1_icons.dart';
+import 'package:balance/screen/createClass/CreateClassStep7ClassLocation.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
 import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
@@ -16,7 +18,7 @@ import 'package:balance/screen/home/Home.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -106,145 +108,67 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
   }
 
   Widget ClassTitle(Class template) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 15,
-          left: 30,
-          right: 30,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'What is your class called?',
+          style: sectionTitlesClassCreation,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'What is your class called?',
-              style: sectionTitlesClassCreation,
-            ),
-            Container(
-                padding: EdgeInsets.only(top: 0),
-                decoration: BoxDecoration(color: snow),
-                child: TextField(
-                  controller: titleController,
-                  maxLength: 100,
-                  maxLengthEnforcement: MaxLengthEnforcement.none,
-                  autocorrect: true,
-                  cursorColor: ocean,
-                  maxLines: null,
-                  textCapitalization: TextCapitalization.sentences,
-                  textInputAction: TextInputAction.done,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: jetBlack,
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w500),
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Start typing here',
-                    hintStyle: const TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: shark60,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  onChanged: (val) {
-                    template.className = val;
-                  },
-                )),
-          ],
-        ),
-      ),
+        Container(
+            padding: EdgeInsets.only(top: 0),
+            decoration: BoxDecoration(color: snow),
+            child: TextField(
+              controller: titleController,
+              maxLength: 100,
+              maxLengthEnforcement: MaxLengthEnforcement.none,
+              autocorrect: true,
+              cursorColor: ocean,
+              maxLines: null,
+              textCapitalization: TextCapitalization.sentences,
+              textInputAction: TextInputAction.done,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: 'Start typing here',
+                hintStyle: const TextStyle(
+                  fontFamily: 'SFDisplay',
+                  color: jetBlack40,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              onChanged: (val) {
+                template.className = val;
+              },
+            )),
+      ],
     );
   }
 
   Widget ClassCost(Class template) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 30,
-          right: 30,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'How much does your class cost?',
+          style: sectionTitlesClassCreation,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'How much does your class cost?',
-              style: sectionTitlesClassCreation,
-            ),
-            Container(
-                padding: EdgeInsets.only(top: 0),
-                decoration: BoxDecoration(color: snow),
-                child: TextField(
-                  controller: costController,
-                  maxLength: 30,
-                  keyboardType: TextInputType.numberWithOptions(
-                      signed: true, decimal: true),
-                  maxLengthEnforcement: MaxLengthEnforcement.none,
-                  autocorrect: true,
-                  cursorColor: ocean,
-                  maxLines: null,
-                  textCapitalization: TextCapitalization.sentences,
-                  textInputAction: TextInputAction.done,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: jetBlack,
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w500),
-                  decoration: InputDecoration(
-                    prefix: Text(
-                      "\$ ",
-                      style: TextStyle(
-                          fontFamily: 'SFDisplay',
-                          color: jetBlack80,
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    border: InputBorder.none,
-                    hintText: 'Start typing here',
-                    hintStyle: const TextStyle(
-                      fontFamily: 'SFDisplay',
-                      color: shark60,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  onChanged: (val) {
-                    if (val == ' ') {
-                      var price = double.parse(val);
-                      template.classPrice = price;
-                    } else {
-                      return;
-                    }
-                  },
-                )),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget ClassLocation(Class template) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 30,
-          right: 30,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Where is your class located?',
-              style: sectionTitlesClassCreation,
-            ),
-            TextField(
-              controller: locationController,
-              maxLength: 100,
+        Container(
+            padding: EdgeInsets.only(top: 0),
+            decoration: BoxDecoration(color: snow),
+            child: TextField(
+              controller: costController,
+              maxLength: 30,
+              keyboardType:
+                  TextInputType.numberWithOptions(signed: true, decimal: true),
               maxLengthEnforcement: MaxLengthEnforcement.none,
               autocorrect: true,
               cursorColor: ocean,
@@ -258,39 +182,33 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
                   fontSize: 16.5,
                   fontWeight: FontWeight.w500),
               decoration: InputDecoration(
+                prefix: Text(
+                  "\$ ",
+                  style: TextStyle(
+                      fontFamily: 'SFDisplay',
+                      color: jetBlack,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
                 border: InputBorder.none,
-                hintText: 'Enter an address',
+                hintText: 'Start typing here',
                 hintStyle: const TextStyle(
                   fontFamily: 'SFDisplay',
-                  color: shark60,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  color: jetBlack40,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               onChanged: (val) {
-                // var addresses = [];
-                // addresses.add(locationFromAddress(val));
-                // print(addresses[0].toString());
+                if (val == ' ') {
+                  var price = double.parse(val);
+                  template.classPrice = price;
+                } else {
+                  return;
+                }
               },
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: Container(
-                height: 300,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20))),
-                child: GoogleMap(
-                  mapType: MapType.terrain,
-                  initialCameraPosition: _kCurrentLocation,
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+            )),
+      ],
     );
   }
 
@@ -326,55 +244,64 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
 
       //AppBar
       appBar: AppBar(
-        toolbarHeight: 80,
+        toolbarHeight: 50,
         centerTitle: false,
         elevation: 0,
         backgroundColor: snow,
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 0,
-              ),
-              child: TextButton(
-                onPressed: () {
-                  print("Back");
+        title: Padding(
+          padding: const EdgeInsets.only(left: 0),
+          child: Row(
+            children: [
+              GestureDetector(
+                child: Row(
+                  children: [
+                    Icon(
+                      FitsyIconsSet1.arrowleft,
+                      color: jetBlack60,
+                      size: 15,
+                    ),
+                    const Text(
+                      "Back",
+                      style: logInPageNavigationButtons,
+                    ),
+                  ],
+                ),
+                onTap: () {
                   Navigator.of(context).pop(CupertinoPageRoute(
                       fullscreenDialog: true,
-                      builder: (context) => CreateClassWhatToExpect(
-                          classTemplate: classTemplate)));
+                      builder: (context) => SelectClassLocation(
+                            classTemplate: classTemplate,
+                          )));
                 },
-                child: Text("Back", style: logInPageNavigationButtons),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
 
       //Body
       body: GestureDetector(
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              pageTitle(),
-              Padding(
-                padding: const EdgeInsets.only(top: 35.0),
-                child: ClassTitle(widget.classTemplate),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35.0),
-                child: ClassCost(widget.classTemplate),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 35.0),
-                child: ClassLocation(widget.classTemplate),
-              ),
-              SizedBox(
-                height: 40,
-              )
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                pageTitle(),
+                Padding(
+                  padding: const EdgeInsets.only(top: 45.0),
+                  child: ClassTitle(widget.classTemplate),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 35.0),
+                  child: ClassCost(widget.classTemplate),
+                ),
+                SizedBox(
+                  height: 40,
+                )
+              ],
+            ),
           ),
         ),
         onTap: () {
@@ -382,50 +309,35 @@ class _CreateClassTitleAndPrice extends State<CreateClassTitleAndPrice> {
         },
       ),
       //Bottom Navigation Bar
-      bottomNavigationBar: Container(
-          height: 110,
-          decoration: BoxDecoration(),
-          child: Padding(
-            padding: const EdgeInsets.only(
-              top: 14,
-              bottom: 46,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(
+          left: 15.0,
+          right: 15.0,
+          bottom: 55.0,
+        ),
+        child: GestureDetector(
+            child: FooterButton(
+              buttonColor: strawberry,
+              textColor: snow,
+              buttonText: "Finish",
             ),
-            child: GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    left: 26.0,
-                    right: 26.0,
-                  ),
-                  child: FooterButton(
-                    buttonColor: strawberry,
-                    textColor: snow,
-                    buttonText: "Finish",
-                  ),
-                ),
-                onTap: () {
-                  createClass();
-                }),
-          )),
+            onTap: () {
+              createClass();
+            }),
+      ),
     );
   }
 }
 
 //Page title
 Widget pageTitle() {
-  return Center(
-    child: Padding(
-      padding: const EdgeInsets.only(
-        left: 46.5,
-        right: 46.5,
-      ),
-      child: Container(
-          padding: EdgeInsets.only(top: 25),
-          decoration: BoxDecoration(color: snow),
-          child: Text(
-            "Let’s add some finishing touches",
-            style: logInPageTitleH3,
-            textAlign: TextAlign.center,
-          )),
-    ),
+  return Padding(
+    padding: EdgeInsets.only(top: 10),
+    child: Container(
+        decoration: BoxDecoration(color: snow),
+        child: Text(
+          "Almost done... \nLet’s add some finishing touches",
+          style: logInPageTitleH3,
+        )),
   );
 }

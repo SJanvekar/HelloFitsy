@@ -14,7 +14,7 @@ import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/screen/home/components/purchaseClassSelectDates.dart';
 import 'package:balance/sharedWidgets/UserMoreActions.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:balance/sharedWidgets/reviewCardPublic.dart';
 import 'package:balance/sharedWidgets/userProfileComponentDark.dart';

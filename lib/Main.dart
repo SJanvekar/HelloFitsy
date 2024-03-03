@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
 import 'feModels/UserModel.dart';
@@ -135,9 +136,6 @@ class _MainPageState extends State<MainPage>
   @override
   void initState() {
     super.initState();
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
-    //   SystemUiOverlay.top,
-    // ]);
 
     //Add Home
     _widgetOptions.add(Home(
@@ -236,9 +234,7 @@ class _MainPageState extends State<MainPage>
       NotificationRequests.instance.addTestPushNotification(apnsToken);
     }
 
-    setState(() {
-      print('main set state 2');
-    });
+    setState(() {});
   }
 
   //Function - Show Alert Dialog

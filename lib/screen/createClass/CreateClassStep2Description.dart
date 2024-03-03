@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_print, unused_import, file_names
 import 'dart:ffi';
-
 import 'package:balance/Authentication/authService.dart';
 import 'package:balance/constants.dart';
 import 'package:balance/example.dart';
@@ -11,9 +10,8 @@ import 'package:balance/screen/createClass/createClassStep3WhatToExpect.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/services.dart';
@@ -112,30 +110,20 @@ class _CreateClassDescription extends State<CreateClassDescription> {
           elevation: 0,
           backgroundColor: snow,
           automaticallyImplyLeading: false,
-          title: Padding(
-            padding: const EdgeInsets.only(left: 0),
-            child: Row(
-              children: [
-                GestureDetector(
-                  child: Row(
-                    children: [
-                      Icon(
-                        FitsyIconsSet1.arrowleft,
-                        color: jetBlack60,
-                        size: 15,
-                      ),
-                      const Text(
-                        "Back",
-                        style: logInPageNavigationButtons,
-                      ),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GestureDetector(
+                child: const Icon(
+                  Icons.close_rounded,
+                  color: jetBlack80,
+                  size: 25,
                 ),
-              ],
-            ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
           ),
         ),
 

@@ -13,7 +13,7 @@ import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/sharedWidgets/BodyButton.dart';
 import 'package:balance/sharedWidgets/categories/AddRemoveButton.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';

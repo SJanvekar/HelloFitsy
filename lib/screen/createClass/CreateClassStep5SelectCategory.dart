@@ -4,7 +4,7 @@ import 'package:balance/screen/createClass/createClassStep6UploadClassPhoto.dart
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
 import 'package:balance/sharedWidgets/categories/categoryListLrg.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

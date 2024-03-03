@@ -6,7 +6,7 @@ import 'package:balance/constants.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

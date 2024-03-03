@@ -74,6 +74,9 @@ dependencies:
   rive: ^0.12.4
   google_maps_flutter: ^2.5.3
   geolocator: ^11.0.0
+  flutter_google_places: ^0.3.0
+  cupertino_icons: ^1.0.6
+  permission_handler: ^11.3.0
 
 dev_dependencies:
   dependency_validator: ^3.0.0
