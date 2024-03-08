@@ -1,29 +1,25 @@
 enum ClassType { Solo, Group, Virtual }
 
 class ClassHistory {
+  String classHistoryID;
   String userName;
-  int amountTaken;
-  String classImageUrl;
-  String className;
-  ClassType classType;
-  String classLocation;
-  String classTrainer;
-  String trainerFirstName;
-  String trainerLastName;
-  String trainerImageUrl;
+  String classID;
 
   ClassHistory({
+    required this.classHistoryID,
     required this.userName,
-    required this.amountTaken,
-    required this.classImageUrl,
-    required this.className,
-    required this.classType,
-    required this.classLocation,
-
-    //Trainer Info
-    required this.classTrainer,
-    required this.trainerImageUrl,
-    required this.trainerFirstName,
-    required this.trainerLastName,
+    required this.classID,
   });
+
+  //JSON parsers are required to parse arrays of JSON
+  ClassHistory.fromJson(Map<String, dynamic> json)
+      : classHistoryID = json['_id'],
+        userName = json['Username'],
+        classID = json['ClassID'];
+
+  Map<String, dynamic> toJson() => {
+        '_id': classHistoryID,
+        'Username': userName,
+        'ClassID': classID,
+      };
 }

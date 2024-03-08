@@ -164,7 +164,7 @@ class _ScheduleCalendar extends State<ScheduleCalendar> {
 
   //Get Classes for the trainer
   void getClassFeed(List<String> trainerID) async {
-    ClassRequests().getClass(trainerID).then((val) async {
+    ClassRequests().getClassFromTrainer(trainerID).then((val) async {
       if (val.data['success']) {
         print('successful get class feed');
         (val.data['classArray'] as List<dynamic>).forEach((element) {

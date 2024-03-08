@@ -107,7 +107,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   void getClassFeed(List<String> followingUsernames) async {
-    ClassRequests().getClass(followingUsernames).then((val) async {
+    ClassRequests().getClassFromTrainer(followingUsernames).then((val) async {
       //get logged in user's following list
       if (val.data['success']) {
         (val.data['classArray'] as List<dynamic>).forEach((element) {

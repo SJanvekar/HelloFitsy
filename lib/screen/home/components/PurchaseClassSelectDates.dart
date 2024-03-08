@@ -133,7 +133,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
       const Duration(milliseconds: 500),
       () => setState(() {
         _isBodyVisible = true;
-        getClass(trainerIDList);
+        getClassFromTrainer(trainerIDList);
         currentSelection = null;
       }),
     );
@@ -150,8 +150,8 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
 //Schedule Functions ------------------------------------------------------------
 
   //Get Classes for the trainer
-  void getClass(List<String> trainerID) async {
-    ClassRequests().getClass(trainerID).then((val) async {
+  void getClassFromTrainer(List<String> trainerID) async {
+    ClassRequests().getClassFromTrainer(trainerID).then((val) async {
       if (val.data['success']) {
         print('successful get class feed');
         (val.data['classArray'] as List<dynamic>).forEach((element) {

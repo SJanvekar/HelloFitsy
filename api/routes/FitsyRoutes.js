@@ -17,8 +17,10 @@ router.get('/dashboard', (req, res) =>{
 //****GET REQUESTS****//
 
   //Class routes
-    //Get information for a class
+    //Get information for a class from class ID
     router.get('/getClasses', classController.getClasses)
+    //Get information for a class from trainer username
+    router.get('/getClassesFromTrainer', classController.getClassesFromTrainer)
     //Search trainers
     router.get('/searchClasses', classController.searchClasses)
 
@@ -126,7 +128,7 @@ router.get('/dashboard', (req, res) =>{
 
   //Notification routes
     //Test notification
-    router.post('/addTestPushNotification', notificationController.addTestPushNotification)
+    // router.post('/addTestPushNotification', notificationController.addTestPushNotification)
 
   //Stripe routes
     // Create Express account

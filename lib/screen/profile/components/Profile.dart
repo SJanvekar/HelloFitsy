@@ -59,7 +59,7 @@ class _UserProfileState extends State<UserProfile> {
 
   //Class Functions
   void getClasses(List<String> trainerID) async {
-    ClassRequests().getClass(trainerID).then((val) async {
+    ClassRequests().getClassFromTrainer(trainerID).then((val) async {
       //get logged in user's following list
       if (val.data['success']) {
         print('successful get class feed');

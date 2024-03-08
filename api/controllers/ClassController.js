@@ -20,6 +20,44 @@ var functions = {
                 }
             })
         }
+        if  ((!req.query.ClassID)) { //TODO: Check aganist empty and null query parameters, also apply to similar checks
+            return res.json({success: false, msg: 'Missing query parameter ClassID'});
+        }
+        const decodedArray = JSON.parse(decodeURIComponent(req.query.ClassID))
+        // Convert string IDs to Mongoose ObjectID instances
+        const classIDs = decodedArray.map(id => new mongoose.Types.ObjectId(req.body.ClassID));
+        try {
+            classArray = await Class.find({_id: {$in:classIDs}})
+        } catch (err) {
+            console.log(err)
+            return res.json({success: false, msg: "Failed to find class: " + err})
+        }
+        return classPromiseAsync(classArray).then( function (parsedResponse) {
+            //RESPONSE string is an array of classes
+            if (parsedResponse instanceof Error) {
+                return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
+            } else {
+                return res.json({success: true, 
+                    classArray: parsedResponse,
+                })
+            }
+        })
+    },
+
+    // Get Class Information from trainer username, can handle arrays
+    getClassesFromTrainer: async function (req, res) {
+        const classPromiseAsync = (responseJSON) => {
+            return new Promise((resolve, reject) => {
+                let responseString = JSON.stringify(responseJSON)
+                var classArray = Class()
+                classArray = JSON.parse(responseString)
+                if (classArray) {
+                    resolve(classArray)
+                } else {
+                    reject(new Error('getClasses returned null'))
+                }
+            })
+        }
         if  ((!req.query.ClassTrainer)) { //TODO: Check aganist empty and null query parameters, also apply to similar checks
             return res.json({success: false, msg: 'Missing query parameter ClassTrainer'});
         }

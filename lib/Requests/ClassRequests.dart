@@ -33,11 +33,25 @@ class ClassRequests {
     }
   }
 
-  getClass(List<String> classTrainer) async {
-    final encodedArray = Uri.encodeComponent(jsonEncode(classTrainer));
+  getClasses(List<String> classID) async {
+    final encodedArray = Uri.encodeComponent(jsonEncode(classID));
     try {
       return await dio.get(
         '$urlDomain/getClasses',
+        queryParameters: {
+          "ClassID": encodedArray,
+        },
+      );
+    } on DioException catch (e) {
+      print(e);
+    }
+  }
+
+  getClassFromTrainer(List<String> classTrainer) async {
+    final encodedArray = Uri.encodeComponent(jsonEncode(classTrainer));
+    try {
+      return await dio.get(
+        '$urlDomain/getClassesFromTrainer',
         queryParameters: {
           "ClassTrainer": encodedArray,
         },

@@ -4,9 +4,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:balance/Constants.dart';
+import 'package:balance/Requests/ClassHistoryRequests.dart';
 import 'package:balance/Requests/ClassRequests.dart';
 import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/feModels/Categories.dart';
+import 'package:balance/feModels/ClassHistoryModel.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/sharedWidgets/LoginFooterButton.dart';
@@ -51,6 +53,8 @@ List<String> trainerIDList = [];
 List<Category> interests = categoriesList;
 List<Category> myInterestsFinal = Interests;
 List<Class> savedClassesList = classList;
+List<ClassHistory> classHistoryList = [];
+List<Class> classHistoryFeed = [];
 List decodedCategories = [];
 
 //HARD CODED - MUST CHANGE
@@ -92,7 +96,7 @@ class _PersonalProfileState extends State<PersonalProfile>
 
   //Class Functions
   void getClasses(List<String> trainerID) async {
-    ClassRequests().getClass(trainerID).then((val) async {
+    ClassRequests().getClassFromTrainer(trainerID).then((val) async {
       //get logged in user's following list
       if (val.data['success']) {
         print('successful get class feed');
@@ -112,6 +116,7 @@ class _PersonalProfileState extends State<PersonalProfile>
     super.initState();
     getSet2UserDetails();
     checkInterests();
+    getClassHistory();
     trainerClasses.clear();
     trainerIDList.clear();
     trainerIDList.add(widget.userInstance.userID);
@@ -189,6 +194,42 @@ class _PersonalProfileState extends State<PersonalProfile>
         myInterestsFinal.add(interests[i]);
       }
     }
+  }
+
+  void getClassHistory() {
+    ClassHistoryRequests()
+        .getClassHistoryList(widget.userInstance.userName)
+        .then((val) async {
+      //get logged in user's following list
+      if (val.data['success']) {
+        print('successful get class history');
+        (val.data['ClassHistory'] as List<dynamic>).forEach((element) {
+          classHistoryList.add(ClassHistory.fromJson(element));
+        });
+        populateClassHistoryList();
+      } else {
+        print('error get class history: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
+  }
+
+  void populateClassHistoryList() {
+    List<String> classIDs =
+        classHistoryList.map((item) => item.classID).toList();
+    // List<String> classIDs = classHistoryList.map(item => )
+    ClassRequests().getClasses(classIDs).then((val) async {
+      //get logged in user's following list
+      if (val.data['success']) {
+        print('successful get class history feed');
+        (val.data['classArray'] as List<dynamic>).forEach((element) {
+          classHistoryFeed.add(Class.fromJson(element));
+        });
+      } else {
+        print('error get class history feed: ${val.data['msg']}');
+      }
+      setState(() {});
+    });
   }
 
 //---------- logout function
