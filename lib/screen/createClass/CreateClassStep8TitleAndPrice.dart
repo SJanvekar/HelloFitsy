@@ -57,6 +57,7 @@ Future uploadImage() async {
     final imageURL = await profilePictureRef.getDownloadURL();
 
     classTemplate.classImageUrl = imageURL;
+    print(imageURL);
   } catch (e) {
     print("Error: $e");
   }

@@ -493,6 +493,11 @@ class _SelectClassLocationState extends State<SelectClassLocation> {
                                                     currentSelectedAddress.lat!,
                                                     currentSelectedAddress
                                                         .long!);
+                                                currentLat =
+                                                    currentSelectedAddress.lat!;
+                                                currentLong =
+                                                    currentSelectedAddress
+                                                        .long!;
                                               }
                                             });
                                           });
@@ -578,6 +583,8 @@ class _SelectClassLocationState extends State<SelectClassLocation> {
           child: FooterButton(
               buttonColor: strawberry, textColor: snow, buttonText: 'Continue'),
           onTap: () {
+            widget.classTemplate.classLatitude = currentLat;
+            widget.classTemplate.classLongitude = currentLong;
             switch (widget.classTemplate.classType) {
               case ClassType.Solo:
                 Navigator.of(context).push(MaterialPageRoute(
