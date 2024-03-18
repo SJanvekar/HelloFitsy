@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:balance/constants.dart';
 import 'package:balance/screen/createClass/createClassStep5SelectCategory.dart';
 import 'package:balance/feModels/ClassModel.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';

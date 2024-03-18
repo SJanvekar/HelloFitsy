@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../../feModels/Categories.dart';
-import '../../../sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import '../../../feModels/UserModel.dart';
 
 class CategorySelection extends StatefulWidget {
@@ -92,8 +92,8 @@ class _CategorySelectionState extends State<CategorySelection> {
           SliverPadding(
             padding: EdgeInsets.only(
               top: 5,
-              left: 20,
-              right: 20,
+              left: 15,
+              right: 15,
             ),
             sliver: SliverGrid(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -18,8 +18,6 @@ import 'package:skeletons/skeletons.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import '../../feModels/ClassModel.dart';
 import '../../feModels/UserModel.dart';
-import '../../sharedWidgets/bodyButton.dart';
-import 'components/Search.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key, required this.userInstance}) : super(key: key);
@@ -242,14 +240,26 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 Padding(
                   padding:
                       const EdgeInsets.only(left: 15.0, right: 15.0, top: 20.0),
-                  child: Text(
-                    'For you',
-                    style: TextStyle(
-                      color: jetBlack,
-                      fontFamily: 'SFDisplay',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Classes you may like',
+                        style: logInPageTitleH5,
+                      ),
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10, right: 5, top: 5),
+                          child: Container(
+                            height: 0.66,
+                            width: double.maxFinite,
+                            decoration: BoxDecoration(
+                              color: jetBlack40,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
                 SizedBox(
@@ -324,8 +334,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                       bottom: 20.0,
                     ),
                     child: Column(
-                      // ignore: prefer_const_literals_to_create_immutables
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        SizedBox(
+                          height: 100,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
                           child: SvgPicture.asset(
@@ -334,32 +348,33 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                             height: 50,
                           ),
                         ),
+
                         Text(
                           'No classes',
                           textAlign: TextAlign.center,
                           style: emptyListDisclaimerText,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: GestureDetector(
-                            child: BodyButton(
-                                buttonColor: strawberry,
-                                textColor: snow,
-                                buttonText: 'Search for classes'),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      child: Search(
-                                        userInstance: widget.userInstance,
-                                      ),
-                                      type: PageTransitionType.fade,
-                                      duration: Duration(milliseconds: 0),
-                                      reverseDuration:
-                                          Duration(milliseconds: 0)));
-                            },
-                          ),
-                        )
+                        // Padding(
+                        //   padding: const EdgeInsets.only(top: 20.0),
+                        //   child: GestureDetector(
+                        //     child: BodyButton(
+                        //         buttonColor: strawberry,
+                        //         textColor: snow,
+                        //         buttonText: 'Search for classes'),
+                        //     onTap: () {
+                        //       Navigator.push(
+                        //           context,
+                        //           PageTransition(
+                        //               child: Search(
+                        //                 userInstance: widget.userInstance,
+                        //               ),
+                        //               type: PageTransitionType.fade,
+                        //               duration: Duration(milliseconds: 0),
+                        //               reverseDuration:
+                        //                   Duration(milliseconds: 0)));
+                        //     },
+                        //   ),
+                        // )
                       ],
                     ),
                   )

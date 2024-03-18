@@ -18,7 +18,7 @@ import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/screen/schedule/ScheduledClassItem.dart';
 import 'package:balance/sharedWidgets/BodyButton.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

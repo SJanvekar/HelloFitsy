@@ -1,7 +1,7 @@
 import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

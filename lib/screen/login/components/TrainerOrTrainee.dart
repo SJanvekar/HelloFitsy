@@ -8,7 +8,7 @@ import 'package:balance/screen/login/components/CategorySelection.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
 import 'package:balance/screen/login/components/profilePictureUpload.dart';
 import 'package:balance/screen/login/loginSharedWidgets/userTextInput.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/pageDivider.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +24,8 @@ class TrainerOrTrainee extends StatefulWidget {
   @override
   State<TrainerOrTrainee> createState() => _TrainerOrTraineeState();
 }
+
+bool isFirstLoad = true;
 
 Auth authTemplate = Auth(
   userEmail: '',
@@ -113,16 +115,20 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                         child: AnimatedContainer(
                           duration: Duration(milliseconds: 1000),
                           curve: Curves.fastLinearToSlowEaseIn,
-                          height: userTemplate.userType == UserType.Trainer
+                          height: userTemplate.userType == UserType.Trainer &&
+                                  isFirstLoad == false
                               ? 250
                               : 180,
-                          width: userTemplate.userType == UserType.Trainer
+                          width: userTemplate.userType == UserType.Trainer &&
+                                  isFirstLoad == false
                               ? MediaQuery.of(context).size.width - (15 * 2)
                               : MediaQuery.of(context).size.width - (15 * 3),
                           decoration: BoxDecoration(
-                              color: userTemplate.userType == UserType.Trainer
-                                  ? strawberry
-                                  : snow,
+                              color:
+                                  userTemplate.userType == UserType.Trainer &&
+                                          isFirstLoad == false
+                                      ? strawberry
+                                      : snow,
                               borderRadius: BorderRadius.circular(30),
                               border: Border.all(
                                 color: jetBlack20,
@@ -130,10 +136,11 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                           child: Center(
                             child: Text('I’m a personal trainer',
                                 style: TextStyle(
-                                  color:
-                                      userTemplate.userType == UserType.Trainer
-                                          ? snow
-                                          : jetBlack80,
+                                  color: userTemplate.userType ==
+                                              UserType.Trainer &&
+                                          isFirstLoad == false
+                                      ? snow
+                                      : jetBlack80,
                                   fontFamily: 'SFDisplay',
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
@@ -145,6 +152,7 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                             setState(() {
                               HapticFeedback.mediumImpact();
                               userTemplate.userType = UserType.Trainer;
+                              isFirstLoad = false;
                             });
                           })
                         },
@@ -156,14 +164,17 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 1000),
                         curve: Curves.fastLinearToSlowEaseIn,
-                        height: userTemplate.userType == UserType.Trainee
+                        height: userTemplate.userType == UserType.Trainee &&
+                                isFirstLoad == false
                             ? 250
                             : 180,
-                        width: userTemplate.userType == UserType.Trainee
+                        width: userTemplate.userType == UserType.Trainee &&
+                                isFirstLoad == false
                             ? MediaQuery.of(context).size.width - (15 * 2)
                             : MediaQuery.of(context).size.width - (15 * 3),
                         decoration: BoxDecoration(
-                            color: userTemplate.userType == UserType.Trainee
+                            color: userTemplate.userType == UserType.Trainee &&
+                                    isFirstLoad == false
                                 ? strawberry
                                 : snow,
                             borderRadius: BorderRadius.circular(30),
@@ -174,9 +185,11 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                           child: Text(
                             'I want to find a personal trainer',
                             style: TextStyle(
-                                color: userTemplate.userType == UserType.Trainee
-                                    ? snow
-                                    : jetBlack80,
+                                color:
+                                    userTemplate.userType == UserType.Trainee &&
+                                            isFirstLoad == false
+                                        ? snow
+                                        : jetBlack80,
                                 fontFamily: 'SFDisplay',
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600),
@@ -187,6 +200,7 @@ class _TrainerOrTraineeState extends State<TrainerOrTrainee> {
                         setState(() {
                           HapticFeedback.mediumImpact();
                           userTemplate.userType = UserType.Trainee;
+                          isFirstLoad = false;
                         })
                       },
                     ),

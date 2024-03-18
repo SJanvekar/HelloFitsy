@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 //http://localhost:8888
 //https://www.fitsy.ca
-const String urlDomain = 'https://www.fitsy.ca';
+const String urlDomain = 'http://localhost:8888';
 
 const String publishableStripeKey =
     'pk_test_51N1KMLHPTcKdqvMqmxEGhpnBnrFS7KKdymTmwZlByroml00eU2g0ocRutSqH2K4WFTAx2BAmxLPFpvwhCzsb7nC900JCQMgDCH';
@@ -234,8 +234,8 @@ const sectionTitlesH2 = TextStyle(
 const sectionTitlesClassCreation = TextStyle(
   fontFamily: 'SFDisplay',
   color: jetBlack,
-  fontSize: 19,
-  fontWeight: FontWeight.w600,
+  fontSize: 20,
+  fontWeight: FontWeight.w500,
   decoration: TextDecoration.none,
 );
 
@@ -309,6 +309,13 @@ const doneTextButton = TextStyle(
   color: ocean,
   fontSize: 17,
   fontWeight: FontWeight.w600,
+);
+
+const doneTextButtonSearchBar = TextStyle(
+  fontFamily: 'SFDisplay',
+  color: ocean,
+  fontSize: 14,
+  fontWeight: FontWeight.w500,
 );
 
 const subheader1Font = TextStyle(
@@ -392,6 +399,14 @@ const bodyTextFontBold60 = TextStyle(
   fontFamily: 'SFDisplay',
   fontSize: 14.5,
   fontWeight: FontWeight.w600,
+  decoration: TextDecoration.none,
+);
+
+const bodyFontDefaultJetblack = TextStyle(
+  color: jetBlack,
+  fontFamily: 'SFDisplay',
+  fontSize: 14.5,
+  fontWeight: FontWeight.w400,
   decoration: TextDecoration.none,
 );
 

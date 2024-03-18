@@ -9,7 +9,7 @@ import 'package:balance/Requests/UserRequests.dart';
 import 'package:balance/feModels/Categories.dart';
 import 'package:balance/screen/home/components/ProfileClassCard.dart';
 import 'package:balance/screen/login/components/SignIn.dart';
-import 'package:balance/sharedWidgets/LoginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:balance/sharedWidgets/SpinnerPage.dart';
 import 'package:balance/sharedWidgets/bodyButton.dart';
 import 'package:balance/sharedWidgets/categories/categorySmall.dart';

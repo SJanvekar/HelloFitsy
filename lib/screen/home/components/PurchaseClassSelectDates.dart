@@ -22,7 +22,7 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../../../sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import '../../../sharedWidgets/pageDivider.dart';
 
 class PurchaseClassSelectDates extends StatefulWidget {

@@ -4,7 +4,7 @@ enum UserType { Trainee, Trainer }
 class User {
   late String userID;
   bool isActive;
-  UserType userType;
+  late UserType userType;
   late String profileImageURL;
   String firstName;
   String lastName;

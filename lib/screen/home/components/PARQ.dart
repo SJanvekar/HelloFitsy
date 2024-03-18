@@ -2,7 +2,7 @@
 import 'package:balance/constants.dart';
 import 'package:balance/feModels/UserModel.dart';
 import 'package:balance/fitsy_icons_set1_icons.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_survey/flutter_survey.dart';
 

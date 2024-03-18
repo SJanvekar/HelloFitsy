@@ -3,14 +3,16 @@ import 'package:balance/Constants.dart';
 import 'package:balance/feModels/AuthModel.dart';
 import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/login/components/CategorySelection.dart';
+import 'package:balance/screen/login/components/ShareLocation.dart';
 import 'package:balance/screen/login/components/TrainerOrTrainee.dart';
 import 'package:balance/screen/login/components/personalInfo.dart';
-import 'package:balance/sharedWidgets/loginFooterButton.dart';
+import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../feModels/UserModel.dart';
 
@@ -121,7 +123,10 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
           children: [
             Wrap(children: [
               pageTitle(),
-              pageText(),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0),
+                child: pageText(),
+              ),
             ]),
 
             Padding(
@@ -130,7 +135,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                   child: GestureDetector(
                 child: Container(
                     height: MediaQuery.of(context).size.height * 0.60,
-                    width: MediaQuery.of(context).size.width * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.92,
                     decoration: BoxDecoration(
                         color: snow,
                         border: Border.all(
@@ -150,7 +155,7 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                                   height:
                                       MediaQuery.of(context).size.height * 0.58,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.9,
+                                      MediaQuery.of(context).size.width * 0.92,
                                   child: FittedBox(
                                     fit: BoxFit.cover,
                                     child: Image.file(
@@ -217,11 +222,19 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                 textColor: snow,
                 buttonText: 'Continue'),
           ),
-          onTap: () => {
-            uploadImage(),
-            Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) => PersonalInfo(
-                    authTemplate: authTemplate, userTemplate: userTemplate)))
+          onTap: () async {
+            uploadImage();
+            if (await Permission.location.isGranted) {
+              //If Permission is granted -> Personal Info
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => PersonalInfo(
+                      authTemplate: authTemplate, userTemplate: userTemplate)));
+            } else {
+              //If Permission is anythng else -> Personal Info
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => ShareYourLocation(
+                      authTemplate: authTemplate, userTemplate: userTemplate)));
+            }
           },
         ),
       ),
