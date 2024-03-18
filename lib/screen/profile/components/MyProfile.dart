@@ -198,7 +198,7 @@ class _PersonalProfileState extends State<PersonalProfile>
 
   void getClassHistory() {
     ClassHistoryRequests()
-        .getClassHistoryList(widget.userInstance.userName)
+        .getClassHistoryList(widget.userInstance.userID)
         .then((val) async {
       //get logged in user's following list
       if (val.data['success']) {

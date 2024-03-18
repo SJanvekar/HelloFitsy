@@ -1,6 +1,7 @@
 var jwt = require('jwt-simple')
 const ClassPurchased = require('../models/ClassPurchased');
 const { default: mongoose } = require('mongoose');
+const classHistoryController = equire('./ClassHistoryController');
 
 var functions = {
     //Add New Class Purchased
@@ -26,6 +27,7 @@ var functions = {
             console.log(err)
             return res.json({success: false, msg: err})
         }
+        createAndSaveClassHistoryObject(ClassPurchased.UserID, ClassPurchased.ClassID, ClassPurchased.DateBooked, null, null, null);
         return res.json({success: true})
     },
 

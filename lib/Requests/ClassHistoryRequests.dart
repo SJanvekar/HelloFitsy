@@ -10,15 +10,12 @@ class ClassHistoryRequests {
     try {
       return await dio.post('$urlDomain/addClassHistory',
           data: {
-            "UserName": classHistoryModel.userName,
-            "ClassName": classHistoryModel.className,
-            "ClassImageUrl": classHistoryModel.classImageUrl,
-            "ClassType": classHistoryModel.classType.name,
-            "ClassLocation": classHistoryModel.classLocation,
-            "ClassTrainer": classHistoryModel.classTrainer,
-            "TrainerImageUrl": classHistoryModel.trainerImageUrl,
-            "TrainerFirstName": classHistoryModel.trainerFirstName,
-            "TrainerLastName": classHistoryModel.trainerLastName,
+            "UserID": classHistoryModel.userID,
+            "ClassID": classHistoryModel.classID,
+            "DateTaken": classHistoryModel.dateTaken,
+            "TakenStartTimes": classHistoryModel.takenStartTimes,
+            "IsMissed": classHistoryModel.isMissed,
+            "IsCancelled": classHistoryModel.isCancelled,
           },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -27,12 +24,12 @@ class ClassHistoryRequests {
   }
 
   //Get List of Liked Classes
-  getClassHistoryList(String username) async {
+  getClassHistoryList(String userID) async {
     try {
       return await dio.get(
         '$urlDomain/getClassHistoryList',
         queryParameters: {
-          "UserName": username,
+          "UserID": userID,
         },
       );
     } on DioError catch (e) {

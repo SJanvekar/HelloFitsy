@@ -3,12 +3,11 @@ var Schema = mongoose.Schema;
 
 var ClassHistorySchema = new Schema({
 
-    //Username
-    Username: {
+    //UserID
+    UserID: {
         type: String,
         required: true,
         unique: true,
-        lowercase: true,
         index: true
     },
 
@@ -18,6 +17,29 @@ var ClassHistorySchema = new Schema({
         ref: 'Class',
         required: true,
         unique: true,
+        index: true
+    },
+
+    //Date class was taken
+    DateTaken: {
+        type: Date,
+        required: false,
+    },
+
+    //TakenStartTimes
+    TakenStartTimes: [{
+        type: Date,
+        required: false,
+    }],
+
+    //Did trainee miss class
+    IsMissed: {
+        type: Boolean
+    },
+
+    //Did trainee cancell class
+    IsCancelled: {
+        type: Boolean
     }
 })
 
