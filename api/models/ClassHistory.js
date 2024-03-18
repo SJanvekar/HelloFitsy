@@ -5,10 +5,9 @@ var ClassHistorySchema = new Schema({
 
     //UserID
     UserID: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
-        unique: true,
-        index: true
     },
 
     //Class ID
@@ -16,8 +15,6 @@ var ClassHistorySchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Class',
         required: true,
-        unique: true,
-        index: true
     },
 
     //Date class was taken

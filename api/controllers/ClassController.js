@@ -25,7 +25,7 @@ var functions = {
         }
         const decodedArray = JSON.parse(decodeURIComponent(req.query.ClassID))
         // Convert string IDs to Mongoose ObjectID instances
-        const classIDs = decodedArray.map(id => new mongoose.Types.ObjectId(req.body.ClassID));
+        const classIDs = decodedArray.map(id => new mongoose.Types.ObjectId(id));
         try {
             classArray = await Class.find({_id: {$in:classIDs}})
         } catch (err) {

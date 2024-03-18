@@ -197,6 +197,7 @@ class _PersonalProfileState extends State<PersonalProfile>
   }
 
   void getClassHistory() {
+    classHistoryList.clear();
     ClassHistoryRequests()
         .getClassHistoryList(widget.userInstance.userID)
         .then((val) async {
@@ -215,8 +216,10 @@ class _PersonalProfileState extends State<PersonalProfile>
   }
 
   void populateClassHistoryList() {
+    classHistoryFeed.clear();
     List<String> classIDs =
         classHistoryList.map((item) => item.classID).toList();
+    print(classHistoryList.length);
     // List<String> classIDs = classHistoryList.map(item => )
     ClassRequests().getClasses(classIDs).then((val) async {
       //get logged in user's following list
@@ -1445,7 +1448,7 @@ class _PersonalProfileState extends State<PersonalProfile>
                     ),
                   ),
                   //If the user has no liked classes
-                  if (savedClassesList.isEmpty)
+                  if (classHistoryFeed.isEmpty)
                     Padding(
                       padding: const EdgeInsets.only(
                           left: 15.0, right: 15.0, top: 20.0, bottom: 20.0),
@@ -1477,18 +1480,18 @@ class _PersonalProfileState extends State<PersonalProfile>
                         primary: false,
                         scrollDirection: Axis.vertical,
                         padding: EdgeInsets.only(left: 26, right: 26),
-                        itemCount: savedClassesList.length < 3
-                            ? savedClassesList.length
+                        itemCount: classHistoryFeed.length < 3
+                            ? classHistoryFeed.length
                             : 3,
                         itemBuilder: (context, index) {
-                          if (savedClassesList.isEmpty) {
+                          if (classHistoryFeed.isEmpty) {
                             return Container();
                           } else {
-                            final savedClasses = savedClassesList[index];
+                            final classHistoryItem = classHistoryFeed[index];
                             return ClassItemCondensed1(
-                              classImageUrl: savedClasses.classImageUrl,
+                              classImageUrl: classHistoryItem.classImageUrl,
                               buttonBookOrRebookText: 'Book',
-                              classTitle: savedClasses.className,
+                              classTitle: classHistoryItem.className,
                               classTrainer: trainerFirstName,
                               classTrainerImageUrl: trainerImageURL,
                             );

@@ -372,6 +372,7 @@ class _PurchaseClassSelectDatesState extends State<PurchaseClassSelectDates>
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
         // Clear paymentIntent variable after successful payment
+        addClassPurchased();
         paymentIntent = null;
       });
     } on StripeException catch (e) {
