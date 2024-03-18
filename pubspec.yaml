@@ -77,6 +77,9 @@ dependencies:
   flutter_google_places: ^0.3.0
   cupertino_icons: ^1.0.6
   permission_handler: ^11.3.0
+  http: ^0.13.6
+  flutter_dotenv: ^5.1.0
+  geocode: ^1.0.3
 
 dev_dependencies:
   dependency_validator: ^3.0.0
@@ -139,6 +142,7 @@ flutter:
     - assets/icons/externalCompanyIcons/
     - assets/icons/generalIcons/
     - assets/icons/paymentIcons/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

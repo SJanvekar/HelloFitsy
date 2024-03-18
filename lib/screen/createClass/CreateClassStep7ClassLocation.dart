@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:balance/Constants.dart';
+import 'package:balance/Requests/GooglePlacesAPIUtility.dart';
+import 'package:balance/feModels/LocationPrediction.dart';
 import 'package:balance/fitsy_icons_set1_icons.dart';
 import 'package:balance/screen/createClass/CreateClassStep1SelectType.dart';
-import 'package:balance/screen/createClass/CreateClassStep6UploadClassPhoto.dart';
 import 'package:balance/screen/createClass/createClassStep8TitleAndPrice.dart';
 import 'package:balance/feModels/ClassModel.dart';
 import 'package:balance/sharedWidgets/BodyButton2_withIcon.dart';
@@ -11,6 +13,9 @@ import 'package:balance/sharedWidgets/FooterButton.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:geocode/geocode.dart';
+
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -31,50 +36,111 @@ class _SelectClassLocationState extends State<SelectClassLocation> {
   bool isExpanded = false;
   late double currentLat;
   late double currentLong;
-  CameraPosition _kCurrentLocation = const CameraPosition(
+  List<Prediction> predictions = [];
+  late AddressLatLong currentSelectedAddress;
+  CameraPosition _kCurrentLocation = CameraPosition(
     target: LatLng(43.6532, -79.3832),
     zoom: 12,
   );
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
   Set<Marker> _markers = {};
+  GeoCode geoCode = GeoCode();
 
   @override
   void initState() {
     super.initState();
+    _textController.clear();
+
     _getCurrentLocation();
   }
 
-  String kGoogleApiKey = "API_KEY";
+  String? kGoogleApiKey = dotenv.env['GOOGLEMAPS_SECRET'];
 
-  void _getCurrentLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-
-    setState(() {
-      currentLat = 43.6532; //position.latitude
-      currentLong = -79.3832; //position.longitude
-      _kCurrentLocation = CameraPosition(
-        target: LatLng(currentLat, currentLong),
-        zoom: 14,
-      );
-      _addMarker();
+  void placeAutoComplete(String query) async {
+    print(kGoogleApiKey);
+    Uri uri =
+        Uri.https('maps.googleapis.com', 'maps/api/place/autocomplete/json', {
+      "input": query,
+      "key": kGoogleApiKey,
     });
+
+    String? response = await NetworkUtilityGoogleAPIPlaces.fetchUrl(uri);
+    print(response);
+    if (response != null) {
+      Map<String, dynamic> data = json.decode(response);
+
+      predictions = List<Prediction>.from(
+        data['predictions']
+            .map((prediction) => Prediction.fromJson(prediction)),
+      );
+    }
   }
 
-  void _addMarker() {
+  void fetchLocationDetails(String placeId) async {
+    Uri uri = Uri.https('maps.googleapis.com', 'maps/api/geocode/json', {
+      "place_id": placeId,
+      "key": kGoogleApiKey,
+    });
+
+    print(uri);
+    var response = await NetworkUtilityGoogleAPIPlaces.fetchUrl(uri);
+
+    if (response != null) {
+      currentSelectedAddress =
+          AddressLatLong.fromJsonLatLong(json.decode(response));
+
+      print(currentSelectedAddress.lat);
+      print(currentSelectedAddress.long);
+    } else {
+      throw Exception('Failed to fetch location details');
+    }
+  }
+
+  // void getCoordinatesForAddress(String addressSelected) async {
+  //   try {
+  //     Coordinates coordinates =
+  //         await geoCode.forwardGeocoding(address: addressSelected);
+
+  //     currentLat = coordinates.latitude!;
+  //     currentLong = coordinates.longitude!;
+
+  //     print(currentLat);
+  //     print(currentLong);
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  void _getCurrentLocation() async {
+    var serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (serviceEnabled) {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+
+      setState(() {
+        currentLat = position.latitude; //position.latitude
+        currentLong = position.longitude; //position.longitude
+        _kCurrentLocation = CameraPosition(
+          target: LatLng(currentLat, currentLong),
+          zoom: 14,
+        );
+        _addMarker(currentLat, currentLong);
+      });
+    }
+  }
+
+  void _addMarker(double lat, double long) {
     setState(() {
+      _markers.clear();
       _markers.add(
         Marker(
-          markerId: MarkerId('Marker'),
-          position: LatLng(currentLat, currentLong),
-          infoWindow:
-              InfoWindow(title: 'Marker Title', snippet: 'Marker Snippet'),
+          markerId: MarkerId('Selected Location'),
+          position: LatLng(lat, long),
           icon: BitmapDescriptor.defaultMarker,
         ),
       );
-      print(currentLat);
-      print(currentLong);
+      print(_markers);
     });
   }
 
@@ -127,17 +193,16 @@ class _SelectClassLocationState extends State<SelectClassLocation> {
           )),
       body: GestureDetector(
         child: Stack(alignment: Alignment.bottomCenter, children: [
-          Expanded(
-            child: GoogleMap(
-              compassEnabled: false,
-              myLocationButtonEnabled: false,
-              markers: _markers,
-              mapType: MapType.normal,
-              initialCameraPosition: _kCurrentLocation,
-              onMapCreated: (GoogleMapController controller) {
-                _getCurrentLocation();
-                _controller.complete(controller);
-                controller.setMapStyle('''[
+          GoogleMap(
+            compassEnabled: false,
+            myLocationButtonEnabled: false,
+            markers: _markers,
+            mapType: MapType.normal,
+            initialCameraPosition: _kCurrentLocation,
+            onMapCreated: (GoogleMapController controller) {
+              _getCurrentLocation();
+              _controller.complete(controller);
+              controller.setMapStyle('''[
         {
           "featureType": "administrative.land_parcel",
           "elementType": "labels",
@@ -275,8 +340,7 @@ class _SelectClassLocationState extends State<SelectClassLocation> {
         }
       ]
       ''');
-              },
-            ),
+            },
           ),
           Container(
             height: 30,
@@ -326,7 +390,11 @@ class _SelectClassLocationState extends State<SelectClassLocation> {
                                 ),
                                 child: TextField(
                                   onChanged: (val) {
-                                    setState(() {});
+                                    setState(() {
+                                      if (val != null || val != "") {
+                                        placeAutoComplete(val);
+                                      }
+                                    });
                                   },
                                   controller: _textController,
                                   autofocus: true,
@@ -395,17 +463,42 @@ class _SelectClassLocationState extends State<SelectClassLocation> {
                               const SizedBox(height: 10),
                               Expanded(
                                 child: ListView.builder(
-                                    itemCount: 10,
+                                    itemCount: predictions.length,
                                     itemBuilder: ((context, index) {
+                                      var predictionItem = predictions[index];
                                       return ListTile(
                                         onTap: () {
                                           setState(() {
                                             print(index);
+                                            fetchLocationDetails(
+                                                predictionItem.placeId);
                                             isExpanded = false;
+                                            Future.delayed(
+                                                const Duration(
+                                                    milliseconds: 500), () {
+                                              if (currentSelectedAddress.lat !=
+                                                      null &&
+                                                  currentSelectedAddress.long !=
+                                                      null) {
+                                                _kCurrentLocation =
+                                                    CameraPosition(
+                                                  target: LatLng(
+                                                      currentSelectedAddress
+                                                          .lat!,
+                                                      currentSelectedAddress
+                                                          .long!),
+                                                  zoom: 14,
+                                                );
+                                                _addMarker(
+                                                    currentSelectedAddress.lat!,
+                                                    currentSelectedAddress
+                                                        .long!);
+                                              }
+                                            });
                                           });
                                         },
                                         title: Text(
-                                          'Location',
+                                          predictionItem.description,
                                           style: profileBodyTextFont,
                                         ),
                                         leading: Icon(

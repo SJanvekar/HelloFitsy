@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../feModels/UserModel.dart';
 
@@ -221,11 +222,19 @@ class _ProfilePictureUploadState extends State<ProfilePictureUpload> {
                 textColor: snow,
                 buttonText: 'Continue'),
           ),
-          onTap: () => {
-            uploadImage(),
-            Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) => ShareYourLocation(
-                    authTemplate: authTemplate, userTemplate: userTemplate)))
+          onTap: () async {
+            uploadImage();
+            if (await Permission.location.isGranted) {
+              //If Permission is granted -> Personal Info
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => PersonalInfo(
+                      authTemplate: authTemplate, userTemplate: userTemplate)));
+            } else {
+              //If Permission is anythng else -> Personal Info
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => ShareYourLocation(
+                      authTemplate: authTemplate, userTemplate: userTemplate)));
+            }
           },
         ),
       ),

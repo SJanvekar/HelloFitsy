@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key> NSLocationAlwaysUsageDescription</key>
-	<string>Your location is used to display classes in your area</string>
+	<string>Your location is used by us to curate better recommendations for classes in your area</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -33,11 +33,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>To choose user profile image</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>Your location is used to display classes in your area</string>
+	<string>Your location is used by us to curate better recommendations for classes in your area</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Your location is used to display classes in your area</string>
+	<string>Your location is used by us to curate better recommendations for classes in your area</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location is used to display classes in your area</string>
+	<string>Your location is used by us to curate better recommendations for classes in your area</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Used to capture audio for image picker plugin</string>
 	<key>NSPhotoLibraryUsageDescription</key>

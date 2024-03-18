@@ -120,7 +120,11 @@ class _CreateClassSelectType extends State<CreateClassSelectType> {
                 left: 26.0,
               ),
               child: GestureDetector(
-                child: Text("Cancel", style: logInPageNavigationButtons),
+                child: const Icon(
+                  Icons.close_rounded,
+                  color: jetBlack80,
+                  size: 25,
+                ),
                 onTap: () {
                   Navigator.of(context).pop();
                 },

@@ -23,31 +23,33 @@ class BodyButtonWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      decoration: BoxDecoration(
-          color: buttonColor, borderRadius: BorderRadius.circular(20)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5.0),
-            child: Icon(
-              buttonIcon,
-              size: 18,
-              color: buttonIconColor,
+    return Expanded(
+      child: Container(
+        height: 50,
+        decoration: BoxDecoration(
+            color: buttonColor, borderRadius: BorderRadius.circular(20)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 5.0),
+              child: Icon(
+                buttonIcon,
+                size: 18,
+                color: buttonIconColor,
+              ),
             ),
-          ),
-          Text(
-            buttonText,
-            style: TextStyle(
-                color: textColor,
-                fontSize: 16,
-                fontFamily: 'SFDisplay',
-                fontWeight: FontWeight.w500,
-                decoration: TextDecoration.none),
-          ),
-        ],
+            Text(
+              buttonText,
+              style: TextStyle(
+                  color: textColor,
+                  fontSize: 16,
+                  fontFamily: 'SFDisplay',
+                  fontWeight: FontWeight.w500,
+                  decoration: TextDecoration.none),
+            ),
+          ],
+        ),
       ),
     );
   }

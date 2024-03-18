@@ -214,40 +214,82 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 buttonText: "Finish",
               ),
               onTap: () => {
-                    //Removing PW confirmation for quicker flow
-
-                    // if (widget.authTemplate.password == passwordConfirmed)
-                    //   {passwordCheck = true}
-                    // else
-                    //   {
-                    //     print(
-                    //         'Not the same, original: ${widget.authTemplate.password}, confirmed: $passwordConfirmed'),
-                    //     passwordCheck = false
-                    //   },
-                    if (widget.authTemplate.userEmail == null)
-                      {emailValid = false}
-                    else
+                    if (checkedValue == true)
                       {
-                        emailValid = EmailValidator.validate(
-                            widget.authTemplate.userEmail)
-                      },
-                    if (emailValid && !showError)
-                      {
-                        sendUserModel(),
+                        if (widget.authTemplate.userEmail == null)
+                          {emailValid = false}
+                        else
+                          {
+                            emailValid = EmailValidator.validate(
+                                widget.authTemplate.userEmail)
+                          },
+                        if (emailValid && !showError)
+                          {
+                            sendUserModel(),
+                          }
+                        else if (!emailValid)
+                          {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.transparent,
+                                elevation: 0,
+                                duration: Duration(milliseconds: 1500),
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context).size.height *
+                                        0.01,
+                                    left: 30.0,
+                                    right: 30.0),
+                                content: Container(
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                      color: jetBlack,
+                                      borderRadius: BorderRadius.circular(15),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: jetBlack.withOpacity(0.01),
+                                          spreadRadius: 0,
+                                          blurRadius: 38,
+                                          offset: Offset(0,
+                                              24), // changes position of shadow
+                                        ),
+                                        BoxShadow(
+                                          color: jetBlack.withOpacity(0.06),
+                                          spreadRadius: 0,
+                                          blurRadius: 46,
+                                          offset: Offset(0,
+                                              9), // changes position of shadow
+                                        ),
+                                        BoxShadow(
+                                          color: jetBlack.withOpacity(0.10),
+                                          spreadRadius: 0,
+                                          blurRadius: 15,
+                                          offset: Offset(0,
+                                              11), // changes position of shadow
+                                        ),
+                                      ]),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Text(
+                                      'You have entered an invalid email, please try again.',
+                                      style: errorTextSnackBar,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ))),
+                          }
                       }
-                    else if (!emailValid)
+                    else
                       {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.transparent,
                             elevation: 0,
-                            duration: Duration(milliseconds: 1500),
+                            duration: Duration(milliseconds: 2000),
                             padding: EdgeInsets.only(
                                 bottom:
                                     MediaQuery.of(context).size.height * 0.01,
                                 left: 30.0,
                                 right: 30.0),
                             content: Container(
-                              height: 65,
+                              height: 88,
                               decoration: BoxDecoration(
                                   color: jetBlack,
                                   borderRadius: BorderRadius.circular(15),
@@ -274,33 +316,16 @@ class _PersonalInfoState extends State<PersonalInfo> {
                                           0, 11), // changes position of shadow
                                     ),
                                   ]),
-                              child: Center(
-                                  child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
                                 child: Text(
-                                  'You have entered an invalid email, please try again.',
+                                  'Please confirm you agree with our Terms & Conditions and Privacy Policy before continuing to Fitsy',
                                   style: errorTextSnackBar,
-                                  textAlign: TextAlign.center,
+                                  textAlign: TextAlign.left,
                                 ),
-                              )),
+                              ),
                             ))),
                       }
-
-                    //Removing PW confirmation for quicker flow
-
-                    // else if (!passwordCheck)
-                    //   {
-                    //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    //       content: Padding(
-                    //         padding: const EdgeInsets.only(bottom: 320.0),
-                    //         child: passwordCheckSnackbar(),
-                    //       ),
-                    //       behavior: SnackBarBehavior.floating,
-                    //       duration: Duration(seconds: 2),
-                    //       backgroundColor: Colors.transparent,
-                    //       elevation: 0,
-                    //     ))
-                    //   }
                   }),
         ),
       ),

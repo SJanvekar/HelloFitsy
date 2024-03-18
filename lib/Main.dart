@@ -19,8 +19,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'FirebaseOptions.dart';
 import 'feModels/UserModel.dart';
@@ -32,7 +32,7 @@ void main() async {
 
   Stripe.publishableKey = publishableStripeKey;
   Stripe.merchantIdentifier = 'Fitsy';
-
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -354,7 +354,7 @@ class _MainPageState extends State<MainPage>
       child: Scaffold(
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: Container(
-          height: 88,
+          height: 92,
           decoration: const BoxDecoration(
             color: snow,
           ),
@@ -404,9 +404,9 @@ class _MainPageState extends State<MainPage>
                   BottomNavigationBarItem(
                       icon: GestureDetector(
                         child: Icon(
-                          Icons.add_box_rounded,
+                          CupertinoIcons.add_circled_solid,
                           color: jetBlack80,
-                          size: 23,
+                          size: 24,
                         ),
 
                         //OnTap Open a bottom modal sheet for trianers to add classes

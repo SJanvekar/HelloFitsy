@@ -51,10 +51,6 @@ void getLocation() async {
     return Future.error(
         'Location permissions are permanently denied, we cannot request permissions.');
   }
-
-  // LocationPermission permission = await Geolocator.requestPermission();
-  // Position position = await Geolocator.getCurrentPosition(
-  //     desiredAccuracy: LocationAccuracy.low);
 }
 
 class _ShareYourLocationState extends State<ShareYourLocation> {
@@ -129,9 +125,7 @@ class _ShareYourLocationState extends State<ShareYourLocation> {
                     textColor: snow,
                     buttonText: 'Share my location'),
                 onTap: () async {
-                  if (await Permission.location.isDenied) {
-                    openAppSettings();
-                  }
+                  getLocation();
                 }),
           ),
         ],
