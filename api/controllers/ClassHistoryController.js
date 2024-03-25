@@ -29,6 +29,7 @@ var functions = {
                 var classHistoryArray = ClassHistory()
                 classHistoryArray = JSON.parse(responseString)
                 if (classHistoryArray) {
+<<<<<<< Updated upstream
                     resolve(classHistoryArray)
                 } else {
                     reject(new Error('getClasses returned null'))
@@ -37,7 +38,19 @@ var functions = {
         }
         if ((!req.query.UserID)) {
             res.json({success: false, msg: 'Missing query parameter UserID'});
+=======
+                    console.log(classHistoryArray)
+                    resolve(classHistoryArray)
+                } else {
+                    reject(new Error('getClassHistoryList returned null'))
+                }
+            })
+>>>>>>> Stashed changes
         }
+        if ((!req.query.UserID)) {
+            res.json({success: false, msg: 'Missing query parameter UserID'});
+        }
+        console.log(req.query.UserID)
         try {
             response = await ClassHistory.find({UserID: new mongoose.Types.ObjectId(req.query.UserID)})
         } catch (err) {
@@ -49,7 +62,10 @@ var functions = {
             if (parsedResponse instanceof Error) {
                 return res.json({success: false, msg: "Failed to convert response to JSON:" + parsedResponse})
             } else {
+<<<<<<< Updated upstream
             
+=======
+>>>>>>> Stashed changes
                 return res.json({success: true, 
                     ClassHistory: response
                 })

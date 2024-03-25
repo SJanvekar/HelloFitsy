@@ -27,7 +27,11 @@ var functions = {
             console.log(err)
             return res.json({success: false, msg: err})
         }
+<<<<<<< Updated upstream
         classHistoryController.createAndSaveClassHistoryObject(req.body.UserID, req.body.ClassID, req.body.DateBooked, null, null, null);
+=======
+        classHistoryController.createAndSaveClassHistoryObject(req.body.ClassID, req.body.UserID, req.body.DateBooked, null, null, null);
+>>>>>>> Stashed changes
         return res.json({success: true, msg: 'Successfully saved'})
     },
 

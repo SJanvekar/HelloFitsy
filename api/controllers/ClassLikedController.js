@@ -56,7 +56,7 @@ var functions = {
     // Get liked class list
     getClassLikedList: async function (req, res) {
         if ((!req.query.UserID)) {
-            res.json({success: false, msg: 'Missing query parameter Username'});
+            res.json({success: false, msg: 'Missing query parameter UserID'});
         }
         try {
             response = await ClassLiked.find({UserID: new mongoose.Types.ObjectId(req.query.UserID)})
